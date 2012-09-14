@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "ScrollNinja";
 		cfg.useGL20 = false;
-		cfg.width = 480;
-		cfg.height = 480;
+		cfg.width = 800;
+		cfg.height = 600;
 
 		new LwjglApplication(new ScrollNinja(), cfg);
 	}
