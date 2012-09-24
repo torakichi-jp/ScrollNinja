@@ -1,8 +1,10 @@
 package org.genshin.scrollninja;
 
+import java.util.List;
+
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
@@ -18,17 +20,18 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-//import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class ScrollNinja implements ApplicationListener {
+public class ScrollNinja extends Game {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
 	// スプライト
+	private Sprite stageSpr;
 	private Sprite bgSpr;
 	private Sprite charaSpr;
 	//private Sprite sprObj;
@@ -42,10 +45,22 @@ public class ScrollNinja implements ApplicationListener {
 	private Body groundBody;
 	// 物体設定用？
 	//private Fixture playerPhysicsFixture;
-	//private Fixture playerSensorFixture;
+	private Fixture playerSensorFixture;
 
 	// 回転用。置きっぱなし
 	//float rotation;
+	// 移動用
+	private Vector2 move = new Vector2();
+	private Vector2 charaPos = new Vector2();
+	private Vector2 groundPos = new Vector2();
+	// 画面の端にいるかいないか
+	private Boolean edge = true;
+
+	// キャラクターが地面にいるかいないか。最初は落ちてくるのでfalse
+	private Boolean isGround = false;
+	// ジャンプ処理用
+	private int jump = 2;  // 0:地面　1:ジャンプ中　2:落下中
+	private int jumpHeight = 0;
 
 	@Override
 	public void create() {
@@ -69,19 +84,28 @@ public class ScrollNinja implements ApplicationListener {
 		// フィールド作成
 		createWorld();
 
-		// 背景テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/test_matsu.png"));
+		// 背景(手前)テクスチャ読み込み
+		texture = new Texture(Gdx.files.internal("data/stage_near_test.png"));
 		// コメントアウトしても動く。効果がいまいちわからない…
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// テクスチャ範囲
 		TextureRegion region = new TextureRegion(texture, 0, 0, 2048, 2048);
 		// 背景スプライトにセット
-		bgSpr = new Sprite(region);
+		stageSpr = new Sprite(region);
 		// 中心
-		bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
+		stageSpr.setOrigin(stageSpr.getWidth() / 2, stageSpr.getHeight() / 2);
 		// 0,0 だと画面の中央に背景画像の左下が設置されるため調整
 		// 画面下の方が空白なので高さ位置はどう出したものかと…
-		bgSpr.setPosition(-(Gdx.graphics.getWidth() / 2), -1024);
+		stageSpr.setPosition(-(Gdx.graphics.getWidth() / 2), -1024);
+
+		// 背景（奥）テクスチャ読み込み
+		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		region = new TextureRegion(texture, 0, 0, 1024, 1024);
+		// 背景スプライトにセット
+		bgSpr = new Sprite(region);
+		bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
+		bgSpr.setPosition(-(Gdx.graphics.getWidth() / 2), -660);
 
 		// キャラクターテクスチャ読み込み
 		texture = new Texture(Gdx.files.internal("data/chara.png"));
@@ -106,6 +130,9 @@ public class ScrollNinja implements ApplicationListener {
 		// オブジェクト作成
 		createObj();
 		*/
+
+		// アニメーション
+		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
 	}
 
 	// フィールド（床）作成
@@ -198,6 +225,8 @@ public class ScrollNinja implements ApplicationListener {
 		fd.shape = poly;
 		// 設定を入れる
 		charaBody.createFixture(fd);
+
+		playerSensorFixture = charaBody.createFixture(poly, 0);
 		poly.dispose();
 
 		// これを設定すればContinuous Collision Detection(CCD)を行うので高速に動いても
@@ -253,7 +282,10 @@ public class ScrollNinja implements ApplicationListener {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		// スプライト描画？
+		// 奥に表示されるものから先に描画
+		// シミュレーション世界より後にやらないとポリゴンの線が見えてしまうので注意
 		bgSpr.draw(batch);
+		stageSpr.draw(batch);
 		//sprObj.draw(batch);
 		charaSpr.draw(batch);
 		batch.end();
@@ -265,30 +297,95 @@ public class ScrollNinja implements ApplicationListener {
 		//SetAwakeしないと全てのオブジェクトが静止した場合に動かない、らしい
 		charaBody.setAwake(true);
 		//objBody.setAwake(false);
-		groundBody.setAwake(false);
+		groundBody.setAwake(true);
+
+		// 現在位置
+		charaPos = charaBody.getPosition();
+		groundPos = groundBody.getPosition();
 
 		// キャラクターの画像（スプライト）をcharaBodyの位置に描画する
-		charaSpr.setPosition(charaBody.getPosition().x - 32, charaBody.getPosition().y - 32);
+		charaSpr.setPosition(charaPos.x - 32, charaPos.y - 32);
 		//charaSpr.setOrigin(charaOrigin.x, charaOrigin.y);
-		charaSpr.setRotation(charaBody.getAngle() * MathUtils.radiansToDegrees);
-		charaBody.setTransform(charaBody.getPosition(), 0);
+		//charaSpr.setRotation(charaBody.getAngle() * MathUtils.radiansToDegrees);
+		// 回転しないように固定
+		charaBody.setTransform(charaPos, 0);
+
+		// キャラクターに合わせて背景スクロール
+		stageSpr.setPosition(groundPos.x, groundPos.y);
+		// キャラクターの位置は端に居る時以外は真ん中
+		move.x = 0;
+		move.y = charaPos.y;
+		if (!edge)
+			charaBody.setTransform(move, 0);
 
 		// キー入力
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			charaBody.setTransform(new Vector2(
-					charaBody.getPosition().x - 3, charaBody.getPosition().y), 0);
+			if (edge) {
+				charaPos = charaBody.getPosition();
+				charaPos.x -= 5;
+				charaBody.setTransform(charaPos, 0);
+			} else {
+				groundPos = groundBody.getPosition();
+				groundPos.x += 5;
+				groundBody.setTransform(groundPos, 0);
+				bgSpr.setPosition(bgSpr.getX() + 0.5f, bgSpr.getY());
+			}
 		}
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			charaBody.setTransform(new Vector2(
-					charaBody.getPosition().x + 3, charaBody.getPosition().y), 0);
+			if (edge) {
+				charaPos = charaBody.getPosition();
+				charaPos.x += 5;
+				charaBody.setTransform(charaPos, 0);
+			} else {
+				groundPos = groundBody.getPosition();
+				groundPos.x -= 5;
+				groundBody.setTransform(groundPos, 0);
+				bgSpr.setPosition(bgSpr.getX() - 0.5f, bgSpr.getY());
+			}
+
 		}
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			charaBody.setTransform(new Vector2(
-					charaBody.getPosition().x, charaBody.getPosition().y + 3), 0);
+			if (jump == 0) {
+				jumpHeight = 0;
+				jump = 1;
+			}
 		}
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-			charaBody.setTransform(new Vector2(
-					charaBody.getPosition().x, charaBody.getPosition().y - 3), 0);
+		}
+
+		// 現在位置再習得
+		charaPos = charaBody.getPosition();
+		groundPos = groundBody.getPosition();
+
+		// 端にいるかどうか
+		if (groundPos.x < -1647 || groundPos.x > -401)
+			edge = true;
+		else
+			edge = false;
+
+		// 端にいる時、キャラクターが画面半分以上反対側へ移動したらまた背景スクロール開始
+		if ((groundPos.x < -1647 && charaPos.x < 0) ||
+										(groundPos.x > -401 && charaPos.x > 0))
+			edge = false;
+
+		// ジャンプ中
+		if (jump == 1) {
+			// 上昇中
+			charaPos = charaBody.getPosition();
+			charaPos.y += 15 ;
+			jumpHeight += 15;
+			charaBody.setTransform(charaPos, 0);
+			// 落下
+			if (jumpHeight > 300)
+				jump = 2;
+		}
+
+		// 重力が思ったようにきかないのでとりあえず…
+		isGround = isPlayerGrounded();
+		if (!isGround && jump == 2) {
+			charaPos = charaBody.getPosition();
+			charaPos.y -= 5;
+			charaBody.setTransform(charaPos, 0);
 		}
 	}
 
@@ -302,5 +399,26 @@ public class ScrollNinja implements ApplicationListener {
 
 	@Override
 	public void resume() {
+	}
+
+	// プレイヤーが地面にいるかいないか
+	private boolean isPlayerGrounded() {
+		// リスト取得
+		List<Contact> contactList = world.getContactList();
+		for(int i = 0; i < contactList.size(); i++) {
+			Contact contact = contactList.get(i);
+			// プレイヤーと接触しているかいないか
+			if(contact.isTouching() && (contact.getFixtureA() == playerSensorFixture ||
+				contact.getFixtureB() == playerSensorFixture)) {
+				// 地面に接触したらジャンプはリセット
+				if (jump != 0)
+					jump = 0;
+				return true;
+			}
+		}
+		// ジャンプ（上昇）中でない、地面に接触していないのなら落下中
+		if (jump != 1)
+			jump = 2;
+		return false;
 	}
 }
