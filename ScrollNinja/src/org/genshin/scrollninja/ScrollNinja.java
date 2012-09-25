@@ -70,6 +70,27 @@ public class ScrollNinja extends Game {
 
 	@Override
 	public void create() {
+		
+		Status.running(true);
+		Status.setGameMode(Status.RunModes.MAIN_MENU.ordinal());
+		while (Status.running()) {
+			int mode = Status.getGameMode();
+			
+			if (mode == Status.RunModes.MAIN_MENU.ordinal()) {
+				//MainMenu.show();
+			} else if (mode == Status.RunModes.SETTINGS.ordinal()) {
+				
+			} else if (mode == Status.RunModes.GAME_INIT.ordinal()) {
+				
+			} else if (mode == Status.RunModes.GAME_RUN.ordinal()) {
+				
+			} else if (mode == Status.RunModes.SHUTDOWN.ordinal()) {
+				
+				return;
+			}
+		}
+		
+		
 		//rotation = 0;
 
 		// ウインドウサイズ取得
