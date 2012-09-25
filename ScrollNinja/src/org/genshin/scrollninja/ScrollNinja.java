@@ -7,6 +7,8 @@ import aurelienribon.bodyeditor.BodyEditorLoader;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -61,6 +63,10 @@ public class ScrollNinja extends Game {
 	// ジャンプ処理用
 	private int jump = 2;  // 0:地面　1:ジャンプ中　2:落下中
 	private int jumpHeight = 0;
+
+	// サウンド
+	private Sound sound;
+	private Music music;
 
 	@Override
 	public void create() {
@@ -133,6 +139,12 @@ public class ScrollNinja extends Game {
 
 		// アニメーション
 		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
+
+		// サウンド
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound/foot_step.ogg"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/BGM.wav"));
+		music.setLooping(true);
+		//music.play();
 	}
 
 	// フィールド（床）作成
@@ -265,6 +277,9 @@ public class ScrollNinja extends Game {
 		// 解放
 		batch.dispose();
 		texture.dispose();
+		music.stop();
+		music.dispose();
+		sound.dispose();
 	}
 
 	@Override
@@ -320,6 +335,7 @@ public class ScrollNinja extends Game {
 
 		// キー入力
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+			//sound.play(1.0f);
 			if (edge) {
 				charaPos = charaBody.getPosition();
 				charaPos.x -= 5;
@@ -348,6 +364,7 @@ public class ScrollNinja extends Game {
 			if (jump == 0) {
 				jumpHeight = 0;
 				jump = 1;
+				sound.play(1.0f);
 			}
 		}
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
