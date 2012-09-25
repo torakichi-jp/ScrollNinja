@@ -1,8 +1,20 @@
 package org.genshin.scrollninja;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainMenu implements Screen {
+	Game scrollNinja;
+
+	OrthographicCamera camera;
+	SpriteBatch batch;
+
+	// コンストラクタ
+	public MainMenu(Game game) {
+		this.scrollNinja = game;
+	}
 
 	// 最初から
 	public void startGame() {
