@@ -16,7 +16,6 @@ public class Player {
 
 	// キャラクター変更
 	public void changeCharacter() {
-
 	}
 
 	// ユーザー名セット
@@ -26,9 +25,6 @@ public class Player {
 
 	// ユーザー名ゲット
 	public String getUserName() {
-		if (userName.equals(""))
-			return "";
-		else
-			return this.userName;
+		return this.userName;
 	}
 }
