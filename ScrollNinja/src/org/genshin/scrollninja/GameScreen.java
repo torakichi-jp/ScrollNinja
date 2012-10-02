@@ -1,6 +1,7 @@
 package org.genshin.scrollninja;
 
 import java.util.List;
+import java.util.Vector;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
@@ -60,6 +61,9 @@ public class GameScreen implements Screen {
 	private Sound sound;
 	private Music music;
 
+	// キャラクター
+	private Character character;
+
 	// コンストラクタ
 	public GameScreen(Game game) {
 		this.scrollNinja = game;
@@ -114,6 +118,11 @@ public class GameScreen implements Screen {
 		charaSpr.setOrigin(charaSpr.getWidth() / 2, charaSpr.getHeight() / 2);
 		// キャラクター作成
 		createChara();
+		/*
+		character = new Character();
+		character.createSprite();
+		character.createBox(world);
+		*/
 
 		// アニメーション
 		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
