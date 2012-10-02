@@ -68,7 +68,7 @@ public class GameScreen implements Screen {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
-		// カメラをウインドウサイズで作成
+		// カメラ作成
 		camera = new OrthographicCamera(w, h);
 		// スプライトバッチ作成
 		batch = new SpriteBatch();
@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
 		// 背景スプライトにセット
 		stageSpr = new Sprite(region);
 		// 中心
-		stageSpr.setOrigin(stageSpr.getWidth() / 2, stageSpr.getHeight() / 2);
+		//stageSpr.setOrigin(stageSpr.getWidth() / 2, stageSpr.getHeight() / 2);
 		// 0,0 だと画面の中央に背景画像の左下が設置されるため調整
 		// 画面下の方が空白なので高さ位置はどう出したものかと…
 		stageSpr.setPosition(-(w / 2), -1024);
@@ -127,7 +127,7 @@ public class GameScreen implements Screen {
 
 	// フィールド（床）作成
 	private void createWorld() {
-		// BodyEditorで作成したものを読み込む
+		// BodyEditorで作成した当たり判定を読み込む
 		BodyEditorLoader loader =
 				new BodyEditorLoader(Gdx.files.internal("data/test.json"));
 
