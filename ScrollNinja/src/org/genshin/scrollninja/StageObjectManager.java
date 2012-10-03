@@ -8,11 +8,20 @@ import java.util.ArrayList;
 //========================================
 // クラス宣言
 //========================================
+//***** シングルトン *****/
 public class StageObjectManager {
+	
+	private static final StageObjectManager Instance = new StageObjectManager();			// このクラスの唯一のインスタンスを作ります
+	
+	// インスタンスを返す
+	public static StageObjectManager GetInstace() {
+		return Instance;
+	}
+	
 	private ArrayList<StageObject> stageObjectList;			// ステージオブジェクトリスト
 	
 	// コンストラクタ
-	StageObjectManager() {
+	private StageObjectManager() {
 		stageObjectList = new ArrayList<StageObject>();
 	}
 	

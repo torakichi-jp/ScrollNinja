@@ -5,12 +5,21 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+//***** シングルトン *****/
 public class EnemyManager {
+	
+	private static final EnemyManager Instance = new EnemyManager();			// このクラスの唯一のインスタンスを作ります
+	
+	// インスタンスを返す
+	public static EnemyManager GetInstace() {
+		return Instance;
+	}
+	
 	// 変数宣言
 	private ArrayList<Enemy> enemyList;		// 敵リスト
 	
 	// コンストラクタ
-	EnemyManager() {
+	private EnemyManager() {
 		enemyList = new ArrayList<Enemy>();
 	}
 	

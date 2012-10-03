@@ -1,16 +1,29 @@
 package org.genshin.scrollninja;
 
 //========================================
-//インポート
+// インポート
 //========================================
 import java.util.ArrayList;
 
+//========================================
+// クラス宣言	
+//========================================
+// ***** シングルトン *****/
 public class EffectManager {
+	
+	private static final EffectManager Instance = new EffectManager();			// このクラスの唯一のインスタンスを作ります
+	
+	// インスタンスを返す
+	public static EffectManager GetInstace() {
+		return Instance;
+	}
+	
+	
 	// 変数宣言
 	private ArrayList<Effect> effectList;
 	
 	// コンストラクタ
-	EffectManager(){
+	private EffectManager(){
 		effectList = new ArrayList<Effect>();
 	}
 	

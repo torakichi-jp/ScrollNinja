@@ -1,13 +1,28 @@
 package org.genshin.scrollninja;
 
+//========================================
+// インポート
+//========================================
 import java.util.ArrayList;
 
+//========================================
+//クラス宣言
+//========================================
+//***** シングルトン *****/
 public class WeaponManager {
+	
+	private static final WeaponManager Instance = new WeaponManager();			// このクラスの唯一のインスタンスを作ります
+	
+	// インスタンスを返す
+	public static WeaponManager GetInstace() {
+		return Instance;
+	}
+	
 	// 変数宣言
 	private ArrayList<Weapon> weaponList;
 
 	// コンストラクタ
-	WeaponManager(){
+	private WeaponManager(){
 		weaponList = new ArrayList<Weapon>();
 	}
 
