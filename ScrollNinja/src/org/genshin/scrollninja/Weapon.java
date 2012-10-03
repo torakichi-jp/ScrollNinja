@@ -1,5 +1,5 @@
 //******************************
-//	Weapon.java 
+//	Weapon.java
 //******************************
 
 package org.genshin.scrollninja;
@@ -26,12 +26,12 @@ public class Weapon {
 		this.m_WeaponLevel = 1;
 		m_WeaponNum = i;
 	}
-	
+
 	//武器座標ゲット
 	public Vector2 GetWeaponPos()
 	{
 		return this.m_Position;
 	}
-	
+
 
 }
