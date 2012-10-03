@@ -4,19 +4,24 @@ package org.genshin.scrollninja;
 // インポート
 //========================================
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
 //========================================
 // クラス宣言
 //========================================
-public class ObJectBase {
-	protected Sprite 	sprite;			// スプライト
-	protected Body 		body;			// 当たり判定用BOX
-	protected Fixture 	sensor;			// センサー
+public class StageObject {
+	private String		name;			// 名前
+	private Vector2		position;		// 座標
 	
 	// コンストラクタ
-	ObJectBase(){
-		sprite = new Sprite();
+	StageObject(String Name) {
+		name		= new String(Name);
+		position	= new Vector2(0,0);
+	}
+	
+	// 参照
+	public StageObject GetStageObject() {
+		return this;
 	}
 }

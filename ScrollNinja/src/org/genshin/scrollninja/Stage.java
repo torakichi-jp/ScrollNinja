@@ -1,50 +1,21 @@
 package org.genshin.scrollninja;
 
-import java.util.ArrayList;
-import java.util.Timer;
-
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class Stage {
-	private ArrayList<EnemyProto> enemies;
-	private ArrayList<ItemProto> items;
-	private Timer time;
-	private String fastTime;
-	private Vector2 size;
-	private ArrayList<Background> backgroundLayers;
-
+	private String name;
+	
 	// コンストラクタ
-	public Stage() {
-		this.enemies = new ArrayList<EnemyProto>();
-		this.items = new ArrayList<ItemProto>();
-		this.time = new Timer();
-		this.fastTime = "";
-		this.size = new Vector2(0, 0);
-		this.backgroundLayers = new ArrayList<Background>();
+	public Stage(String Name){
+		name = new String(Name);						// オブジェクト化と同時にステージ番号の代入
 	}
-
-	// 画面スクロール
-	public void moveBackground() {
-
-	}
-
-	// プレイヤー出現
-	public void spawnPlayer() {
-
-	}
-
-	// 敵出現
-	public void popEnemy() {
-
-	}
-
-	// アイテム出現
-	public void popItem() {
-
-	}
-
-	// タイムカウント
-	public void startTimer() {
-
+	
+	// 参照
+	public Stage GetStage() {
+		return this;
 	}
 }
