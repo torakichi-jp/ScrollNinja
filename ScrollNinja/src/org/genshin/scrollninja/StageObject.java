@@ -10,15 +10,18 @@ import com.badlogic.gdx.physics.box2d.Body;
 //========================================
 // クラス宣言
 //========================================
-public class CStageObject {
-	private int			m_StageObjectNum;		// ステージオブジェクト番号
-	private Sprite		m_Sprite;				// スプライト
-	private Vector2		m_Pos;					// 座標
-	private Body		m_Box;					// 当たり判定用BOX
+public class StageObject {
+	private String		name;			// 名前
+	private Vector2		position;		// 座標
 	
 	// コンストラクタ
-	CStageObject(int i) {
-		m_StageObjectNum	= i;
-		m_Pos				= new Vector2(0,0);
+	StageObject(String Name) {
+		name		= new String(Name);
+		position	= new Vector2(0,0);
+	}
+	
+	// 参照
+	public StageObject GetStageObject() {
+		return this;
 	}
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class Weapon {
 
+	private String	name;		// 名前
 	private Sprite	sprite;		// スプライト
 	private Vector2 	position;		// 武器座標
 	private float 	attackNum;		// 武器威力
@@ -22,7 +23,8 @@ public class Weapon {
 
 
 	//コンストラクタ
-	public Weapon(int i) {
+	public Weapon(String Name) {
+		name			 = new String(Name);
 		this.position    = new Vector2(0,0);
 		this.attackNum   = 0;
 		this.weaponLevel = 0;
