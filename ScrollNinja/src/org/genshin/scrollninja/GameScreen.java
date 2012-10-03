@@ -1,6 +1,7 @@
 package org.genshin.scrollninja;
 
 import java.util.List;
+import java.util.Vector;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -39,6 +41,14 @@ public class GameScreen implements Screen {
 	private Sprite bgSpr;
 	private Sprite charaSpr;
 
+	// アニメーション
+	private TextureRegion region;
+	private TextureRegion[] frame;
+	private TextureRegion curFrame;
+	private Animation dashAnime;
+	private float stateTime;
+	private boolean way = true;
+
 	// シミュレーション
 	private World world;
 	private Box2DDebugRenderer renderer;
@@ -59,6 +69,9 @@ public class GameScreen implements Screen {
 	// サウンド
 	private Sound sound;
 	private Music music;
+
+	// キャラクター
+	private Character character;
 
 	// コンストラクタ
 	public GameScreen(Game game) {
@@ -87,9 +100,9 @@ public class GameScreen implements Screen {
 		// コメントアウトしても動く。効果がいまいちわからない…
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// テクスチャ範囲
-		TextureRegion region = new TextureRegion(texture, 0, 0, 2048, 2048);
+		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 2048, 2048);
 		// 背景スプライトにセット
-		stageSpr = new Sprite(region);
+		stageSpr = new Sprite(tmpRegion);
 		// 中心
 		//stageSpr.setOrigin(stageSpr.getWidth() / 2, stageSpr.getHeight() / 2);
 		// 0,0 だと画面の中央に背景画像の左下が設置されるため調整
@@ -99,9 +112,9 @@ public class GameScreen implements Screen {
 		// 背景（奥）テクスチャ読み込み
 		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		region = new TextureRegion(texture, 0, 0, 1024, 1024);
+		tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
 		// 背景スプライトにセット
-		bgSpr = new Sprite(region);
+		bgSpr = new Sprite(tmpRegion);
 		bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
 		bgSpr.setPosition(-(w / 2), 0);
 
@@ -114,9 +127,26 @@ public class GameScreen implements Screen {
 		charaSpr.setOrigin(charaSpr.getWidth() / 2, charaSpr.getHeight() / 2);
 		// キャラクター作成
 		createChara();
+		/*
+		character = new Character();
+		character.createSprite();
+		character.createBox(world);
+		*/
 
 		// アニメーション
 		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
+		TextureRegion[][] tmp = TextureRegion.split(dash, 64, 64);
+		frame = new TextureRegion[6];
+		int index = 0;
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(index < 6)
+					frame[index++] = tmp[i][j];
+			}
+		}
+		dashAnime = new Animation(0.05f, frame);
+		//charaSpr = new Sprite(curFrame);
+		stateTime = 0f;
 
 		// サウンド
 		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound/foot_step.ogg"));
@@ -182,11 +212,15 @@ public class GameScreen implements Screen {
 	public void update(float delta) {
 		// キー入力
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+			charaSpr.setRegion(curFrame);
+			charaSpr.setScale(1, 1);
 			charaPos = charaBody.getPosition();
 			charaPos.x -= 5;
 			charaBody.setTransform(charaPos, 0);
 		}
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			charaSpr.setRegion(curFrame);
+			charaSpr.setScale(-1, 1);
 			charaPos = charaBody.getPosition();
 			charaPos.x += 5;
 			charaBody.setTransform(charaPos, 0);
@@ -212,6 +246,7 @@ public class GameScreen implements Screen {
 			charaPos.y += 15;
 			charaBody.setTransform(charaPos, 0);
 			jumpHeight += 15;
+			charaSpr.setPosition(charaPos.x - 32, charaPos.y - 32);
 			// 落下
 			if (jumpHeight > 300)
 				jump = 2;
@@ -238,6 +273,8 @@ public class GameScreen implements Screen {
 		// クリア
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		stateTime += Gdx.graphics.getDeltaTime();
+		curFrame = dashAnime.getKeyFrame(stateTime, true);
 
 		// カメラ描画？
 		batch.setProjectionMatrix(camera.combined);
@@ -247,6 +284,7 @@ public class GameScreen implements Screen {
 		// シミュレーション世界より後にやらないとポリゴンの線が見えてしまうので注意
 		bgSpr.draw(batch);
 		stageSpr.draw(batch);
+		//batch.draw(curFrame, 50, 50);
 		charaSpr.draw(batch);
 		batch.end();
 

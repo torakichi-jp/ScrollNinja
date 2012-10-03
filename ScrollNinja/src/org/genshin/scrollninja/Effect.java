@@ -7,20 +7,19 @@ package org.genshin.scrollninja;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
-public class Effect extends Weapon{
-	
+
+public class Effect {
+
 	//変数宣言
-	private String 	Name;		// 名前
-	private int 		EffectTime;	// 効果時間
-	private Sprite 	Sprite;		// スプライト
-	//private Vector2 	m_Position;	// 座標
-	
-	
+	private int 		texture;		// テクスチャー
+	private String 	name;			// 名前
+	private int 		effectTime;	// 効果時間
+
 	//コンストラクタ
 	public Effect()
 	{
-		this.Name       = "";
-		this.EffectTime = 5;
+		this.name       = "";
+		this.effectTime = 0;
 	}
 		
 	
@@ -36,7 +35,7 @@ public class Effect extends Weapon{
 	
 	public int GetEffectTime()
 	{
-		return this.EffectTime;
+		return this.effectTime;
 	}
 	
 	// 
@@ -46,3 +45,4 @@ public class Effect extends Weapon{
 	}
 	
 }
+
