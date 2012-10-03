@@ -27,7 +27,7 @@ public class CEnemyManager {
 		return 1;
 	}
 	
-	// 敵の削除
+	// 敵の削除 
 	public void DeleteEnemy(String Name) {
 		m_EnemyList.remove(m_EnemyList.indexOf(Name));		// 引数で渡されたオブジェクトを削除
 	}

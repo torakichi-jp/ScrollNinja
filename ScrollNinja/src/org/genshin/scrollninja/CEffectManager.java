@@ -14,7 +14,7 @@ public class CEffectManager {
 		m_EffectList = new ArrayList<Effect>();
 	}
 	
-	// 敵の生成
+	// 敵の生成 
 	public void CreateEnemy() {
 		Effect pEffect = new Effect();			// オブジェクトを生成（&初期化）して
 		m_EffectList.add(pEffect);					// リストに追加

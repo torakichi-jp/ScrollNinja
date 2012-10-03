@@ -6,12 +6,11 @@ public class CEnemy extends CCharacterBase {
 	// 変数宣言
 	private String name;
 	
-	// コンストラクタ
+	// コンストラクタ 
 	CEnemy(String Name) {
-		name = new String(Name);
-		hp = 100;
-		attackNum = 0;
-		position = new Vector2(0,0);
-		speed = 0;
+		hp			= 100;
+		attackNum	= 0;
+		position	= new Vector2(0,0);
+		speed		= 0;
 	}
 }
