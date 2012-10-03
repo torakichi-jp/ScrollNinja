@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 //========================================
-// クラス宣言
+// クラス宣言 
 //========================================
 public class CCharacterBase extends ObJectBase {
 	// 定数宣言
@@ -22,12 +22,12 @@ public class CCharacterBase extends ObJectBase {
 	protected Vector2 	position;				// 座標
 	
 	// コンストラクタ
-	public CCharacterBase(){
-		hp = 0;
-		attackNum = 0;
-		speed = 0;
-		textureNum = 0;
-		position = new Vector2(0,0);
+	public CCharacterBase() {
+		hp				= 0;
+		attackNum		= 0;
+		speed			= 0;
+		textureNum		= 0;
+		position		= new Vector2(0,0);
 	}
 	
 }

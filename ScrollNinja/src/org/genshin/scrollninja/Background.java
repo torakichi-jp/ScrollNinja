@@ -3,7 +3,7 @@ package org.genshin.scrollninja;
 import java.awt.Point;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-
+//
 public class Background {
 	private float zIndex;
 	private Point centerPoint;
