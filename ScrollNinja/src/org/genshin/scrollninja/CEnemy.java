@@ -3,12 +3,15 @@ package org.genshin.scrollninja;
 import com.badlogic.gdx.math.Vector2;
 
 public class CEnemy extends CCharacterBase {
+	// 変数宣言
+	private String name;
+	
 	// コンストラクタ
-	CEnemy(){
-		m_Hp = 100;
-		m_AttackNum = 0;
-		m_Position = new Vector2(0,0);
-		m_Speed = 0;
-		m_TextureNum = 0;
+	CEnemy(String Name) {
+		name = new String(Name);
+		hp = 100;
+		attackNum = 0;
+		position = new Vector2(0,0);
+		speed = 0;
 	}
 }
