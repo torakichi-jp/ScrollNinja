@@ -150,7 +150,7 @@ public class GameScreen implements Screen {
 					frame[index++] = tmp[i][j];
 			}
 		}
-		dashAnime = new Animation(0.05f, frame);
+		dashAnime = new Animation(0.1f, frame);
 		//charaSpr = new Sprite(curFrame);
 		stateTime = 0f;
 
@@ -295,13 +295,13 @@ public class GameScreen implements Screen {
 			charaBody.setTransform(charaPos, 0);
 		}
 
-		// 矢印キーを押していない時は固定
-		//if (!Gdx.input.isKeyPressed(Keys.LEFT))
-			//charaBody.setFixedRotation(false);
-		//else if (!Gdx.input.isKeyPressed(Keys.RIGHT))
-			//charaBody.setFixedRotation(true);
-		//else
-			//charaBody.setFixedRotation(true);
+		// 矢印キーを押していない時はシミュレーションしない
+		if (!(Gdx.input.isKeyPressed(Keys.LEFT)) && !(Gdx.input.isKeyPressed(Keys.RIGHT))) {
+
+		} else {
+
+		}
+
 	}
 
 	// 描画関係
