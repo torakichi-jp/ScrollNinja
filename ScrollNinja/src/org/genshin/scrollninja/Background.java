@@ -14,22 +14,4 @@ public class Background extends ObJectBase{
 		zIndex = 0.0f;
 	}
 	
-	// 背景スクロール
-	public void BackgroundScroll() {
-		
-	}
-	
-	// タイムカウント
-	public void TimeCount() {
-		
-	}
-	
-	// インターフェース(仮)
-	public void Interface() {
-		
-	}
-	
-	// プレイヤーキャラクターポップ
-
-	
 }
