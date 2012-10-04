@@ -17,7 +17,7 @@ public class Stage {
 	private Vector2 size;
 	private ArrayList<Background>backgroundLayers;
 	private Sprite sprite;
-	//private ArrayList<Item> popItems;
+	private ArrayList<Item> popItems;
 	private ArrayList<Enemy> popEnemys;
 	private ArrayList<ObJectBase> object;
 	
