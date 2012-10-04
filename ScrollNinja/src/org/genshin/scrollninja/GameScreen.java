@@ -296,12 +296,12 @@ public class GameScreen implements Screen {
 		}
 
 		// 矢印キーを押していない時は固定
-		if (!Gdx.input.isKeyPressed(Keys.LEFT))
-			charaBody.setFixedRotation(false);
+		//if (!Gdx.input.isKeyPressed(Keys.LEFT))
+			//charaBody.setFixedRotation(false);
 		//else if (!Gdx.input.isKeyPressed(Keys.RIGHT))
 			//charaBody.setFixedRotation(true);
-		else
-			charaBody.setFixedRotation(true);
+		//else
+			//charaBody.setFixedRotation(true);
 	}
 
 	// 描画関係
@@ -318,9 +318,12 @@ public class GameScreen implements Screen {
 		// スプライト描画？
 		// 奥に表示されるものから先に描画
 		// シミュレーション世界より後にやらないとポリゴンの線が見えてしまうので注意
+		// 背景描画
 		bgSpr.draw(batch);
+		// ステージ描画
 		stageSpr.draw(batch);
 		//batch.draw(curFrame, 50, 50);
+		// キャラクタ描画
 		charaSpr.draw(batch);
 		stoneSpr.draw(batch);
 		batch.end();
@@ -360,7 +363,8 @@ public class GameScreen implements Screen {
 
 		// 遠景をカメラの位置に合わせて移動
 		bgSpr.setPosition
-			(cameraPos.x - 400 + (cameraPos.x * -0.15f), -512 + (cameraPos.y * -0.15f));
+			(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
+
 
 	}
 
