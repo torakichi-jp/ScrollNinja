@@ -10,14 +10,19 @@ public class Item {
 		
 	}
 	
-	// アイテムゲット
-	public void GetItem() {
-		
-	}
-	
 	// アイテム効果
 	public void ItemEffect() {
+	
+		// アイテムをプレイヤーに反映
+	}
+	// アイテムゲット
+	public void GetItem(boolean enemyDead) {
 		
+		// 敵が死んだらアイテムゲット
+		if(enemyDead) {
+			
+			ItemEffect();		//効果発動
+		}
 	}
 	
 }
