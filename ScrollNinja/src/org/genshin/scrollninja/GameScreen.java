@@ -303,7 +303,7 @@ public class GameScreen implements Screen {
 		// キャラクターの画像（スプライト）をcharaBodyの位置に描画する
 		charaSpr.setPosition(charaPos.x - 32, charaPos.y - 32);
 		// 回転しないように第二引数は0で固定
-		charaBody.setTransform(charaPos, 0);
+		//charaBody.setTransform(charaPos, 0);
 
 		// カメラ位置更新
 		// キャラクターの位置更新より後ろにしないと描画がおかしくなるので注意
