@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
+
+
 public class Weapon {
 
 	private String	name;		// 名前
@@ -20,7 +22,9 @@ public class Weapon {
 	private int 		weaponLevel;	// 武器レベル
 	private Boolean 	use;			// 使用フラグ
 	private Body		body;			// ボディ
-
+	
+	
+	//private static final int AADD = 10;
 
 	//コンストラクタ
 	public Weapon(String Name) {
@@ -34,25 +38,44 @@ public class Weapon {
 
 	//武器座標ゲット
 	public Vector2 GetWeaponPos() {
-		return this.position;
+		return position;
 	}
 
 	//武器威力ゲット
 	public float GetAttackNum() {
-		return this.attackNum;
+		return attackNum;
 	}
 
 
 	//武器レベルゲット
 	public int GetWeaponLv() {
-		return this.GetWeaponLv();
+		return GetWeaponLv();
+	}
+	
+	// フラグゲット
+	public boolean GetUseFlag() {
+		return use;
+	}
+	
+	// 武器モーション
+	public void WeaponMove() {
+		
+		//------------------
+		// 武器動作
+		//------------------
+	}
+	
+	// 武器のレベルアップ(仮)
+	public int WeaponLvUp(int chakra) {	
+		
+		return this.weaponLevel;
+	}
+	
+	// 武器のボックスあたり判定(仮)
+	public int HitCheck() {
+		return -1;
 	}
 
+	
 
 }
-
-
-
-
-
-
