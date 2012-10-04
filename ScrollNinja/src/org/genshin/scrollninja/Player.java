@@ -4,16 +4,23 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
-
+// 制作メモ
 // 10/2 制作開始
 // 10/3 変数と空の関数を実装
 // 		ジャンプと移動だけ先に明日実装！
+// 10/4 ジャンプと移動は実装完了だけど実行してない
+//		明日アニメーション関連進行。今週までに表示までいきたい
 
 // *メモ*
 // 攻撃はダッシュしながら攻撃可能（足は止まらない）
+// 右クリック押しっぱなしで伸び続ける
+// 壁とかに付いた後も押しっぱでそっちに移動
+// 壁とかに付いた状態で離すとブラーン
+// もう一回右クリックで離す
 
 public class Player extends CharacterBase {
 	// 定数宣言
@@ -23,7 +30,7 @@ public class Player extends CharacterBase {
 	private static final int RIGHT			= -1;
 	private static final int LEFT			=  1;
 	private static final int STAND			=  0;
-	private static final int WALK			=  1;
+	private static final int DASH			=  1;
 	private static final int JUMP			=  2;
 	private static final int ATTACK			=  3;
 	
@@ -33,15 +40,19 @@ public class Player extends CharacterBase {
 	};*/
 	
 	// 変数宣言
-	private int		charge;			// チャージゲージ
-	private int		money;			// お金
-	private int		direction;		// 向いてる方向
-	private int		currentState;	// 現在の状態
-	private int		jumpCount;		// ジャンプカウント
-	private float	velocity;		// 移動量
-	private float	fall;			// 落下量
-	private Weapon	weapon;			// 武器のポインタ
-	private boolean jump;			// ジャンプフラグ
+	private int				charge;					// チャージゲージ
+	private int				money;					// お金
+	private int				direction;				// 向いてる方向
+	private int				currentState;			// 現在の状態
+	private int				jumpCount;				// ジャンプカウント
+	private float			velocity;				// 移動量
+	private float			fall;					// 落下量
+	private Weapon			weapon;					// 武器のポインタ
+	private boolean 		jump;					// ジャンプフラグ
+	private Animation 		standAnimation;			// 立ちアニメーション
+	private Animation 		dashAnimation;			// ダッシュアニメーション
+	private Animation 		jumpAnimation;			// ジャンプアニメーション
+	private Animation 		attackAnimation;		// 攻撃アニメーション
 	
 	// コンストラクタ
 	public Player() {
@@ -107,7 +118,7 @@ public class Player extends CharacterBase {
 			position.y -= FIRSTSPEED;
 			
 			// ジャンプ終わり
-			if( jumpCount < 0) {
+			if( jumpCount > 20) {
 				jumpCount = 0;
 				jump = false;
 			}
@@ -119,16 +130,10 @@ public class Player extends CharacterBase {
 	// 重力計算処理。常にやってます
 	//************************************************************
 	private void Gravity(World world) {
+		// 空中にいる時は落下移動
 		if(!GetGroundJudge(world)) {
 			fall = jumpCount *= GRAVITY;
-			
-			// 移動先が地面でない場合は移動
-//			if( position.y + fall != 地面 ) {
-				position.y += fall;
-//			}
-			// 地面にめり込んでた場合は位置修正
-//			else {
-//			}
+			position.y += fall;
 		}
 	}
 	
@@ -140,26 +145,20 @@ public class Player extends CharacterBase {
 	private void Move(World world) {
 		// 右が押された
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			direction = RIGHT;			// プレイヤーの向きを右に。
+			direction = RIGHT;				// プレイヤーの向きを変更。
+			position.x += direction;		// プレイヤーの移動
 			
-//			if( /*壁との当たり判定*/) {
-				position.x += direction;		// プレイヤーの移動
-//			}
-			
-			if( GetGroundJudge(world) ) {		// もし地面なら歩くモーションにするので現在の状態を歩きに。
-				currentState = WALK;
+			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
+				currentState = DASH;
 			}
 		}
 		// 左が押された
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			direction = LEFT;			// プレイヤーの向きを左に。
-			
-//			if( /*壁との当たり判定*/) {
-				position.x += direction;		// プレイヤーの移動	
-//			}
+			direction = LEFT;
+			position.x += direction;
 			
 			if( GetGroundJudge(world) ) {
-				currentState = WALK;
+				currentState = DASH;
 			}
 		}
 	}
@@ -173,8 +172,21 @@ public class Player extends CharacterBase {
 	// カギ縄
 	private void Kaginawa(){}
 	
-	// アニメーション
-	private void animation(){}
+	//************************************************************
+	// animation
+	// 現在の状態を参照して画像を更新
+	//************************************************************
+	private void animation() {
+		switch(currentState) {
+		case STAND:		// 立ち
+			
+			break;
+		case DASH:		// 走り
+			break;
+		case JUMP:		// ジャンプ
+			break;
+		}
+	}
 	
 	// 武器変更
 	private void changeWeapon() {
@@ -182,6 +194,7 @@ public class Player extends CharacterBase {
 	
 	//************************************************************
 	// GetGroundJudge
+	// 戻り値： true:地面接地		false:空中
 	// 接触判定。長いのでここで関数化
 	//************************************************************
 	private boolean GetGroundJudge(World world) {
@@ -190,8 +203,9 @@ public class Player extends CharacterBase {
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
 			
-			// プレイヤーと地面との接触判定チェック
+			// 地面に当たったよ
 			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
+				jump = false;
 				return true;
 			}
 		}
