@@ -19,26 +19,31 @@ public class ScrollNinja extends Game {
 		/**
 			事前に初期設定が必要ならここで
 		*/
-		
-		
 		/*
 		 * 背景読み込み
 		 * */
 		
-		
+		//画面サイズ取得
 		float w = Gdx.graphics.getWidth();
+		
 		// 背景（奥）テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/test_matsu.png"));
+		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
 		// 背景スプライトにセット
 		bgSpr = new Sprite(tmpRegion);
-		//bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
-		bgSpr.setPosition(-400, -512);
+		bgSpr.setPosition(-(w / 2), -512);
+		
+		// 背景(手前)テクスチャ読み込み
+		texture = new Texture(Gdx.files.internal("data/stage_near_test.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		tmpRegion = new TextureRegion(texture, 0, 0, 2048, 2048);
+		// 背景スプライトにセット
+		stageSpr = new Sprite(tmpRegion);
+		stageSpr.setPosition(-(w / 2), -1024);
 		
 		// メインメニュー読み込み
 		setScreen(new MainMenu(this));
-		
 	}
 	
 

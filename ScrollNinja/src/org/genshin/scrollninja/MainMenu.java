@@ -131,6 +131,7 @@ public class MainMenu implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		ScrollNinja.bgSpr.draw(batch);
+		ScrollNinja.stageSpr.draw(batch);
 		cursor.draw(batch);
 		mode_GameRun.draw(batch);
 		mode_Settings.draw(batch);

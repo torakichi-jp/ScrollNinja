@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite stageSpr;
-	private Sprite bgSpr;
+	//private Sprite bgSpr;
 	private Sprite charaSpr;
 	private Sprite stoneSpr;
 
@@ -63,6 +63,8 @@ public class GameScreen implements Screen {
 	private Vector2 charaPos = new Vector2();
 	private Vector2 groundPos = new Vector2();
 	private Vector2 cameraPos = new Vector2();
+	
+	
 
 	// ジャンプ処理用
 	private Boolean isGround = false;
@@ -97,7 +99,7 @@ public class GameScreen implements Screen {
 		renderer = new Box2DDebugRenderer();
 		// フィールド作成
 		createWorld();
-
+/*
 		// 背景(手前)テクスチャ読み込み
 		texture = new Texture(Gdx.files.internal("data/stage_near_test.png"));
 		// コメントアウトしても動く。効果がいまいちわからない…
@@ -111,17 +113,16 @@ public class GameScreen implements Screen {
 		// 0,0 だと画面の中央に背景画像の左下が設置されるため調整
 		// 画面下の方が空白なので高さ位置はどう出したものかと…
 		stageSpr.setPosition(-(w / 2), -1024);
-
+*/
 		/*// 背景（奥）テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/stage_far_tast.png"));
+		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
 		// 背景スプライトにセット
 		ScrollNinja.bgSpr = new Sprite(tmpRegion);
 		ScrollNinja.bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
 		ScrollNinja.bgSpr.setPosition(-(w / 2), -1024);
-		
-*/
+		*/
 		
 		// キャラクターテクスチャ読み込み
 		texture = new Texture(Gdx.files.internal("data/chara.png"));
@@ -134,7 +135,7 @@ public class GameScreen implements Screen {
 		// 墓石
 		texture = new Texture(Gdx.files.internal("data/obj_gravestone.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		tmpRegion = new TextureRegion(texture, 0, 0, 256, 256);
+		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 256, 256);
 		stoneSpr = new Sprite(tmpRegion);
 		stoneSpr.setPosition(0, 0);
 
@@ -282,11 +283,11 @@ public class GameScreen implements Screen {
 				jump = 2;
 			// 画面外に行かないよう制限
 			charaPos = charaBody.getPosition();
-			if (charaPos.y > 1024) {
+			/*if (charaPos.y > 1024) {
 				charaPos.x = charaBody.getPosition().x;
 				charaPos.y = 1024;
 				charaBody.setTransform(charaPos, 0);
-			}
+			}*/
 		}
 
 		// 重力が思ったようにきかないのでとりあえず…
@@ -296,6 +297,8 @@ public class GameScreen implements Screen {
 			charaPos.y -= 5;
 			charaBody.setTransform(charaPos, 0);
 		}
+		
+		
 
 		// 矢印キーを押していない時はシミュレーションしない
 		if (!(Gdx.input.isKeyPressed(Keys.LEFT)) && !(Gdx.input.isKeyPressed(Keys.RIGHT))) {
@@ -303,7 +306,6 @@ public class GameScreen implements Screen {
 		} else {
 
 		}
-
 	}
 
 	// 描画関係
@@ -322,8 +324,10 @@ public class GameScreen implements Screen {
 		// シミュレーション世界より後にやらないとポリゴンの線が見えてしまうので注意
 		// 背景描画
 		ScrollNinja.bgSpr.draw(batch);
+		ScrollNinja.stageSpr.draw(batch);
+		
 		// ステージ描画
-		stageSpr.draw(batch);
+		//stageSpr.draw(batch);
 		//batch.draw(curFrame, 50, 50);
 		// キャラクタ描画
 		charaSpr.draw(batch);
@@ -348,26 +352,27 @@ public class GameScreen implements Screen {
 		// 回転しないように第二引数は0で固定
 		//charaBody.setTransform(charaPos, 0);
 
+		//-----------------------------------------------
+		// 10/5 カメラ境界制限解除
+		//-----------------------------------------------
 		// カメラ位置更新
 		// キャラクターの位置更新より後ろにしないと描画がおかしくなるので注意
-		cameraPos = charaPos;
+		//cameraPos = charaPos;
 		// 端の設定
-		if (cameraPos.x < 0)
+		/*if (cameraPos.x < 0)
 			cameraPos.x = 0;
 		if (cameraPos.x > 1248)		// 2048-画面の横幅
 			cameraPos.x = 1248;
 		if (cameraPos.y < 0)
 			cameraPos.y = 0;
 		if (cameraPos.y > 724)		// 1024-画面の縦幅/2
-			cameraPos.y = 724;
-		camera.position.set(cameraPos.x, cameraPos.y, 0);
-		camera.update();
-
+			cameraPos.y = 724;*/
+		//camera.position.set(cameraPos.x, cameraPos.y, 0);
+		//camera.update();
+		
 		// 遠景をカメラの位置に合わせて移動
-		ScrollNinja.bgSpr.setPosition
-			(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
-
-
+		//ScrollNinja.bgSpr.setPosition
+			//(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 	}
 
 	// プレイヤーが地面にいるかいないか

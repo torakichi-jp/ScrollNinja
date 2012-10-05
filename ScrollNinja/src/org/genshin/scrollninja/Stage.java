@@ -6,6 +6,7 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -21,7 +22,12 @@ public class Stage {
 	private Sprite sprite;
 	private ArrayList<Item> popItems;
 	private ArrayList<Enemy> popEnemys;
-	private ArrayList<ObJectBase> object;;
+	private ArrayList<ObJectBase> object;
+	private Vector2 cameraPos = new Vector2();
+	private OrthographicCamera camera;
+	
+	
+	
 	
 	// コンストラクタ
 	public Stage(String Name){
@@ -44,12 +50,18 @@ public class Stage {
 	}
 	
 	// 背景移動
-	public int moveBackground(int movement) {
+	public void moveBackground() {
 		/*
 		 * camera move
 		 * */
 		
-		return movement;
+		camera.position.set(cameraPos.x, cameraPos.y, 0);
+		camera.update();
+		
+
+		// 遠景をカメラの位置に合わせて移動
+		ScrollNinja.bgSpr.setPosition
+			(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 	}
 	
 	public Player spawnPlayer(Player player) {
