@@ -1,3 +1,6 @@
+*.swp
+bin/*
+*.orig
 .DS_Store
 /ScrollNinja/bin/com/gdx.gwt.xml
 /ScrollNinja-html/.gwt/.gwt-log
