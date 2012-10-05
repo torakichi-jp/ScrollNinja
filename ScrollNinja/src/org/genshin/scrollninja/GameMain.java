@@ -24,7 +24,9 @@ public class GameMain implements Screen{
 	private StageObjectManager		SOM;				// ステージオブジェクトマネージャ
 	private Background				BG;					// 背景
 	private Player					PLAYER;				// プレイヤー
-	
+	private Stage stage;
+
+
 	// コンストラクタ
 	public GameMain(Game game) {
 		ScrollNinjya		= game;
@@ -35,21 +37,21 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		world				= new World(new Vector2(0, -100.0f), true);
 		renderer			= new Box2DDebugRenderer();
-		
+
+
 		CreateWorld();
 		CreateCharacter();
 		CreateStageObject();
 	}
-	
+
 	//************************************************************
 	// Update
 	// 更新処理
 	//************************************************************
 	public void Update() {
 		PLAYER.Update(world);
-		
 	}
-	
+
 	//************************************************************
 	// Draw
 	// 描画処理
@@ -59,30 +61,30 @@ public class GameMain implements Screen{
 		PLAYER.Draw(spriteBatch);
 		spriteBatch.end();
 	}
-	
+
 	//************************************************************
 	// CreateWorld
 	// フィールドの作成
 	//************************************************************
 	private void CreateWorld() {
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
-		
+
 		// ボディタイプ設定
 		BodyDef bd	= new BodyDef();
 		bd.type		= BodyType.StaticBody;		// 動かない物体
 		bd.position.set(-(Gdx.graphics.getWidth() / 2), -1024);
-		
+
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 1000;		// 密度
 		fd.friction		= 100.0f;	// 摩擦
 		fd.restitution	= 0;		// 反発係数
-		
+
 		// ボディ作成
 		BG.SetBody(world.createBody(bd));
 		loader.attachFixture( BG.GetBody(), "bgTest", fd, 2048);
 	}
-	
+
 	//************************************************************
 	// CreateCharacter
 	// プレイヤーの作成
@@ -91,26 +93,26 @@ public class GameMain implements Screen{
 		BodyDef def	= new BodyDef();
 		def.type	= BodyType.DynamicBody;		// 動く物体
 		Player.GetInstace().SetBody(world.createBody(def));
-		
+
 		// 当たり判定の作成
 		PolygonShape poly		= new PolygonShape();
 		poly.setAsBox(16, 24);
-		
+
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 50;
 		fd.friction		= 100.0f;
 		fd.restitution	= 0;
 		fd.shape		= poly;
-		
-		// 
+
+		//
 		PLAYER.GetBody().createFixture(fd);
 		PLAYER.SetFixture(PLAYER.GetBody().createFixture(poly, 0));
-		poly.dispose();	
+		poly.dispose();
 		PLAYER.GetBody().setBullet(true);			// すり抜け防止
 		PLAYER.GetBody().setTransform(0, 300, 0);	// 初期位置
 	}
-	
+
 	//************************************************************
 	// CreateStageObject
 	// ステージオブジェクトの作成
@@ -137,87 +139,87 @@ public class GameMain implements Screen{
 		// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
 		loader.attachFixture(SOM.GetStageObject("岩").GetBody(), "gravestone", fd, 256);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	@Override
 	public void render(float delta) {
 		// TODO 自動生成されたメソッド・スタブ
 		Update();
 		Draw();
-		
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void show() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 }

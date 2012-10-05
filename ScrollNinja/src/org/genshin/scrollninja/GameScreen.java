@@ -64,7 +64,8 @@ public class GameScreen implements Screen {
 	private Vector2 groundPos = new Vector2();
 	private Vector2 cameraPos = new Vector2();
 	
-	
+	/*stage 仮*/
+	public Stage stage;
 
 	// ジャンプ処理用
 	private Boolean isGround = false;
@@ -77,6 +78,11 @@ public class GameScreen implements Screen {
 
 	// キャラクター
 	private Character character;
+	
+	
+	public Vector2 GetChrPos() {
+		return charaPos;
+	}
 
 	// コンストラクタ
 	public GameScreen(Game game) {
@@ -299,13 +305,14 @@ public class GameScreen implements Screen {
 		}
 		
 		
-
+		
 		// 矢印キーを押していない時はシミュレーションしない
 		if (!(Gdx.input.isKeyPressed(Keys.LEFT)) && !(Gdx.input.isKeyPressed(Keys.RIGHT))) {
 
 		} else {
 
 		}
+		
 	}
 
 	// 描画関係
@@ -373,6 +380,10 @@ public class GameScreen implements Screen {
 		// 遠景をカメラの位置に合わせて移動
 		//ScrollNinja.bgSpr.setPosition
 			//(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
+		
+
+		//stage.moveBackground();
+		
 	}
 
 	// プレイヤーが地面にいるかいないか

@@ -92,7 +92,7 @@ public class MainMenu implements Screen {
 
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (position == 0) {
-				scrollNinja.setScreen(new GameMain(scrollNinja));
+				scrollNinja.setScreen(new GameScreen(scrollNinja));
 				return;
 			}
 			if (position == 1) {
@@ -145,7 +145,7 @@ public class MainMenu implements Screen {
 	@Override
 	public void render(float delta) {
 		update(delta);
-		draw(delta);		
+		draw(delta);
 	}
 
 	@Override
