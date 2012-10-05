@@ -31,14 +31,8 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 // クラス宣言	
 //========================================
-//***** シングルトン *****/
 public class Player extends CharacterBase {
-	private static final Player Instance = new Player();			// このクラスの唯一のインスタンスを作ります
-	
-	// インスタンスを返す
-	public static Player GetInstace() {
-		return Instance;
-	}
+
 	
 	// 定数宣言
 	private static final float FIRSTSPEED	=  5.0f;		// 初速度
@@ -78,7 +72,7 @@ public class Player extends CharacterBase {
 	public Vector2 GetPosition() { return position; }
 	
 	// コンストラクタ
-	private Player() {
+	public Player() {
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/char.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);

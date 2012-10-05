@@ -38,13 +38,7 @@ public class Background extends ObJectBase{
 		//stageSpr.setOrigin(stageSpr.getWidth() / 2, stageSpr.getHeight() / 2);
 		// 0,0 だと画面の中央に背景画像の左下が設置されるため調整
 		// 画面下の方が空白なので高さ位置はどう出したものかと…
-//		sprite.setPosition(-(w / 2), -1024);
-
-		// 背景（奥）テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
-
+		sprite.setPosition(-(Gdx.graphics.getWidth() / 2), -1024);
 	}
 
 }

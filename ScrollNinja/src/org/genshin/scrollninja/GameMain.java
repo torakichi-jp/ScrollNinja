@@ -23,7 +23,7 @@ public class GameMain implements Screen{
 	private Box2DDebugRenderer		renderer;			//
 	private StageObjectManager		SOM;				// ステージオブジェクトマネージャ
 	private Background				BG;					// 背景
-	private Player					PLAYER;				// プレイヤー
+	private Player					player;				// プレイヤー
 	private Stage stage;
 
 
@@ -32,7 +32,7 @@ public class GameMain implements Screen{
 		ScrollNinjya		= game;
 		SOM					= StageObjectManager.GetInstace();
 		BG					= Background.GetInstace();
-		PLAYER				= Player.GetInstace();
+		player				= new Player();
 		camera				= new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		spriteBatch 		= new SpriteBatch();
 		world				= new World(new Vector2(0, -100.0f), true);
@@ -42,6 +42,7 @@ public class GameMain implements Screen{
 		CreateWorld();
 		CreateCharacter();
 		CreateStageObject();
+		BG.LoadTexture();
 	}
 
 	//************************************************************
@@ -49,7 +50,7 @@ public class GameMain implements Screen{
 	// 更新処理
 	//************************************************************
 	public void Update() {
-		PLAYER.Update(world);
+		player.Update(world);
 	}
 
 	//************************************************************
@@ -57,9 +58,14 @@ public class GameMain implements Screen{
 	// 描画処理
 	//************************************************************
 	public void Draw() {
-		spriteBatch.begin();
-		PLAYER.Draw(spriteBatch);
-		spriteBatch.end();
+		spriteBatch.setProjectionMatrix(camera.combined);		// プロジェクション行列のセット
+		spriteBatch.begin();									// 描画開始
+		player.Draw(spriteBatch);
+		spriteBatch.end();										// 描画終了
+		
+		renderer.render(world, camera.combined);
+		world.step(Gdx.graphics.getDeltaTime(), 20, 20);
+		player.GetBody().setAwake(true);
 	}
 
 	//************************************************************
@@ -92,7 +98,7 @@ public class GameMain implements Screen{
 	private void CreateCharacter() {
 		BodyDef def	= new BodyDef();
 		def.type	= BodyType.DynamicBody;		// 動く物体
-		Player.GetInstace().SetBody(world.createBody(def));
+		player.SetBody(world.createBody(def));
 
 		// 当たり判定の作成
 		PolygonShape poly		= new PolygonShape();
@@ -106,11 +112,11 @@ public class GameMain implements Screen{
 		fd.shape		= poly;
 
 		//
-		PLAYER.GetBody().createFixture(fd);
-		PLAYER.SetFixture(PLAYER.GetBody().createFixture(poly, 0));
+		player.GetBody().createFixture(fd);
+		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		poly.dispose();
-		PLAYER.GetBody().setBullet(true);			// すり抜け防止
-		PLAYER.GetBody().setTransform(0, 300, 0);	// 初期位置
+		player.GetBody().setBullet(true);			// すり抜け防止
+		player.GetBody().setTransform(0, 300, 0);	// 初期位置
 	}
 
 	//************************************************************
