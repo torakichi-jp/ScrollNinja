@@ -19,4 +19,20 @@ public class ObJectBase {
 	ObJectBase(){
 		sprite = new Sprite();
 	}
+	
+	//************************************************************
+	// Get
+	// ゲッターまとめ
+	//************************************************************
+	protected Sprite GetSprite() { return sprite; }
+	protected Body GetBody() { return body; }
+	protected Fixture GetSensor() { return sensor; }
+	
+	//************************************************************
+	// Set
+	// セッターまとめ
+	//************************************************************
+	protected void SetSprite( Sprite sp) { sprite = sp; }
+	protected void SetBody(Body bd) { body = bd; }
+	protected void SetFixture(Fixture ss){ sensor = ss; }
 }

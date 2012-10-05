@@ -38,7 +38,7 @@ public class StageObjectManager {
 	}
 	
 	// ステージオブジェクトの削除
-	public int DeleteStage(String Name) {
+	public int DeleteStageObject(String Name) {
 		if( !stageObjectList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -48,7 +48,7 @@ public class StageObjectManager {
 	}
 	
 	// 参照
-	public StageObject GetStage(String Name) {
+	public StageObject GetStageObject(String Name) {
 		return stageObjectList.get(stageObjectList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
 	}
 }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 //========================================
 // クラス宣言
 //========================================
-public class StageObject {
+public class StageObject extends ObJectBase {
 	private String		name;			// 名前
 	private Vector2		position;		// 座標
 	

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -69,6 +70,12 @@ public class Player extends CharacterBase {
 	private Animation 		dashAnimation;			// ダッシュアニメーション
 	private Animation 		jumpAnimation;			// ジャンプアニメーション
 	private Animation 		attackAnimation;		// 攻撃アニメーション
+	
+	//************************************************************
+	// Get
+	// ゲッターまとめ
+	//************************************************************
+	public Vector2 GetPosition() { return position; }
 	
 	// コンストラクタ
 	private Player() {
