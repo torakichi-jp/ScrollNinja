@@ -4,7 +4,12 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -22,7 +27,18 @@ import com.badlogic.gdx.physics.box2d.World;
 // 壁とかに付いた状態で離すとブラーン
 // もう一回右クリックで離す
 
+//========================================
+// クラス宣言	
+//========================================
+//***** シングルトン *****/
 public class Player extends CharacterBase {
+	private static final Player Instance = new Player();			// このクラスの唯一のインスタンスを作ります
+	
+	// インスタンスを返す
+	public static Player GetInstace() {
+		return Instance;
+	}
+	
 	// 定数宣言
 	private static final float FIRSTSPEED	=  5.0f;		// 初速度
 	private static final float GRAVITY		= -0.98f;		// 重力
@@ -55,7 +71,16 @@ public class Player extends CharacterBase {
 	private Animation 		attackAnimation;		// 攻撃アニメーション
 	
 	// コンストラクタ
-	public Player() {
+	private Player() {
+		// テクスチャの読み込み
+		Texture texture = new Texture(Gdx.files.internal("data/char.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
+		
+		// スプライトに反映
+		sprite = new Sprite(region);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		
 		charge		 = 0;
 		money		 = 0;
 		direction	 = 1;
@@ -66,26 +91,27 @@ public class Player extends CharacterBase {
 	}
 	
 	//************************************************************
-	// Init
-	// 初期化処理。
-	//************************************************************
-	
-	//************************************************************
 	// Update
 	// 更新処理はここにまとめる
 	//************************************************************
-	public void Update(World world) {
+	public void Update(World world) {		
+		position = body.getPosition();
+		
 		Stand(world);		// 立ち処理
 		Jump(world);		// ジャンプ処理
 		Move(world);		// 移動処理
 		Gravity(world);		// 重力計算処理
+		
+		body.setTransform(position, body.getAngle());
 	}
 	
 	//************************************************************
 	// Draw
 	// 描画処理はここでまとめる
 	//************************************************************
-	public void Draw() {}
+	public void Draw(SpriteBatch batch) {
+		sprite.draw(batch);
+	}
 	
 	//************************************************************
 	// Stand

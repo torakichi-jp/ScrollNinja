@@ -112,15 +112,17 @@ public class GameScreen implements Screen {
 		// 画面下の方が空白なので高さ位置はどう出したものかと…
 		stageSpr.setPosition(-(w / 2), -1024);
 
-		// 背景（奥）テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
+		/*// 背景（奥）テクスチャ読み込み
+		texture = new Texture(Gdx.files.internal("data/stage_far_tast.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
 		// 背景スプライトにセット
-		bgSpr = new Sprite(tmpRegion);
-		bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
-		bgSpr.setPosition(-(w / 2), 0);
-
+		ScrollNinja.bgSpr = new Sprite(tmpRegion);
+		ScrollNinja.bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
+		ScrollNinja.bgSpr.setPosition(-(w / 2), -1024);
+		
+*/
+		
 		// キャラクターテクスチャ読み込み
 		texture = new Texture(Gdx.files.internal("data/chara.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -319,7 +321,7 @@ public class GameScreen implements Screen {
 		// 奥に表示されるものから先に描画
 		// シミュレーション世界より後にやらないとポリゴンの線が見えてしまうので注意
 		// 背景描画
-		bgSpr.draw(batch);
+		ScrollNinja.bgSpr.draw(batch);
 		// ステージ描画
 		stageSpr.draw(batch);
 		//batch.draw(curFrame, 50, 50);
@@ -362,7 +364,7 @@ public class GameScreen implements Screen {
 		camera.update();
 
 		// 遠景をカメラの位置に合わせて移動
-		bgSpr.setPosition
+		ScrollNinja.bgSpr.setPosition
 			(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 
 
