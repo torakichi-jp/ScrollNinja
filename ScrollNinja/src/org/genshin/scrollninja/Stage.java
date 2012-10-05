@@ -6,6 +6,7 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,13 +14,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Stage {
+	
 	private String name;
 	private Vector2 size;
 	private ArrayList<Background>backgroundLayers;
 	private Sprite sprite;
 	private ArrayList<Item> popItems;
 	private ArrayList<Enemy> popEnemys;
-	private ArrayList<ObJectBase> object;
+	private ArrayList<ObJectBase> object;;
 	
 	// コンストラクタ
 	public Stage(String Name){

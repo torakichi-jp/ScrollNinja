@@ -130,6 +130,7 @@ public class MainMenu implements Screen {
 		// スプライト描画
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		ScrollNinja.bgSpr.draw(batch);
 		cursor.draw(batch);
 		mode_GameRun.draw(batch);
 		mode_Settings.draw(batch);
@@ -143,7 +144,7 @@ public class MainMenu implements Screen {
 	@Override
 	public void render(float delta) {
 		update(delta);
-		draw(delta);
+		draw(delta);		
 	}
 
 	@Override
