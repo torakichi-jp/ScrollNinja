@@ -28,12 +28,6 @@ public class Stage {
 	
 	private GameScreen zz;
 	
-	
-	
-
-	
-	
-	
 	// コンストラクタ
 	public Stage(String Name){
 		name = new String(Name);						// オブジェクト化と同時にステージ番号の代入
@@ -60,10 +54,11 @@ public class Stage {
 		 * camera move
 		 * */
 		
+		cameraPos = GameScreen.charaBody.getPosition();
 		
 		//cameraPos = asd.GetPosition();
 
-		cameraPos = zz.GetChrPos();
+		//cameraPos = zz.GetChrPos();
 	
 		
 		camera.position.set(cameraPos.x, cameraPos.y, 0);
