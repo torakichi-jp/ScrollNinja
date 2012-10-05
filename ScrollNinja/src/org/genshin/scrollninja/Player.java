@@ -74,20 +74,20 @@ public class Player extends CharacterBase {
 	// コンストラクタ
 	public Player() {
 		// テクスチャの読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/char.png"));
+/*		Texture texture = new Texture(Gdx.files.internal("data/char.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 		
 		// スプライトに反映
 		sprite = new Sprite(region);
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);*/
 		
 		charge		 = 0;
 		money		 = 0;
 		direction	 = 1;
 		currentState = STAND;
 		velocity	 = 0;
-		weapon		 = WeaponManager.GetInstace().GetWeapon("");
+//		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 	}
 	

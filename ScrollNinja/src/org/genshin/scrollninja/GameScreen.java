@@ -382,7 +382,7 @@ public class GameScreen implements Screen {
 			//(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 		
 
-		stage.moveBackground();
+//		stage.moveBackground();
 		
 	}
 

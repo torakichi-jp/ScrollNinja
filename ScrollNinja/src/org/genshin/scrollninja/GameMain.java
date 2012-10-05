@@ -39,8 +39,8 @@ public class GameMain implements Screen{
 		renderer			= new Box2DDebugRenderer();
 
 
-		CreateWorld();
-		CreateCharacter();
+		CreateStage();
+		CreatePlayer();
 		CreateStageObject();
 		BG.LoadTexture();
 	}
@@ -72,7 +72,7 @@ public class GameMain implements Screen{
 	// CreateWorld
 	// フィールドの作成
 	//************************************************************
-	private void CreateWorld() {
+	private void CreateStage() {
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
 
 		// ボディタイプ設定
@@ -95,7 +95,7 @@ public class GameMain implements Screen{
 	// CreateCharacter
 	// プレイヤーの作成
 	//************************************************************
-	private void CreateCharacter() {
+	private void CreatePlayer() {
 		BodyDef def	= new BodyDef();
 		def.type	= BodyType.DynamicBody;		// 動く物体
 		player.SetBody(world.createBody(def));
