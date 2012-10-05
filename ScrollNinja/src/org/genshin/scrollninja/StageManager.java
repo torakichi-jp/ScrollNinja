@@ -25,6 +25,17 @@ public class StageManager {
 		stageList = new ArrayList<Stage>();
 	}
 	
+	// 更新
+	public int Update(String Name) {
+		if( !stageList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
+			return -1;		// エラー処理
+		}
+		
+		stageList.get(stageList.indexOf(Name)).moveBackground(5);
+		
+		return 1;
+	}
+	
 	// ステージの生成
 	public int CreateStage(String Name) {
 		if( stageList.contains(Name) ) {		// 既にその名前が作られている場合はエラー

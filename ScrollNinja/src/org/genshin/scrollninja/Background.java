@@ -7,6 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Background extends ObJectBase{
 	
+	private static final Background Instance = new Background();			// このクラスの唯一のインスタンスを作ります
+	
+	// インスタンスを返す
+	public static Background GetInstace() {
+		return Instance;
+	}
+	
 	private float zIndex;		// Zインデックス
 	
 	// コンストラクタ
