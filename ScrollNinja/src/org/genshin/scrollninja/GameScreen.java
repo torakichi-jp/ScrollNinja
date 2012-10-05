@@ -53,7 +53,7 @@ public class GameScreen implements Screen {
 	// シミュレーション
 	private World world;
 	private Box2DDebugRenderer renderer;
-	private Body charaBody;
+	public static Body charaBody;
 	private Body groundBody;
 	private Fixture playerSensorFixture;
 	private Body stoneBody;
@@ -65,7 +65,7 @@ public class GameScreen implements Screen {
 	private Vector2 cameraPos = new Vector2();
 	
 	/*stage 仮*/
-	public Stage stage;
+	public Stage stage = new Stage("name");
 
 	// ジャンプ処理用
 	private Boolean isGround = false;
@@ -364,7 +364,7 @@ public class GameScreen implements Screen {
 		//-----------------------------------------------
 		// カメラ位置更新
 		// キャラクターの位置更新より後ろにしないと描画がおかしくなるので注意
-		//cameraPos = charaPos;
+		cameraPos = charaPos;
 		// 端の設定
 		/*if (cameraPos.x < 0)
 			cameraPos.x = 0;
@@ -382,7 +382,7 @@ public class GameScreen implements Screen {
 			//(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 		
 
-		//stage.moveBackground();
+		stage.moveBackground();
 		
 	}
 

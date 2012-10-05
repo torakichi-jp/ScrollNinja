@@ -26,9 +26,7 @@ public class Background extends ObJectBase{
 	}
 
 	public void LoadTexture() {
-
 		Texture texture = new Texture(Gdx.files.internal("data/stage_near_test.png"));
-		// コメントアウトしても動く。効果がいまいちわからない…
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// テクスチャ範囲
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 2048, 2048);
@@ -39,6 +37,11 @@ public class Background extends ObJectBase{
 		// 0,0 だと画面の中央に背景画像の左下が設置されるため調整
 		// 画面下の方が空白なので高さ位置はどう出したものかと…
 		sprite.setPosition(-(Gdx.graphics.getWidth() / 2), -1024);
+
+		// 背景（奥）テクスチャ読み込み
+		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
 	}
 
 }
