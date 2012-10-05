@@ -26,7 +26,8 @@ public class GameMain implements Screen{
 	private Player					PLAYER;				// プレイヤー
 	
 	// コンストラクタ
-	public GameMain() {
+	public GameMain(Game game) {
+		ScrollNinjya		= game;
 		SOM					= StageObjectManager.GetInstace();
 		BG					= Background.GetInstace();
 		PLAYER				= Player.GetInstace();
@@ -46,6 +47,7 @@ public class GameMain implements Screen{
 	//************************************************************
 	public void Update() {
 		PLAYER.Update(world);
+		
 	}
 	
 	//************************************************************
@@ -53,7 +55,9 @@ public class GameMain implements Screen{
 	// 描画処理
 	//************************************************************
 	public void Draw() {
+		spriteBatch.begin();
 		PLAYER.Draw(spriteBatch);
+		spriteBatch.end();
 	}
 	
 	//************************************************************
@@ -175,6 +179,8 @@ public class GameMain implements Screen{
 	@Override
 	public void render(float delta) {
 		// TODO 自動生成されたメソッド・スタブ
+		Update();
+		Draw();
 		
 	}
 

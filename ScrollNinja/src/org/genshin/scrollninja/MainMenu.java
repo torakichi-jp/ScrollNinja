@@ -92,7 +92,7 @@ public class MainMenu implements Screen {
 
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (position == 0) {
-				scrollNinja.setScreen(new GameScreen(scrollNinja));
+				scrollNinja.setScreen(new GameMain(scrollNinja));
 				return;
 			}
 			if (position == 1) {
