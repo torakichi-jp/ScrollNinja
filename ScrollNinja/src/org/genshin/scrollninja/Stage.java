@@ -1,6 +1,4 @@
-//----------------------------
-// 10/4 変数行から追加,関数追加
-//
+
 
 package org.genshin.scrollninja;
 
@@ -26,6 +24,13 @@ public class Stage {
 	private Vector2 cameraPos = new Vector2();
 	private OrthographicCamera camera;
 	
+	private Player asd = Player.GetInstace();
+	
+	private GameScreen zz;
+	
+	
+	
+
 	
 	
 	
@@ -54,6 +59,12 @@ public class Stage {
 		/*
 		 * camera move
 		 * */
+		
+		
+		//cameraPos = asd.GetPosition();
+
+		cameraPos = zz.GetChrPos();
+	
 		
 		camera.position.set(cameraPos.x, cameraPos.y, 0);
 		camera.update();

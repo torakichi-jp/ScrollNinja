@@ -24,9 +24,13 @@ public class GameMain implements Screen{
 	private StageObjectManager		SOM;				// ステージオブジェクトマネージャ
 	private Background				BG;					// 背景
 	private Player					PLAYER;				// プレイヤー
+	private Stage stage;	
+
 	
 	// コンストラクタ
 	public GameMain() {
+		//ScrollNinjya = game;
+		
 		SOM					= StageObjectManager.GetInstace();
 		BG					= Background.GetInstace();
 		PLAYER				= Player.GetInstace();
@@ -34,6 +38,7 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		world				= new World(new Vector2(0, -100.0f), true);
 		renderer			= new Box2DDebugRenderer();
+		
 		
 		CreateWorld();
 		CreateCharacter();
@@ -45,7 +50,11 @@ public class GameMain implements Screen{
 	// 更新処理
 	//************************************************************
 	public void Update() {
+		
+		
 		PLAYER.Update(world);
+		
+		//stage.moveBackground();
 	}
 	
 	//************************************************************
