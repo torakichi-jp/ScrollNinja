@@ -304,8 +304,6 @@ public class GameScreen implements Screen {
 			charaBody.setTransform(charaPos, 0);
 		}
 		
-		
-		
 		// 矢印キーを押していない時はシミュレーションしない
 		if (!(Gdx.input.isKeyPressed(Keys.LEFT)) && !(Gdx.input.isKeyPressed(Keys.RIGHT))) {
 
@@ -364,7 +362,7 @@ public class GameScreen implements Screen {
 		//-----------------------------------------------
 		// カメラ位置更新
 		// キャラクターの位置更新より後ろにしないと描画がおかしくなるので注意
-		cameraPos = charaPos;
+		//cameraPos = charaPos;
 		// 端の設定
 		/*if (cameraPos.x < 0)
 			cameraPos.x = 0;
@@ -381,7 +379,6 @@ public class GameScreen implements Screen {
 		//ScrollNinja.bgSpr.setPosition
 			//(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 		
-
 		stage.moveBackground();
 		
 	}
