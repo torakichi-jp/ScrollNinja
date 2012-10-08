@@ -6,6 +6,7 @@ package org.genshin.scrollninja;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 
 //========================================
 // クラス宣言
@@ -20,8 +21,15 @@ public class StageObject extends ObJectBase {
 		position	= new Vector2(0,0);
 	}
 	
-	// 参照
-	public StageObject GetStageObject() {
-		return this;
-	}
+	//************************************************************
+	// Get
+	// ゲッターまとめ
+	//************************************************************
+	public StageObject GetStageObject() { return this; }
+	public String GetName(){ return name; }
+	
+	//************************************************************
+	// Set
+	// セッターまとめ
+	//************************************************************
 }

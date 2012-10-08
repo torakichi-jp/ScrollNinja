@@ -8,25 +8,18 @@ import java.util.ArrayList;
 //========================================
 // クラス宣言
 //========================================
-//***** シングルトン *****/
-public class StageObjectManager {
+//***** モノステート *****/
+public class StageObjectManager {	
+	private static ArrayList<StageObject> stageObjectList = new ArrayList<StageObject>();			// ステージオブジェクトリスト
 	
-	private static final StageObjectManager Instance = new StageObjectManager();			// このクラスの唯一のインスタンスを作ります
-	
-	// インスタンスを返す
-	public static StageObjectManager GetInstace() {
-		return Instance;
-	}
-	
-	private ArrayList<StageObject> stageObjectList;			// ステージオブジェクトリスト
 	
 	// コンストラクタ
 	private StageObjectManager() {
-		stageObjectList = new ArrayList<StageObject>();
+//		stageObjectList = new ArrayList<StageObject>();
 	}
 	
 	// ステージオブジェクトの生成
-	public int CreateStageObject(String Name) {
+	public static int CreateStageObject(String Name) {
 		if( stageObjectList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
 			return -1;		// エラー処理
 		}
@@ -38,7 +31,7 @@ public class StageObjectManager {
 	}
 	
 	// ステージオブジェクトの削除
-	public int DeleteStageObject(String Name) {
+	public static int DeleteStageObject(String Name) {
 		if( !stageObjectList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -48,7 +41,12 @@ public class StageObjectManager {
 	}
 	
 	// 参照
-	public StageObject GetStageObject(String Name) {
-		return stageObjectList.get(stageObjectList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
+	public static StageObject GetStageObject(String Name) {
+		for(int i = 0; i < stageObjectList.size(); i ++) {
+			if( stageObjectList.get(i).GetName().equals(Name) ) {
+				return stageObjectList.get(i);			// 引数で渡されたオブジェクトのポインタを返す
+			}
+		}
+		return null;		// エラー処理
 	}
 }

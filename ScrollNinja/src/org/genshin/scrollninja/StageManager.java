@@ -8,17 +8,9 @@ import java.util.ArrayList;
 //========================================
 // クラス宣言
 //========================================
-//***** シングルトン *****/
+//***** モノステート *****/
 public class StageManager {
-
-	private static final StageManager Instance = new StageManager();			// このクラスの唯一のインスタンスを作ります
-
-	// インスタンスを返す
-	public static StageManager GetInstace() {
-		return Instance;
-	}
-
-	private ArrayList<Stage> stageList;				// ステージリスト
+	private static ArrayList<Stage> stageList;				// ステージリスト
 
 	// コンストラクタ
 	private StageManager(){
@@ -26,7 +18,7 @@ public class StageManager {
 	}
 
 	// 更新
-	public int Update(String Name) {
+	public static int Update(String Name) {
 		if( !stageList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -37,7 +29,7 @@ public class StageManager {
 	}
 
 	// ステージの生成
-	public int CreateStage(String Name) {
+	public static int CreateStage(String Name) {
 		if( stageList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
 			return -1;		// エラー処理
 		}
@@ -49,7 +41,7 @@ public class StageManager {
 	}
 
 	// ステージの削除
-	public int DeleteStage(String Name) {
+	public static int DeleteStage(String Name) {
 		if( !stageList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -59,7 +51,7 @@ public class StageManager {
 	}
 
 	// 参照
-	public Stage GetStage(String Name) {
+	public static Stage GetStage(String Name) {
 		return stageList.get(stageList.indexOf(Name));				// 引数で渡されたオブジェクトのポインタを返す
 	}
 }

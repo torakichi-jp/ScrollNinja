@@ -8,19 +8,10 @@ import java.util.ArrayList;
 //========================================
 // クラス宣言	
 //========================================
-// ***** シングルトン *****/
-public class EffectManager {
-	
-	private static final EffectManager Instance = new EffectManager();			// このクラスの唯一のインスタンスを作ります
-	
-	// インスタンスを返す
-	public static EffectManager GetInstace() {
-		return Instance;
-	}
-	
-	
+// ***** モノステート *****/
+public class EffectManager {	
 	// 変数宣言
-	private ArrayList<Effect> effectList;
+	private static ArrayList<Effect> effectList;
 	
 	// コンストラクタ
 	private EffectManager(){
@@ -28,7 +19,7 @@ public class EffectManager {
 	}
 	
 	// エフェクトの生成 
-	public int CreateEffect(String Name) {
+	public static int CreateEffect(String Name) {
 		if( effectList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
 			return -1;		// エラー処理
 		}
@@ -40,7 +31,7 @@ public class EffectManager {
 	}
 	
 	// エフェクトの削除
-	public int DeleteEnemy(String Name) {
+	public static int DeleteEnemy(String Name) {
 		if( !effectList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -50,7 +41,7 @@ public class EffectManager {
 	}
 	
 	// 参照
-	public Effect GetEnemy(String Name) {
+	public static Effect GetEnemy(String Name) {
 		return effectList.get(effectList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
 	}
 	

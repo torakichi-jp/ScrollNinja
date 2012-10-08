@@ -92,7 +92,7 @@ public class MainMenu implements Screen {
 
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (position == 0) {
-				scrollNinja.setScreen(new GameScreen(scrollNinja));
+				scrollNinja.setScreen(new GameMain(scrollNinja));
 				return;
 			}
 			if (position == 1) {
@@ -130,8 +130,10 @@ public class MainMenu implements Screen {
 		// スプライト描画
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		ScrollNinja.bgSpr.draw(batch);
-		ScrollNinja.stageSpr.draw(batch);
+//		ScrollNinja.bgSpr.draw(batch);
+//		ScrollNinja.stageSpr.draw(batch);
+		Background.GetSprite()[0].draw(batch);
+		Background.GetSprite()[2].draw(batch);
 		cursor.draw(batch);
 		mode_GameRun.draw(batch);
 		mode_Settings.draw(batch);
