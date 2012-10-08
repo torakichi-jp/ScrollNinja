@@ -5,18 +5,13 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
-//***** シングルトン *****/
+//========================================
+// クラス宣言	
+//========================================
+//***** モノステート *****/
 public class EnemyManager {
-	
-	private static final EnemyManager Instance = new EnemyManager();			// このクラスの唯一のインスタンスを作ります
-	
-	// インスタンスを返す
-	public static EnemyManager GetInstace() {
-		return Instance;
-	}
-	
 	// 変数宣言
-	private ArrayList<Enemy> enemyList;		// 敵リスト
+	private static ArrayList<Enemy> enemyList;		// 敵リスト
 	
 	// コンストラクタ
 	private EnemyManager() {
@@ -24,7 +19,7 @@ public class EnemyManager {
 	}
 	
 	// 敵の生成
-	public int CreateEnemy(String Name) {
+	public static int CreateEnemy(String Name) {
 		if( enemyList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
 			return -1;		// エラー処理
 		}
@@ -36,7 +31,7 @@ public class EnemyManager {
 	}
 	
 	// 敵の削除 
-	public int DeleteEnemy(String Name) {
+	public static int DeleteEnemy(String Name) {
 		if( !enemyList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -46,7 +41,7 @@ public class EnemyManager {
 	}
 	
 	// 参照
-	public Enemy GetEnemy(String Name) {
+	public static Enemy GetEnemy(String Name) {
 		return enemyList.get(enemyList.indexOf(Name));				// 引数で渡されたオブジェクトのポインタを返す
 	}
 }

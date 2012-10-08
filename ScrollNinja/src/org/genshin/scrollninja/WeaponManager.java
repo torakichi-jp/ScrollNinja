@@ -6,20 +6,12 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 //========================================
-//クラス宣言
+// クラス宣言
 //========================================
-//***** シングルトン *****/
+//***** モノステート *****/
 public class WeaponManager {
-	
-	private static final WeaponManager Instance = new WeaponManager();			// このクラスの唯一のインスタンスを作ります
-	
-	// インスタンスを返す
-	public static WeaponManager GetInstace() {
-		return Instance;
-	}
-	
 	// 変数宣言
-	private ArrayList<Weapon> weaponList;
+	private static ArrayList<Weapon> weaponList;
 
 	// コンストラクタ
 	private WeaponManager(){
@@ -27,7 +19,7 @@ public class WeaponManager {
 	}
 
 	// 武器の生成
-	public int CreateWeapon(String Name) {
+	public static int CreateWeapon(String Name) {
 		if( weaponList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
 			return -1;		// エラー処理
 		}
@@ -39,7 +31,7 @@ public class WeaponManager {
 	}
 
 	// 武器の削除
-	public int DeleteWeapon(String Name) {
+	public static int DeleteWeapon(String Name) {
 		if( !weaponList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
@@ -49,7 +41,7 @@ public class WeaponManager {
 	}
 
 	// 参照
-	public Weapon GetWeapon(String Name) {
+	public static Weapon GetWeapon(String Name) {
 		return weaponList.get(weaponList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
 	}
 }

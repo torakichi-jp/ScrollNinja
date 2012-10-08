@@ -5,6 +5,7 @@ import aurelienribon.bodyeditor.BodyEditorLoader;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -15,23 +16,22 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
+// 制作メモ
+// 10/5 制作開始
+// 10/6 とりあえず表示まで。シングルトンを全部モノステートに。
+// 10/8 コメント追加
+
 public class GameMain implements Screen{
 	private Game					ScrollNinjya;
 	private OrthographicCamera		camera;				// カメラ
 	private SpriteBatch				spriteBatch;		// スプライトバッチ
 	private World					world;				// ワールドマトリクス
 	private Box2DDebugRenderer		renderer;			//
-	private StageObjectManager		SOM;				// ステージオブジェクトマネージャ
-	private Background				BG;					// 背景
 	private Player					player;				// プレイヤー
-	private Stage stage;
-
 
 	// コンストラクタ
 	public GameMain(Game game) {
 		ScrollNinjya		= game;
-		SOM					= StageObjectManager.GetInstace();
-		BG					= Background.GetInstace();
 		player				= new Player();
 		camera				= new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		spriteBatch 		= new SpriteBatch();
@@ -42,7 +42,6 @@ public class GameMain implements Screen{
 		CreateStage();
 		CreatePlayer();
 		CreateStageObject();
-		BG.LoadTexture();
 	}
 
 	//************************************************************
@@ -50,6 +49,8 @@ public class GameMain implements Screen{
 	// 更新処理
 	//************************************************************
 	public void Update() {
+		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
+		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		player.Update(world);
 	}
 
@@ -58,9 +59,17 @@ public class GameMain implements Screen{
 	// 描画処理
 	//************************************************************
 	public void Draw() {
+		// 全部クリア
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
 		spriteBatch.setProjectionMatrix(camera.combined);		// プロジェクション行列のセット
 		spriteBatch.begin();									// 描画開始
-		player.Draw(spriteBatch);
+		{
+			Background.GetSprite()[0].draw(spriteBatch);
+			Background.GetSprite()[2].draw(spriteBatch);
+			player.Draw(spriteBatch);
+		}
 		spriteBatch.end();										// 描画終了
 		
 		renderer.render(world, camera.combined);
@@ -69,8 +78,8 @@ public class GameMain implements Screen{
 	}
 
 	//************************************************************
-	// CreateWorld
-	// フィールドの作成
+	// CreateStage
+	// ステージのあたり判定の作成
 	//************************************************************
 	private void CreateStage() {
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
@@ -87,8 +96,8 @@ public class GameMain implements Screen{
 		fd.restitution	= 0;		// 反発係数
 
 		// ボディ作成
-		BG.SetBody(world.createBody(bd));
-		loader.attachFixture( BG.GetBody(), "bgTest", fd, 2048);
+		Background.SetBody(world.createBody(bd));
+		loader.attachFixture( Background.GetBody(), "bgTest", fd, 2048);
 	}
 
 	//************************************************************
@@ -139,50 +148,12 @@ public class GameMain implements Screen{
 		fd.restitution	= 0;				// 反発係数
 
 		// ステージオブジェクトの作成
-		SOM.CreateStageObject("岩");
-		SOM.GetStageObject("岩").SetBody(world.createBody(bd));
+		StageObjectManager.CreateStageObject("block");
+		StageObjectManager.GetStageObject("block").SetBody(world.createBody(bd));
 
 		// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-		loader.attachFixture(SOM.GetStageObject("岩").GetBody(), "gravestone", fd, 256);
+		loader.attachFixture(StageObjectManager.GetStageObject("block").GetBody(), "gravestone", fd, 256);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	@Override
 	public void render(float delta) {
@@ -193,39 +164,21 @@ public class GameMain implements Screen{
 	}
 
 	@Override
-	public void resize(int width, int height) {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void show() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
+	public void show() {}
 
 	@Override
-	public void hide() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
+	public void hide() {}
 
 	@Override
-	public void pause() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
+	public void pause() {}
 
 	@Override
-	public void resume() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
+	public void resume() {}
 
 	@Override
-	public void dispose() {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
+	public void dispose() {}
 
 }

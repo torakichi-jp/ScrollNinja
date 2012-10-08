@@ -20,6 +20,8 @@ import com.badlogic.gdx.physics.box2d.World;
 // 		ジャンプと移動だけ先に明日実装！
 // 10/4 ジャンプと移動は実装完了だけど実行してない
 //		明日アニメーション関連進行。今週までに表示までいきたい
+// 10/8 移動だけ動作確認。段差のところで空中移行になってるのを直そう
+//		重力弱いから要調整。ジャンプできてねー＾ｑ＾
 
 // *メモ*
 // 攻撃はダッシュしながら攻撃可能（足は止まらない）
@@ -38,8 +40,8 @@ public class Player extends CharacterBase {
 	private static final float FIRSTSPEED	=  5.0f;		// 初速度
 	private static final float GRAVITY		= -0.98f;		// 重力
 	
-	private static final int RIGHT			= -1;
-	private static final int LEFT			=  1;
+	private static final int RIGHT			=  5;
+	private static final int LEFT			= -5;
 	private static final int STAND			=  0;
 	private static final int DASH			=  1;
 	private static final int JUMP			=  2;
@@ -74,13 +76,13 @@ public class Player extends CharacterBase {
 	// コンストラクタ
 	public Player() {
 		// テクスチャの読み込み
-/*		Texture texture = new Texture(Gdx.files.internal("data/char.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/chara.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 		
 		// スプライトに反映
 		sprite = new Sprite(region);
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);*/
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 		
 		charge		 = 0;
 		money		 = 0;
