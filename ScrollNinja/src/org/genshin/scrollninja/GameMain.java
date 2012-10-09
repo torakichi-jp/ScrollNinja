@@ -40,7 +40,6 @@ public class GameMain implements Screen{
 		world				= new World(new Vector2(0, -100.0f), true);
 		renderer			= new Box2DDebugRenderer();
 		stage				= new Stage("a");
-		//background			= new Background();
 
 
 		CreateStage();
@@ -55,8 +54,10 @@ public class GameMain implements Screen{
 	public void Update() {
 		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+		// 背景スクロール
 		stage.moveBackground(player);
 		camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
+		
 		camera.update();
 		player.Update(world);
 	}

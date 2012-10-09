@@ -38,8 +38,6 @@ public class Background {
 	private static Body 					body;								// 当たり判定用BOX
 	private static Fixture 				sensor;							// センサー
 	private static float					zIndex;							// Zインデックス
-
-	
 	
 	// コンストラクタ
 	private Background() {}
