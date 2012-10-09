@@ -57,9 +57,8 @@ public class Player extends CharacterBase {
 	private int				money;					// お金
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
-	private int				jumpCount;				// ジャンプカウント
-	private float			velocity;				// 移動量
 	private float			fall;					// 落下量
+	private float			prevAngle;				// 前回角度
 	private Weapon			weapon;					// 武器のポインタ
 	private boolean 		jump;					// ジャンプフラグ
 	private Animation 		standAnimation;			// 立ちアニメーション
@@ -88,8 +87,8 @@ public class Player extends CharacterBase {
 		money		 = 0;
 		direction	 = 1;
 		currentState = STAND;
-		velocity	 = 0;
 		fall		 = 0;
+		prevAngle	 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 	}
@@ -100,6 +99,7 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public void Update(World world) {		
 		position = body.getPosition();
+//		body.setTransform(position ,0);
 		
 		Stand(world);		// 立ち処理
 		Jump(world);		// ジャンプ処理
@@ -133,28 +133,19 @@ public class Player extends CharacterBase {
 	private void Jump(World world) {
 		
 		// 地面に接触しているならジャンプ可能
-		if( GetGroundJudge(world) ) {
+		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.UP)) {
 				jump = true;
-				jumpCount = 0;
 				currentState = JUMP;
 				fall = 10;
+				System.out.println(fall);
 			}
 		}
 		
 		// ジャンプ中の処理
 		if( jump ) {
-			jumpCount ++;
 			position.y += fall;
-			fall -= 0.05;
-			System.out.println(fall);
-			
-			// ジャンプ終わり
-/*			if( jumpCount > 50) {
-				jumpCount = 0;
-				jump = false;
-			}*/
 		}
 	}
 	
@@ -165,7 +156,10 @@ public class Player extends CharacterBase {
 	private void Gravity(World world) {
 		// 空中にいる時は落下移動
 		if(!GetGroundJudge(world)) {
-			fall -= 0.05;
+			fall -= 0.25;
+			if( fall < -5 ) {
+				fall = -5;
+			}
 		}
 	}
 	
@@ -238,6 +232,7 @@ public class Player extends CharacterBase {
 			// 地面に当たったよ
 			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
 				jump = false;
+				fall = 0;
 				return true;
 			}
 		}
