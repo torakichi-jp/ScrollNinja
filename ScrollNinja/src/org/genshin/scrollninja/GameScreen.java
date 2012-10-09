@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
 	private Vector2 charaPos = new Vector2();
 	private Vector2 groundPos = new Vector2();
 	private Vector2 cameraPos = new Vector2();
-	
+
 	/*stage 仮*/
 	public Stage stage = new Stage("name");
 
@@ -78,8 +78,8 @@ public class GameScreen implements Screen {
 
 	// キャラクター
 	private Character character;
-	
-	
+
+
 	public Vector2 GetChrPos() {
 		return charaPos;
 	}
@@ -129,7 +129,7 @@ public class GameScreen implements Screen {
 		ScrollNinja.bgSpr.setOrigin(bgSpr.getWidth() / 2, bgSpr.getHeight() / 2);
 		ScrollNinja.bgSpr.setPosition(-(w / 2), -1024);
 		*/
-		
+
 		// キャラクターテクスチャ読み込み
 		texture = new Texture(Gdx.files.internal("data/chara.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -303,16 +303,14 @@ public class GameScreen implements Screen {
 			charaPos.y -= 5;
 			charaBody.setTransform(charaPos, 0);
 		}
-		
-		
-		
+
 		// 矢印キーを押していない時はシミュレーションしない
 		if (!(Gdx.input.isKeyPressed(Keys.LEFT)) && !(Gdx.input.isKeyPressed(Keys.RIGHT))) {
 
 		} else {
 
 		}
-		
+
 	}
 
 	// 描画関係
@@ -332,7 +330,7 @@ public class GameScreen implements Screen {
 		// 背景描画
 		ScrollNinja.bgSpr.draw(batch);
 		ScrollNinja.stageSpr.draw(batch);
-		
+
 		// ステージ描画
 		//stageSpr.draw(batch);
 		//batch.draw(curFrame, 50, 50);
@@ -364,7 +362,7 @@ public class GameScreen implements Screen {
 		//-----------------------------------------------
 		// カメラ位置更新
 		// キャラクターの位置更新より後ろにしないと描画がおかしくなるので注意
-		cameraPos = charaPos;
+		//cameraPos = charaPos;
 		// 端の設定
 		/*if (cameraPos.x < 0)
 			cameraPos.x = 0;
@@ -376,14 +374,13 @@ public class GameScreen implements Screen {
 			cameraPos.y = 724;*/
 		//camera.position.set(cameraPos.x, cameraPos.y, 0);
 		//camera.update();
-		
+
 		// 遠景をカメラの位置に合わせて移動
 		//ScrollNinja.bgSpr.setPosition
 			//(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
-		
 
 //		stage.moveBackground();
-		
+
 	}
 
 	// プレイヤーが地面にいるかいないか
