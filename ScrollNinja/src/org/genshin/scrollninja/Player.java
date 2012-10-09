@@ -34,7 +34,6 @@ import com.badlogic.gdx.physics.box2d.World;
 // クラス宣言	
 //========================================
 public class Player extends CharacterBase {
-
 	
 	// 定数宣言
 	private static final float FIRSTSPEED	=  15.0f;		// 初速度
@@ -47,25 +46,21 @@ public class Player extends CharacterBase {
 	private static final int JUMP			=  2;
 	private static final int ATTACK			=  3;
 	
-/*	enum State {
-		STAND,
-		WALK
-	};*/
-	
 	// 変数宣言
 	private int				charge;					// チャージゲージ
 	private int				money;					// お金
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
-	private int				jumpCount;				// ジャンプカウント
-	private float			velocity;				// 移動量
 	private float			fall;					// 落下量
+	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
 	private boolean 		jump;					// ジャンプフラグ
 	private Animation 		standAnimation;			// 立ちアニメーション
 	private Animation 		dashAnimation;			// ダッシュアニメーション
 	private Animation 		jumpAnimation;			// ジャンプアニメーション
 	private Animation 		attackAnimation;		// 攻撃アニメーション
+	private TextureRegion	frame[];				// アニメーションのコマ
+	private TextureRegion	nowFrame;				// 現在のコマ
 	
 	//************************************************************
 	// Get
@@ -84,11 +79,24 @@ public class Player extends CharacterBase {
 		sprite = new Sprite(region);
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 		
+		// アニメーション
+		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
+		TextureRegion[][] tmp = TextureRegion.split(dash, 64, 64);
+		frame = new TextureRegion[6];
+		int index = 0;
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(index < 6)
+					frame[index++] = tmp[i][j];
+			}
+		}
+		
+		dashAnimation = new Animation(1.5f, frame);
+		
 		charge		 = 0;
 		money		 = 0;
 		direction	 = 1;
 		currentState = STAND;
-		velocity	 = 0;
 		fall		 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
@@ -100,13 +108,21 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public void Update(World world) {		
 		position = body.getPosition();
+		nowFrame = dashAnimation.getKeyFrame(stateTime, true);
+		stateTime ++;
 		
 		Stand(world);		// 立ち処理
 		Jump(world);		// ジャンプ処理
 		Move(world);		// 移動処理
 		Gravity(world);		// 重力計算処理
+		animation();		// アニメーション処理
 		
+	/*	if( prevAngle != body.getAngle() ) {
+			body.setTransform(position ,0);
+		}
+	*/	
 		body.setTransform(position, body.getAngle());
+	//	prevAngle = body.getAngle();
 	}
 	
 	//************************************************************
@@ -133,28 +149,19 @@ public class Player extends CharacterBase {
 	private void Jump(World world) {
 		
 		// 地面に接触しているならジャンプ可能
-		if( GetGroundJudge(world) ) {
+		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.UP)) {
 				jump = true;
-				jumpCount = 0;
 				currentState = JUMP;
 				fall = 10;
+				System.out.println(fall);
 			}
 		}
 		
 		// ジャンプ中の処理
 		if( jump ) {
-			jumpCount ++;
 			position.y += fall;
-			fall -= 0.05;
-			System.out.println(fall);
-			
-			// ジャンプ終わり
-/*			if( jumpCount > 50) {
-				jumpCount = 0;
-				jump = false;
-			}*/
 		}
 	}
 	
@@ -165,7 +172,10 @@ public class Player extends CharacterBase {
 	private void Gravity(World world) {
 		// 空中にいる時は落下移動
 		if(!GetGroundJudge(world)) {
-			fall -= 0.05;
+			fall -= 0.25;
+			if( fall < -5 ) {
+				fall = -5;
+			}
 		}
 	}
 	
@@ -214,6 +224,7 @@ public class Player extends CharacterBase {
 			
 			break;
 		case DASH:		// 走り
+			sprite.setRegion(nowFrame);
 			break;
 		case JUMP:		// ジャンプ
 			break;
@@ -238,6 +249,7 @@ public class Player extends CharacterBase {
 			// 地面に当たったよ
 			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
 				jump = false;
+				fall = 0;
 				return true;
 			}
 		}
