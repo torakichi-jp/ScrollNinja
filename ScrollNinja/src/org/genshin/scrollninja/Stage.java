@@ -15,30 +15,33 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Stage {
 
-	private String name;
-	private Vector2 size;
-	private ArrayList<Background>backgroundLayers;
-	private Sprite sprite;
-	private ArrayList<Item> popItems;
-	private ArrayList<Enemy> popEnemys;
-	private ArrayList<ObJectBase> object;
-
-
-	private GameScreen zz;
+	private String							name;
+	private Vector2							size;
+	private Sprite 							sprite;
 
 	// コンストラクタ
 	public Stage(String Name){
-		name = new String(Name);						// オブジェクト化と同時にステージ番号の代入
+		name = new String(Name);
+	}
+	
+	//************************************************************
+	// Update
+	// 更新処理まとめ
+	//************************************************************
+	public void Update(Player player) {
+		PopEnemy(player);
+		
+		
 	}
 
-	// 参照
-	public Stage GetStage() {
-		return this;
-	}
-
-	// 敵ポップ
-	public void popEnemy() {
-
+	//************************************************************
+	// PopEnemy
+	// 敵の出現タイミングの設定
+	//************************************************************
+	public void PopEnemy(Player player) {
+		if( player.GetPosition().x > 200 ) {
+			EnemyManager.CreateEnemy("ざこ", 0, 200.0f, 300.0f);
+		}
 	}
 
 	// アイテムポップ
@@ -60,5 +63,17 @@ public class Stage {
 
 		return nowTime;
 	}
+	
+	//************************************************************
+	// Get
+	// ゲッターまとめ
+	//************************************************************
+	public Stage GetStage() { return this; }
+	public String GetName(){ return name; }
+	
+	//************************************************************
+	// Set
+	// セッターまとめ
+	//************************************************************
 
 }

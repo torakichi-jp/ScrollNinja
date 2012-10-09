@@ -110,7 +110,7 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public void Update(World world) {
 		position = body.getPosition();
-//		body.setTransform(position ,0);
+		body.setTransform(position ,0);
 		nowFrame = dashAnimation.getKeyFrame(stateTime, true);
 		stateTime ++;
 
@@ -157,7 +157,7 @@ public class Player extends CharacterBase {
 			if (Gdx.input.isKeyPressed(Keys.UP)) {
 				jump = true;
 				currentState = JUMP;
-				fall = 10;
+				fall = 15;
 				System.out.println(fall);
 			}
 		}
@@ -176,6 +176,7 @@ public class Player extends CharacterBase {
 		// 空中にいる時は落下移動
 		if(!GetGroundJudge(world)) {
 			fall -= 0.25;
+			position.y -= 5;
 			if( fall < -5 ) {
 				fall = -5;
 			}
@@ -192,6 +193,7 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
 			position.x += direction;		// プレイヤーの移動
+			sprite.setScale(-1, 1);
 
 			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
 				currentState = DASH;
@@ -201,6 +203,7 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			direction = LEFT;
 			position.x += direction;
+			sprite.setScale(1, 1);
 
 			if( GetGroundJudge(world) ) {
 				currentState = DASH;
