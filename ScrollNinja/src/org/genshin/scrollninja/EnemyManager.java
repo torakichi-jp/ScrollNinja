@@ -5,27 +5,45 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import com.badlogic.gdx.math.Vector2;
+
 //========================================
 // クラス宣言	
 //========================================
 //***** モノステート *****/
 public class EnemyManager {
 	// 変数宣言
-	private static ArrayList<Enemy> enemyList;		// 敵リスト
+	private static ArrayList<Enemy> enemyList		= new ArrayList<Enemy>();		// 敵リスト
 	
 	// コンストラクタ
-	private EnemyManager() {
-		enemyList = new ArrayList<Enemy>();
+	private EnemyManager() {}
+	
+	// 更新
+	public static void Update() {
+		for(int i = 0; i < enemyList.size(); i ++) {
+			enemyList.get(i).Update();
+		}
 	}
 	
 	// 敵の生成
-	public static int CreateEnemy(String Name) {
+	public static int CreateEnemy(String Name, int type, Vector2 pos) {
 		if( enemyList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
 			return -1;		// エラー処理
 		}
 		
-		Enemy pEnemy = new Enemy(Name);		// オブジェクトを生成（&初期化）して
-		enemyList.add(pEnemy);				// リストに追加
+		Enemy pEnemy = new Enemy(Name, type, pos);	// オブジェクトを生成（&初期化）して
+		enemyList.add(pEnemy);						// リストに追加
+		
+		return 1;
+	}
+	
+	public static int CreateEnemy(String Name, int type, float x, float y) {
+		if( enemyList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
+			return -1;		// エラー処理
+		}
+		
+		Enemy pEnemy = new Enemy(Name, type, x, y);	// オブジェクトを生成（&初期化）して
+		enemyList.add(pEnemy);						// リストに追加
 		
 		return 1;
 	}
@@ -42,6 +60,11 @@ public class EnemyManager {
 	
 	// 参照
 	public static Enemy GetEnemy(String Name) {
-		return enemyList.get(enemyList.indexOf(Name));				// 引数で渡されたオブジェクトのポインタを返す
+		for(int i = 0; i < enemyList.size(); i ++) {
+			if( enemyList.get(i).GetName().equals(Name) ) {
+				return enemyList.get(i);			// 引数で渡されたオブジェクトのポインタを返す
+			}
+		}
+		return null;
 	}
 }

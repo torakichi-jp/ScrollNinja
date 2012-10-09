@@ -46,6 +46,7 @@ public class GameMain implements Screen{
 		CreateStage();
 		CreatePlayer();
 		CreateStageObject();
+		EnemyManager.CreateEnemy("1", 0, 0.0f, 400.0f);
 	}
 
 	//************************************************************
@@ -55,6 +56,7 @@ public class GameMain implements Screen{
 	public void Update() {
 		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+		EnemyManager.Update();
 		Background.moveBackground(player);
 		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y,0);
 		camera.update();
@@ -75,7 +77,9 @@ public class GameMain implements Screen{
 		{
 			Background.GetSprite()[0].draw(spriteBatch);
 			Background.GetSprite()[2].draw(spriteBatch);
+//			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
+			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
 		}
 		spriteBatch.end();										// 描画終了
 

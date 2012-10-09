@@ -18,7 +18,6 @@ public class CharacterBase extends ObJectBase {
 	protected int 		hp;						// HP							
 	protected int 		attackNum;				// 攻撃力
 	protected int 		speed;					// 素早さ
-	protected int 		textureNum;				// テクスチャ番号
 	protected Vector2 	position;				// 座標
 	
 	// コンストラクタ
@@ -26,7 +25,6 @@ public class CharacterBase extends ObJectBase {
 		hp				= 0;
 		attackNum		= 0;
 		speed			= 0;
-		textureNum		= 0;
 		position		= new Vector2(0,0);
 	}
 	
