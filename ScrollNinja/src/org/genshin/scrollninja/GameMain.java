@@ -62,7 +62,7 @@ public class GameMain implements Screen{
 		// 全部クリア
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		spriteBatch.setProjectionMatrix(camera.combined);		// プロジェクション行列のセット
 		spriteBatch.begin();									// 描画開始
 		{
@@ -71,7 +71,7 @@ public class GameMain implements Screen{
 			player.Draw(spriteBatch);
 		}
 		spriteBatch.end();										// 描画終了
-		
+
 		renderer.render(world, camera.combined);
 		world.step(Gdx.graphics.getDeltaTime(), 20, 20);
 		player.GetBody().setAwake(true);
