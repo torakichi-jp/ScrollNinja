@@ -31,27 +31,21 @@ import com.badlogic.gdx.physics.box2d.World;
 // もう一回右クリックで離す
 
 //========================================
-// クラス宣言	
+// クラス宣言
 //========================================
 public class Player extends CharacterBase {
 
-	
 	// 定数宣言
 	private static final float FIRSTSPEED	=  15.0f;		// 初速度
 	private static final float GRAVITY		= -0.98f;		// 重力
-	
+
 	private static final int RIGHT			=  5;
 	private static final int LEFT			= -5;
 	private static final int STAND			=  0;
 	private static final int DASH			=  1;
 	private static final int JUMP			=  2;
 	private static final int ATTACK			=  3;
-	
-/*	enum State {
-		STAND,
-		WALK
-	};*/
-	
+
 	// 変数宣言
 	private int				charge;					// チャージゲージ
 	private int				money;					// お金
@@ -59,30 +53,47 @@ public class Player extends CharacterBase {
 	private int				currentState;			// 現在の状態
 	private float			fall;					// 落下量
 	private float			prevAngle;				// 前回角度
+	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
 	private boolean 		jump;					// ジャンプフラグ
 	private Animation 		standAnimation;			// 立ちアニメーション
 	private Animation 		dashAnimation;			// ダッシュアニメーション
 	private Animation 		jumpAnimation;			// ジャンプアニメーション
 	private Animation 		attackAnimation;		// 攻撃アニメーション
-	
+	private TextureRegion	frame[];				// アニメーションのコマ
+	private TextureRegion	nowFrame;				// 現在のコマ
+
 	//************************************************************
 	// Get
 	// ゲッターまとめ
 	//************************************************************
 	public Vector2 GetPosition() { return position; }
-	
+
 	// コンストラクタ
 	public Player() {
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/chara.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
-		
+
 		// スプライトに反映
 		sprite = new Sprite(region);
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-		
+
+		// アニメーション
+		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
+		TextureRegion[][] tmp = TextureRegion.split(dash, 64, 64);
+		frame = new TextureRegion[6];
+		int index = 0;
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(index < 6)
+					frame[index++] = tmp[i][j];
+			}
+		}
+
+		dashAnimation = new Animation(1.5f, frame);
+
 		charge		 = 0;
 		money		 = 0;
 		direction	 = 1;
@@ -92,23 +103,31 @@ public class Player extends CharacterBase {
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 	}
-	
+
 	//************************************************************
 	// Update
 	// 更新処理はここにまとめる
 	//************************************************************
-	public void Update(World world) {		
+	public void Update(World world) {
 		position = body.getPosition();
 //		body.setTransform(position ,0);
-		
+		nowFrame = dashAnimation.getKeyFrame(stateTime, true);
+		stateTime ++;
+
 		Stand(world);		// 立ち処理
 		Jump(world);		// ジャンプ処理
 		Move(world);		// 移動処理
 		Gravity(world);		// 重力計算処理
-		
+		animation();		// アニメーション処理
+
+	/*	if( prevAngle != body.getAngle() ) {
+			body.setTransform(position ,0);
+		}
+	*/
 		body.setTransform(position, body.getAngle());
+	//	prevAngle = body.getAngle();
 	}
-	
+
 	//************************************************************
 	// Draw
 	// 描画処理はここでまとめる
@@ -116,7 +135,7 @@ public class Player extends CharacterBase {
 	public void Draw(SpriteBatch batch) {
 		sprite.draw(batch);
 	}
-	
+
 	//************************************************************
 	// Stand
 	// 立ち処理。
@@ -131,7 +150,7 @@ public class Player extends CharacterBase {
 	// ジャンプ処理。上押すとジャンプ！
 	//************************************************************
 	private void Jump(World world) {
-		
+
 		// 地面に接触しているならジャンプ可能
 		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
@@ -142,13 +161,13 @@ public class Player extends CharacterBase {
 				System.out.println(fall);
 			}
 		}
-		
+
 		// ジャンプ中の処理
 		if( jump ) {
 			position.y += fall;
 		}
 	}
-	
+
 	//************************************************************
 	// Gravity
 	// 重力計算処理。常にやってます
@@ -162,7 +181,7 @@ public class Player extends CharacterBase {
 			}
 		}
 	}
-	
+
 	//************************************************************
 	// Move
 	// 移動処理。左右押すと移動します
@@ -173,7 +192,7 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
 			position.x += direction;		// プレイヤーの移動
-			
+
 			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
 				currentState = DASH;
 			}
@@ -182,22 +201,22 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			direction = LEFT;
 			position.x += direction;
-			
+
 			if( GetGroundJudge(world) ) {
 				currentState = DASH;
 			}
 		}
 	}
-	
+
 	//************************************************************
 	// Attack
 	// 攻撃処理。左クリックで攻撃
 	//************************************************************
 	private void Attack() {}
-	
+
 	// カギ縄
 	private void Kaginawa(){}
-	
+
 	//************************************************************
 	// animation
 	// 現在の状態を参照して画像を更新
@@ -205,19 +224,20 @@ public class Player extends CharacterBase {
 	private void animation() {
 		switch(currentState) {
 		case STAND:		// 立ち
-			
+
 			break;
 		case DASH:		// 走り
+			sprite.setRegion(nowFrame);
 			break;
 		case JUMP:		// ジャンプ
 			break;
 		}
 	}
-	
+
 	// 武器変更
 	private void changeWeapon() {
 	}
-	
+
 	//************************************************************
 	// GetGroundJudge
 	// 戻り値： true:地面接地		false:空中
@@ -225,10 +245,10 @@ public class Player extends CharacterBase {
 	//************************************************************
 	private boolean GetGroundJudge(World world) {
 		List<Contact> contactList = world.getContactList();
-		
+
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
-			
+
 			// 地面に当たったよ
 			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
 				jump = false;
