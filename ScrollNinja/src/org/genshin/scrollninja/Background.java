@@ -38,10 +38,6 @@ public class Background {
 	private static Body 					body;								// 当たり判定用BOX
 	private static Fixture 				sensor;							// センサー
 	private static float					zIndex;							// Zインデックス
-	private static Vector2				cameraPos = new Vector2();		// カメラ座標
-	private static OrthographicCamera 	camera;							// カメラ
-	private Player 						player;							// プレイヤー
-	
 	
 	// コンストラクタ
 	private Background() {}
@@ -66,30 +62,7 @@ public class Background {
 		sprite[FALL].setPosition(-(Gdx.graphics.getWidth() / 2), -512);
 	}
 	
-	//************************************************************
-	// moveBackground
-	// 背景移動
-	//************************************************************
-	public static void moveBackground(Player player) {
-		//float w = Gdx.graphics.getWidth();
-		//float h = Gdx.graphics.getHeight();
-		
-		// カメラ移動制限
-		if (cameraPos.x < 0)
-			cameraPos.x = 0;
-		if (cameraPos.x > 1248)		// 2048-画面の横幅
-			cameraPos.x = 1248;
-		if (cameraPos.y < 0)
-			cameraPos.y = 0;
-		if (cameraPos.y > 724)		// 1024-画面の縦幅/2
-			cameraPos.y = 724;
-		
-		// プレイヤーの座標をカメラの座標に代入
-		cameraPos = player.GetPosition();
 
-		//sprite[NEAR].setPosition(cameraPos.x - 400 + (cameraPos.x * -0.05f), -1024 + (cameraPos.y * -0.15f));
-		sprite[FALL].setPosition(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
-	}
 	
 	//************************************************************
 	// Get
@@ -99,7 +72,7 @@ public class Background {
 	public static Body GetBody() { return body; }
 	public static Fixture GetSensor() { return sensor; }
 	
-	public static Vector2 GetCamPos() { return cameraPos; }
+	
 	
 	//************************************************************
 	// Set

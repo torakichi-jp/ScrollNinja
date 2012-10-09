@@ -40,7 +40,6 @@ public class GameMain implements Screen{
 		world				= new World(new Vector2(0, -100.0f), true);
 		renderer			= new Box2DDebugRenderer();
 		stage				= new Stage("a");
-		//background			= new Background();
 
 
 		CreateStage();
@@ -57,8 +56,10 @@ public class GameMain implements Screen{
 		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		EnemyManager.Update();
-		Background.moveBackground(player);
-		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y,0);
+
+		// 背景スクロール
+		stage.moveBackground(player);
+		camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
 		camera.update();
 		player.Update(world);
 	}
@@ -169,28 +170,28 @@ public class GameMain implements Screen{
 	@Override
 	public void render(float delta) {
 		// TODO 自動生成されたメソッド・スタブ
-		long error = 0;  
-		int fps = 60;  
-		long idealSleep = (1000 << 16) / fps;  
-		long oldTime;  
-		long newTime = System.currentTimeMillis() << 16; 
-		
-		oldTime = newTime;  
+		long error = 0;
+		int fps = 60;
+		long idealSleep = (1000 << 16) / fps;
+		long oldTime;
+		long newTime = System.currentTimeMillis() << 16;
+
+		oldTime = newTime;
 		Update();
 		Draw();
-		
-		newTime = System.currentTimeMillis() << 16;  
-		long sleepTime = idealSleep - (newTime - oldTime) - error; // 休止できる時間  
-		if (sleepTime < 0x20000) sleepTime = 0x20000; // 最低でも2msは休止  
-		oldTime = newTime;  
+
+		newTime = System.currentTimeMillis() << 16;
+		long sleepTime = idealSleep - (newTime - oldTime) - error; // 休止できる時間
+		if (sleepTime < 0x20000) sleepTime = 0x20000; // 最低でも2msは休止
+		oldTime = newTime;
 		try {
 			Thread.sleep(sleepTime >> 16);
 		} catch (InterruptedException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-		} // 休止  
-		newTime = System.currentTimeMillis() << 16;  
-		error = newTime - oldTime - sleepTime; // 休止時間の誤差  
+		} // 休止
+		newTime = System.currentTimeMillis() << 16;
+		error = newTime - oldTime - sleepTime; // 休止時間の誤差
 
 	}
 
