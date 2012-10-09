@@ -37,7 +37,7 @@ public class Player extends CharacterBase {
 
 	
 	// 定数宣言
-	private static final float FIRSTSPEED	=  5.0f;		// 初速度
+	private static final float FIRSTSPEED	=  15.0f;		// 初速度
 	private static final float GRAVITY		= -0.98f;		// 重力
 	
 	private static final int RIGHT			=  5;
@@ -89,6 +89,7 @@ public class Player extends CharacterBase {
 		direction	 = 1;
 		currentState = STAND;
 		velocity	 = 0;
+		fall		 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 	}
@@ -138,19 +139,22 @@ public class Player extends CharacterBase {
 				jump = true;
 				jumpCount = 0;
 				currentState = JUMP;
+				fall = 10;
 			}
 		}
 		
 		// ジャンプ中の処理
 		if( jump ) {
 			jumpCount ++;
-			position.y -= FIRSTSPEED;
+			position.y += fall;
+			fall -= 0.05;
+			System.out.println(fall);
 			
 			// ジャンプ終わり
-			if( jumpCount > 20) {
+/*			if( jumpCount > 50) {
 				jumpCount = 0;
 				jump = false;
-			}
+			}*/
 		}
 	}
 	
@@ -161,8 +165,7 @@ public class Player extends CharacterBase {
 	private void Gravity(World world) {
 		// 空中にいる時は落下移動
 		if(!GetGroundJudge(world)) {
-			fall = jumpCount *= GRAVITY;
-			position.y += fall;
+			fall -= 0.05;
 		}
 	}
 	
