@@ -55,8 +55,8 @@ public class GameMain implements Screen{
 	public void Update() {
 		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-		Background.moveBackground(player);
-		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y,0);
+		stage.moveBackground(player);
+		camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
 		camera.update();
 		player.Update(world);
 	}

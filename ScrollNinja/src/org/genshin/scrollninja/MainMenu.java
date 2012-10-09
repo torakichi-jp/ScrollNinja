@@ -26,6 +26,7 @@ public class MainMenu implements Screen {
 	private Sprite mode_Settings;
 	
 	private int SpritePosX;
+	private boolean SprFlg;
 
 	private float rotation;
 
@@ -74,6 +75,7 @@ public class MainMenu implements Screen {
 
 		// おまけの回転
 		rotation = 0;
+		SprFlg = false;
 		
 		
 	}
@@ -93,11 +95,17 @@ public class MainMenu implements Screen {
 				position = 1;
 			}
 		}
-		moveOption(SpritePosX);
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			SpritePosX += 10;
+			mode_GameRun.setPosition((int)SpritePosX, -25);;
+		}
 		
 		
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (position == 0) {
+				
+				SprFlg = true;
+				
 				scrollNinja.setScreen(new GameMain(scrollNinja));
 				
 				return;
@@ -128,6 +136,10 @@ public class MainMenu implements Screen {
 		}
 		*/
 	}
+	
+	public void moveSprite() {
+		
+	}
 
 	// 描画関係
 	public void draw(float delta) {
@@ -150,18 +162,7 @@ public class MainMenu implements Screen {
 		rotation += 1;
 		cursor.setRotation(rotation);
 	}
-	
-	public void fade() {
-		
-	}
-	
-	public void moveOption(int SpritePosX) {
-		
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			SpritePosX -= 1;
-		mode_GameRun.setPosition((int)SpritePosX, -25);
-		}
-	}
+
 	@Override
 	public void render(float delta) {
 		update(delta);
