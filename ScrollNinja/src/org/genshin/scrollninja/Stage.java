@@ -22,10 +22,7 @@ public class Stage {
 	private ArrayList<Item> popItems;
 	private ArrayList<Enemy> popEnemys;
 	private ArrayList<ObJectBase> object;
-	public Vector2 cameraPos = new Vector2();
-	public OrthographicCamera camera;
 
-	//private Player asd = Player.GetInstace();
 
 	private GameScreen zz;
 
@@ -49,24 +46,8 @@ public class Stage {
 
 	}
 
-	// 背景移動
 	public void moveBackground() {
-		/*
-		 * camera move
-		 * */
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(w, h);
-		cameraPos = GameScreen.charaBody.getPosition();
-		//cameraPos = asd.GetPosition();
-		//cameraPos = zz.GetChrPos();
-		camera.position.set(cameraPos.x, cameraPos.y, 0);
-		camera.update();
-
-		// 遠景をカメラの位置に合わせて移動
-		ScrollNinja.bgSpr.setPosition
-			(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 	}
 
 	public Player spawnPlayer(Player player) {

@@ -28,6 +28,8 @@ public class GameMain implements Screen{
 	private World					world;				// ワールドマトリクス
 	private Box2DDebugRenderer		renderer;			//
 	private Player					player;				// プレイヤー
+	private Stage						stage;
+	//private Background				background;
 
 	// コンストラクタ
 	public GameMain(Game game) {
@@ -37,6 +39,8 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		world				= new World(new Vector2(0, -100.0f), true);
 		renderer			= new Box2DDebugRenderer();
+		stage				= new Stage("a");
+		//background			= new Background();
 
 
 		CreateStage();
@@ -51,6 +55,9 @@ public class GameMain implements Screen{
 	public void Update() {
 		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+		Background.moveBackground(player);
+		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y,0);
+		camera.update();
 		player.Update(world);
 	}
 
