@@ -24,6 +24,8 @@ public class MainMenu implements Screen {
 	private Sprite cursor;
 	private Sprite mode_GameRun;
 	private Sprite mode_Settings;
+	
+	private int SpritePosX;
 
 	private float rotation;
 
@@ -53,7 +55,7 @@ public class MainMenu implements Screen {
 			System.out.println("テクスチャサイズは２の乗数にしてください");
 		}
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
+		SpritePosX = -128;
 		// カーソルセット
 		TextureRegion region = new TextureRegion(texture, 0, 200, 50, 50);
 		cursor = new Sprite(region);
@@ -63,7 +65,7 @@ public class MainMenu implements Screen {
 		// 選択肢１セット
 		region = new TextureRegion(texture, 0, 0, 256, 100);
 		mode_GameRun = new Sprite(region);
-		mode_GameRun.setPosition(-128, -25);
+		mode_GameRun.setPosition(SpritePosX, -25);
 
 		// 選択肢２セット
 		region = new TextureRegion(texture, 0, 100, 256, 100);
@@ -72,6 +74,8 @@ public class MainMenu implements Screen {
 
 		// おまけの回転
 		rotation = 0;
+		
+		
 	}
 
 	// 更新
@@ -89,10 +93,13 @@ public class MainMenu implements Screen {
 				position = 1;
 			}
 		}
-
+		moveOption(SpritePosX);
+		
+		
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (position == 0) {
 				scrollNinja.setScreen(new GameMain(scrollNinja));
+				
 				return;
 			}
 			if (position == 1) {
@@ -143,7 +150,18 @@ public class MainMenu implements Screen {
 		rotation += 1;
 		cursor.setRotation(rotation);
 	}
-
+	
+	public void fade() {
+		
+	}
+	
+	public void moveOption(int SpritePosX) {
+		
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			SpritePosX -= 1;
+		mode_GameRun.setPosition((int)SpritePosX, -25);
+		}
+	}
 	@Override
 	public void render(float delta) {
 		update(delta);
