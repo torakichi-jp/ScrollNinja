@@ -18,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 
-public class MainMenu implements Screen , MouseListener {
+public class MainMenu implements Screen , MouseListener{
 	private Game scrollNinja;
 
 	private OrthographicCamera camera;
@@ -119,6 +119,8 @@ public class MainMenu implements Screen , MouseListener {
 
 	// 更新
 	public void update(float delta) {
+		
+		
 		// キー入力
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			if (position == 1) {
@@ -137,7 +139,7 @@ public class MainMenu implements Screen , MouseListener {
 		
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (position == 0) {
-				SprFlg = true;
+				SprFlg = true;		// スプライトを動かすフラグオン
 				return;
 			}
 			if (position == 1) {
@@ -146,28 +148,70 @@ public class MainMenu implements Screen , MouseListener {
 			}
 		}
 		
+		// クリックされたらゲームステート移行
 		if(Gdx.input.isTouched()) {
+			
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
-			System.out.println(x);
+			
+			// コンティニュー
+			if(x > 435 && x < 600 && y > 265 && y < 300) {
+				//stateC = true;
+				SprFlg = true;
+			}
+			
+			// ニューゲーム
+			if(x > 435 && x < 625 && y > 310 && y < 340) {
+				
+			}
+			
+			// ロードゲーム
+			if(x > 435 && x < 635 && y > 350 && y < 380) {
+				
+			}			
+			
+			// ネットワーク
+			if(x > 435 && x < 590 && y > 390 && y < 420) {
+				
+			}
+			
+			// オプション
+			if(x > 435 && x < 555 && y > 427 && y < 460) {
+				
+			}
+			
+			// 終了
+			if( x > 435 && x < 505 && y > 470 && y < 500 ) {
+				System.exit(0);
+			}
+			
+			//System.out.println(y);
+			
 		}
 		
+		// ゲームメイン移行
 		if(stateC)
 		scrollNinja.setScreen(new GameMain(scrollNinja));
 		
-	
 	}
-	
+	//---------------------------------------------------
 	// 画像移動
+	// 画面端にいったらステート移行
+	//---------------------------------------------------
 	public void moveSprite() {
 		
 		if(SprFlg) {
-			// エンター押されたら
+			// 加速して画面外
 			SpritePosX += SpriteSpd;
+			SpriteSpd += 1;
+			
+			// スプライト移動
 			mode_Continue.setPosition((int)SpritePosX, 0);
 			mode_NewGame.setPosition((int)SpritePosX, -40);
-			// 加速して画面外
-			SpriteSpd += 1;
+			mode_LoadGame.setPosition((int)SpritePosX, -80);
+			mode_Network.setPosition((int)SpritePosX, -120);
+			mode_Option.setPosition((int)SpritePosX, -160);
+			mode_Exit.setPosition((int)SpritePosX, -200);
 		}
 		if(SpritePosX >= 250) {
 			SprFlg = false;
@@ -188,6 +232,7 @@ public class MainMenu implements Screen , MouseListener {
 		Background.GetSprite()[2].draw(batch);
 		cursor.draw(batch);
 		
+		// メニュー選択肢描画
 		mode_Continue.draw(batch);
 		mode_NewGame.draw(batch);
 		mode_LoadGame.draw(batch);

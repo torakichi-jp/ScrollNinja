@@ -73,7 +73,8 @@ public class Player extends CharacterBase {
 	// ゲッターまとめ
 	//************************************************************
 	public Vector2 GetPosition() { return position; }
-	public Sprite getSprite(String type) {
+	public Sprite GetSprite(String type) {
+		System.out.println("in");
 		if (type.equals("BODY"))
 			return sprite;
 		else
@@ -125,6 +126,10 @@ public class Player extends CharacterBase {
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 
+		// 一番最初の表示　現在は歩きで代用
+		nowFrame = walkAnimation.getKeyFrame(stateTime, true);
+		nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
+
 		// 解放
 		texture.dispose();
 	}
@@ -133,7 +138,7 @@ public class Player extends CharacterBase {
 	// Update
 	// 更新処理はここにまとめる
 	//************************************************************
-	public void Update(World world) {		
+	public void Update(World world) {
 		position = body.getPosition();
 		body.setTransform(position ,0);
 		//nowFrame = walkAnimation.getKeyFrame(stateTime, true);
@@ -188,7 +193,7 @@ public class Player extends CharacterBase {
 				jump = true;
 				currentState = JUMP;
 				fall = 15;
-				System.out.println(fall);
+				//System.out.println(fall);
 			}
 		}
 

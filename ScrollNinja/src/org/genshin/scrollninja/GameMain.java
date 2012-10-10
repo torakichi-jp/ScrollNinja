@@ -53,13 +53,18 @@ public class GameMain implements Screen{
 	// 更新処理
 	//************************************************************
 	public void Update() {
-		player.GetSprite().setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-		player.GetSprite().setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
+		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
+		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		EnemyManager.Update();
 
 		// 背景スクロール
-		stage.moveBackground(player);
-		camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
+		//stage.moveBackground(player);
+		//camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
+		Background.moveBackground(player);
+		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
+
 		camera.update();
 		player.Update(world);
 	}
@@ -137,7 +142,7 @@ public class GameMain implements Screen{
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		player.GetBody().setBullet(true);			// すり抜け防止
 		player.GetBody().setTransform(0, 300, 0);	// 初期位置
-		
+
 		// とりあえず
 		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
 		EnemyManager.GetEnemy("1").GetBody().createFixture(fd);

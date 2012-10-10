@@ -26,6 +26,14 @@ public class Stage {
 	private static Sprite				spr[]  = new Sprite[3];
 	private World						world;
 
+	private String name;
+	private ArrayList<Background>backgroundLayers;
+	private Sprite sprite;
+	private ArrayList<Item> popItems;
+	private ArrayList<Enemy> popEnemys;
+	private ArrayList<ObJectBase> object;
+
+
 	private GameScreen zz;
 
 	// コンストラクタ
@@ -42,7 +50,7 @@ public class Stage {
 		player.Update(world);
 		PopEnemy(player);
 	}
-	
+
 	//************************************************************
 	// CreateEnemy
 	// 敵の作成
@@ -68,7 +76,7 @@ public class Stage {
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		player.GetBody().setBullet(true);			// すり抜け防止
 		player.GetBody().setTransform(0, 300, 0);	// 初期位置
-		
+
 		// とりあえず
 		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
 		EnemyManager.GetEnemy("1").GetBody().createFixture(fd);
@@ -122,6 +130,9 @@ public class Stage {
 		// spr[0]は後ろの山と雲の背景
 		spr[0].setPosition(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 	}
+	/*public void moveBackground() {
+
+	}*/
 
 	public Player spawnPlayer(Player player) {
 		return player;
