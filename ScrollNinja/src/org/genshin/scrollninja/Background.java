@@ -61,7 +61,6 @@ public class Background {
 		sprite[FALL] = new Sprite(tmpRegion);
 		sprite[FALL].setPosition(-(Gdx.graphics.getWidth() / 2), -512);
 	}
-	
 
 	
 	//************************************************************

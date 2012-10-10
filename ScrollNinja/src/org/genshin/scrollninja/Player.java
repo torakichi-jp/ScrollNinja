@@ -133,7 +133,7 @@ public class Player extends CharacterBase {
 	// Update
 	// 更新処理はここにまとめる
 	//************************************************************
-	public void Update(World world) {
+	public void Update(World world) {		
 		position = body.getPosition();
 		body.setTransform(position ,0);
 		//nowFrame = walkAnimation.getKeyFrame(stateTime, true);
