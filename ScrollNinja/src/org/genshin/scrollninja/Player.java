@@ -42,9 +42,10 @@ public class Player extends CharacterBase {
 	private static final int RIGHT			=  5;
 	private static final int LEFT			= -5;
 	private static final int STAND			=  0;
-	private static final int DASH			=  1;
-	private static final int JUMP			=  2;
-	private static final int ATTACK			=  3;
+	private static final int WALK			=  1;
+	private static final int DASH			=  2;
+	private static final int JUMP			=  3;
+	private static final int ATTACK			=  4;
 
 	// 変数宣言
 	private int				charge;					// チャージゲージ
@@ -55,44 +56,65 @@ public class Player extends CharacterBase {
 	private float			prevAngle;				// 前回角度
 	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
-	private boolean 		jump;					// ジャンプフラグ
-	private Animation 		standAnimation;			// 立ちアニメーション
-	private Animation 		dashAnimation;			// ダッシュアニメーション
-	private Animation 		jumpAnimation;			// ジャンプアニメーション
-	private Animation 		attackAnimation;		// 攻撃アニメーション
-	private TextureRegion	frame[];				// アニメーションのコマ
+	private boolean			jump;					// ジャンプフラグ
+	private Animation		standAnimation;			// 立ちアニメーション
+	private Animation		walkAnimation;			// 歩きアニメーション
+	private Animation		dashAnimation;			// ダッシュアニメーション
+	private Animation		jumpAnimation;			// ジャンプアニメーション
+	private Animation		attackAnimation;		// 攻撃アニメーション
+	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
+	private Sprite			footSprite;				// 下半身用のスプライト
+	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
+	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
 
 	//************************************************************
 	// Get
 	// ゲッターまとめ
 	//************************************************************
 	public Vector2 GetPosition() { return position; }
+	public Sprite getSprite(String type) {
+		if (type.equals("BODY"))
+			return sprite;
+		else
+			return footSprite;
+	}
 
 	// コンストラクタ
 	public Player() {
 		// テクスチャの読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/chara.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
+		//TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 
 		// スプライトに反映
-		sprite = new Sprite(region);
-		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		//sprite = new Sprite(region);
+		//sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 
 		// アニメーション
-		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
-		TextureRegion[][] tmp = TextureRegion.split(dash, 64, 64);
+		//Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
+		TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
+
+		// 下半身・歩き １行目６フレーム
 		frame = new TextureRegion[6];
 		int index = 0;
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 4; j++) {
-				if(index < 6)
-					frame[index++] = tmp[i][j];
-			}
-		}
+		for (int i = 0; i < frame.length; i++)
+			frame[index++] = tmp[i][0];
+		footWalkAnimation = new Animation(1.5f, frame);
 
-		dashAnimation = new Animation(1.5f, frame);
+		// 上半身・歩き　２行目６フレーム
+		frame = new TextureRegion[6];
+		index = 0;
+		for (int i = 0; i < frame.length; i++)
+			frame[index++] = tmp[i][1];
+		walkAnimation = new Animation(1.5f, frame);
+
+		// スプライトに反映 最初は立ちの第１フレーム
+		// （※現在は用意されていないので歩きの第１フレームで代用）
+		sprite = new Sprite(tmp[0][0]);
+		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+		footSprite = new Sprite(tmp[0][1]);
+		footSprite.setOrigin(footSprite.getWidth() / 2, footSprite.getHeight() / 2);
 
 		charge		 = 0;
 		money		 = 0;
@@ -102,6 +124,9 @@ public class Player extends CharacterBase {
 		prevAngle	 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
+
+		// 解放
+		texture.dispose();
 	}
 
 	//************************************************************
@@ -111,8 +136,11 @@ public class Player extends CharacterBase {
 	public void Update(World world) {
 		position = body.getPosition();
 		body.setTransform(position ,0);
-		nowFrame = dashAnimation.getKeyFrame(stateTime, true);
-		stateTime ++;
+		//nowFrame = walkAnimation.getKeyFrame(stateTime, true);
+		//nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
+		//stateTime ++;
+		sprite.setRegion(nowFrame);
+		footSprite.setRegion(nowFootFrame);
 
 		Stand(world);		// 立ち処理
 		Jump(world);		// ジャンプ処理
@@ -133,6 +161,8 @@ public class Player extends CharacterBase {
 	// 描画処理はここでまとめる
 	//************************************************************
 	public void Draw(SpriteBatch batch) {
+		// 下半身から描画
+		footSprite.draw(batch);
 		sprite.draw(batch);
 	}
 
@@ -194,9 +224,10 @@ public class Player extends CharacterBase {
 			direction = RIGHT;				// プレイヤーの向きを変更。
 			position.x += direction;		// プレイヤーの移動
 			sprite.setScale(-1, 1);
+			footSprite.setScale(-1, 1);
 
 			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
-				currentState = DASH;
+				currentState = WALK;
 			}
 		}
 		// 左が押された
@@ -204,9 +235,10 @@ public class Player extends CharacterBase {
 			direction = LEFT;
 			position.x += direction;
 			sprite.setScale(1, 1);
+			footSprite.setScale(1, 1);
 
 			if( GetGroundJudge(world) ) {
-				currentState = DASH;
+				currentState = WALK;
 			}
 		}
 	}
@@ -229,8 +261,14 @@ public class Player extends CharacterBase {
 		case STAND:		// 立ち
 
 			break;
+		case WALK:		// 歩き
+			nowFrame = walkAnimation.getKeyFrame(stateTime, true);
+			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
+			stateTime ++;
+			//sprite.setRegion(nowFrame);
+			//footSprite.setRegion(nowFootFrame);
+			break;
 		case DASH:		// 走り
-			sprite.setRegion(nowFrame);
 			break;
 		case JUMP:		// ジャンプ
 			break;
