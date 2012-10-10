@@ -74,7 +74,6 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public Vector2 GetPosition() { return position; }
 	public Sprite GetSprite(String type) {
-		System.out.println("in");
 		if (type.equals("BODY"))
 			return sprite;
 		else
@@ -100,22 +99,26 @@ public class Player extends CharacterBase {
 		frame = new TextureRegion[6];
 		int index = 0;
 		for (int i = 0; i < frame.length; i++)
-			frame[index++] = tmp[i][0];
-		footWalkAnimation = new Animation(1.5f, frame);
+			frame[index++] = tmp[0][i];
+		footWalkAnimation = new Animation(3.0f, frame);
 
 		// 上半身・歩き　２行目６フレーム
 		frame = new TextureRegion[6];
 		index = 0;
 		for (int i = 0; i < frame.length; i++)
-			frame[index++] = tmp[i][1];
-		walkAnimation = new Animation(1.5f, frame);
+			frame[index++] = tmp[1][i];
+		walkAnimation = new Animation(3.0f, frame);
 
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
-		sprite = new Sprite(tmp[0][0]);
+		sprite = new Sprite(walkAnimation.getKeyFrame(0, true));
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-		footSprite = new Sprite(tmp[0][1]);
+		footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
 		footSprite.setOrigin(footSprite.getWidth() / 2, footSprite.getHeight() / 2);
+
+		// 一番最初の表示　現在は歩きで代用
+		nowFrame = walkAnimation.getKeyFrame(0, true);
+		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
 
 		charge		 = 0;
 		money		 = 0;
@@ -125,13 +128,6 @@ public class Player extends CharacterBase {
 		prevAngle	 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
-
-		// 一番最初の表示　現在は歩きで代用
-		nowFrame = walkAnimation.getKeyFrame(stateTime, true);
-		nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
-
-		// 解放
-		texture.dispose();
 	}
 
 	//************************************************************
@@ -141,9 +137,6 @@ public class Player extends CharacterBase {
 	public void Update(World world) {
 		position = body.getPosition();
 		body.setTransform(position ,0);
-		//nowFrame = walkAnimation.getKeyFrame(stateTime, true);
-		//nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
-		//stateTime ++;
 		sprite.setRegion(nowFrame);
 		footSprite.setRegion(nowFootFrame);
 
@@ -264,14 +257,11 @@ public class Player extends CharacterBase {
 	private void animation() {
 		switch(currentState) {
 		case STAND:		// 立ち
-
 			break;
 		case WALK:		// 歩き
 			nowFrame = walkAnimation.getKeyFrame(stateTime, true);
 			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
 			stateTime ++;
-			//sprite.setRegion(nowFrame);
-			//footSprite.setRegion(nowFootFrame);
 			break;
 		case DASH:		// 走り
 			break;
