@@ -182,6 +182,7 @@ public class MainMenu implements Screen , MouseListener{
 			
 			// 終了
 			if( x > 435 && x < 505 && y > 470 && y < 500 ) {
+				scrollNinja.dispose();
 				System.exit(0);
 			}
 			
@@ -275,8 +276,6 @@ public class MainMenu implements Screen , MouseListener{
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		texture.dispose();
 	}
 
 	@Override

@@ -20,180 +20,56 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // 10/5 制作開始
 // 10/6 とりあえず表示まで。シングルトンを全部モノステートに。
 // 10/8 コメント追加
+// 10/10 仕様変更
+
+// *メモ*
+// stageってのがシーンの代わりです。
+// シーン（ステージ）を遷移させたい時は、Stage型の変数を宣言してnew(world)して
+// StageManager.StageTrance(変数名)で遷移します。
+// 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
 
 public class GameMain implements Screen{
-	private Game					ScrollNinjya;
-	private OrthographicCamera		camera;				// カメラ
-	private SpriteBatch				spriteBatch;		// スプライトバッチ
-	private World					world;				// ワールドマトリクス
-	private Box2DDebugRenderer		renderer;			//
-	private Player					player;				// プレイヤー
-	private Stage					stage;
-	//private Background				background;
+	private Game		ScrollNinjya;
+	private World		world;				// ワールド
+	private Stage		stage1;				// 最初に呼ばれるステージ
+	private long 		error			= 0;
+	private int			fps				= 60;
+	private long		idealSleep		= (1000 << 16) / fps;
+	private long		newTime			= System.currentTimeMillis() << 16;
+	private long		oldTime;
+	private long		sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
 
 	// コンストラクタ
 	public GameMain(Game game) {
 		ScrollNinjya		= game;
-		player				= new Player();
-		camera				= new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		spriteBatch 		= new SpriteBatch();
 		world				= new World(new Vector2(0, -100.0f), true);
-		renderer			= new Box2DDebugRenderer();
-		stage				= new Stage(world);
-
-
-		CreateStage();
-		CreateStageObject();
-		EnemyManager.CreateEnemy("1", 0, 0.0f, 400.0f);
-		CreatePlayer();
+		
+		stage1				= new Stage(world);
+		
+		StageManager.StageTrance(stage1);			// 現在のステージの設定
 	}
-
+	
+	
 	//************************************************************
-	// Update
-	// 更新処理
+	// render
+	// メイン処理
 	//************************************************************
-	public void Update() {
-		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-		EnemyManager.Update();
-
-		// 背景スクロール
-		//stage.moveBackground(player);
-		//camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
-		Background.moveBackground(player);
-		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
-
-		camera.update();
-		player.Update(world);
-	}
-
-	//************************************************************
-	// Draw
-	// 描画処理
-	//************************************************************
-	public void Draw() {
-		// 全部クリア
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-		spriteBatch.setProjectionMatrix(camera.combined);		// プロジェクション行列のセット
-		spriteBatch.begin();									// 描画開始
-		{
-			Background.GetSprite()[0].draw(spriteBatch);
-			Background.GetSprite()[2].draw(spriteBatch);
-//			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
-			player.Draw(spriteBatch);
-			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
-		}
-		spriteBatch.end();										// 描画終了
-
-		renderer.render(world, camera.combined);
-		world.step(Gdx.graphics.getDeltaTime(), 20, 20);
-		player.GetBody().setAwake(true);
-	}
-
-	//************************************************************
-	// CreateStage
-	// ステージのあたり判定の作成
-	//************************************************************
-	private void CreateStage() {
-		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
-
-		// ボディタイプ設定
-		BodyDef bd	= new BodyDef();
-		bd.type		= BodyType.StaticBody;		// 動かない物体
-		bd.position.set(-(Gdx.graphics.getWidth() / 2), -1024);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 1000;		// 密度
-		fd.friction		= 100.0f;	// 摩擦
-		fd.restitution	= 0;		// 反発係数
-
-		// ボディ作成
-		Background.SetBody(world.createBody(bd));
-		loader.attachFixture( Background.GetBody(), "bgTest", fd, 2048);
-	}
-
-	//************************************************************
-	// CreateCharacter
-	// プレイヤーの作成
-	//************************************************************
-	private void CreatePlayer() {
-		BodyDef def	= new BodyDef();
-		def.type	= BodyType.DynamicBody;		// 動く物体
-		player.SetBody(world.createBody(def));
-
-		// 当たり判定の作成
-		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(16, 24);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 50;
-		fd.friction		= 100.0f;
-		fd.restitution	= 0;
-		fd.shape		= poly;
-
-		//
-		player.GetBody().createFixture(fd);
-		player.SetFixture(player.GetBody().createFixture(poly, 0));
-		player.GetBody().setBullet(true);			// すり抜け防止
-		player.GetBody().setTransform(0, 300, 0);	// 初期位置
-
-		// とりあえず
-		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
-		EnemyManager.GetEnemy("1").GetBody().createFixture(fd);
-		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
-		poly.dispose();
-		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
-		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 300, 0);
-	}
-
-	//************************************************************
-	// CreateStageObject
-	// ステージオブジェクトの作成
-	//************************************************************
-	private void CreateStageObject() {
-		// 当たり判定読み込み
-		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/stageObject.json"));
-
-		// Bodyのタイプを設定 Staticは動かない物体
-		BodyDef bd = new BodyDef();
-		bd.type = BodyType.StaticBody;
-		bd.position.set(0, 0);
-
-		// Bodyの設定を設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 1000;				// 密度
-		fd.friction		= 100f;				// 摩擦
-		fd.restitution	= 0;				// 反発係数
-
-		// ステージオブジェクトの作成
-		StageObjectManager.CreateStageObject("block");
-		StageObjectManager.GetStageObject("block").SetBody(world.createBody(bd));
-
-		// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-		loader.attachFixture(StageObjectManager.GetStageObject("block").GetBody(), "gravestone", fd, 256);
-	}
-
 	@Override
 	public void render(float delta) {
-		// TODO 自動生成されたメソッド・スタブ
-		long error = 0;
-		int fps = 60;
-		long idealSleep = (1000 << 16) / fps;
-		long oldTime;
-		long newTime = System.currentTimeMillis() << 16;
-
 		oldTime = newTime;
-		Update();
-		Draw();
-
+		
+		StageManager.Update();
+		StageManager.Draw();
+		
+		FPS();
+	}
+	
+	//************************************************************
+	// FPS
+	// FPS処理。汚いので関数化
+	//************************************************************
+	public void FPS() {
 		newTime = System.currentTimeMillis() << 16;
-		long sleepTime = idealSleep - (newTime - oldTime) - error; // 休止できる時間
 		if (sleepTime < 0x20000) sleepTime = 0x20000; // 最低でも2msは休止
 		oldTime = newTime;
 		try {
@@ -204,7 +80,6 @@ public class GameMain implements Screen{
 		} // 休止
 		newTime = System.currentTimeMillis() << 16;
 		error = newTime - oldTime - sleepTime; // 休止時間の誤差
-
 	}
 
 	@Override
@@ -214,15 +89,17 @@ public class GameMain implements Screen{
 	public void show() {}
 
 	@Override
-	public void hide() {}
+	public void hide() {
+	}
 
 	@Override
-	public void pause() {}
+	public void pause() {
+	}
 
 	@Override
 	public void resume() {}
 
 	@Override
-	public void dispose() {}
-
+	public void dispose() {
+	}
 }

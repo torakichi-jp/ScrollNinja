@@ -48,6 +48,7 @@ public class Player extends CharacterBase {
 	private static final int ATTACK			=  4;
 
 	// 変数宣言
+	private String			name;					// 名前
 	private int				charge;					// チャージゲージ
 	private int				money;					// お金
 	private int				direction;				// 向いてる方向
@@ -73,6 +74,7 @@ public class Player extends CharacterBase {
 	// ゲッターまとめ
 	//************************************************************
 	public Vector2 GetPosition() { return position; }
+	public String GetName(){ return name; }
 	public Sprite GetSprite(String type) {
 		if (type.equals("BODY"))
 			return sprite;
@@ -81,7 +83,7 @@ public class Player extends CharacterBase {
 	}
 
 	// コンストラクタ
-	public Player() {
+	public Player(String Name) {
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -120,6 +122,7 @@ public class Player extends CharacterBase {
 		nowFrame = walkAnimation.getKeyFrame(0, true);
 		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
 
+		name		 = Name;
 		charge		 = 0;
 		money		 = 0;
 		direction	 = 1;
