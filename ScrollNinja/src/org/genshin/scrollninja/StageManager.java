@@ -23,7 +23,7 @@ public class StageManager {
 			return -1;		// エラー処理
 		}
 
-		stageList.get(stageList.indexOf(Name)).moveBackground();
+		//stageList.get(stageList.indexOf(Name)).moveBackground();
 
 		return 1;
 	}

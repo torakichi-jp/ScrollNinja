@@ -58,8 +58,11 @@ public class GameMain implements Screen{
 		EnemyManager.Update();
 
 		// 背景スクロール
-		stage.moveBackground(player);
-		camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
+		//stage.moveBackground(player);
+		//camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
+		Background.moveBackground(player);
+		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
+		
 		camera.update();
 		player.Update(world);
 	}
