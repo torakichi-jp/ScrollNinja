@@ -28,7 +28,7 @@ public class GameMain implements Screen{
 	private World					world;				// ワールドマトリクス
 	private Box2DDebugRenderer		renderer;			//
 	private Player					player;				// プレイヤー
-	private Stage						stage;
+	private Stage					stage;
 	//private Background				background;
 
 	// コンストラクタ
@@ -39,13 +39,13 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		world				= new World(new Vector2(0, -100.0f), true);
 		renderer			= new Box2DDebugRenderer();
-		stage				= new Stage("a");
+		stage				= new Stage(world);
 
 
 		CreateStage();
-		CreatePlayer();
 		CreateStageObject();
 		EnemyManager.CreateEnemy("1", 0, 0.0f, 400.0f);
+		CreatePlayer();
 	}
 
 	//************************************************************
@@ -135,9 +135,16 @@ public class GameMain implements Screen{
 		//
 		player.GetBody().createFixture(fd);
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
-		poly.dispose();
 		player.GetBody().setBullet(true);			// すり抜け防止
 		player.GetBody().setTransform(0, 300, 0);	// 初期位置
+		
+		// とりあえず
+		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
+		EnemyManager.GetEnemy("1").GetBody().createFixture(fd);
+		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
+		poly.dispose();
+		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
+		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 300, 0);
 	}
 
 	//************************************************************

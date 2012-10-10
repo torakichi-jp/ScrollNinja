@@ -22,14 +22,20 @@ public class Enemy extends CharacterBase {
 	// 定数宣言
 	// 敵の種類
 	//========================================
-	private final static int WALKENEMY		= 0;			// 歩兵?
-	private final static int JUMPENEMY		= 1;			// ジャンプしてくるやつ
+	private final static int WALKENEMY		=  0;			// 歩兵?
+	private final static int JUMPENEMY		=  1;			// ジャンプしてくるやつ
+	
+	private final static int RIGHT			=  5;
+	private final static int LEFT			= -5;
 	
 	// 変数宣言
 	private String			name;			// 呼び出す時の名前
 	private int				enemyType;		// 敵の種類
+	private int				direction;		// 向いてる方向
+	private float			stateTime;		// 
 	private TextureRegion	frame[];		// アニメーションのコマ
 	private TextureRegion	nowFrame;		// 現在のコマ
+	private Animation		animation;		// アニメーション
 	
 	// コンストラクタ 
 	Enemy(String Name, int type, Vector2 pos) {
@@ -39,6 +45,8 @@ public class Enemy extends CharacterBase {
 		hp			= 100;
 		attackNum	= 0;
 		speed		= 0;
+		
+		Create();
 	}
 	
 	// コンストラクタ 
@@ -59,11 +67,18 @@ public class Enemy extends CharacterBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
-//		position = body.getPosition();
+		sprite.setPosition(position.x - 32, position.y - 32);
+		sprite.setRotation((float) (body.getAngle()*180/Math.PI));
+		
+		position = body.getPosition();
+		body.setTransform(position ,0);
+		nowFrame = animation.getKeyFrame(stateTime, true);
+		stateTime ++;
 		
 		Move();
 		
-//		body.setTransform(position, body.getAngle());
+		sprite.setRegion(nowFrame);
+		body.setTransform(position, body.getAngle());
 	}
 	
 	//************************************************************
@@ -101,6 +116,8 @@ public class Enemy extends CharacterBase {
 				}
 			}
 			
+			animation = new Animation(20.0f, frame);
+			
 			break;
 		case JUMPENEMY:
 			break;
@@ -114,8 +131,7 @@ public class Enemy extends CharacterBase {
 	public void Move() {
 		switch(enemyType) {
 		case WALKENEMY :
-			position.x -= 1;
-			System.out.println(position.x);
+			position.x += 2.5f;
 			break;
 		case JUMPENEMY :
 			break;

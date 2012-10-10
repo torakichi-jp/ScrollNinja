@@ -65,7 +65,7 @@ public class GameScreen implements Screen {
 	private Vector2 cameraPos = new Vector2();
 
 	/*stage 仮*/
-	public Stage stage = new Stage("name");
+//	public Stage stage = new Stage("name");
 
 	// ジャンプ処理用
 	private Boolean isGround = false;
