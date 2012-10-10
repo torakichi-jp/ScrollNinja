@@ -3,6 +3,9 @@ package org.genshin.scrollninja;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.Box;
+import javax.swing.JOptionPane;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -24,22 +27,22 @@ public class MainMenu implements Screen , MouseListener{
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 
-	private Texture texture;
-	private Sprite cursor;
+	private Texture texture;		// テクスチャー
+	private Sprite cursor;		// カーソル
 
-	
-	private Sprite mode_Continue;
-	private Sprite mode_NewGame;
-	private Sprite mode_LoadGame;
-	private Sprite mode_Network;
-	private Sprite mode_Option;
-	private Sprite mode_Exit;
-	
-	private int SpritePosX;
-	private int SpriteSpd;
-	private boolean SprFlg;
-	private boolean stateC;
+	private Sprite mode_Continue;		// コンティニュー
+	private Sprite mode_NewGame;		// ニューゲーム
+	private Sprite mode_LoadGame;		// ロードゲーム
+	private Sprite mode_Network;		// ネットワーク
+	private Sprite mode_Option;			// オプション
+	private Sprite mode_Exit;			// エグジット
 
+	private int SpritePosX;		// 画像座標
+	private int SpriteSpd;		// スクロール時の移動速度
+	private boolean SprFlg;		// スクロールフラグ
+	private boolean stateC;		// ステートチェンジフラグ
+	
+	private final static int FADE_MENU = 500;		// 画像移動の終わり座標
 	private float rotation;
 
 	// カーソルの位置
@@ -91,7 +94,7 @@ public class MainMenu implements Screen , MouseListener{
 		mode_LoadGame = new Sprite(region);
 		mode_LoadGame.setPosition(SpritePosX, -80);
 		
-		// 選択肢ロードゲーム
+		// 選択肢ネットワー
 		region = new TextureRegion(texture, 0, 128, 256, 35);
 		mode_Network = new Sprite(region);
 		mode_Network.setPosition(SpritePosX, -120);
@@ -114,13 +117,12 @@ public class MainMenu implements Screen , MouseListener{
 		stateC = false;
 		SpriteSpd = 0;
 		
-		
 	}
 
 	// 更新
 	public void update(float delta) {
 		
-		
+		// (仮)現在未使用
 		// キー入力
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			if (position == 1) {
@@ -182,7 +184,14 @@ public class MainMenu implements Screen , MouseListener{
 			
 			// 終了
 			if( x > 435 && x < 505 && y > 470 && y < 500 ) {
-				System.exit(0);
+				
+				int message = JOptionPane.showConfirmDialog(null, "終了しますか？", "Exit", JOptionPane.YES_NO_OPTION);
+				
+				if(message == JOptionPane.OK_OPTION) {
+					//scrollNinja.dispose();
+					
+					System.exit(0);	
+				}
 			}
 			
 			//System.out.println(y);
@@ -191,7 +200,7 @@ public class MainMenu implements Screen , MouseListener{
 		
 		// ゲームメイン移行
 		if(stateC)
-		scrollNinja.setScreen(new GameMain(scrollNinja));
+			scrollNinja.setScreen(new GameMain(scrollNinja));
 		
 	}
 	//---------------------------------------------------
@@ -213,7 +222,7 @@ public class MainMenu implements Screen , MouseListener{
 			mode_Option.setPosition((int)SpritePosX, -160);
 			mode_Exit.setPosition((int)SpritePosX, -200);
 		}
-		if(SpritePosX >= 250) {
+		if(SpritePosX >= FADE_MENU) {
 			SprFlg = false;
 			stateC = true;
 		}
