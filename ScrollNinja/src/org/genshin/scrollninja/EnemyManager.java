@@ -6,6 +6,7 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 //========================================
 // クラス宣言	
@@ -19,9 +20,9 @@ public class EnemyManager {
 	private EnemyManager() {}
 	
 	// 更新
-	public static void Update() {
+	public static void Update(World world) {
 		for(int i = 0; i < enemyList.size(); i ++) {
-			enemyList.get(i).Update();
+			enemyList.get(i).Update(world);
 		}
 	}
 	

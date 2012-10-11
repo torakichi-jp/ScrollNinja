@@ -83,7 +83,9 @@ public class Background {
 			cameraPos.y = 724;
 
 		// プレイヤーの座標をカメラの座標に代入
+		//cameraPos = PlayerManager.GetPlayer("プレイヤー").GetPosition();
 		cameraPos = player.GetPosition();
+		
 		// sprite[0]は後ろの山と雲の背景
 		sprite[0].setPosition(cameraPos.x - 400 + (cameraPos.x * -0.05f), -512 + (cameraPos.y * -0.15f));
 	}
