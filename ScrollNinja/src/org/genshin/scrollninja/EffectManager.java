@@ -11,38 +11,29 @@ import java.util.ArrayList;
 // ***** モノステート *****/
 public class EffectManager {	
 	// 変数宣言
-	private static ArrayList<Effect> effectList;
+	private static ArrayList<Effect> effectList = new ArrayList<Effect>();;
 	
 	// コンストラクタ
-	private EffectManager(){
-		effectList = new ArrayList<Effect>();
-	}
+	private EffectManager(){}
 	
-	// エフェクトの生成 
-	public static int CreateEffect(String Name) {
-		if( effectList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
-			return -1;		// エラー処理
-		}
-		
-		Effect pEffect = new Effect(Name);		// オブジェクトを生成（&初期化）して
+	// エフェクトの生成
+	public static void CreateEffect(int Type) {
+		Effect pEffect = new Effect(Type);		// オブジェクトを生成（&初期化）して
 		effectList.add(pEffect);				// リストに追加
-		
-		return 1;
 	}
 	
 	// エフェクトの削除
-	public static int DeleteEnemy(String Name) {
-		if( !effectList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
-			return -1;		// エラー処理
-		}
-		
-		effectList.remove(effectList.indexOf(Name));		// 引数で渡されたオブジェクトを削除
-		return 1;
+	public static void DeleteEffect(int Type) {
+		effectList.remove(effectList.indexOf(Type));		// 引数で渡されたオブジェクトを削除
 	}
 	
 	// 参照
-	public static Effect GetEnemy(String Name) {
-		return effectList.get(effectList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
+	public static Effect GetEffect(int Type) {
+		for(int i = 0; i < effectList.size(); i ++) {
+			if( effectList.get(i).GetType() == Type ) {
+				return effectList.get(i);			// 引数で渡されたオブジェクトのポインタを返す
+			}
+		}
+		return null;
 	}
-	
 }

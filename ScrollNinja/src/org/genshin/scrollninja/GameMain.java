@@ -29,15 +29,16 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
 
 public class GameMain implements Screen{
-	private Game		ScrollNinjya;
-	private World		world;				// ワールド
-	private Stage		stage1;				// 最初に呼ばれるステージ
-	private long 		error			= 0;
-	private int			fps				= 60;
-	private long		idealSleep		= (1000 << 16) / fps;
-	private long		newTime			= System.currentTimeMillis() << 16;
-	private long		oldTime;
-	private long		sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
+	private Game			ScrollNinjya;
+	public  static World	world;				// ワールド
+	private Stage			stage1;				// 最初に呼ばれるステージ
+	private Stage2			stage2;
+	private long 			error			= 0;
+	private int				fps				= 60;
+	private long			idealSleep		= (1000 << 16) / fps;
+	private long			newTime			= System.currentTimeMillis() << 16;
+	private long			oldTime;
+	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
 
 	// コンストラクタ
 	public GameMain(Game game) {
@@ -46,9 +47,15 @@ public class GameMain implements Screen{
 		
 		stage1				= new Stage(world);
 		
+		
 		StageManager.StageTrance(stage1);			// 現在のステージの設定
 	}
 	
+	//************************************************************
+	// Get
+	// ゲッターまとめ
+	//************************************************************
+//	public World GetWorld(){ return world; }
 	
 	//************************************************************
 	// render

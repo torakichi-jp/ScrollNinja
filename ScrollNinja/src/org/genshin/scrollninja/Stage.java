@@ -65,6 +65,7 @@ public class Stage implements StageBase {
 
 		camera.update();
 		player.Update(world);
+		EffectManager.GetEffect(Effect.FIRE_2).Update();
 	}
 	
 	public void Draw() {
@@ -80,6 +81,7 @@ public class Stage implements StageBase {
 //			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
+			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
 		}
 		spriteBatch.end();										// 描画終了
 

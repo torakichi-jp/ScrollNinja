@@ -53,6 +53,7 @@ public class Player extends CharacterBase {
 	private int				money;					// お金
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
+	private int				nowAttack;				// 現在の攻撃方法
 	private float			fall;					// 落下量
 	private float			prevAngle;				// 前回角度
 	private float			stateTime;
@@ -75,6 +76,7 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public Vector2 GetPosition() { return position; }
 	public String GetName(){ return name; }
+	public int GetDirection(){ return direction; }
 	public Sprite GetSprite(String type) {
 		if (type.equals("BODY"))
 			return sprite;
@@ -131,6 +133,9 @@ public class Player extends CharacterBase {
 		prevAngle	 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
+		
+		EffectManager.CreateEffect(Effect.FIRE_2);
+		nowAttack = Effect.FIRE_2;
 	}
 
 	//************************************************************
@@ -146,6 +151,7 @@ public class Player extends CharacterBase {
 		Stand(world);		// 立ち処理
 		Jump(world);		// ジャンプ処理
 		Move(world);		// 移動処理
+		Attack();
 		Gravity(world);		// 重力計算処理
 		animation();		// アニメーション処理
 
@@ -248,7 +254,17 @@ public class Player extends CharacterBase {
 	// Attack
 	// 攻撃処理。左クリックで攻撃
 	//************************************************************
-	private void Attack() {}
+	private void Attack() {
+		if(Gdx.input.isKeyPressed(Keys.Z)) {
+			switch(nowAttack) {
+			case Effect.FIRE_1:
+				break;
+			case Effect.FIRE_2:
+				EffectManager.GetEffect(Effect.FIRE_2).SetUseFlag(true);
+				break;
+			}
+		}
+	}
 
 	// カギ縄
 	private void Kaginawa(){}
