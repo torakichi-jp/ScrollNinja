@@ -55,7 +55,7 @@ public class Stage implements StageBase {
 		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-		EnemyManager.Update();
+		EnemyManager.Update(world);
 
 		// 背景スクロール
 		//stage.moveBackground(player);
