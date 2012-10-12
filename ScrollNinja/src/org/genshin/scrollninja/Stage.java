@@ -42,7 +42,7 @@ public class Stage implements StageBase {
 		
 		CreateStage();
 		CreateStageObject();
-		EnemyManager.CreateEnemy("1", 0, 0.0f, 400.0f);
+		EnemyManager.CreateEnemy("1", 0, 1000.0f, 500.0f);
 		CreatePlayer();
 	}
 
@@ -148,7 +148,7 @@ public class Stage implements StageBase {
 		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
 		poly.dispose();
 		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
-		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 300, 0);
+		EnemyManager.GetEnemy("1").GetBody().setTransform(500, 100, 0);
 	}
 
 	//************************************************************

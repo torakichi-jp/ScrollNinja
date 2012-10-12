@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 // 10/11 ジャンプ、移動、強制追跡(Xが越えると)
 //		 マネージャ、アップデートの引数をworldに
 //		 二段ジャンプ制御
+// 10/12 
 
 public class Enemy extends CharacterBase {
 	//========================================
@@ -34,6 +35,8 @@ public class Enemy extends CharacterBase {
 	private final static int AUTOENEMY		=  5;			// オート
 	private final static int HIDEENEMY		=  6;			// 隠密
 	private final static int RUSH			=  7;			// 突撃
+	
+	private final static int CHECK			=  0;
 	
 	
 	private final static int RIGHT			=  5;
@@ -78,7 +81,8 @@ public class Enemy extends CharacterBase {
 		
 		jump = false;
 		fall = 0.0f;
-		
+
+		sprite.setScale(-1,1);
 		Create();
 	}
 	
@@ -95,7 +99,9 @@ public class Enemy extends CharacterBase {
 		nowFrame = animation.getKeyFrame(stateTime, true);
 		stateTime ++;
 		
+		// 敵移動
 		Move();
+		//重力
 		Gravity(world);
 		
 		sprite.setRegion(nowFrame);
@@ -164,14 +170,21 @@ public class Enemy extends CharacterBase {
 		case ATTACKENEMY :
 			break;
 		case AUTOENEMY :
+			// 範囲内にプレイヤーがいるかを検知し
+			// 範囲内にプレイヤーがいると襲撃 or 定点攻撃
+			switch(1) {
+			case 1:
+				break;
+			}
 			break;
 		case HIDEENEMY :
+			// ただのインビジブル or 判定はあるが見えない
 			break;
 			
 		
 		}
 	}
-	private float enemywalkspd = 2.5f;
+	private float enemywalkspd = 1.0f;
 	
 	//************************************************************
 	// walk
@@ -180,22 +193,29 @@ public class Enemy extends CharacterBase {
 	public void WalkEnemy(Player player) {
 		
 		player = PlayerManager.GetPlayer("プレイヤー");
-
+		// 右向きに歩いている
 		// プレイヤーのX座標が敵のX座標より右にあるとき
 		if(player.position.x > position.x ) {
-			enemywalkspd = -4.0f;
-
+			sprite.setScale(-1,1);
+			position.x += enemywalkspd;;
+			/*
 			System.out.print("teki");
 			System.out.println(position.x);
 			System.out.print("player");
-			System.out.println(player.position.x);
+			System.out.println(player.position.x);*/
 		}
-		else if(player.position.x < position.x)
-			position.x += enemywalkspd * 1.1 ;
-		else
-			position.x += enemywalkspd;
-			
+		else if(player.position.x < position.x) {
+			sprite.setScale(1,1);
+			position.x -= enemywalkspd * 4.2f;
+		}
 		
+		// デバッグ用超加速(突撃 or ダッシュ)
+		if (Gdx.input.isKeyPressed(Keys.C)) {
+			enemywalkspd = 2.0f;
+		}	
+		if (Gdx.input.isKeyPressed(Keys.V)) {
+			enemywalkspd = 1.0f;
+		}
 	}
 	
 	//************************************************************
@@ -218,40 +238,38 @@ public class Enemy extends CharacterBase {
 	}
 	
 	//************************************************************
-		// GetGroundJudge
-		// 戻り値： true:地面接地		false:空中
-		// 接触判定。長いのでここで関数化
-		//************************************************************
-		private boolean GetGroundJudge(World world) {
-			List<Contact> contactList = world.getContactList();
-
-			for(int i = 0; i < contactList.size(); i++) {
+	// GetGroundJudge
+	// 戻り値： true:地面接地		false:空中
+	// 接触判定。長いのでここで関数化
+	//************************************************************
+	private boolean GetGroundJudge(World world) {
+		List<Contact> contactList = world.getContactList();
+		for(int i = 0; i < contactList.size(); i++) {
 				Contact contact = contactList.get(i);
-
-				// 地面に当たったよ
-				if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
-					jump = false;
-					fall = 0;
-					return true;
-				}
+			// 地面に当たったよ
+			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
+				jump = false;
+				fall = 0;
+				return true;
 			}
-			return false;
 		}
+		return false;
+	}
 	
-		//************************************************************
-		// Gravity
-		// 重力計算処理。常にやってます
-		//************************************************************
-		private void Gravity(World world) {
-			// 空中にいる時は落下移動
-			if(!GetGroundJudge(world)) {
-				fall -= 0.25;
-				position.y -= 5;
-				if( fall < -5 ) {
-					fall = -5;
-				}
+	//************************************************************
+	// Gravity
+	// 重力計算処理。常にやってます プレイヤーのをpublicにでもOK characterbase
+	//************************************************************
+	private void Gravity(World world) {
+		// 空中にいる時は落下移動
+		if(!GetGroundJudge(world)) {
+			fall -= 0.25;
+			position.y -= 5;
+			if( fall < -5 ) {
+				fall = -5;
 			}
 		}
+	}
 		
 	//************************************************************
 	// Get
