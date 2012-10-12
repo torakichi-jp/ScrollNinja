@@ -37,7 +37,7 @@ public class Weapon {
 	}
 
 	//武器座標ゲット
-	public Vector2 GetWeaponPos() {
+	public Vector2 GetWeaponPosition() {
 		return position;
 	}
 
