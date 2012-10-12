@@ -22,40 +22,39 @@ import com.badlogic.gdx.physics.box2d.World;
 //		 二段ジャンプ制御
 // 10/12 
 
+
+// 敵はプレイヤーを見つけたら剣や手裏剣などで攻撃
+// 範囲内にいない場合は左右に移動
+
 public class Enemy extends CharacterBase {
 	//========================================
 	// 定数宣言
 	// 敵の種類
 	//========================================
 	private final static int WALKENEMY		=  0;			// 歩兵?
-	private final static int JUMPENEMY		=  1;			// ジャンプしてくるやつ
-	private final static int CHASEENEMY	=  2;			// 追跡
-	private final static int DASHENEMY		=  3;			// 走り
-	private final static int ATTACKENEMY	=  4;			// 攻撃
-	private final static int AUTOENEMY		=  5;			// オート
-	private final static int HIDEENEMY		=  6;			// 隠密
-	private final static int RUSH			=  7;			// 突撃
-	
+	private final static int ATTACKENEMY	=  1;			// 攻撃
+	private final static int AUTOENEMY		=  2;			// AI
+
 	private final static int CHECK			=  0;
 	
+	private final static float CLIMBUP		=  4.0f;
 	
 	private final static int RIGHT			=  5;
 	private final static int LEFT			= -5;
 	
 	// 変数宣言
-	private String			name;			// 呼び出す時の名前
-	private int				enemyType;		// 敵の種類
-	private int				direction;		// 向いてる方向
-	private float			stateTime;		// 
-	private TextureRegion	frame[];		// アニメーションのコマ
-	private TextureRegion	nowFrame;		// 現在のコマ
-	private Animation		animation;		// アニメーション
-	
-	private Player player;
-	
-	// モーション
-	private boolean jump;
-	private float fall;
+	private String			name;				// 呼び出す時の名前
+	private int				enemyType;			// 敵の種類
+	private int				direction;			// 向いてる方向
+	private float				stateTime;			// 
+	private TextureRegion	frame[];			// アニメーションのコマ
+	private TextureRegion	nowFrame;			// 現在のコマ
+	private Animation			animation;			// アニメーション
+	private boolean			attackFlag;		// 攻撃可能フラグ
+	private boolean 			jump;				// ジャンプフラグ
+	private boolean			hangingAround;	// うろうろフラグ
+	private float 			fall;				// 落下量
+	private Player 			player;			// プレイヤー
 	
 	// コンストラクタ 
 	Enemy(String Name, int type, Vector2 pos) {
@@ -80,6 +79,7 @@ public class Enemy extends CharacterBase {
 		speed		= 0;
 		
 		jump = false;
+		attackFlag = false;
 		fall = 0.0f;
 
 		sprite.setScale(-1,1);
@@ -142,12 +142,17 @@ public class Enemy extends CharacterBase {
 						frame[index++] = tmp[i][j];
 				}
 			}
+			// ジャンプしてたらアニメーション切り替え
+			if(jump) {
+			}	
+			// ジャンプしてたらアニメーション切り替え
+			if(attackFlag) {
+			}
 			
 			animation = new Animation(20.0f, frame);
 			
 			break;
-		case JUMPENEMY:
-			break;
+
 		}
 	}
 	
@@ -161,13 +166,8 @@ public class Enemy extends CharacterBase {
 			WalkEnemy(player);
 			JumpEnemy();
 			break;
-		case JUMPENEMY :
-			break;
-		case CHASEENEMY :
-			break;
-		case DASHENEMY :
-			break;
 		case ATTACKENEMY :
+			// 手裏剣
 			break;
 		case AUTOENEMY :
 			// 範囲内にプレイヤーがいるかを検知し
@@ -177,52 +177,84 @@ public class Enemy extends CharacterBase {
 				break;
 			}
 			break;
-		case HIDEENEMY :
-			// ただのインビジブル or 判定はあるが見えない
-			break;
-			
 		
 		}
 	}
-	private float enemywalkspd = 1.0f;
+	
+	// 敵スピード(仮)
+	private float enemyWalkSpeed = 0.8f;
 	
 	//************************************************************
 	// walk
-	// chase
+	// 基本はうろうろしているだけ、
+	// 範囲内にプレイヤーを見つけると攻撃をする。
+	// 範囲外に入ると何もして来ず、またうろうろし始める
 	//************************************************************
 	public void WalkEnemy(Player player) {
 		
 		player = PlayerManager.GetPlayer("プレイヤー");
-		// 右向きに歩いている
-		// プレイヤーのX座標が敵のX座標より右にあるとき
-		if(player.position.x > position.x ) {
-			sprite.setScale(-1,1);
-			position.x += enemywalkspd;;
-			/*
-			System.out.print("teki");
-			System.out.println(position.x);
-			System.out.print("player");
-			System.out.println(player.position.x);*/
+		
+		/*System.out.print("teki");
+		System.out.println(position.x);
+		System.out.print("player");
+		System.out.println(player.position.x);*/
+		
+		// 範囲
+		if(	player.position.x > position.x - 250 && 
+			player.position.x < position.x + 250 &&
+			player.position.y > position.y - 200 &&
+			player.position.y < position.y + 200 ) {
+			
+			// ここで攻撃フラグON
+			attackFlag = true;
 		}
-		else if(player.position.x < position.x) {
+		if(!hangingAround) {
 			sprite.setScale(1,1);
-			position.x -= enemywalkspd * 4.2f;
+			position.x -= CLIMBUP;
+			if(position.x <= 400) {
+				hangingAround = true;
+			}
+		}
+		if(hangingAround) {
+			sprite.setScale(-1,1);
+			position.x += 1.0f;
+			if(position.x >= 700) {
+				hangingAround = false;
+			}
 		}
 		
 		// デバッグ用超加速(突撃 or ダッシュ)
 		if (Gdx.input.isKeyPressed(Keys.C)) {
-			enemywalkspd = 2.0f;
+			enemyWalkSpeed = 1.2f;
 		}	
 		if (Gdx.input.isKeyPressed(Keys.V)) {
-			enemywalkspd = 1.0f;
+			enemyWalkSpeed = 0.8f;
 		}
 	}
-	
+	//************************************************************
+	// chase
+	// プレイヤーを見つけたら追いかける
+	//**********************************************************
+	public void ChaseEnemy(Player player) {
+		
+		player = PlayerManager.GetPlayer("プレイヤー");
+		
+		// 追いかける
+		// プレイヤーのX座標が敵のX座標より右にあるとき
+		if(player.position.x > position.x ) {
+			sprite.setScale(-1,1);
+			position.x += enemyWalkSpeed;;
+
+		}
+		else if(player.position.x < position.x) {
+			sprite.setScale(1,1);
+			position.x -= enemyWalkSpeed * CLIMBUP;
+		}
+	}
 	//************************************************************
 	// jump
 	//************************************************************
 	public void JumpEnemy() {
-		
 		if(!jump) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.A)) {
@@ -230,11 +262,16 @@ public class Enemy extends CharacterBase {
 				fall = 15.0f;
 			}
 		}
-		
 		if(jump) {
 			position.y += fall;
 		}
-		
+	}
+	
+	//************************************************************
+	// Auto
+	// special Artificial Intelligence
+	//************************************************************
+	public void AutoEnemy() {
 	}
 	
 	//************************************************************
