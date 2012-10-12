@@ -54,8 +54,8 @@ public class Player extends CharacterBase {
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
 	private int				nowAttack;				// 現在の攻撃方法
+	private int				count;					// カウント用変数
 	private float			fall;					// 落下量
-	private float			prevAngle;				// 前回角度
 	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
@@ -130,7 +130,7 @@ public class Player extends CharacterBase {
 		direction	 = 1;
 		currentState = STAND;
 		fall		 = 0;
-		prevAngle	 = 0;
+		count		 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 		
@@ -161,6 +161,7 @@ public class Player extends CharacterBase {
 	*/
 		body.setTransform(position, body.getAngle());
 	//	prevAngle = body.getAngle();
+		System.out.println(currentState);
 	}
 
 	//************************************************************
@@ -256,6 +257,8 @@ public class Player extends CharacterBase {
 	//************************************************************
 	private void Attack() {
 		if(Gdx.input.isKeyPressed(Keys.Z)) {
+			currentState = ATTACK;
+			
 			switch(nowAttack) {
 			case Effect.FIRE_1:
 				break;
@@ -285,6 +288,9 @@ public class Player extends CharacterBase {
 		case DASH:		// 走り
 			break;
 		case JUMP:		// ジャンプ
+			break;
+		case ATTACK:
+			count ++;
 			break;
 		}
 	}

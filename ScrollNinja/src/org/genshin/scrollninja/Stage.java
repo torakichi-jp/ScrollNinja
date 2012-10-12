@@ -68,6 +68,10 @@ public class Stage implements StageBase {
 		EffectManager.GetEffect(Effect.FIRE_2).Update();
 	}
 	
+	//************************************************************
+	// Draw
+	// 描画処理まとめ
+	//************************************************************
 	public void Draw() {
 		// 全部クリア
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -78,7 +82,7 @@ public class Stage implements StageBase {
 		{
 			Background.GetSprite()[0].draw(spriteBatch);
 			Background.GetSprite()[2].draw(spriteBatch);
-//			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
+			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);

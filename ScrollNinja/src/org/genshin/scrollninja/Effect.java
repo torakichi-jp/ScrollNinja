@@ -166,6 +166,10 @@ public class Effect extends ObJectBase {
 			animation();
 			body.setTransform(PlayerManager.GetPlayer("プレイヤー").GetPosition().x + (PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
 					PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
+			
+			if( stateTime >= 18 ) {
+				useFlag = false;
+			}
 		}
 		
 /*		if( PlayerManager.GetPlayer("プレイヤー").GetDirection() > 0 ) {
@@ -175,6 +179,8 @@ public class Effect extends ObJectBase {
 		else {
 			stateTime = 0;
 			body.setTransform( -1000.0f, -1000.0f, 0.0f);
+			position = body.getPosition();
+			sprite.setPosition(position.x - 96.0f,position.y);
 		}
 	}
 
