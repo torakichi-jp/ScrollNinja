@@ -54,8 +54,8 @@ public class Player extends CharacterBase {
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
 	private int				nowAttack;				// 現在の攻撃方法
+	private int				count;					// カウント用変数
 	private float			fall;					// 落下量
-	private float			prevAngle;				// 前回角度
 	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
@@ -74,7 +74,6 @@ public class Player extends CharacterBase {
 	// Get
 	// ゲッターまとめ
 	//************************************************************
-	public Vector2 GetPosition() { return position; }
 	public String GetName(){ return name; }
 	public int GetDirection(){ return direction; }
 	public Sprite GetSprite(String type) {
@@ -130,11 +129,11 @@ public class Player extends CharacterBase {
 		direction	 = 1;
 		currentState = STAND;
 		fall		 = 0;
-		prevAngle	 = 0;
+		count		 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 		
-		EffectManager.CreateEffect(Effect.FIRE_2);
+		EffectManager.CreateEffect(Effect.FIRE_2, this);
 		nowAttack = Effect.FIRE_2;
 	}
 
@@ -161,6 +160,7 @@ public class Player extends CharacterBase {
 	*/
 		body.setTransform(position, body.getAngle());
 	//	prevAngle = body.getAngle();
+	//	System.out.println(currentState);
 	}
 
 	//************************************************************
@@ -256,6 +256,8 @@ public class Player extends CharacterBase {
 	//************************************************************
 	private void Attack() {
 		if(Gdx.input.isKeyPressed(Keys.Z)) {
+			currentState = ATTACK;
+			
 			switch(nowAttack) {
 			case Effect.FIRE_1:
 				break;
@@ -286,6 +288,9 @@ public class Player extends CharacterBase {
 			break;
 		case JUMP:		// ジャンプ
 			break;
+		case ATTACK:
+			count ++;
+			break;
 		}
 	}
 
@@ -305,12 +310,38 @@ public class Player extends CharacterBase {
 			Contact contact = contactList.get(i);
 
 			// 地面に当たったよ
-			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
-				jump = false;
-				fall = 0;
-				return true;
+			for( int j = 0; j < Background.GetBody().getFixtureList().size(); j ++) {
+				if(contact.isTouching() && 
+						(( contact.getFixtureA() == sensor && contact.getFixtureB() == Background.GetSensor(j) ) ||
+						( contact.getFixtureA() == Background.GetSensor(j) && contact.getFixtureB() == sensor ))) {
+					jump = false;
+					fall = 0;
+					System.out.println("地面！");
+					return true;
+				}
 			}
 		}
 		return false;
 	}
+	
+	//************************************************************
+	// ExceptionProcess
+	// 当たり判定の例外処理
+	//************************************************************
+/*	private boolean ExceptionProcess(World world) {
+		List<Contact> contactList = world.getContactList();
+		
+		for(int i = 0; i < contactList.size(); i++) {
+			Contact contact = contactList.get(i);
+			
+			for(int j = 0; j < EffectManager.GetListSize(); j++ ) {
+				if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor) &&
+						( contact.getFixtureA() == EffectManager.GetEffectForLoop(j).GetSensor() || contact.getFixtureB() == EffectManager.GetEffectForLoop(j).GetSensor() )) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}*/
 }

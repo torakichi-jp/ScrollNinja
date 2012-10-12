@@ -65,9 +65,17 @@ public class Stage implements StageBase {
 
 		camera.update();
 		player.Update(world);
-		EffectManager.GetEffect(Effect.FIRE_2).Update();
+		
+		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
+			EffectManager.GetEffectForLoop(i).Update();
+		}
+		
 	}
 	
+	//************************************************************
+	// Draw
+	// 描画処理まとめ
+	//************************************************************
 	public void Draw() {
 		// 全部クリア
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -78,7 +86,7 @@ public class Stage implements StageBase {
 		{
 			Background.GetSprite()[0].draw(spriteBatch);
 			Background.GetSprite()[2].draw(spriteBatch);
-//			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
+			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
@@ -111,6 +119,11 @@ public class Stage implements StageBase {
 		// ボディ作成
 		Background.SetBody(world.createBody(bd));
 		loader.attachFixture( Background.GetBody(), "bgTest", fd, 2048);
+		
+		for(int i = 0; i < Background.GetBody().getFixtureList().size(); i ++) {
+			Background.SetFixture( Background.GetBody().getFixtureList().get(i), i );
+		}
+//		System.out.println(Background.GetBody().getFixtureList().size());
 	}
 
 	//************************************************************

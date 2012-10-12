@@ -3,7 +3,11 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -19,6 +23,16 @@ public class StageObject extends ObJectBase {
 	StageObject(String Name) {
 		name		= new String(Name);
 		position	= new Vector2(0,0);
+		
+		Create();
+	}
+	
+	public void Create() {
+		Texture texture = new Texture(Gdx.files.internal("data/obj_gravestone.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 256, 256);
+		sprite = new Sprite(tmpRegion);
+		sprite.setPosition(0, 0);
 	}
 	
 	//************************************************************
