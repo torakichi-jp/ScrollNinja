@@ -36,7 +36,7 @@ public class Background {
 	// 変数宣言
 	private static Sprite 				sprite[]  = new Sprite[3];		// スプライト
 	private static Body 					body;								// 当たり判定用BOX
-	private static Fixture 				sensor;							// センサー
+	private static Fixture 				sensor[]	= new Fixture[9];		// センサー
 	private static float					zIndex;							// Zインデックス
 
 	private static Vector2				cameraPos = new Vector2();		// カメラ座標
@@ -96,7 +96,7 @@ public class Background {
 	//************************************************************
 	public static Sprite[] GetSprite() { return sprite; }
 	public static Body GetBody() { return body; }
-	public static Fixture GetSensor() { return sensor; }
+	public static Fixture GetSensor(int i) { return sensor[i]; }
 	public static Vector2 GetCamPos() { return cameraPos; }
 
 	//************************************************************
@@ -105,6 +105,6 @@ public class Background {
 	//************************************************************
 	public static void SetSprite( Sprite sp) { sprite[STAGE] = sp; }
 	public static void SetBody(Body bd) { body = bd; }
-	public static void SetFixture(Fixture ss){ sensor = ss; }
+	public static void SetFixture(Fixture ss, int i){ sensor[i] = ss; }
 
 }

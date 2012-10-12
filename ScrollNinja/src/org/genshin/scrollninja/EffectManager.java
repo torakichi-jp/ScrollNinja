@@ -17,9 +17,9 @@ public class EffectManager {
 	private EffectManager(){}
 	
 	// エフェクトの生成
-	public static void CreateEffect(int Type) {
-		Effect pEffect = new Effect(Type);		// オブジェクトを生成（&初期化）して
-		effectList.add(pEffect);				// リストに追加
+	public static void CreateEffect(int Type, CharacterBase owner) {
+		Effect pEffect = new Effect(Type, owner);	// オブジェクトを生成（&初期化）して
+		effectList.add(pEffect);					// リストに追加
 	}
 	
 	// エフェクトの削除
@@ -37,7 +37,11 @@ public class EffectManager {
 		return null;
 	}
 	
-	public static int GetSize() {
+	public static Effect GetEffectForLoop(int i) {
+		return effectList.get(i);
+	}
+	
+	public static int GetListSize() {
 		return effectList.size();
 	}
 }

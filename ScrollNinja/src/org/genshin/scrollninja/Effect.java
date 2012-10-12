@@ -7,6 +7,8 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -44,20 +47,24 @@ public class Effect extends ObJectBase {
 	//変数宣言
 	private int				effectType;		// エフェクトの種類
 	private int 			effectTime;		// 効果時間
+	private float 			attackNum;		// 攻撃力
 	private Vector2			position;		// 座標
 	private float			stateTime;		// 
 	private boolean			useFlag;		// 使用フラグ
 	private TextureRegion	frame[];		// アニメーションのコマ
 	private TextureRegion	nowFrame;		// 現在のコマ
 	private Animation		animation;		// アニメーション
+	private CharacterBase	myOwner;		// エフェクトを発生させたキャラクター
 
 	//コンストラクタ
-	public Effect(int type) {
+	public Effect(int type, CharacterBase owner) {
 		effectType	= type;
 		effectTime	= 0;
 		stateTime	= 0;
+		attackNum	= 0;
 		position	= new Vector2(0.0f, 0.0f);
 		useFlag		= false;
+		myOwner		= owner;
 		
 		Create();
 	}
@@ -68,12 +75,15 @@ public class Effect extends ObJectBase {
 	//************************************************************
 	public int GetType() { return effectType; }
 	public int GetEffectTime() { return effectTime; }
+	public float GetAttackNum(){ return attackNum; }
 	
 	//************************************************************
 	// Set
 	// セッターまとめ
 	//************************************************************
 	public void SetUseFlag(boolean use) { useFlag = use; }
+	public void SetAttackNum(int num){ attackNum = num; }
+//	public void SetOwner(CharacterBase owner) { myOwner = owner; }
 	
 	//************************************************************
 	// Create
@@ -179,6 +189,32 @@ public class Effect extends ObJectBase {
 			position = body.getPosition();
 			sprite.setPosition(position.x - 96.0f,position.y);
 		}
+	}
+	
+	//************************************************************
+	// Colision
+	// 当たり判定処理
+	//************************************************************
+	private boolean Colision(CharacterBase chara) {
+		List<Contact> contactList = GameMain.world.getContactList();
+
+		for(int i = 0; i < contactList.size(); i++) {
+			Contact contact = contactList.get(i);
+
+			// 当たったよ！
+			for( int j = 0; j < Background.GetBody().getFixtureList().size(); j ++) {
+				if( chara == myOwner ) {
+					continue;
+				}
+				
+				if(contact.isTouching() && 
+						(( contact.getFixtureA() == sensor && contact.getFixtureB() == chara.GetSensor() ) ||
+						( contact.getFixtureA() == chara.GetSensor() && contact.getFixtureB() == sensor ))) {
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	//************************************************************

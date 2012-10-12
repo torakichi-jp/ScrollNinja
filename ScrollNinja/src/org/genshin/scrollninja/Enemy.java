@@ -43,7 +43,7 @@ public class Enemy extends CharacterBase {
 	private String			name;			// 呼び出す時の名前
 	private int				enemyType;		// 敵の種類
 	private int				direction;		// 向いてる方向
-	private int				invincible;		// 無敵時間
+	private int				invincibleTime;	// 無敵時間
 	private float			stateTime;		// 
 	private TextureRegion	frame[];		// アニメーションのコマ
 	private TextureRegion	nowFrame;		// 現在のコマ
@@ -61,7 +61,6 @@ public class Enemy extends CharacterBase {
 		enemyType	= type;
 		position	= pos;
 		hp			= 100;
-		attackNum	= 0;
 		speed		= 0;
 		
 		Create();
@@ -69,13 +68,13 @@ public class Enemy extends CharacterBase {
 	
 	// コンストラクタ 
 	Enemy(String Name, int type, float x, float y) {
-		name		= new String(Name);
-		enemyType	= type;
-		position.x	= x;
-		position.y	= y;
-		hp			= 100;
-		attackNum	= 0;
-		speed		= 0;
+		name			= new String(Name);
+		enemyType		= type;
+		position.x		= x;
+		position.y		= y;
+		hp				= 100;
+		speed			= 0;
+		invincibleTime	= 0;
 		
 		jump = false;
 		fall = 0.0f;
@@ -154,9 +153,9 @@ public class Enemy extends CharacterBase {
 		switch(enemyType) {
 		case WALKENEMY : 
 			WalkEnemy(player);
-			JumpEnemy();
 			break;
 		case JUMPENEMY :
+			JumpEnemy();
 			break;
 		case CHASEENEMY :
 			break;
@@ -186,10 +185,10 @@ public class Enemy extends CharacterBase {
 		if(player.position.x > position.x ) {
 			enemywalkspd = -4.0f;
 
-			System.out.print("teki");
-			System.out.println(position.x);
-			System.out.print("player");
-			System.out.println(player.position.x);
+//			System.out.print("teki");
+//			System.out.println(position.x);
+//			System.out.print("player");
+//			System.out.println(player.position.x);
 		}
 		else if(player.position.x < position.x)
 			position.x += enemywalkspd * 1.1 ;

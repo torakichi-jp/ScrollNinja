@@ -65,7 +65,11 @@ public class Stage implements StageBase {
 
 		camera.update();
 		player.Update(world);
-		EffectManager.GetEffect(Effect.FIRE_2).Update();
+		
+		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
+			EffectManager.GetEffectForLoop(i).Update();
+		}
+		
 	}
 	
 	//************************************************************
@@ -115,6 +119,11 @@ public class Stage implements StageBase {
 		// ボディ作成
 		Background.SetBody(world.createBody(bd));
 		loader.attachFixture( Background.GetBody(), "bgTest", fd, 2048);
+		
+		for(int i = 0; i < Background.GetBody().getFixtureList().size(); i ++) {
+			Background.SetFixture( Background.GetBody().getFixtureList().get(i), i );
+		}
+//		System.out.println(Background.GetBody().getFixtureList().size());
 	}
 
 	//************************************************************

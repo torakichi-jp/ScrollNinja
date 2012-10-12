@@ -74,7 +74,6 @@ public class Player extends CharacterBase {
 	// Get
 	// ゲッターまとめ
 	//************************************************************
-	public Vector2 GetPosition() { return position; }
 	public String GetName(){ return name; }
 	public int GetDirection(){ return direction; }
 	public Sprite GetSprite(String type) {
@@ -134,7 +133,7 @@ public class Player extends CharacterBase {
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 		
-		EffectManager.CreateEffect(Effect.FIRE_2);
+		EffectManager.CreateEffect(Effect.FIRE_2, this);
 		nowAttack = Effect.FIRE_2;
 	}
 
@@ -161,7 +160,7 @@ public class Player extends CharacterBase {
 	*/
 		body.setTransform(position, body.getAngle());
 	//	prevAngle = body.getAngle();
-		System.out.println(currentState);
+	//	System.out.println(currentState);
 	}
 
 	//************************************************************
@@ -311,10 +310,15 @@ public class Player extends CharacterBase {
 			Contact contact = contactList.get(i);
 
 			// 地面に当たったよ
-			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
-				jump = false;
-				fall = 0;
-				return true;
+			for( int j = 0; j < Background.GetBody().getFixtureList().size(); j ++) {
+				if(contact.isTouching() && 
+						(( contact.getFixtureA() == sensor && contact.getFixtureB() == Background.GetSensor(j) ) ||
+						( contact.getFixtureA() == Background.GetSensor(j) && contact.getFixtureB() == sensor ))) {
+					jump = false;
+					fall = 0;
+					System.out.println("地面！");
+					return true;
+				}
 			}
 		}
 		return false;
@@ -330,8 +334,12 @@ public class Player extends CharacterBase {
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
 			
-			if(contact.isTouching() && ( contact.getFixtureA() == sensor && contact.getFixtureB() == sensor) &&
-					( contact.getFixtureA() == ))
+			for(int j = 0; j < EffectManager.GetListSize(); j++ ) {
+				if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor) &&
+						( contact.getFixtureA() == EffectManager.GetEffectForLoop(j).GetSensor() || contact.getFixtureB() == EffectManager.GetEffectForLoop(j).GetSensor() )) {
+					return true;
+				}
+			}
 		}
 		
 		return false;
