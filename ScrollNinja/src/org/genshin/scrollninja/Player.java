@@ -319,4 +319,21 @@ public class Player extends CharacterBase {
 		}
 		return false;
 	}
+	
+	//************************************************************
+	// ExceptionProcess
+	// 当たり判定の例外処理
+	//************************************************************
+/*	private boolean ExceptionProcess(World world) {
+		List<Contact> contactList = world.getContactList();
+		
+		for(int i = 0; i < contactList.size(); i++) {
+			Contact contact = contactList.get(i);
+			
+			if(contact.isTouching() && ( contact.getFixtureA() == sensor && contact.getFixtureB() == sensor) &&
+					( contact.getFixtureA() == ))
+		}
+		
+		return false;
+	}*/
 }

@@ -172,9 +172,6 @@ public class Effect extends ObJectBase {
 			}
 		}
 		
-/*		if( PlayerManager.GetPlayer("プレイヤー").GetDirection() > 0 ) {
-			sprite.setScale(-1, 1);
-		}*/
 		// 画面外へ
 		else {
 			stateTime = 0;

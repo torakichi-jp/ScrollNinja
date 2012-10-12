@@ -43,6 +43,7 @@ public class Enemy extends CharacterBase {
 	private String			name;			// 呼び出す時の名前
 	private int				enemyType;		// 敵の種類
 	private int				direction;		// 向いてる方向
+	private int				invincible;		// 無敵時間
 	private float			stateTime;		// 
 	private TextureRegion	frame[];		// アニメーションのコマ
 	private TextureRegion	nowFrame;		// 現在のコマ

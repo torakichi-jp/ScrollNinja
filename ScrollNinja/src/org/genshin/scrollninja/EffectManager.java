@@ -36,4 +36,8 @@ public class EffectManager {
 		}
 		return null;
 	}
+	
+	public static int GetSize() {
+		return effectList.size();
+	}
 }
