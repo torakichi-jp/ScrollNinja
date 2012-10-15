@@ -8,6 +8,7 @@ import java.util.Vector;
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -78,9 +79,19 @@ public class Stage implements StageBase {
 
 		camera.update();
 		player.Update();
+		ItemManager.Update();
 
 		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
 			EffectManager.GetEffectForLoop(i).Update();
+		}
+
+		if( Gdx.input.isKeyPressed(Keys.I) ) {
+			if( ItemManager.onigiriList.size() == 0) {
+				ItemManager.CreateItem(Item.ONIGIRI, PlayerManager.GetPlayer("プレイヤー").GetPosition());		// アイテム生成
+			}
+		}
+		if(Gdx.input.isKeyPressed(Keys.E)) {
+			ItemManager.DeleteItem(Item.ONIGIRI, 1);
 		}
 	}
 
@@ -102,8 +113,8 @@ public class Stage implements StageBase {
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
-
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
+			ItemManager.Draw(spriteBatch);
 			Background.GetSprite(2).draw(spriteBatch);
 		}
 		spriteBatch.end();										// 描画終了
