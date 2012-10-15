@@ -31,6 +31,9 @@ public class Stage implements StageBase {
 	private Box2DDebugRenderer			renderer;		//
 	private ArrayList<Item>				popItems;		//
 	private ArrayList<Enemy>			popEnemys;		//
+	private ArrayList<Weapon>		popWeapons;
+
+	private Weapon					weapon;
 
 	// コンストラクタ
 	public Stage(World wrd){
@@ -60,6 +63,9 @@ public class Stage implements StageBase {
 		CreateStageObject();
 		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 		CreatePlayer();
+		WeaponManager.CreateWeapon("手裏剣");
+		//weapon.create();
+
 	}
 
 	//************************************************************
@@ -73,6 +79,7 @@ public class Stage implements StageBase {
 		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		EnemyManager.Update(world);
 
+
 		// 背景スクロール
 		Background.moveBackground(player);
 		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
@@ -80,7 +87,7 @@ public class Stage implements StageBase {
 		camera.update();
 		player.Update();
 		ItemManager.Update();
-
+		WeaponManager.GetWeapon("手裏剣").Update(world);
 		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
 			EffectManager.GetEffectForLoop(i).Update();
 		}
@@ -113,6 +120,7 @@ public class Stage implements StageBase {
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
+			WeaponManager.GetWeapon("手裏剣").Draw(spriteBatch);
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
 			ItemManager.Draw(spriteBatch);
 			Background.GetSprite(2).draw(spriteBatch);
@@ -177,7 +185,6 @@ public class Stage implements StageBase {
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		//
 		player.GetBody().createFixture(fd);
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		player.GetBody().setBullet(true);			// すり抜け防止
@@ -192,14 +199,37 @@ public class Stage implements StageBase {
 		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
 		EnemyManager.GetEnemy("1").GetBody().setTransform(50, 10, 0);
 
-		// 敵手裏剣
-		/*WeaponManager.GetWeapon("1").SetBody(world.createBody(def));
-		WeaponManager.GetWeapon("1").GetBody().createFixture(fd);
-		WeaponManager.GetWeapon("1").SetFixture(WeaponManager.GetWeapon("1").GetBody().createFixture(poly, 0));
-		poly.dispose();
-		WeaponManager.GetWeapon("1").GetBody().setBullet(true);
-		WeaponManager.GetWeapon("1").GetBody().setTransform(50, 10, 0);*/
 
+	}
+
+	//************************************************************
+	// CreateWeapon
+	// 敵武器作成
+	//************************************************************
+	private void CreateEnemyWeapon() {
+
+		BodyDef def	= new BodyDef();
+		def.type	= BodyType.DynamicBody;		// 動く物体
+		player.SetBody(world.createBody(def));
+
+		// 当たり判定の作成
+		PolygonShape poly		= new PolygonShape();
+		poly.setAsBox(1.6f, 2.4f);
+
+		// ボディ設定
+		FixtureDef fd	= new FixtureDef();
+		fd.density		= 50;
+		fd.friction		= 0;
+		fd.restitution	= 0;
+		fd.shape		= poly;
+
+		// 敵手裏剣
+		WeaponManager.GetWeapon("手裏剣").SetBody(world.createBody(def));
+		WeaponManager.GetWeapon("手裏剣").GetBody().createFixture(fd);
+		WeaponManager.GetWeapon("手裏剣").SetFixture(WeaponManager.GetWeapon("手裏剣").GetBody().createFixture(poly, 0));
+		poly.dispose();
+		WeaponManager.GetWeapon("手裏剣").GetBody().setBullet(true);
+		WeaponManager.GetWeapon("手裏剣").GetBody().setTransform(50, 100, 0);
 	}
 
 	//************************************************************
