@@ -102,6 +102,7 @@ public class Stage implements StageBase {
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
+			Background.GetSprite(2).draw(spriteBatch);
 		}
 		spriteBatch.end();										// 描画終了
 

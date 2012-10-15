@@ -54,7 +54,7 @@ public class Background {
 	public static void LoadTexture() {
 		// 奥から作成
 		// 奥
-		Texture texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/stage_far.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
@@ -65,7 +65,7 @@ public class Background {
 			sprite.get(FAR).setScale(0.1f * (ScrollNinja.window.x / sprite.get(FAR).getWidth()) * 1.05f);
 
 		// メインステージ
-		texture = new Texture(Gdx.files.internal("data/stage_main_test.png"));
+		texture = new Texture(Gdx.files.internal("data/stage_main.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
@@ -73,14 +73,14 @@ public class Background {
 		sprite.get(MAIN).setScale(0.1f);
 
 		// 手前
-		/*
-		Texture texture = new Texture(Gdx.files.internal("data/stage_near_test.png"));
+		texture = new Texture(Gdx.files.internal("data/stage_near.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
+		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
-		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f, -sprite.get(NEAR).getHeight() * 0.5f);
-		*/
-		// 近景はまだできていないためとりあえずからっぽ
+		// 41.05は((メインテクスチャ1333)-(手前テクスチャ256*scale2倍) ÷　（空白は上下あるから）2) ?
+		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f,
+										-sprite.get(NEAR).getHeight() * 0.5f -41.05f);
+		sprite.get(NEAR).setScale(0.25f, 0.2f);
 	}
 
 	//************************************************************
@@ -90,6 +90,8 @@ public class Background {
 	public static void moveBackground(Player player) {
 		// プレイヤーの座標をカメラの座標に代入
 		cameraPos = player.GetPosition();
+
+
 
 		// カメラ移動制限
 		if (cameraPos.x < -(sprite.get(MAIN).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * 0.1f)
@@ -102,12 +104,11 @@ public class Background {
 		if (cameraPos.y > (1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
 			cameraPos.y = (1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
 
-		// プレイヤーの座標をカメラの座標に代入
-		//cameraPos = PlayerManager.GetPlayer("プレイヤー").GetPosition();
-		//cameraPos = player.GetPosition();
-		//camera.position.set(cameraPos.x, cameraPos.y, 0);
-
-		// 後ろの山と雲の背景
+		// 近景
+		// カメラ移動制限より前にやると都合がよい…
+		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - player.GetPosition().x * 1.5f,
+				-sprite.get(NEAR).getHeight() * 0.5f -41.05f + player.GetPosition().y * 1.5f);
+		// 遠景
 		sprite.get(FAR).setPosition(cameraPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
 									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));
 	}
