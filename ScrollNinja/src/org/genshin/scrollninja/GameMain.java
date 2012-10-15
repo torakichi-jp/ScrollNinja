@@ -47,10 +47,6 @@ public class GameMain implements Screen{
 		stage1				= new Stage(world);
 
 		StageManager.StageTrance(stage1);			// 現在のステージの設定
-		int i = ItemManager.CreateItem(0);
-		int j = ItemManager.CreateItem(0);
-		
-		int k = i + j;
 	}
 
 	//************************************************************
