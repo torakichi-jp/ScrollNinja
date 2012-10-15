@@ -182,6 +182,7 @@ public class Enemy extends CharacterBase {
 	}
 	
 	// 敵スピード(仮)
+	// 要調整
 	private float enemyWalkSpeed = 0.8f;
 	
 	//************************************************************
@@ -243,7 +244,7 @@ public class Enemy extends CharacterBase {
 		// プレイヤーのX座標が敵のX座標より右にあるとき
 		if(player.position.x > position.x ) {
 			sprite.setScale(-1,1);
-			position.x += enemyWalkSpeed;;
+			position.x += enemyWalkSpeed;
 
 		}
 		else if(player.position.x < position.x) {
