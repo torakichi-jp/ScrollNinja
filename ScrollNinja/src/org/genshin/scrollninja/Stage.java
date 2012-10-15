@@ -59,6 +59,7 @@ public class Stage implements StageBase {
 		CreateStageObject();
 		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 		CreatePlayer();
+		WeaponManager.CreateWeapon("1");
 	}
 
 	//************************************************************
@@ -101,7 +102,7 @@ public class Stage implements StageBase {
 			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
-			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
+			WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
 			
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
 		}
@@ -164,8 +165,7 @@ public class Stage implements StageBase {
 		fd.friction		= 0;
 		fd.restitution	= 0;
 		fd.shape		= poly;
-
-		//
+		
 		player.GetBody().createFixture(fd);
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		player.GetBody().setBullet(true);			// すり抜け防止
@@ -181,12 +181,20 @@ public class Stage implements StageBase {
 		EnemyManager.GetEnemy("1").GetBody().setTransform(50, 10, 0);
 		
 		// 敵手裏剣
-		/*WeaponManager.GetWeapon("1").SetBody(world.createBody(def));
+		WeaponManager.GetWeapon("1").SetBody(world.createBody(def));
 		WeaponManager.GetWeapon("1").GetBody().createFixture(fd);
 		WeaponManager.GetWeapon("1").SetFixture(WeaponManager.GetWeapon("1").GetBody().createFixture(poly, 0));
 		poly.dispose();
 		WeaponManager.GetWeapon("1").GetBody().setBullet(true);
-		WeaponManager.GetWeapon("1").GetBody().setTransform(50, 10, 0);*/
+		WeaponManager.GetWeapon("1").GetBody().setTransform(50, 10, 0);
+		
+	}
+	
+	//************************************************************
+	// CreateWeapon
+	// 敵武器作成
+	//************************************************************
+	private void CreateEnemyWeapon() {
 		
 	}
 
