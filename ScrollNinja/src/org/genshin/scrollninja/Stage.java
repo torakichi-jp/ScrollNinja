@@ -28,21 +28,36 @@ public class Stage implements StageBase {
 	private OrthographicCamera			camera;			// カメラ
 	private SpriteBatch					spriteBatch;	// スプライトバッチ
 	private Box2DDebugRenderer			renderer;		//
-	private ArrayList<Item>				popItems;		// 
-	private ArrayList<Enemy>			popEnemys;		// 
+	private ArrayList<Item>				popItems;		//
+	private ArrayList<Enemy>			popEnemys;		//
 
 	// コンストラクタ
 	public Stage(World wrd){
-		world = new World(new Vector2(0.0f, 0.0f), true );
+		world = new World(new Vector2(0.0f, -20.0f), true );
 		world = wrd;
-		
-		camera				= new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		/*
+		switch (ScroolNinja.aspectRatio) {
+		case XGA:	// 4:3
+			camera = new OrthographicCamera(10.0f * 0.1f, 7.5f * 0.1f);
+			break;
+		case HD:	// 16:9
+			camera = new OrthographicCamera(10.0f * 0.1f, 5.625f * 0.1f);
+			break;
+		case SXGA:	// 5:4
+			camera = new OrthographicCamera(10.0f * 0.1f, 8.0f * 0.1f);
+			break;
+		case WUXGA:	// 16:10
+			camera = new OrthographicCamera(10.0f * 0.1f, 6.25f * 0.1f);
+			break;
+		}
+		*/
+		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		spriteBatch 		= new SpriteBatch();
 		renderer			= new Box2DDebugRenderer();
-		
+
 		CreateStage();
 		CreateStageObject();
-		EnemyManager.CreateEnemy("1", 0, 1000.0f, 500.0f);
+		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 		CreatePlayer();
 	}
 
@@ -58,16 +73,21 @@ public class Stage implements StageBase {
 		EnemyManager.Update(world);
 
 		// 背景スクロール
-		//stage.moveBackground(player);
-		//camera.position.set(stage.GetCamPos().x , stage.GetCamPos().y,0);
 		Background.moveBackground(player);
 		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
 
 		camera.update();
 		player.Update(world);
-		EffectManager.GetEffect(Effect.FIRE_2).Update();
+
+		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
+			EffectManager.GetEffectForLoop(i).Update();
+		}
 	}
-	
+
+	//************************************************************
+	// Draw
+	// 描画処理まとめ
+	//************************************************************
 	public void Draw() {
 		// 全部クリア
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -76,11 +96,13 @@ public class Stage implements StageBase {
 		spriteBatch.setProjectionMatrix(camera.combined);		// プロジェクション行列のセット
 		spriteBatch.begin();									// 描画開始
 		{
-			Background.GetSprite()[0].draw(spriteBatch);
-			Background.GetSprite()[2].draw(spriteBatch);
-//			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
+			Background.GetSprite(0).draw(spriteBatch);
+			Background.GetSprite(1).draw(spriteBatch);
+			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
+			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
+			
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
 		}
 		spriteBatch.end();										// 描画終了
@@ -89,7 +111,7 @@ public class Stage implements StageBase {
 		world.step(Gdx.graphics.getDeltaTime(), 20, 20);
 		player.GetBody().setAwake(true);
 	}
-	
+
 	//************************************************************
 	// CreateStage
 	// ステージのあたり判定の作成
@@ -100,17 +122,24 @@ public class Stage implements StageBase {
 		// ボディタイプ設定
 		BodyDef bd	= new BodyDef();
 		bd.type		= BodyType.StaticBody;		// 動かない物体
-		bd.position.set(-(Gdx.graphics.getWidth() / 2), -1024);
+		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
+		bd.position.set(-Background.GetSprite(1).getWidth() * 0.5f * 0.1f,
+								(-Background.GetSprite(1).getHeight() * 0.5f -357.5f) * 0.1f);
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 1000;		// 密度
-		fd.friction		= 100.0f;	// 摩擦
+		fd.friction		= 100;		// 摩擦
 		fd.restitution	= 0;		// 反発係数
 
 		// ボディ作成
 		Background.SetBody(world.createBody(bd));
-		loader.attachFixture( Background.GetBody(), "bgTest", fd, 2048);
+		loader.attachFixture( Background.GetBody(), "bgTest", fd, Background.GetSprite(1).getWidth() * 0.1f);
+
+		for(int i = 0; i < Background.GetBody().getFixtureList().size(); i ++) {
+			Background.SetFixture( Background.GetBody().getFixtureList().get(i));
+		}
+//		System.out.println(Background.GetBody().getFixtureList().size());
 	}
 
 	//************************************************************
@@ -120,19 +149,19 @@ public class Stage implements StageBase {
 	private void CreatePlayer() {
 		PlayerManager.CreatePlayer("プレイヤー");
 		player = PlayerManager.GetPlayer("プレイヤー");
-		
+
 		BodyDef def	= new BodyDef();
 		def.type	= BodyType.DynamicBody;		// 動く物体
 		player.SetBody(world.createBody(def));
 
 		// 当たり判定の作成
 		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(16, 24);
+		poly.setAsBox(1.6f, 2.4f);
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 50;
-		fd.friction		= 100.0f;
+		fd.friction		= 0;
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
@@ -140,7 +169,8 @@ public class Stage implements StageBase {
 		player.GetBody().createFixture(fd);
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		player.GetBody().setBullet(true);			// すり抜け防止
-		player.GetBody().setTransform(0, 300, 0);	// 初期位置
+		player.GetBody().setFixedRotation(true);	// シミュレーションでの自動回転をしない
+		player.GetBody().setTransform(0, 3, 0);	// 初期位置
 
 		// とりあえず
 		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
@@ -148,7 +178,16 @@ public class Stage implements StageBase {
 		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
 		poly.dispose();
 		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
-		EnemyManager.GetEnemy("1").GetBody().setTransform(500, 100, 0);
+		EnemyManager.GetEnemy("1").GetBody().setTransform(50, 10, 0);
+		
+		// 敵手裏剣
+		/*WeaponManager.GetWeapon("1").SetBody(world.createBody(def));
+		WeaponManager.GetWeapon("1").GetBody().createFixture(fd);
+		WeaponManager.GetWeapon("1").SetFixture(WeaponManager.GetWeapon("1").GetBody().createFixture(poly, 0));
+		poly.dispose();
+		WeaponManager.GetWeapon("1").GetBody().setBullet(true);
+		WeaponManager.GetWeapon("1").GetBody().setTransform(50, 10, 0);*/
+		
 	}
 
 	//************************************************************
@@ -162,12 +201,11 @@ public class Stage implements StageBase {
 		// Bodyのタイプを設定 Staticは動かない物体
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.StaticBody;
-		bd.position.set(0, 0);
 
 		// Bodyの設定を設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 1000;				// 密度
-		fd.friction		= 100f;				// 摩擦
+		fd.friction		= 0;				// 摩擦
 		fd.restitution	= 0;				// 反発係数
 
 		// ステージオブジェクトの作成
@@ -175,7 +213,12 @@ public class Stage implements StageBase {
 		StageObjectManager.GetStageObject("block").SetBody(world.createBody(bd));
 
 		// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-		loader.attachFixture(StageObjectManager.GetStageObject("block").GetBody(), "gravestone", fd, 256);
+		loader.attachFixture(StageObjectManager.GetStageObject("block").GetBody(), "gravestone", fd,
+								StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.1f);
+		// とりあえず。後で調整
+		StageObjectManager.GetStageObject("block").GetBody().setTransform
+							(-StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.5f,
+							-StageObjectManager.GetStageObject("block").GetSprite().getHeight() * 0.5f, 0);
 	}
 
 	//************************************************************
@@ -189,12 +232,12 @@ public class Stage implements StageBase {
 
 		// 当たり判定の作成
 		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(16, 24);
+		poly.setAsBox(1.6f, 2.4f);
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 50;
-		fd.friction		= 100.0f;
+		fd.friction		= 0;
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
@@ -202,7 +245,7 @@ public class Stage implements StageBase {
 		player.GetBody().createFixture(fd);
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
 		player.GetBody().setBullet(true);			// すり抜け防止
-		player.GetBody().setTransform(0, 300, 0);	// 初期位置
+		player.GetBody().setTransform(0, 30, 0);	// 初期位置
 
 		// とりあえず
 		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
@@ -210,7 +253,9 @@ public class Stage implements StageBase {
 		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
 		poly.dispose();
 		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
-		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 300, 0);
+		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 30, 0);
+		
+
 	}
 
 	//************************************************************
@@ -219,7 +264,7 @@ public class Stage implements StageBase {
 	//************************************************************
 	public void PopEnemy(Player player) {
 		if( player.GetPosition().x > 200 ) {
-			EnemyManager.CreateEnemy("1", 0, 200.0f, 300.0f);
+			EnemyManager.CreateEnemy("1", 0, 20.0f, 30.0f);
 		}
 	}
 
