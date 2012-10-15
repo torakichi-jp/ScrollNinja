@@ -7,6 +7,7 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,16 +29,29 @@ public class Weapon extends ObJectBase{
 	private Boolean 	use;			// 使用フラグ
 	private Body		body;			// ボディ
 	
+	private Player player;
+	private Enemy enemy;
+	
+	private static final float FIRST_SPEED	=  30f;		// 初速度
+	private static final float GRAVITY		= -20f;		// 重力
+	private Vector2 velocity;							// 移動用速度
+	private boolean FlyingFlag; 
+	
 	
 	//private static final int AADD = 10;
 
 	//コンストラクタ
 	public Weapon(String Name) {
+		//enemy = EnemyManager.GetEnemy("1");
 		name			 = new String(Name);
-		this.position    = new Vector2(0,0);
+		this.position    = new Vector2(0,-50);
 		this.attackNum   = 0;
 		this.weaponLevel = 0;
 		this.use         = true;
+		this.velocity	   = new Vector2(0,0);
+
+		
+		FlyingFlag = false;
 
 		create();
 	}
@@ -46,25 +60,50 @@ public class Weapon extends ObJectBase{
 	public void create() {
 		
 		// テクスチャー読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/enemy2.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/enemy.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
+		TextureRegion region = new TextureRegion(texture, 0, 448, 64, 64);
 		
 		// スプライト反映
 		sprite = new Sprite(region);
 		sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
+		sprite.setScale(0.05f);
 		
 	}
 	
 	// 更新
 	public void Update(World world) {
+		player = PlayerManager.GetPlayer("プレイヤー");
+		enemy = EnemyManager.GetEnemy("1");
+		sprite.setPosition(enemy.position.x + velocity.x - 32, enemy.position.y - 32);
+		shuriken();
 		
+	}
+	
+	// 手裏剣の動き
+	public void shuriken() {
+		if (Gdx.input.isKeyPressed(Keys.S)) {
+			FlyingFlag = true;
+		}
+		
+		if(FlyingFlag) {
+			//position.x += 1.0f;
+			// 向きで飛ぶ方向決定
+			if(enemy.GetDirection() == 1) {
+				velocity.x += 1.0f;
+			}
+			else {
+				velocity.x -= 1.0f;
+			}
+		
+		}
 	}
 	
 	// 描画
 	public void Draw(SpriteBatch batch) {
 		sprite.draw(batch);
 	}
+	
 	
 	
 	//武器座標ゲット

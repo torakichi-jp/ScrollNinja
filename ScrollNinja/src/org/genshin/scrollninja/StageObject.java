@@ -28,9 +28,9 @@ public class StageObject extends ObJectBase {
 	}
 
 	public void Create() {
-		Texture texture = new Texture(Gdx.files.internal("data/obj_gravestone.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 256, 256);
+		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 		sprite = new Sprite(tmpRegion);
 		sprite.setPosition(-sprite.getWidth() * 0.5f, -sprite.getHeight() * 0.5f);
 		sprite.setScale(0.1f);

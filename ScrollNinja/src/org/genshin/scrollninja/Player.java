@@ -142,17 +142,17 @@ public class Player extends CharacterBase {
 	// Update
 	// 更新処理はここにまとめる
 	//************************************************************
-	public void Update(World world) {
+	public void Update() {
 		position = body.getPosition();
 		body.setTransform(position ,0);
 		sprite.setRegion(nowFrame);
 		footSprite.setRegion(nowFootFrame);
 
-		Stand(world);		// 立ち処理
-		Move(world);		// 移動処理
-		Jump(world);		// ジャンプ処理
+		Stand();		// 立ち処理
+		Move();		// 移動処理
+		Jump();		// ジャンプ処理
 		Attack();
-		Gravity(world);		// 重力計算処理
+		Gravity();		// 重力計算処理
 		animation();		// アニメーション処理
 
 	/*	if( prevAngle != body.getAngle() ) {
@@ -178,8 +178,8 @@ public class Player extends CharacterBase {
 	// Stand
 	// 立ち処理。
 	//************************************************************
-	private void Stand(World world) {
-		if( GetGroundJudge(world) ) {
+	private void Stand() {
+		if( GetGroundJudge() ) {
 			currentState = STAND;
 		}
 	}
@@ -187,11 +187,11 @@ public class Player extends CharacterBase {
 	// Jump
 	// ジャンプ処理。上押すとジャンプ！
 	//************************************************************
-	private void Jump(World world) {
+	private void Jump() {
 
 
 		// 地面に接触しているならジャンプ可能
-		if( /*GetGroundJudge(world)*/ !jump ) {
+		if( /*GetGroundJudge()*/ !jump ) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.UP)) {
 				jump = true;
@@ -211,9 +211,9 @@ public class Player extends CharacterBase {
 	// Gravity
 	// 重力計算処理。常にやってます
 	//************************************************************
-	private void Gravity(World world) {
+	private void Gravity() {
 		// 空中にいる時は落下移動
-		if(!GetGroundJudge(world)) {
+		if(!GetGroundJudge()) {
 			/*
 			fall -= 0.25;
 			position.y -= 5;
@@ -229,7 +229,7 @@ public class Player extends CharacterBase {
 	// 移動処理。左右押すと移動します
 	// 状態遷移は空中にいなければ歩きに！
 	//************************************************************
-	private void Move(World world) {
+	private void Move() {
 		// 右が押された
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
@@ -238,7 +238,7 @@ public class Player extends CharacterBase {
 			sprite.setScale(-0.1f, 0.1f);
 			footSprite.setScale(-0.1f, 0.1f);
 
-			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
+			if( GetGroundJudge() ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
 				currentState = WALK;
 			}
 		}
@@ -250,7 +250,7 @@ public class Player extends CharacterBase {
 			sprite.setScale(0.1f, 0.1f);
 			footSprite.setScale(0.1f, 0.1f);
 
-			if( GetGroundJudge(world) ) {
+			if( GetGroundJudge() ) {
 				currentState = WALK;
 			}
 		}
@@ -316,8 +316,8 @@ public class Player extends CharacterBase {
 	// 戻り値： true:地面接地		false:空中
 	// 接触判定。長いのでここで関数化
 	//************************************************************
-	private boolean GetGroundJudge(World world) {
-		List<Contact> contactList = world.getContactList();
+	private boolean GetGroundJudge() {
+		List<Contact> contactList = GameMain.world.getContactList();
 
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
@@ -341,8 +341,8 @@ public class Player extends CharacterBase {
 	// ExceptionProcess
 	// 当たり判定の例外処理
 	//************************************************************
-/*	private boolean ExceptionProcess(World world) {
-		List<Contact> contactList = world.getContactList();
+/*	private boolean ExceptionProcess() {
+		List<Contact> contactList = GameMain.world.getContactList();
 
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);

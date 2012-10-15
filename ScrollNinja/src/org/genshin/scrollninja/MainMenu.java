@@ -64,7 +64,7 @@ public class MainMenu implements Screen{
 
 		// テクスチャ読み込み
 		try {
-			texture = new Texture(Gdx.files.internal("data/menu_test.png"));
+			texture = new Texture(Gdx.files.internal("data/menu.png"));
 		} catch (NullPointerException e) {
 			System.out.println("ファイルがありません");
 		} catch (GdxRuntimeException e) {

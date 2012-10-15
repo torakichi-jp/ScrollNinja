@@ -134,7 +134,7 @@ public class Enemy extends CharacterBase {
 		switch(enemyType) {
 		case WALKENEMY:
 			// テクスチャの読み込み
-			Texture texture = new Texture(Gdx.files.internal("data/enemy2.png"));
+			Texture texture = new Texture(Gdx.files.internal("data/enemy.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 
@@ -214,6 +214,7 @@ public class Enemy extends CharacterBase {
 		}
 		if(!hangingAround) {
 			sprite.setScale(0.1f, 0.1f);
+			direction = -1;
 			position.x -= CLIMBUP;
 			if(position.x <= 40) {
 				hangingAround = true;
@@ -221,6 +222,7 @@ public class Enemy extends CharacterBase {
 		}
 		if(hangingAround) {
 			sprite.setScale(-0.1f, 0.1f);
+			direction = 1;
 			position.x += 0.1f;
 			if(position.x >= 70) {
 				hangingAround = false;
@@ -276,7 +278,7 @@ public class Enemy extends CharacterBase {
 
 	//************************************************************
 	// Auto
-	// special Artificial Intelligence
+	// Artificial Intelligence
 	//************************************************************
 	public void AutoEnemy() {
 	}
@@ -323,6 +325,7 @@ public class Enemy extends CharacterBase {
 	//************************************************************
 	public Enemy GetEnemy() { return this; }
 	public String GetName(){ return name; }
+	public int GetDirection() { return direction; }
 
 	//************************************************************
 	// Set

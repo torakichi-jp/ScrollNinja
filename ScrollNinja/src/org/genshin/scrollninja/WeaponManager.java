@@ -11,11 +11,11 @@ import java.util.ArrayList;
 //***** モノステート *****/
 public class WeaponManager {
 	// 変数宣言
-	private static ArrayList<Weapon> weaponList;
+	private static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
 
 	// コンストラクタ
 	private WeaponManager(){
-		weaponList = new ArrayList<Weapon>();
+		//weaponList = new ArrayList<Weapon>();
 	}
 
 	// 武器の生成
@@ -42,6 +42,16 @@ public class WeaponManager {
 
 	// 参照
 	public static Weapon GetWeapon(String Name) {
-		return weaponList.get(weaponList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
+		
+		
+		for(int i = 0; i < weaponList.size(); i ++) {
+			if( weaponList.get(i).GetName().equals(Name) ) {
+				return weaponList.get(i);			// 引数で渡されたオブジェクトのポインタを返す
+			}
+		}
+		return null;
+		
+		
+		//return weaponList.get(weaponList.indexOf(Name));	// 引数で渡されたオブジェクトのポインタを返す
 	}
 }
