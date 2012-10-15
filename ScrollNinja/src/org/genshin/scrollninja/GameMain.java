@@ -43,20 +43,22 @@ public class GameMain implements Screen{
 	// コンストラクタ
 	public GameMain(Game game) {
 		ScrollNinjya		= game;
-		world				= new World(new Vector2(0, -100.0f), true);
-		
+		world				= new World(new Vector2(0, -20.0f), true);
 		stage1				= new Stage(world);
-		
-		
+
 		StageManager.StageTrance(stage1);			// 現在のステージの設定
+		int i = ItemManager.CreateItem(0);
+		int j = ItemManager.CreateItem(0);
+		
+		int k = i + j;
 	}
-	
+
 	//************************************************************
 	// Get
 	// ゲッターまとめ
 	//************************************************************
 //	public World GetWorld(){ return world; }
-	
+
 	//************************************************************
 	// render
 	// メイン処理
@@ -64,13 +66,13 @@ public class GameMain implements Screen{
 	@Override
 	public void render(float delta) {
 		oldTime = newTime;
-		
+
 		StageManager.Update();
 		StageManager.Draw();
-		
+
 		FPS();
 	}
-	
+
 	//************************************************************
 	// FPS
 	// FPS処理。汚いので関数化

@@ -37,10 +37,15 @@ public class Enemy extends CharacterBase {
 
 	private final static int CHECK			=  0;
 
-	private final static float CLIMBUP		=  4.0f;
+	private final static float CLIMBUP		=  0.3f;
 
-	private final static int RIGHT			=  5;
-	private final static int LEFT			= -5;
+	private final static int RIGHT			=  1;
+	private final static int LEFT			= -1;
+
+	private static final float FIRST_SPEED	=  25f;		// 初速度
+	private static final float JUMP_POWER	=  25f;		// ジャンプ加速度
+	private static final float GRAVITY		= -20f;		// 重力
+	private Vector2 velocity;							// 移動用速度
 
 	// 変数宣言
 
@@ -49,12 +54,12 @@ public class Enemy extends CharacterBase {
 	private String			name;				// 呼び出す時の名前
 	private int				enemyType;			// 敵の種類
 	private int				direction;			// 向いてる方向
-	private float				stateTime;			//
-	private TextureRegion	frame[];			// アニメーションのコマ
+	private float			stateTime;			//
+	private TextureRegion[]	frame;			// アニメーションのコマ
 	private TextureRegion	nowFrame;			// 現在のコマ
-	private Animation			animation;			// アニメーション
+	private Animation		animation;			// アニメーション
 	private boolean			attackFlag;		// 攻撃可能フラグ
-	private boolean 			jump;				// ジャンプフラグ
+	private boolean 		jump;				// ジャンプフラグ
 	private boolean			hangingAround;	// うろうろフラグ
 	private float 			fall;				// 落下量
 	private Player 			player;			// プレイヤー
@@ -66,6 +71,7 @@ public class Enemy extends CharacterBase {
 		position	= pos;
 		hp			= 100;
 		speed		= 0;
+		velocity = new Vector2(0, 0);
 
 		Create();
 	}
@@ -79,12 +85,13 @@ public class Enemy extends CharacterBase {
 		hp				= 100;
 		speed			= 0;
 		invincibleTime	= 0;
+		velocity = new Vector2(0, 0);
 
 		jump = false;
 		attackFlag = false;
 		fall = 0.0f;
 
-		sprite.setScale(-1,1);
+		sprite.setScale(-0.1f, 0.1f);
 		Create();
 	}
 
@@ -102,7 +109,7 @@ public class Enemy extends CharacterBase {
 		stateTime ++;
 
 		// 敵移動
-		Move();
+		Move(world);
 		//重力
 		Gravity(world);
 
@@ -132,7 +139,7 @@ public class Enemy extends CharacterBase {
 
 			// スプライトに反映
 			sprite = new Sprite(region);
-			sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+			sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
 
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
@@ -144,17 +151,10 @@ public class Enemy extends CharacterBase {
 						frame[index++] = tmp[i][j];
 				}
 			}
-			// ジャンプしてたらアニメーション切り替え
-			if(jump) {
-			}
-			// ジャンプしてたらアニメーション切り替え
-			if(attackFlag) {
-			}
 
 			animation = new Animation(20.0f, frame);
 
 			break;
-
 		}
 	}
 
@@ -162,11 +162,11 @@ public class Enemy extends CharacterBase {
 	// Move
 	// 移動処理。歩りたりジャンプしたり
 	//************************************************************
-	public void Move() {
+	public void Move(World world) {
 		switch(enemyType) {
 		case WALKENEMY :
 			WalkEnemy(player);
-			JumpEnemy();
+			JumpEnemy(world);
 			break;
 		case ATTACKENEMY :
 			// 手裏剣
@@ -184,7 +184,7 @@ public class Enemy extends CharacterBase {
 	}
 
 	// 敵スピード(仮)
-	private float enemyWalkSpeed = 0.8f;
+	private float enemyWalkSpeed = 0.1f;
 
 	//************************************************************
 	// walk
@@ -202,35 +202,35 @@ public class Enemy extends CharacterBase {
 		System.out.println(player.position.x);*/
 
 		// 範囲
-		if(	player.position.x > position.x - 250 &&
-			player.position.x < position.x + 250 &&
-			player.position.y > position.y - 200 &&
-			player.position.y < position.y + 200 ) {
+		if(	player.position.x > position.x - 25 &&
+			player.position.x < position.x + 25 &&
+			player.position.y > position.y - 20 &&
+			player.position.y < position.y + 20 ) {
 
 			// ここで攻撃フラグON
 			attackFlag = true;
 		}
 		if(!hangingAround) {
-			sprite.setScale(1,1);
+			sprite.setScale(0.1f, 0.1f);
 			position.x -= CLIMBUP;
-			if(position.x <= 400) {
+			if(position.x <= 40) {
 				hangingAround = true;
 			}
 		}
 		if(hangingAround) {
-			sprite.setScale(-1,1);
-			position.x += 1.0f;
-			if(position.x >= 700) {
+			sprite.setScale(-0.1f, 0.1f);
+			position.x += 0.1f;
+			if(position.x >= 70) {
 				hangingAround = false;
 			}
 		}
 
 		// デバッグ用超加速(突撃 or ダッシュ)
 		if (Gdx.input.isKeyPressed(Keys.C)) {
-			enemyWalkSpeed = 1.2f;
+			enemyWalkSpeed = 0.3f;
 		}
 		if (Gdx.input.isKeyPressed(Keys.V)) {
-			enemyWalkSpeed = 0.8f;
+			enemyWalkSpeed = 0.3f;
 		}
 	}
 	//************************************************************
@@ -244,27 +244,29 @@ public class Enemy extends CharacterBase {
 		// 追いかける
 		// プレイヤーのX座標が敵のX座標より右にあるとき
 		if(player.position.x > position.x ) {
-			sprite.setScale(-1,1);
+			sprite.setScale(-0.1f, 0.1f);
 			position.x += enemyWalkSpeed;
 		}
 		else if(player.position.x < position.x) {
-			sprite.setScale(1,1);
-			position.x -= enemyWalkSpeed * CLIMBUP;
+			sprite.setScale(-0.1f, 0.1f);
+			position.x -= enemyWalkSpeed;
 		}
 	}
 	//************************************************************
 	// jump
 	//************************************************************
-	public void JumpEnemy() {
+	public void JumpEnemy(World world) {
+		GetGroundJudge(world);
 		if(!jump) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.A)) {
 				jump = true;
-				fall = 15.0f;
+				velocity.y = JUMP_POWER;
 			}
 		}
 		if(jump) {
-			position.y += fall;
+			body.setLinearVelocity(body.getLinearVelocity().x, velocity.y);
+			velocity.y -= 1f;
 		}
 	}
 
@@ -300,6 +302,7 @@ public class Enemy extends CharacterBase {
 	//************************************************************
 	private void Gravity(World world) {
 		// 空中にいる時は落下移動
+		/*
 		if(!GetGroundJudge(world)) {
 			fall -= 0.25;
 			position.y -= 5;
@@ -307,6 +310,7 @@ public class Enemy extends CharacterBase {
 				fall = -5;
 			}
 		}
+		*/
 	}
 
 	//************************************************************

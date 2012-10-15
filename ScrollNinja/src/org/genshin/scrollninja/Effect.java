@@ -1,5 +1,5 @@
 //******************************
-//	Effect.java 
+//	Effect.java
 //******************************
 
 package org.genshin.scrollninja;
@@ -29,7 +29,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // クラス宣言
 //========================================
 public class Effect extends ObJectBase {
-	
+
 	//========================================
 	// 定数宣言
 	// エフェクトの種類
@@ -43,15 +43,15 @@ public class Effect extends ObJectBase {
 	public final static int WIND_1		= 6;
 	public final static int WIND_2		= 7;
 	public final static int WIND_3		= 8;
-	
+
 	//変数宣言
 	private int				effectType;		// エフェクトの種類
 	private int 			effectTime;		// 効果時間
 	private float 			attackNum;		// 攻撃力
 	private Vector2			position;		// 座標
-	private float			stateTime;		// 
+	private float			stateTime;		//
 	private boolean			useFlag;		// 使用フラグ
-	private TextureRegion	frame[];		// アニメーションのコマ
+	private TextureRegion[]	frame;			// アニメーションのコマ
 	private TextureRegion	nowFrame;		// 現在のコマ
 	private Animation		animation;		// アニメーション
 	private CharacterBase	myOwner;		// エフェクトを発生させたキャラクター
@@ -65,10 +65,10 @@ public class Effect extends ObJectBase {
 		position	= new Vector2(0.0f, 0.0f);
 		useFlag		= false;
 		myOwner		= owner;
-		
+
 		Create();
 	}
-	
+
 	//************************************************************
 	// Get
 	// ゲッターまとめ
@@ -76,7 +76,7 @@ public class Effect extends ObJectBase {
 	public int GetType() { return effectType; }
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
-	
+
 	//************************************************************
 	// Set
 	// セッターまとめ
@@ -84,7 +84,7 @@ public class Effect extends ObJectBase {
 	public void SetUseFlag(boolean use) { useFlag = use; }
 	public void SetAttackNum(int num){ attackNum = num; }
 //	public void SetOwner(CharacterBase owner) { myOwner = owner; }
-	
+
 	//************************************************************
 	// Create
 	// エフェクトの生成
@@ -100,12 +100,12 @@ public class Effect extends ObJectBase {
 
 			// 当たり判定の作成
 			PolygonShape poly		= new PolygonShape();
-			poly.setAsBox(24, 16);
+			poly.setAsBox(2.4f, 1.6f);
 
 			// ボディ設定
 			FixtureDef fd	= new FixtureDef();
 			fd.density		= 50;
-			fd.friction		= 100.0f;
+			fd.friction		= 0;
 			fd.restitution	= 0;
 			fd.shape		= poly;
 
@@ -114,19 +114,19 @@ public class Effect extends ObJectBase {
 			sensor = body.createFixture(poly, 0);
 			sensor.setSensor(true);
 			body.setBullet(true);			// すり抜け防止
-			//body.setTransform(0, 300, 0);	// 初期位置
-			
+
 			// テクスチャの読み込み
 			Texture texture = new Texture(Gdx.files.internal("data/effect_fire.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			TextureRegion region = new TextureRegion(texture, 0, 0, 120, 120);
+			TextureRegion region = new TextureRegion(texture, 0, 0, 128, 128);
 
 			// スプライトに反映
 			sprite = new Sprite(region);
-			sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+			sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
+			sprite.setScale(0.1f);
 
 			// アニメーション
-			TextureRegion[][] tmp = TextureRegion.split(texture, 120, 120);
+			TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
 			frame = new TextureRegion[6];
 			int index = 0;
 			for (int i = 1; i < 2; i++) {
@@ -135,7 +135,7 @@ public class Effect extends ObJectBase {
 						frame[index++] = tmp[i][j];
 				}
 			}
-			
+
 			animation = new Animation(3.0f, frame);
 			break;
 		case FIRE_3:
@@ -148,7 +148,7 @@ public class Effect extends ObJectBase {
 			break;
 		}
 	}
-	
+
 	//************************************************************
 	// Draw
 	// 描画関数まとめ
@@ -156,41 +156,49 @@ public class Effect extends ObJectBase {
 	public void Draw(SpriteBatch spriteBatch) {
 		sprite.draw(spriteBatch);
 	}
-	
+
 	//************************************************************
 	// Update
 	// 更新関数まとめ
 	//************************************************************
 	public void Update() {
 		if( useFlag ) {
-			
+
 			nowFrame = animation.getKeyFrame(stateTime, true);
 			stateTime ++;
-			
+
+			body.setTransform(PlayerManager.GetPlayer("プレイヤー").GetPosition().x +
+								(PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
+									PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
 			position = body.getPosition();
-			sprite.setPosition(position.x - 96.0f,position.y);
-			body.setTransform(PlayerManager.GetPlayer("プレイヤー").GetPosition().x + (PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
-					PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
+			// 64はTextureRegionの幅÷２。後は微調整
+			sprite.setPosition(position.x - 64 - (1 * PlayerManager.GetPlayer("プレイヤー").GetDirection()),
+								position.y - 64 + 1);
+			sprite.setScale(-PlayerManager.GetPlayer("プレイヤー").GetDirection() * 0.1f, 0.1f);
+
 			sprite.setRegion(nowFrame);
-			
+
 			animation();
-			body.setTransform(PlayerManager.GetPlayer("プレイヤー").GetPosition().x + (PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
-					PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
-			
+			/*
+			body.setTransform(PlayerManager.GetPlayer("プレイヤー").GetPosition().x +
+								(PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
+									PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
+			*/
+
 			if( stateTime >= 18 ) {
 				useFlag = false;
 			}
 		}
-		
+
 		// 画面外へ
 		else {
 			stateTime = 0;
-			body.setTransform( -1000.0f, -1000.0f, 0.0f);
+			body.setTransform( -100.0f, -100.0f, 0.0f);
 			position = body.getPosition();
-			sprite.setPosition(position.x - 96.0f,position.y);
+			sprite.setPosition(position.x - 100, position.y);
 		}
 	}
-	
+
 	//************************************************************
 	// Colision
 	// 当たり判定処理
@@ -206,8 +214,8 @@ public class Effect extends ObJectBase {
 				if( chara == myOwner ) {
 					continue;
 				}
-				
-				if(contact.isTouching() && 
+
+				if(contact.isTouching() &&
 						(( contact.getFixtureA() == sensor && contact.getFixtureB() == chara.GetSensor() ) ||
 						( contact.getFixtureA() == chara.GetSensor() && contact.getFixtureB() == sensor ))) {
 						return true;
@@ -238,4 +246,3 @@ public class Effect extends ObJectBase {
 		}
 	}
 }
-
