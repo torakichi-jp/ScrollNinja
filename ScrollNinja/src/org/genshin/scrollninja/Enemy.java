@@ -63,7 +63,8 @@ public class Enemy extends CharacterBase {
 	private boolean			hangingAround;	// うろうろフラグ
 	private float 			fall;				// 落下量
 	private Player 			player;			// プレイヤー
-
+	private Weapon			shuri;
+	
 	// コンストラクタ
 	Enemy(String Name, int type, Vector2 pos) {
 		name		= new String(Name);
@@ -111,7 +112,7 @@ public class Enemy extends CharacterBase {
 		// 敵移動
 		Move(world);
 		//重力
-		Gravity(world);
+		//Gravity(world);
 
 		sprite.setRegion(nowFrame);
 		body.setTransform(position, body.getAngle());
@@ -133,14 +134,14 @@ public class Enemy extends CharacterBase {
 		switch(enemyType) {
 		case WALKENEMY:
 			// テクスチャの読み込み
-			Texture texture = new Texture(Gdx.files.internal("data/enemy.png"));
+			Texture texture = new Texture(Gdx.files.internal("data/enemy2.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			TextureRegion region = new TextureRegion(texture, 50, 0, 64, 64);
+			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 
 			// スプライトに反映
 			sprite = new Sprite(region);
 			sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
-
+			
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
 			frame = new TextureRegion[4];
@@ -151,9 +152,8 @@ public class Enemy extends CharacterBase {
 						frame[index++] = tmp[i][j];
 				}
 			}
-
-			animation = new Animation(20.0f, frame);
-
+			animation = new Animation(20.0f, frame);	
+			
 			break;
 		}
 	}
@@ -184,7 +184,9 @@ public class Enemy extends CharacterBase {
 	}
 
 	// 敵スピード(仮)
+
 	private float enemyWalkSpeed = 0.1f;
+
 
 	//************************************************************
 	// walk
@@ -244,8 +246,10 @@ public class Enemy extends CharacterBase {
 		// 追いかける
 		// プレイヤーのX座標が敵のX座標より右にあるとき
 		if(player.position.x > position.x ) {
+
 			sprite.setScale(-0.1f, 0.1f);
 			position.x += enemyWalkSpeed;
+
 		}
 		else if(player.position.x < position.x) {
 			sprite.setScale(-0.1f, 0.1f);

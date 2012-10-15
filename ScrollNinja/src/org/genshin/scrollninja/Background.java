@@ -105,9 +105,9 @@ public class Background {
 			cameraPos.y = (1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
 
 		// 近景
-		// カメラ移動制限より前にやると都合がよい…
+		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
 		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - player.GetPosition().x * 1.5f,
-				-sprite.get(NEAR).getHeight() * 0.5f -41.05f + player.GetPosition().y * 1.5f);
+										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + player.GetPosition().y);
 		// 遠景
 		sprite.get(FAR).setPosition(cameraPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
 									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));

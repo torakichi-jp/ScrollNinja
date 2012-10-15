@@ -77,7 +77,7 @@ public class Stage implements StageBase {
 		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
 
 		camera.update();
-		player.Update(world);
+		player.Update();
 
 		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
 			EffectManager.GetEffectForLoop(i).Update();
@@ -101,6 +101,8 @@ public class Stage implements StageBase {
 			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
 			player.Draw(spriteBatch);
 			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
+			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
+
 			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
 			Background.GetSprite(2).draw(spriteBatch);
 		}
@@ -178,6 +180,15 @@ public class Stage implements StageBase {
 		poly.dispose();
 		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
 		EnemyManager.GetEnemy("1").GetBody().setTransform(50, 10, 0);
+
+		// 敵手裏剣
+		/*WeaponManager.GetWeapon("1").SetBody(world.createBody(def));
+		WeaponManager.GetWeapon("1").GetBody().createFixture(fd);
+		WeaponManager.GetWeapon("1").SetFixture(WeaponManager.GetWeapon("1").GetBody().createFixture(poly, 0));
+		poly.dispose();
+		WeaponManager.GetWeapon("1").GetBody().setBullet(true);
+		WeaponManager.GetWeapon("1").GetBody().setTransform(50, 10, 0);*/
+
 	}
 
 	//************************************************************
@@ -244,6 +255,8 @@ public class Stage implements StageBase {
 		poly.dispose();
 		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
 		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 30, 0);
+
+
 	}
 
 	//************************************************************
