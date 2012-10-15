@@ -91,8 +91,6 @@ public class Background {
 		// プレイヤーの座標をカメラの座標に代入
 		cameraPos = player.GetPosition();
 
-
-
 		// カメラ移動制限
 		if (cameraPos.x < -(sprite.get(MAIN).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * 0.1f)
 			cameraPos.x = -(sprite.get(MAIN).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) *0.1f;
