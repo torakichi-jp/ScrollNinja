@@ -229,7 +229,7 @@ public class Stage implements StageBase {
 		WeaponManager.GetWeapon("手裏剣").SetFixture(WeaponManager.GetWeapon("手裏剣").GetBody().createFixture(poly, 0));
 		poly.dispose();
 		WeaponManager.GetWeapon("手裏剣").GetBody().setBullet(true);
-		WeaponManager.GetWeapon("手裏剣").GetBody().setTransform(50, 100, 0);
+		WeaponManager.GetWeapon("手裏剣").GetBody().setTransform(50, 10, 0);
 	}
 
 	//************************************************************
