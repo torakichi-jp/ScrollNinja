@@ -102,8 +102,8 @@ public class Enemy extends CharacterBase {
 		attackFlag = false;
 		fall = 0.0f;
 
-		
-		
+
+
 		Create();
 		sprite.get(0).setScale(-0.1f, 0.1f);
 	}
@@ -135,7 +135,7 @@ public class Enemy extends CharacterBase {
 	// 描画処理まとめ
 	//************************************************************
 	public void Draw() {
-		sprite.get(0).draw(batch);
+		sprite.get(0).draw(GameMain.spriteBatch);
 	}
 
 	//************************************************************
@@ -166,9 +166,9 @@ public class Enemy extends CharacterBase {
 				}
 			}
 			animation = new Animation(20.0f, frame);
-			
-			
-			
+
+
+
 			BodyDef def	= new BodyDef();
 			def.type	= BodyType.DynamicBody;		// 動く物体
 			//player.SetBody(world.createBody(def));
@@ -185,12 +185,12 @@ public class Enemy extends CharacterBase {
 			fd.shape		= poly;
 
 			sensor = new ArrayList<Fixture>();
-			
+
 			body.createFixture(fd);
 			sensor.add(body.createFixture(poly, 0));
 			body.setBullet(true);			// すり抜け防止
 			body.setTransform(0, 30, 0);	// 初期位置
-			
+
 
 			break;
 		}
@@ -327,7 +327,7 @@ public class Enemy extends CharacterBase {
 	// 接触判定。長いのでここで関数化
 	//************************************************************
 	private boolean GetGroundJudge() {
-		List<Contact> contactList = world.getContactList();
+		List<Contact> contactList = GameMain.world.getContactList();
 		for(int i = 0; i < contactList.size(); i++) {
 				Contact contact = contactList.get(i);
 			// 地面に当たったよ
@@ -344,7 +344,7 @@ public class Enemy extends CharacterBase {
 	// Gravity
 	// 重力計算処理。常にやってます プレイヤーのをpublicにでもOK characterbase
 	//************************************************************
-	private void Gravity(World world) {
+	private void Gravity() {
 		// 空中にいる時は落下移動
 		/*
 		if(!GetGroundJudge(world)) {
@@ -365,7 +365,7 @@ public class Enemy extends CharacterBase {
 	public String GetName(){ return name; }
 	public int GetDirection() { return direction; }
 
-	
+
 
 	//************************************************************
 	// Set
