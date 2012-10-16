@@ -25,7 +25,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 //========================================
 // クラス宣言
 //========================================
-public class Background {
+public class Background extends ObJectBase {
 	//========================================
 	// 定数宣言
 	// spriteの配列
@@ -35,23 +35,32 @@ public class Background {
 	private final static int	NEAR			= 2;
 
 	// 変数宣言
-	private static ArrayList<Sprite> 	sprite  = new ArrayList<Sprite>();	// スプライト
-	private static Body					body;								// 当たり判定用BOX
-	private static ArrayList<Fixture>	sensor	= new ArrayList<Fixture>();	// センサー
-	private static float				zIndex;								// Zインデックス
-
-	private static Vector2				cameraPos = new Vector2();			// カメラ座標
-	private static OrthographicCamera 	camera;								// カメラ
-	private Player 						player;								// プレイヤー
+	private float				zIndex;								// Zインデックス
+	private Vector2				cameraPos;
 
 	// コンストラクタ
-	private Background() {}
+	public Background(){}
+	public Background(Stage stage) {
+		sprite = new ArrayList<Sprite>();
+		sensor = new ArrayList<Fixture>();
+		cameraPos = new Vector2(0.0f, 0.0f);
+		
+		switch(stage.GetStageNum()){
+		case 1:
+			LoadTexture();
+			break;
+		}
+	}
+	
+	public void Draw(int i) {
+		sprite.get(i).draw(GameMain.spriteBatch);
+	}
 
 	//************************************************************
 	// LoadTexture
 	// テクスチャを読み込んでスプライトにセット！
 	//************************************************************
-	public static void LoadTexture() {
+	public void LoadTexture() {
 		// 奥から作成
 		// 奥
 		Texture texture = new Texture(Gdx.files.internal("data/stage_far.png"));
@@ -87,7 +96,7 @@ public class Background {
 	// moveBackground
 	// 背景移動
 	//************************************************************
-	public static void moveBackground(Player player) {
+	public void moveBackground(Player player) {
 		// プレイヤーの座標をカメラの座標に代入
 		cameraPos = player.GetPosition();
 
@@ -115,17 +124,17 @@ public class Background {
 	// Get
 	// ゲッターまとめ
 	//************************************************************
-	public static Sprite GetSprite(int i) { return sprite.get(i); }
-	public static Body GetBody() { return body; }
-	public static Fixture GetSensor(int i) { return sensor.get(i); }
-	public static Vector2 GetCamPos() { return cameraPos; }
+/*	public Sprite GetSprite(int i) { return sprite.get(i); }
+	public Body GetBody() { return body; }
+	public Fixture GetSensor(int i) { return sensor.get(i); }*/
+	public Vector2 GetCamPos() { return cameraPos; }
 
 	//************************************************************
 	// Set
 	// セッターまとめ
 	//************************************************************
-	public static void SetSprite(Sprite sp) { sprite.add(sp); }
+/*	public static void SetSprite(Sprite sp) { sprite.add(sp); }
 	public static void SetBody(Body bd) { body = bd; }
 	public static void SetFixture(Fixture ss){ sensor.add(ss); }
-
+*/
 }
