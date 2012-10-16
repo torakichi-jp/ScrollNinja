@@ -1,6 +1,5 @@
 package org.genshin.scrollninja;
 
-import java.awt.RenderingHints.Key;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
 // 制作メモ
@@ -35,12 +35,12 @@ import com.badlogic.gdx.physics.box2d.World;
 // クラス宣言
 //========================================
 public class Player extends CharacterBase {
-
 	// 定数宣言
-	private static final float FIRST_SPEED	=  30f;		// 初速度
-	private static final float JUMP_POWER	=  30f;		// ジャンプ加速度
-	private static final float GRAVITY		=  -20f;	// 重力
-	private Vector2 velocity;							// 移動用速度
+	private static final float RUN_MAX_VEL		= 30.0f;	// 走りの最高速度
+	private static final float DASH_MAX_VEL	= 30.0f;	// ダッシュの最高速度
+	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
+	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
+	private static final float JUMP_POWER	=  100.0f;		// ジャンプ加速度
 
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
@@ -50,29 +50,41 @@ public class Player extends CharacterBase {
 	private static final int JUMP			=  3;
 	private static final int ATTACK			=  4;
 
+	private static final int FOOT	= 0;
+	private static final int BODY	= 0;
+
 	// 変数宣言
 	private String			name;					// 名前
-	private int				charge;					// チャージゲージ
-	private int				money;					// お金
+	private int				charge;				// チャージゲージ
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
-	private int				nowAttack;				// 現在の攻撃方法
 	private int				count;					// カウント用変数
-	private float			fall;					// 落下量
 	private float			stateTime;
-	private Weapon			weapon;					// 武器のポインタ
+	private Weapon			weapon;				// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
-	private Animation		standAnimation;			// 立ちアニメーション
-	private Animation		walkAnimation;			// 歩きアニメーション
-	private Animation		dashAnimation;			// ダッシュアニメーション
-	private Animation		jumpAnimation;			// ジャンプアニメーション
+	
+	private Animation		standAnimation;		// 立ちアニメーション
+	private Animation		walkAnimation;		// 歩きアニメーション
+	private Animation		dashAnimation;		// ダッシュアニメーション
+	private Animation		jumpAnimation;		// ジャンプアニメーション
 	private Animation		attackAnimation;		// 攻撃アニメーション
-	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
-	private Sprite			footSprite;				// 下半身用のスプライト
+	private Animation		footWalkAnimation;	// 下半身・歩きアニメーション
 	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
+	
+	private Sprite			footSprite;			// 下半身用のスプライト
+	
+	// おそらく別のクラスに吐き出す変数
+	private int				money;					// お金
+	
+	// おそらく使わなくなる変数
+	private static final float FIRST_SPEED	=  30f;		// 初速度
+	private Vector2			velocity;				// 移動用速度
+	private int				nowAttack;				// 現在の攻撃方法
+	private float			fall;					// 落下量
 
+	
 	//************************************************************
 	// Get
 	// ゲッターまとめ
@@ -81,9 +93,9 @@ public class Player extends CharacterBase {
 	public int GetDirection(){ return direction; }
 	public Sprite GetSprite(String type) {
 		if (type.equals("BODY"))
-			return sprite;
+			return sprite.get(BODY);
 		else
-			return footSprite;
+			return sprite.get(FOOT);
 	}
 
 	// コンストラクタ
@@ -113,12 +125,15 @@ public class Player extends CharacterBase {
 
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
-		sprite = new Sprite(walkAnimation.getKeyFrame(0, true));
-		sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
-		sprite.setScale(0.1f);
-		footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
+		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
+		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f);
+		bodySprite.setScale(0.1f);
+		sprite.add(BODY, bodySprite);
+		
+		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
 		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f);
 		footSprite.setScale(0.1f);
+		sprite.add(FOOT, bodySprite);
 
 		// 一番最初の表示　現在は歩きで代用
 		nowFrame = walkAnimation.getKeyFrame(0, true);
@@ -142,26 +157,20 @@ public class Player extends CharacterBase {
 	// Update
 	// 更新処理はここにまとめる
 	//************************************************************
-	public void Update() {
-		position = body.getPosition();
-		body.setTransform(position ,0);
-		sprite.setRegion(nowFrame);
-		footSprite.setRegion(nowFootFrame);
+	public void Update(World world) {
+		sprite.get(BODY).setRegion(nowFrame);
+		sprite.get(FOOT).setRegion(nowFootFrame);
 
-		Stand();		// 立ち処理
-		Move();		// 移動処理
-		Jump();		// ジャンプ処理
+		Stand(world);		// 立ち処理
+		Move(world);		// 移動処理
+		Jump(world);		// ジャンプ処理
 		Attack();
-		Gravity();		// 重力計算処理
 		animation();		// アニメーション処理
-
-	/*	if( prevAngle != body.getAngle() ) {
-			body.setTransform(position ,0);
+		
+		{
+			Vector2 velocity = body.getLinearVelocity(); 
+			System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 		}
-	*/
-		body.setTransform(position, body.getAngle());
-	//	prevAngle = body.getAngle();
-	//	System.out.println(currentState);
 	}
 
 	//************************************************************
@@ -169,17 +178,37 @@ public class Player extends CharacterBase {
 	// 描画処理はここでまとめる
 	//************************************************************
 	public void Draw(SpriteBatch batch) {
-		// 下半身から描画
-		footSprite.draw(batch);
-		sprite.draw(batch);
+		// （本来は全て基底クラスで行うべき。そのうち直す）
+		super.Draw(batch);
+		
+//		// スプライトの座標・回転を設定してから描画する
+//		Vector2 position = body.getPosition();
+//		float rotation = (float)Math.toDegrees(body.getAngle());
+//		
+//		// 仮。スプライトリストは基底クラスのフィールドに持つべき。
+//		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+//		sprites.add(footSprite);
+//		sprites.add(sprite);
+//		
+//		for(int i = 0;  i < sprites.size();  ++i)
+//		{
+//			Sprite tmp = sprites.get(i);
+//			
+//			// 姿勢制御
+//			tmp.setPosition(position.x-tmp.getOriginX(), position.y-tmp.getOriginY());
+//			tmp.setRotation(rotation);
+//			
+//			// 描画
+//			tmp.draw(batch);
+//		}
 	}
 
 	//************************************************************
 	// Stand
 	// 立ち処理。
 	//************************************************************
-	private void Stand() {
-		if( GetGroundJudge() ) {
+	private void Stand(World world) {
+		if( GetGroundJudge(world) ) {
 			currentState = STAND;
 		}
 	}
@@ -187,40 +216,24 @@ public class Player extends CharacterBase {
 	// Jump
 	// ジャンプ処理。上押すとジャンプ！
 	//************************************************************
-	private void Jump() {
+	private void Jump(World world) {
 
 
 		// 地面に接触しているならジャンプ可能
-		if( /*GetGroundJudge()*/ !jump ) {
+		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
-			if (Gdx.input.isKeyPressed(Keys.UP)) {
+			if (Gdx.input.isKeyPressed(Keys.W)) {
 				jump = true;
 				currentState = JUMP;
-				velocity.y = JUMP_POWER;
+				body.setLinearVelocity(body.getLinearVelocity().x, 0.0f);
+				body.applyLinearImpulse(0.0f, JUMP_POWER, position.x, position.y);
 			}
 		}
 
 		// ジャンプ中の処理
 		if( jump ) {
-			body.setLinearVelocity(velocity.x, velocity.y);
-			velocity.y -= 1;
-		}
-	}
-
-	//************************************************************
-	// Gravity
-	// 重力計算処理。常にやってます
-	//************************************************************
-	private void Gravity() {
-		// 空中にいる時は落下移動
-		if(!GetGroundJudge()) {
-			/*
-			fall -= 0.25;
-			position.y -= 5;
-			if( fall < -5 ) {
-				fall = -5;
-			}
-			*/
+//			body.setLinearVelocity(velocity.x, velocity.y);
+//			velocity.y -= 1;
 		}
 	}
 
@@ -229,37 +242,41 @@ public class Player extends CharacterBase {
 	// 移動処理。左右押すと移動します
 	// 状態遷移は空中にいなければ歩きに！
 	//************************************************************
-	private void Move() {
+	private void Move(World world) {
+		// 速度制限
+		Vector2 vel = body.getLinearVelocity();
+		if( Math.abs(vel.x) > RUN_MAX_VEL )
+		{
+			body.setLinearVelocity(Math.signum(vel.x)*RUN_MAX_VEL, vel.y);
+		}
+		
 		// 右が押された
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		if (Gdx.input.isKeyPressed(Keys.D)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
-			velocity.x = FIRST_SPEED * RIGHT;
-			body.setLinearVelocity(velocity.x, GRAVITY);		// プレイヤーの移動
-			sprite.setScale(-0.1f, 0.1f);
-			footSprite.setScale(-0.1f, 0.1f);
+			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
+			int count = sprite.size();
+			flip(true, false);
 
-			if( GetGroundJudge() ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
+			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
 				currentState = WALK;
 			}
 		}
 		// 左が押された
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+		if (Gdx.input.isKeyPressed(Keys.A)) {
 			direction = LEFT;
-			velocity.x = FIRST_SPEED * LEFT;
-			body.setLinearVelocity(velocity.x, GRAVITY);		// プレイヤーの移動
-			sprite.setScale(0.1f, 0.1f);
-			footSprite.setScale(0.1f, 0.1f);
+			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
+			flip(false, false);
 
-			if( GetGroundJudge() ) {
+			if( GetGroundJudge(world) ) {
 				currentState = WALK;
 			}
 		}
 		// 移動キーが押されていない時は少しずつ減速
-		if (!Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) {
-			velocity.x *= 0.9;
-			if (velocity.x < 5)
-				velocity.x = 0;
-			body.setLinearVelocity(velocity.x, GRAVITY);
+		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) {
+//			velocity.x *= 0.9;
+//			if (velocity.x < 5)
+//				velocity.x = 0;
+//			body.setLinearVelocity(velocity.x, GRAVITY);
 		}
 	}
 
@@ -316,8 +333,11 @@ public class Player extends CharacterBase {
 	// 戻り値： true:地面接地		false:空中
 	// 接触判定。長いのでここで関数化
 	//************************************************************
-	private boolean GetGroundJudge() {
-		List<Contact> contactList = GameMain.world.getContactList();
+	private boolean GetGroundJudge(World world) {
+		// この処理はStageあたりに任せる予定。
+		
+		List<Contact> contactList = world.getContactList();
+		Fixture sensor = super.sensor.get(0); 
 
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
@@ -341,8 +361,8 @@ public class Player extends CharacterBase {
 	// ExceptionProcess
 	// 当たり判定の例外処理
 	//************************************************************
-/*	private boolean ExceptionProcess() {
-		List<Contact> contactList = GameMain.world.getContactList();
+/*	private boolean ExceptionProcess(World world) {
+		List<Contact> contactList = world.getContactList();
 
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
@@ -357,4 +377,8 @@ public class Player extends CharacterBase {
 
 		return false;
 	}*/
+	
+	private void collisionNotify(Object obj, Contact contact)
+	{
+	}
 }

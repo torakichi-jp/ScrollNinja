@@ -6,8 +6,12 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
 
 //========================================
 // クラス宣言
@@ -17,27 +21,63 @@ public class ObJectBase {
 	protected Body 					body;			// 当たり判定用BOX
 	protected ArrayList<Fixture> 	sensor;			// センサー
 	
-	// コンストラクタ
+	/**
+	 * コンストラクタ
+	 * 将来的には引数にWorldを投げて初期化させる？
+	 */
 	ObJectBase(){}
 	
-	//************************************************************
-	// HitTest
-	// 当たり判定まとめ
-	//************************************************************
+	/**
+	 * オブジェクトを更新する。
+	 * @param world	ワールドオブジェクト。多分そのうち消す。
+	 */
+	public void Update(World world){}
 	
+	/**
+	 * スプライトを描画する。
+	 * @author kou
+	 * @param batch	スプライトバッチ
+	 */
+	public void Draw(SpriteBatch batch)
+	{
+		Vector2 pos = body.getPosition();
+		float rot = (float) Math.toDegrees(body.getAngle());
+
+		int count = sprite.size();
+		for (int i = 0; i < count; ++i)
+		{
+			Sprite current = sprite.get(i);
+			// 座標・回転
+			current.setPosition(pos.x - current.getOriginX(),
+					pos.y - current.getOriginY());
+			current.setRotation(rot);
+			// 描画
+			current.draw(batch);
+		}
+	}
 	
-	//************************************************************
-	// Get
-	// ゲッターまとめ
-	//************************************************************
-/*	public Sprite GetSprite() { return sprite.get(1); }
-	public Body GetBody() { return body; }
-	public Fixture GetSensor() { return sensor.get(1); }
-	*/
-	//************************************************************
-	// Set
-	// セッターまとめ
-	//************************************************************
-/*	public void SetSprite( Sprite sp) { sprite.get(1).set(sp); }
-	public void SetBody(Body bd) { body = bd; }*/
+	/**
+	 * 衝突を振り分ける。
+	 * @param obj			衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
+	public void collisionDispatch(ObJectBase obj, Contact contact){}
+
+	/**
+	 * 衝突を通知する。
+	 * @param obj			衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
+	protected void collisionNotify(Background obj, Contact contact){}
+	protected void collisionNotify(Player obj, Contact contact){}
+	protected void collisionNotify(Enemy obj, Contact contact){}
+	
+	protected void flip(boolean x, boolean y)
+	{
+		int count = sprite.size();
+		for(int i = 0;  count;  ++i)
+		{
+			sprite.get(i).flip(x, y);
+		}
+	}
 }

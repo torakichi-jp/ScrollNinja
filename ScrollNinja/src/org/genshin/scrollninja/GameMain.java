@@ -43,7 +43,7 @@ public class GameMain implements Screen{
 	// コンストラクタ
 	public GameMain(Game game) {
 		ScrollNinjya		= game;
-		world				= new World(new Vector2(0, -20.0f), true);
+		world				= new World(new Vector2(0, -100.0f), true);
 		stage1				= new Stage(world);
 
 		StageManager.StageTrance(stage1);			// 現在のステージの設定

@@ -37,7 +37,7 @@ public class Stage implements StageBase {
 
 	// コンストラクタ
 	public Stage(World wrd){
-		world = new World(new Vector2(0.0f, -20.0f), true );
+		//world = new World(new Vector2(0.0f, -20.0f), true );
 		world = wrd;
 		/*
 		switch (ScroolNinja.aspectRatio) {
@@ -73,10 +73,10 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
-		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+//		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
+//		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
+//		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
+//		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		EnemyManager.Update(world);
 
 
@@ -180,10 +180,10 @@ public class Stage implements StageBase {
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
-		fd.density		= 50;
+		fd.density			= 0;
 		fd.friction		= 0;
 		fd.restitution	= 0;
-		fd.shape		= poly;
+		fd.shape			= poly;
 
 		player.GetBody().createFixture(fd);
 		player.SetFixture(player.GetBody().createFixture(poly, 0));
