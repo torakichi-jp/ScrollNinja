@@ -29,8 +29,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
 
 public class GameMain implements Screen{
-	private Game			ScrollNinjya;
-	public  static World	world;				// ワールド
+	private Game						ScrollNinjya;
+	public static World					world;			// ワールド
+	public static OrthographicCamera	camera;			// カメラ
+	public static SpriteBatch			spriteBatch;	// スプライトバッチ
 	private Stage			stage1;				// 最初に呼ばれるステージ
 	private Stage2			stage2;
 	private long 			error			= 0;
@@ -44,7 +46,9 @@ public class GameMain implements Screen{
 	public GameMain(Game game) {
 		ScrollNinjya		= game;
 		world				= new World(new Vector2(0, -20.0f), true);
-		stage1				= new Stage(world);
+		stage1				= new Stage();
+		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
+		spriteBatch 		= new SpriteBatch();
 
 		StageManager.StageTrance(stage1);			// 現在のステージの設定
 	}
@@ -53,7 +57,9 @@ public class GameMain implements Screen{
 	// Get
 	// ゲッターまとめ
 	//************************************************************
-	public World GetWorld(){ return world; }
+//	public World GetWorld(){ return world; }
+//	public OrthographicCamera GetCamera(){ return camera; }
+//	public SpriteBatch GetSpriteBatch(){ return spriteBatch; }
 
 	//************************************************************
 	// render

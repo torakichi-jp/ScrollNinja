@@ -25,9 +25,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Stage implements StageBase {
 	private Player 						player;			// プレイヤー
-	private World						world;			// 当たり判定
-	private OrthographicCamera			camera;			// カメラ
-	private SpriteBatch					spriteBatch;	// スプライトバッチ
 	private Box2DDebugRenderer			renderer;		//
 	private ArrayList<Item>				popItems;		//
 	private ArrayList<Enemy>			popEnemys;		//
@@ -36,9 +33,7 @@ public class Stage implements StageBase {
 	private Weapon					weapon;
 
 	// コンストラクタ
-	public Stage(World wrd){
-		world = new World(new Vector2(0.0f, -20.0f), true );
-		world = wrd;
+	public Stage(){
 		/*
 		switch (ScroolNinja.aspectRatio) {
 		case XGA:	// 4:3
@@ -55,14 +50,12 @@ public class Stage implements StageBase {
 			break;
 		}
 		*/
-		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
-		spriteBatch 		= new SpriteBatch();
 		renderer			= new Box2DDebugRenderer();
 
-		CreateStage();
-		CreateStageObject();
-		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
-		CreatePlayer();
+//		CreateStage();
+//		CreateStageObject();
+//		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
+//		CreatePlayer();
 		WeaponManager.CreateWeapon("手裏剣");
 		//weapon.create();
 
@@ -73,21 +66,21 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
-		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
+/*		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
 		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-		EnemyManager.Update(world);
+		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));*/
+		EnemyManager.Update();
 
 
 		// 背景スクロール
 		Background.moveBackground(player);
-		camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
+		GameMain.camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
 
-		camera.update();
+		GameMain.camera.update();
 		player.Update();
 		ItemManager.Update();
-		WeaponManager.GetWeapon("手裏剣").Update(world);
+		WeaponManager.GetWeapon("手裏剣").Update();
 		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
 			EffectManager.GetEffectForLoop(i).Update();
 		}
@@ -111,28 +104,28 @@ public class Stage implements StageBase {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-		spriteBatch.setProjectionMatrix(camera.combined);		// プロジェクション行列のセット
-		spriteBatch.begin();									// 描画開始
+		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
+		GameMain.spriteBatch.begin();									// 描画開始
 		{
-			Background.GetSprite(0).draw(spriteBatch);
-			Background.GetSprite(1).draw(spriteBatch);
-			StageObjectManager.GetStageObject("block").GetSprite().draw(spriteBatch);
-			player.Draw(spriteBatch);
-			EnemyManager.GetEnemy("1").GetSprite().draw(spriteBatch);
+			Background.GetSprite(0).draw();
+			Background.GetSprite(1).draw();
+			StageObjectManager.GetStageObject("block").GetSprite().draw();
+			player.Draw();
+			EnemyManager.GetEnemy("1").GetSprite().draw();
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
-			WeaponManager.GetWeapon("手裏剣").Draw(spriteBatch);
-			EffectManager.GetEffect(Effect.FIRE_2).Draw(spriteBatch);
-			ItemManager.Draw(spriteBatch);
-			Background.GetSprite(2).draw(spriteBatch);
+			WeaponManager.GetWeapon("手裏剣").Draw();
+			EffectManager.GetEffect(Effect.FIRE_2).Draw();
+			ItemManager.Draw();
+			Background.GetSprite(2).draw();
 		}
-		spriteBatch.end();										// 描画終了
+		GameMain.spriteBatch.end();										// 描画終了
 
-		renderer.render(world, camera.combined);
-		world.step(Gdx.graphics.getDeltaTime(), 20, 20);
-		player.GetBody().setAwake(true);
+		renderer.render(GameMain.world, GameMain.camera.combined);
+		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
+//		player.GetBody().setAwake(true);
 	}
 
-	//************************************************************
+/*	//************************************************************
 	// CreateStage
 	// ステージのあたり判定の作成
 	//************************************************************
@@ -298,7 +291,7 @@ public class Stage implements StageBase {
 		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 30, 0);
 
 
-	}
+	}*/
 
 	//************************************************************
 	// PopEnemy
