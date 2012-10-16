@@ -41,7 +41,6 @@ public class ItemManager {
 	// まだその種類がリストにない場合は新規で追加
 	//************************************************************
 	public static int CreateItem(int Type, Vector2 pos) {
-		
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < itemList.size(); i ++ ) {
 			// 同じ種類発見

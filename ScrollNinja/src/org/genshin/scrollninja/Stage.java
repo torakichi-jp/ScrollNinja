@@ -31,9 +31,13 @@ public class Stage implements StageBase {
 	private ArrayList<Weapon>		popWeapons;
 
 	private Weapon					weapon;
+	private int						stageNum;
+	private Background				backGround;
 
 	// コンストラクタ
 	public Stage(){
+		stageNum = 1;
+		Background backGround = new Background(this);
 		//world = new World(new Vector2(0.0f, -20.0f), true );
 
 		/*
@@ -76,8 +80,8 @@ public class Stage implements StageBase {
 		EnemyManager.Update();
 
 		// 背景スクロール
-		Background.moveBackground(player);
-		GameMain.camera.position.set(Background.GetCamPos().x , Background.GetCamPos().y , 0);
+		backGround.moveBackground(player);
+		GameMain.camera.position.set(backGround.GetCamPos().x, backGround.GetCamPos().y , 0);
 
 		GameMain.camera.update();
 		player.Update();
@@ -109,16 +113,16 @@ public class Stage implements StageBase {
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
 		GameMain.spriteBatch.begin();									// 描画開始
 		{
-			Background.GetSprite(0).draw();
-			Background.GetSprite(1).draw();
-			StageObjectManager.GetStageObject("block").GetSprite().draw();
+			backGround.Draw(0);
+			backGround.Draw(1);
+			StageObjectManager.GetStageObject("block").Draw();
 			player.Draw();
-			EnemyManager.GetEnemy("1").GetSprite().draw();
+			EnemyManager.GetEnemy("1").Draw();
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
 			WeaponManager.GetWeapon("手裏剣").Draw();
 			EffectManager.GetEffect(Effect.FIRE_2).Draw();
 			ItemManager.Draw();
-			Background.GetSprite(2).draw();
+			backGround.Draw(2);
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 
@@ -330,6 +334,7 @@ public class Stage implements StageBase {
 	// ゲッターまとめ
 	//************************************************************
 	public Stage GetStage() { return this; }
+	public int GetStageNum(){ return stageNum; }
 
 	@Override
 	public void Init() {

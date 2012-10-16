@@ -29,6 +29,9 @@ public class MainMenu implements Screen{
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;				// エグジット
+	private Background backGround;
+	private Stage			stage1;				// 最初に呼ばれるステージ
+	private Stage2			stage2;
 
 	private int spritePositionX;
 	// 画像座標
@@ -41,6 +44,9 @@ public class MainMenu implements Screen{
 	// コンストラクタ
 	public MainMenu(Game game) {
 		this.scrollNinja = game;
+		stage1				= new Stage();
+		StageManager.StageTrance(stage1);			// 現在のステージの設定
+		backGround = new Background(stage1);
 		/*
 		switch (ScroolNinja.aspectRatio) {
 		case XGA:	// 4:3
@@ -176,7 +182,7 @@ public class MainMenu implements Screen{
 
 		// ゲームメイン移行
 		if(selectMenu)
-			scrollNinja.setScreen(new GameMain(scrollNinja));
+			scrollNinja.setScreen(new GameMain(scrollNinja, backGround));
 
 	}
 	//---------------------------------------------------
@@ -212,8 +218,8 @@ public class MainMenu implements Screen{
 		// スプライト描画
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		Background.GetSprite(0).draw(batch);
-		Background.GetSprite(1).draw(batch);
+		backGround.Draw(0);
+		backGround.Draw(1);
 
 		// メニュー選択肢描画
 		modeContinue.draw(batch);

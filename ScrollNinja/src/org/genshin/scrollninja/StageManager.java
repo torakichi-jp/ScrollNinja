@@ -38,7 +38,7 @@ public class StageManager {
 	// StageTrance
 	// ステージ遷移
 	//************************************************************
-	public static void StageTrance(Stage stage) {
+	public static void StageTrance(StageBase stage) {
 		nowStage = stage;
 	}
 }

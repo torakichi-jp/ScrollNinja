@@ -33,24 +33,22 @@ public class GameMain implements Screen{
 	public static World					world;			// ワールド
 	public static OrthographicCamera	camera;			// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
-	private Stage			stage1;				// 最初に呼ばれるステージ
-	private Stage2			stage2;
 	private long 			error			= 0;
 	private int				fps				= 60;
 	private long			idealSleep		= (1000 << 16) / fps;
 	private long			newTime			= System.currentTimeMillis() << 16;
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
+	private Background		backGround;
 
 	// コンストラクタ
-	public GameMain(Game game) {
+	public GameMain(Game game, Background bg) {
 		ScrollNinjya		= game;
 		world				= new World(new Vector2(0, -20.0f), true);
-		stage1				= new Stage();
 		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		spriteBatch 		= new SpriteBatch();
-
-		StageManager.StageTrance(stage1);			// 現在のステージの設定
+		backGround			= new Background();
+		backGround			= bg;
 	}
 
 	//************************************************************

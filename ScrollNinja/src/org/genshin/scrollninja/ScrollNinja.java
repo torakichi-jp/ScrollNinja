@@ -52,10 +52,9 @@ public class ScrollNinja extends Game {
 			aspectRatio = SXGA;
 		else //(window.x * 5 == window.y * 8)
 			aspectRatio = WUXGA;
-
-		Background.LoadTexture();		// 背景読み込み
-//		setScreen(new MainMenu(this));	// メインメニュー読み込み
-		setScreen(new GameMain(this));	// メニュー無視
+		
+		setScreen(new MainMenu(this));	// メインメニュー読み込み
+//		setScreen(new GameMain(this));	// メニュー無視
 	}
 
 
