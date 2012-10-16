@@ -1,6 +1,6 @@
 package org.genshin.scrollninja;
 
-import java.awt.RenderingHints.Key;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -35,12 +35,15 @@ import com.badlogic.gdx.physics.box2d.World;
 // クラス宣言
 //========================================
 public class Player extends CharacterBase {
-
+	
 	// 定数宣言
-	private static final float FIRST_SPEED	=  30f;		// 初速度
-	private static final float JUMP_POWER	=  30f;		// ジャンプ加速度
-	private static final float GRAVITY		=  -20f;	// 重力
-	private Vector2 velocity;							// 移動用速度
+	private static final float RUN_MAX_VEL		= 30.0f;	// 走りの最高速度
+	private static final float DASH_MAX_VEL	= 30.0f;	// ダッシュの最高速度
+	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
+	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
+	
+	
+	private static final float JUMP_POWER	=  300.0f;		// ジャンプ加速度
 
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
@@ -52,27 +55,36 @@ public class Player extends CharacterBase {
 
 	// 変数宣言
 	private String			name;					// 名前
-	private int				charge;					// チャージゲージ
-	private int				money;					// お金
+	private int				charge;				// チャージゲージ
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
-	private int				nowAttack;				// 現在の攻撃方法
 	private int				count;					// カウント用変数
-	private float			fall;					// 落下量
 	private float			stateTime;
-	private Weapon			weapon;					// 武器のポインタ
+	private Weapon			weapon;				// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
-	private Animation		standAnimation;			// 立ちアニメーション
-	private Animation		walkAnimation;			// 歩きアニメーション
-	private Animation		dashAnimation;			// ダッシュアニメーション
-	private Animation		jumpAnimation;			// ジャンプアニメーション
+	
+	private Animation		standAnimation;		// 立ちアニメーション
+	private Animation		walkAnimation;		// 歩きアニメーション
+	private Animation		dashAnimation;		// ダッシュアニメーション
+	private Animation		jumpAnimation;		// ジャンプアニメーション
 	private Animation		attackAnimation;		// 攻撃アニメーション
-	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
-	private Sprite			footSprite;				// 下半身用のスプライト
+	private Animation		footWalkAnimation;	// 下半身・歩きアニメーション
 	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
+	
+	private Sprite			footSprite;			// 下半身用のスプライト
+	
+	// おそらく別のクラスに吐き出す変数
+	private int				money;					// お金
+	
+	// おそらく使わなくなる変数
+	private static final float FIRST_SPEED	=  30f;		// 初速度
+	private Vector2			velocity;				// 移動用速度
+	private int				nowAttack;				// 現在の攻撃方法
+	private float			fall;					// 落下量
 
+	
 	//************************************************************
 	// Get
 	// ゲッターまとめ
@@ -144,7 +156,6 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public void Update(World world) {
 		position = body.getPosition();
-		body.setTransform(position ,0);
 		sprite.setRegion(nowFrame);
 		footSprite.setRegion(nowFootFrame);
 
@@ -154,14 +165,11 @@ public class Player extends CharacterBase {
 		Attack();
 		Gravity(world);		// 重力計算処理
 		animation();		// アニメーション処理
-
-	/*	if( prevAngle != body.getAngle() ) {
-			body.setTransform(position ,0);
+		
+		{
+			Vector2 velocity = body.getLinearVelocity(); 
+			System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 		}
-	*/
-		body.setTransform(position, body.getAngle());
-	//	prevAngle = body.getAngle();
-	//	System.out.println(currentState);
 	}
 
 	//************************************************************
@@ -169,9 +177,28 @@ public class Player extends CharacterBase {
 	// 描画処理はここでまとめる
 	//************************************************************
 	public void Draw(SpriteBatch batch) {
-		// 下半身から描画
-		footSprite.draw(batch);
-		sprite.draw(batch);
+		// （本来は全て基底クラスで行うべき。そのうち直す）
+		
+		// スプライトの座標・回転を設定してから描画する
+		Vector2 position = body.getPosition();
+		float rotation = (float)Math.toDegrees(body.getAngle());
+		
+		// 仮。スプライトリストは基底クラスのフィールドに持つべき。
+		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
+		sprites.add(footSprite);
+		sprites.add(sprite);
+		
+		for(int i = 0;  i < sprites.size();  ++i)
+		{
+			Sprite tmp = sprites.get(i);
+			
+			// 姿勢制御
+			tmp.setPosition(position.x-tmp.getOriginX(), position.y-tmp.getOriginY());
+			tmp.setRotation(rotation);
+			
+			// 描画
+			tmp.draw(batch);
+		}
 	}
 
 	//************************************************************
@@ -193,17 +220,18 @@ public class Player extends CharacterBase {
 		// 地面に接触しているならジャンプ可能
 		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
-			if (Gdx.input.isKeyPressed(Keys.UP)) {
+			if (Gdx.input.isKeyPressed(Keys.W)) {
 				jump = true;
 				currentState = JUMP;
-				velocity.y = JUMP_POWER;
+				body.setLinearVelocity(body.getLinearVelocity().x, 0.0f);
+				body.applyLinearImpulse(0.0f, JUMP_POWER, position.x, position.y);
 			}
 		}
 
 		// ジャンプ中の処理
 		if( jump ) {
-			body.setLinearVelocity(velocity.x, velocity.y);
-			velocity.y -= 1;
+//			body.setLinearVelocity(velocity.x, velocity.y);
+//			velocity.y -= 1;
 		}
 	}
 
@@ -230,36 +258,41 @@ public class Player extends CharacterBase {
 	// 状態遷移は空中にいなければ歩きに！
 	//************************************************************
 	private void Move(World world) {
+		// 速度制限
+		Vector2 vel = body.getLinearVelocity();
+		if( Math.abs(vel.x) > RUN_MAX_VEL )
+		{
+			body.setLinearVelocity(Math.signum(vel.x)*RUN_MAX_VEL, vel.y);
+		}
+		
 		// 右が押された
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		if (Gdx.input.isKeyPressed(Keys.D)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
-			velocity.x = FIRST_SPEED * RIGHT;
-			body.setLinearVelocity(velocity.x, GRAVITY);		// プレイヤーの移動
-			sprite.setScale(-0.1f, 0.1f);
-			footSprite.setScale(-0.1f, 0.1f);
+			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
+			sprite.flip(true, false);
+			footSprite.flip(true, false);
 
 			if( GetGroundJudge(world) ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
 				currentState = WALK;
 			}
 		}
 		// 左が押された
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+		if (Gdx.input.isKeyPressed(Keys.A)) {
 			direction = LEFT;
-			velocity.x = FIRST_SPEED * LEFT;
-			body.setLinearVelocity(velocity.x, GRAVITY);		// プレイヤーの移動
-			sprite.setScale(0.1f, 0.1f);
-			footSprite.setScale(0.1f, 0.1f);
+			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
+			sprite.flip(false, false);
+			footSprite.flip(false, false);
 
 			if( GetGroundJudge(world) ) {
 				currentState = WALK;
 			}
 		}
 		// 移動キーが押されていない時は少しずつ減速
-		if (!Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) {
-			velocity.x *= 0.9;
-			if (velocity.x < 5)
-				velocity.x = 0;
-			body.setLinearVelocity(velocity.x, GRAVITY);
+		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) {
+//			velocity.x *= 0.9;
+//			if (velocity.x < 5)
+//				velocity.x = 0;
+//			body.setLinearVelocity(velocity.x, GRAVITY);
 		}
 	}
 
@@ -357,4 +390,8 @@ public class Player extends CharacterBase {
 
 		return false;
 	}*/
+	
+	private void collisionNotify(Object obj, Contact contact)
+	{
+	}
 }
