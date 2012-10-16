@@ -14,10 +14,12 @@ public class CollisionDetector {
 		for(int i = 0; i < contactList.size(); i++) {
 			Contact contact = contactList.get(i);
 			
-			ObJectBase a = (ObJectBase)contact.getFixtureA().getUserData();
-			ObJectBase b = (ObJectBase)contact.getFixtureB().getUserData();
-			a.dispatch(b);
-			b.dispatch(a);
+			if( contact.isTouching() ) {
+				ObJectBase a = (ObJectBase)contact.getFixtureA().getUserData();
+				ObJectBase b = (ObJectBase)contact.getFixtureB().getUserData();
+//				a.dispatch(b);
+//				b.dispatch(a);
+			}
 		}
 	}
 }

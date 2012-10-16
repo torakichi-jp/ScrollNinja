@@ -20,9 +20,9 @@ public class EnemyManager {
 	private EnemyManager() {}
 	
 	// 更新
-	public static void Update(World world) {
+	public static void Update() {
 		for(int i = 0; i < enemyList.size(); i ++) {
-			enemyList.get(i).Update(world);
+			enemyList.get(i).Update();
 		}
 	}
 	

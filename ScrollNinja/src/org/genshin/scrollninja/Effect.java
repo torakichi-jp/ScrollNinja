@@ -7,6 +7,7 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -58,6 +59,8 @@ public class Effect extends ObJectBase {
 
 	//コンストラクタ
 	public Effect(int type, CharacterBase owner) {
+		sprite		= new ArrayList<Sprite>();
+		sensor		= new ArrayList<Fixture>();
 		effectType	= type;
 		effectTime	= 0;
 		stateTime	= 0;
@@ -65,7 +68,7 @@ public class Effect extends ObJectBase {
 		position	= new Vector2(0.0f, 0.0f);
 		useFlag		= false;
 		myOwner		= owner;
-		sensor.setUserData(this);
+		sensor.get(0).setUserData(this);
 
 		Create();
 	}
@@ -97,7 +100,7 @@ public class Effect extends ObJectBase {
 		case FIRE_2:
 			BodyDef def	= new BodyDef();
 			def.type	= BodyType.DynamicBody;		// 動く物体
-			body = GameMain.world.createBody(def);
+			body		= GameMain.world.createBody(def);
 
 			// 当たり判定の作成
 			PolygonShape poly		= new PolygonShape();
@@ -112,8 +115,8 @@ public class Effect extends ObJectBase {
 
 			//
 //			body.createFixture(fd);
-			sensor = body.createFixture(poly, 0);
-			sensor.setSensor(true);
+			sensor.add(body.createFixture(poly, 0));
+			sensor.get(1).setSensor(true);
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み
@@ -122,9 +125,9 @@ public class Effect extends ObJectBase {
 			TextureRegion region = new TextureRegion(texture, 0, 0, 128, 128);
 
 			// スプライトに反映
-			sprite = new Sprite(region);
-			sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
-			sprite.setScale(0.1f);
+			sprite.add(new Sprite(region));
+			sprite.get(0).setOrigin(sprite.get(1).getWidth() * 0.5f, sprite.get(1).getHeight() * 0.5f);
+			sprite.get(0).setScale(0.1f);
 
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -151,14 +154,6 @@ public class Effect extends ObJectBase {
 	}
 
 	//************************************************************
-	// Draw
-	// 描画関数まとめ
-	//************************************************************
-	public void Draw(SpriteBatch spriteBatch) {
-		sprite.draw(spriteBatch);
-	}
-
-	//************************************************************
 	// Update
 	// 更新関数まとめ
 	//************************************************************
@@ -173,11 +168,11 @@ public class Effect extends ObJectBase {
 									PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
-			sprite.setPosition(position.x - 64 - (1 * PlayerManager.GetPlayer("プレイヤー").GetDirection()),
+			sprite.get(1).setPosition(position.x - 64 - (1 * PlayerManager.GetPlayer("プレイヤー").GetDirection()),
 								position.y - 64 + 1);
-			sprite.setScale(-PlayerManager.GetPlayer("プレイヤー").GetDirection() * 0.1f, 0.1f);
+			sprite.get(1).setScale(-PlayerManager.GetPlayer("プレイヤー").GetDirection() * 0.1f, 0.1f);
 
-			sprite.setRegion(nowFrame);
+			sprite.get(1).setRegion(nowFrame);
 
 			animation();
 			/*
@@ -196,7 +191,7 @@ public class Effect extends ObJectBase {
 			stateTime = 0;
 			body.setTransform( -100.0f, -100.0f, 0.0f);
 			position = body.getPosition();
-			sprite.setPosition(position.x - 100, position.y);
+			sprite.get(1).setPosition(position.x - 100, position.y);
 		}
 	}
 
@@ -204,7 +199,7 @@ public class Effect extends ObJectBase {
 	// Colision
 	// 当たり判定処理
 	//************************************************************
-	private boolean Colision(CharacterBase chara) {
+/*	private boolean Colision(CharacterBase chara) {
 		List<Contact> contactList = GameMain.world.getContactList();
 
 		for(int i = 0; i < contactList.size(); i++) {
@@ -224,7 +219,7 @@ public class Effect extends ObJectBase {
 			}
 		}
 		return false;
-	}
+	}*/
 
 	//************************************************************
 	// animation

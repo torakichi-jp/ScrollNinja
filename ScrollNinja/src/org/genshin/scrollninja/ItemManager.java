@@ -28,9 +28,9 @@ public class ItemManager {
 	// Draw
 	// 描画処理まとめ
 	//************************************************************
-	public static void Draw(SpriteBatch spriteBatch) {
+	public static void Draw() {
 		for( int i = 0; i < onigiriList.size(); i ++) {
-			onigiriList.get(i).Draw(spriteBatch);
+			onigiriList.get(i).Draw();
 		}
 	}
 	
@@ -82,9 +82,7 @@ public class ItemManager {
 			if( itemList.get(i).equals(Type) ) {
 				for( int j = 0; j < onigiriList.size(); j ++ ) {
 					if( onigiriList.get(j).GetNum() == Num ) {
-						GameMain.world.destroyBody(onigiriList.get(j).GetBody());
-						onigiriList.get(j).SetBody(null);
-						onigiriList.get(j).SetSprite(null);
+						onigiriList.get(j).Release();
 						onigiriList.remove(j);					// 削除！
 					}
 				}
