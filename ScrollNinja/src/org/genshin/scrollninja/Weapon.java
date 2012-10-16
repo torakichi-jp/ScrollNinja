@@ -109,11 +109,12 @@ public class Weapon extends ObJectBase{
 		
 		
 		
-		sprite.setPosition(position.x + velocity.x - 32, position.y - 32);
+		sprite.setPosition(position.x + /*velocity.x*/ - 32, position.y - 32);
 		sprite.setRotation((float) (body.getAngle()*180/Math.PI));
 		
 		//if(ShootFlag)
-		body.setTransform(position, body.getAngle());
+		//body.setTransform(position, body.getAngle());
+		//body.setLinearVelocity(position.x , 0);
 		
 		shuriken();
 		
