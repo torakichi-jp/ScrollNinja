@@ -45,7 +45,7 @@ public class Player extends CharacterBase {
 
 	private static final int FOOT	= 0;
 	private static final int BODY	= 0;
-	
+
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
 	private static final int STAND			=  0;
@@ -106,7 +106,7 @@ public class Player extends CharacterBase {
 	 */
 	public Player(String Name) {
 		World world = GameMain.world;
-		
+
 		// body生成
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DynamicBody;
@@ -114,17 +114,17 @@ public class Player extends CharacterBase {
 		body.setBullet(true);					// すり抜けない
 		body.setFixedRotation(true);			// 回転しない
 		body.setTransform(0.0f, 3.0f, 0.0f);	// TODO プレイヤーの初期座標はクラス外から指定するハズ。
-		
+
 		// fixture生成
 		PolygonShape poly = new PolygonShape();
 		poly.setAsBox(1.6f, 2.4f);
-		
+
 		FixtureDef fd = new FixtureDef();
 		fd.density			= 0.0f;	// 密度
 		fd.friction		= 0.0f;	// 摩擦
 		fd.restitution	= 0.0f;	// 反発
 		fd.shape			= poly;	// 形状
-		
+
 		sensor.add( body.createFixture(fd) );
 
 		// テクスチャの読み込み
@@ -364,7 +364,7 @@ public class Player extends CharacterBase {
 	{
 		// まだ作ってる途中なんだよ、こっちくんな
 		return;
-		
+		/*
 		// TODO プレイヤーと地形の衝突処理
 		WorldManifold manifold = contact.getWorldManifold();
 		int count = manifold.getNumberOfContactPoints();
@@ -374,5 +374,6 @@ public class Player extends CharacterBase {
 		{
 			below &= (manifold.getPoints()[i].y < pos.y - 1.5f);
 		}
+		*/
 	}
 }
