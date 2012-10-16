@@ -62,7 +62,7 @@ public class Stage implements StageBase {
 //		CreateStageObject();
 //		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 //		CreatePlayer();
-		WeaponManager.CreateWeapon("手裏剣");
+		//WeaponManager.CreateWeapon("手裏剣");
 		//weapon.create();
 
 	}

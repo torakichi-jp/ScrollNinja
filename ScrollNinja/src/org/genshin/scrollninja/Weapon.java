@@ -161,9 +161,9 @@ public class Weapon extends ObJectBase{
 		if(deleteTime >= 120 && FlyingFlag) {
 			// 120fたったら手裏剣を画面外へ
 			sprite.setPosition(0, -60);
+			FlyingFlag = false;
+			ShootFlag = false;
 		}
-		
-		
 	}
 
 	// 描画
