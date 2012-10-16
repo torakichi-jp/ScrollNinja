@@ -32,6 +32,7 @@ public class MainMenu implements Screen{
 	private Background backGround;
 	private Stage			stage1;				// 最初に呼ばれるステージ
 	private Stage2			stage2;
+	private double random;
 
 	private int spritePositionX;
 	// 画像座標
@@ -120,6 +121,12 @@ public class MainMenu implements Screen{
 		// 初期化
 		scrollFlag = false;
 		selectMenu = false;
+		
+		// 10/16 ランダムチェック
+		random = Math.random();
+		System.out.println(random);
+		
+
 	}
 
 	// 更新
