@@ -65,20 +65,24 @@ public class Interface {
 		//chakra.setPosition();
 		chakra.setScale(0.1f);
 
-		// 最初はHPMAX；
+		// 最初の設定；
 		percentHP = 1;
 		countHP = percentHP;
+		percentChakra = 0;
+		countChakra = percentChakra;
 	}
 
 	public void update() {
 		// プレイヤー情報取得
 		player = PlayerManager.GetPlayer("プレイヤー");
-		// 現在のHPの割合を取得
+		// 現在の割合を取得
 		percentHP = player.GetHP() / player.GetMaxHP();
+		//percentChakra =
 		// いくつ減らすか計算
 		countHP -= percentHP;
+		countChakra -= percentChakra;
 
-		// HP回復 1フレームで0.01ずつ増加
+		// HP回復　1フレームで0.01ずつ増加
 		if ( countHP > percentHP && countHP < 0.99) {
 			countHP += 0.01f;
 			hp.scroll(-0.01f, 0);
@@ -89,6 +93,25 @@ public class Interface {
 			countHP -= 0.01f;
 			hp.scroll(0.01f, 0);
 		}
+
+		// チャクラ増える　1フレームで0.01ずつ増加
+		if ( countChakra > percentChakra && countChakra < 0.99) {
+			countChakra += 0.01f;
+			chakra.scroll(-0.01f, 0);
+		}
+
+		// チャクラ減る　1フレームで0.01ずつ減少
+		if (countChakra < percentChakra && countChakra > 0.01) {
+			countChakra -= 0.01f;
+			chakra.scroll(0.01f, 0);
+		}
+
+		// 描画位置セット
+		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.1f),
+						   GameMain.camera.position.y + (ScrollNinja.window.y * 0.1f));
+		hp.setPosition(scroll.getX(), scroll.getY());
+		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY() + 51.2f);
+		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
 	}
 
 	public void draw() {

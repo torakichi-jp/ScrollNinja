@@ -44,14 +44,14 @@ public class Background extends ObJectBase {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 		cameraPos = new Vector2(0.0f, 0.0f);
-		
+
 		switch(stage.GetStageNum()){
 		case 1:
 			LoadTexture();
 			break;
 		}
 	}
-	
+
 	public void Draw(int i) {
 		sprite.get(i).draw(GameMain.spriteBatch);
 	}
