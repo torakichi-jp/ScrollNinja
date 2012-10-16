@@ -174,36 +174,6 @@ public class Player extends CharacterBase {
 	}
 
 	//************************************************************
-	// Draw
-	// 描画処理はここでまとめる
-	//************************************************************
-	public void Draw(SpriteBatch batch) {
-		// （本来は全て基底クラスで行うべき。そのうち直す）
-		super.Draw(batch);
-
-//		// スプライトの座標・回転を設定してから描画する
-//		Vector2 position = body.getPosition();
-//		float rotation = (float)Math.toDegrees(body.getAngle());
-//
-//		// 仮。スプライトリストは基底クラスのフィールドに持つべき。
-//		ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-//		sprites.add(footSprite);
-//		sprites.add(sprite);
-//
-//		for(int i = 0;  i < sprites.size();  ++i)
-//		{
-//			Sprite tmp = sprites.get(i);
-//
-//			// 姿勢制御
-//			tmp.setPosition(position.x-tmp.getOriginX(), position.y-tmp.getOriginY());
-//			tmp.setRotation(rotation);
-//
-//			// 描画
-//			tmp.draw(batch);
-//		}
-	}
-
-	//************************************************************
 	// Stand
 	// 立ち処理。
 	//************************************************************
@@ -377,8 +347,16 @@ public class Player extends CharacterBase {
 
 		return false;
 	}*/
-
-	private void collisionNotify(Object obj, Contact contact)
+	
+	@Override
+	public void collisionDispatch(ObJectBase obj, Contact contact)
 	{
+		obj.collisionDispatch(this, contact);
+		
+	}
+	@Override
+	protected void collisionNotify(Background obj, Contact contact)
+	{
+		// TODO プレイヤーと地形の衝突処理
 	}
 }

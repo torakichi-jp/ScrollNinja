@@ -109,6 +109,7 @@ public class Stage implements StageBase {
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
 		GameMain.spriteBatch.begin();									// 描画開始
 		{
+			Sprite hoge;
 			Background.GetSprite(0).draw();
 			Background.GetSprite(1).draw();
 			StageObjectManager.GetStageObject("block").GetSprite().draw();
