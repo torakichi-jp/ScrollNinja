@@ -37,19 +37,25 @@ public class Background extends ObJectBase {
 	// 変数宣言
 	private float				zIndex;								// Zインデックス
 	private Vector2				cameraPos;
+	private int					bgNum;
 
 	// コンストラクタ
 	public Background(){}
-	public Background(Stage stage) {
+	public Background(int num) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 		cameraPos = new Vector2(0.0f, 0.0f);
+		bgNum = num;
 		
-		switch(stage.GetStageNum()){
+		switch(num){
 		case 1:
 			LoadTexture();
 			break;
 		}
+	}
+	
+	public void Draw(int i, boolean flag) {
+		sprite.get(i).draw(MainMenu.batch);
 	}
 	
 	public void Draw(int i) {
@@ -96,8 +102,8 @@ public class Background extends ObJectBase {
 	// moveBackground
 	// 背景移動
 	//************************************************************
-	public void moveBackground(Player player) {
-		// プレイヤーの座標をカメラの座標に代入
+	public void moveBackground() {
+/*		// プレイヤーの座標をカメラの座標に代入
 		cameraPos = player.GetPosition();
 
 		// カメラ移動制限
@@ -117,7 +123,7 @@ public class Background extends ObJectBase {
 										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + player.GetPosition().y);
 		// 遠景
 		sprite.get(FAR).setPosition(cameraPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
-									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));
+									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));*/
 	}
 
 	//************************************************************
@@ -128,6 +134,8 @@ public class Background extends ObJectBase {
 	public Body GetBody() { return body; }
 	public Fixture GetSensor(int i) { return sensor.get(i); }*/
 	public Vector2 GetCamPos() { return cameraPos; }
+	public Background GetBackground(){ return this; }
+	public int GetBackgroundNum(){ return bgNum; }
 
 	//************************************************************
 	// Set
