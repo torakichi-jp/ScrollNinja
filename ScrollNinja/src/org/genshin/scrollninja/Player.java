@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.WorldManifold;
 
 // 制作メモ
 // 10/2 制作開始
@@ -352,27 +353,6 @@ public class Player extends CharacterBase {
 		return false;
 	}
 
-	//************************************************************
-	// ExceptionProcess
-	// 当たり判定の例外処理
-	//************************************************************
-/*	private boolean ExceptionProcess(World world) {
-		List<Contact> contactList = world.getContactList();
-
-		for(int i = 0; i < contactList.size(); i++) {
-			Contact contact = contactList.get(i);
-
-			for(int j = 0; j < EffectManager.GetListSize(); j++ ) {
-				if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor) &&
-						( contact.getFixtureA() == EffectManager.GetEffectForLoop(j).GetSensor() || contact.getFixtureB() == EffectManager.GetEffectForLoop(j).GetSensor() )) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}*/
-
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact)
 	{
@@ -382,6 +362,17 @@ public class Player extends CharacterBase {
 	@Override
 	protected void collisionNotify(Background obj, Contact contact)
 	{
+		// まだ作ってる途中なんだよ、こっちくんな
+		return;
+		
 		// TODO プレイヤーと地形の衝突処理
+		WorldManifold manifold = contact.getWorldManifold();
+		int count = manifold.getNumberOfContactPoints();
+
+		boolean below = true;
+		for(int i = 0;  i < count;  ++i)
+		{
+			below &= (manifold.getPoints()[i].y < pos.y - 1.5f);
+		}
 	}
 }
