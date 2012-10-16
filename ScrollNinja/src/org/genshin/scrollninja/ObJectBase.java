@@ -6,7 +6,6 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 // クラス宣言
 //========================================
-public class ObJectBase {
+public abstract class ObJectBase {
 	protected ArrayList<Sprite> 	sprite;			// スプライト
 	protected Body 					body;			// 当たり判定用BOX
 	protected ArrayList<Fixture> 	sensor;			// センサー
@@ -26,14 +25,6 @@ public class ObJectBase {
 	 * 将来的には引数にWorldを投げて初期化させる？
 	 */
 	ObJectBase(){}
-
-	//************************************************************
-	// Draw
-	// 描画処理まとめ
-	//************************************************************
-	public void Draw(){
-		sprite.get(0).draw(GameMain.spriteBatch);
-	}
 
 	//************************************************************
 	// Release
@@ -54,10 +45,8 @@ public class ObJectBase {
 
 	/**
 	 * スプライトを描画する。
-	 * @author kou
-	 * @param batch	スプライトバッチ
 	 */
-	public void Draw(SpriteBatch batch)
+	public void Draw()
 	{
 		Vector2 pos = body.getPosition();
 		float rot = (float) Math.toDegrees(body.getAngle());
@@ -67,11 +56,10 @@ public class ObJectBase {
 		{
 			Sprite current = sprite.get(i);
 			// 座標・回転
-			current.setPosition(pos.x - current.getOriginX(),
-					pos.y - current.getOriginY());
+			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
 			current.setRotation(rot);
 			// 描画
-			current.draw(batch);
+			current.draw(GameMain.spriteBatch);
 		}
 	}
 
@@ -80,7 +68,10 @@ public class ObJectBase {
 	 * @param obj			衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
-	public void collisionDispatch(ObJectBase obj, Contact contact){}
+	public void collisionDispatch(ObJectBase obj, Contact contact)
+	{
+		// TODO いずれ抽象メソッド化する。
+	}
 
 	/**
 	 * 衝突を通知する。
