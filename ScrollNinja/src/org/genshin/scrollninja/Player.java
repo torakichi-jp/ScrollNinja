@@ -1,19 +1,20 @@
 package org.genshin.scrollninja;
 
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.WorldManifold;
 
 // 制作メモ
 // 10/2 制作開始
@@ -42,6 +43,9 @@ public class Player extends CharacterBase {
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
 	private static final float JUMP_POWER	=  100.0f;		// ジャンプ加速度
 
+	private static final int FOOT	= 0;
+	private static final int BODY	= 0;
+	
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
 	private static final int STAND			=  0;
@@ -49,9 +53,6 @@ public class Player extends CharacterBase {
 	private static final int DASH			=  2;
 	private static final int JUMP			=  3;
 	private static final int ATTACK			=  4;
-
-	private static final int FOOT	= 0;
-	private static final int BODY	= 0;
 
 	// 変数宣言
 	private String			name;					// 名前
@@ -80,7 +81,6 @@ public class Player extends CharacterBase {
 
 	// おそらく使わなくなる変数
 	private static final float FIRST_SPEED	=  30f;		// 初速度
-	private Vector2			velocity;				// 移動用速度
 	private int				nowAttack;				// 現在の攻撃方法
 	private float			fall;					// 落下量
 
@@ -100,9 +100,32 @@ public class Player extends CharacterBase {
 	public int GetMaxHP() { return MAX_HP;}
 	public int GetHP() { return hp; };
 
-	// コンストラクタ
+	/**
+	 * コンストラクタ
+	 * @param Name		名前
+	 */
 	public Player(String Name) {
-		velocity = new Vector2(0, 0);
+		World world = GameMain.world;
+		
+		// body生成
+		BodyDef bd = new BodyDef();
+		bd.type = BodyType.DynamicBody;
+		body = world.createBody(bd);
+		body.setBullet(true);					// すり抜けない
+		body.setFixedRotation(true);			// 回転しない
+		body.setTransform(0.0f, 3.0f, 0.0f);	// TODO プレイヤーの初期座標はクラス外から指定するハズ。
+		
+		// fixture生成
+		PolygonShape poly = new PolygonShape();
+		poly.setAsBox(1.6f, 2.4f);
+		
+		FixtureDef fd = new FixtureDef();
+		fd.density			= 0.0f;	// 密度
+		fd.friction		= 0.0f;	// 摩擦
+		fd.restitution	= 0.0f;	// 反発
+		fd.shape			= poly;	// 形状
+		
+		sensor.add( body.createFixture(fd) );
 
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
@@ -330,27 +353,6 @@ public class Player extends CharacterBase {
 		return false;
 	}
 
-	//************************************************************
-	// ExceptionProcess
-	// 当たり判定の例外処理
-	//************************************************************
-/*	private boolean ExceptionProcess(World world) {
-		List<Contact> contactList = world.getContactList();
-
-		for(int i = 0; i < contactList.size(); i++) {
-			Contact contact = contactList.get(i);
-
-			for(int j = 0; j < EffectManager.GetListSize(); j++ ) {
-				if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor) &&
-						( contact.getFixtureA() == EffectManager.GetEffectForLoop(j).GetSensor() || contact.getFixtureB() == EffectManager.GetEffectForLoop(j).GetSensor() )) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}*/
-
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact)
 	{
@@ -360,6 +362,17 @@ public class Player extends CharacterBase {
 	@Override
 	protected void collisionNotify(Background obj, Contact contact)
 	{
+		// まだ作ってる途中なんだよ、こっちくんな
+		return;
+		
 		// TODO プレイヤーと地形の衝突処理
+		WorldManifold manifold = contact.getWorldManifold();
+		int count = manifold.getNumberOfContactPoints();
+
+		boolean below = true;
+		for(int i = 0;  i < count;  ++i)
+		{
+			below &= (manifold.getPoints()[i].y < pos.y - 1.5f);
+		}
 	}
 }
