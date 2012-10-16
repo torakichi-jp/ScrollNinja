@@ -3,6 +3,8 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -11,28 +13,31 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 // クラス宣言
 //========================================
 public class ObJectBase {
-	protected Sprite 	sprite;			// スプライト
-	protected Body 		body;			// 当たり判定用BOX
-	protected Fixture 	sensor;			// センサー
+	protected ArrayList<Sprite> 	sprite;			// スプライト
+	protected Body 					body;			// 当たり判定用BOX
+	protected ArrayList<Fixture> 	sensor;			// センサー
 	
 	// コンストラクタ
-	ObJectBase(){
-		sprite = new Sprite();
-	}
+	ObJectBase(){}
+	
+	//************************************************************
+	// HitTest
+	// 当たり判定まとめ
+	//************************************************************
+	
 	
 	//************************************************************
 	// Get
 	// ゲッターまとめ
 	//************************************************************
-	protected Sprite GetSprite() { return sprite; }
-	protected Body GetBody() { return body; }
-	protected Fixture GetSensor() { return sensor; }
-	
+/*	public Sprite GetSprite() { return sprite.get(1); }
+	public Body GetBody() { return body; }
+	public Fixture GetSensor() { return sensor.get(1); }
+	*/
 	//************************************************************
 	// Set
 	// セッターまとめ
 	//************************************************************
-	protected void SetSprite( Sprite sp) { sprite = sp; }
-	protected void SetBody(Body bd) { body = bd; }
-	protected void SetFixture(Fixture ss){ sensor = ss; }
+/*	public void SetSprite( Sprite sp) { sprite.get(1).set(sp); }
+	public void SetBody(Body bd) { body = bd; }*/
 }

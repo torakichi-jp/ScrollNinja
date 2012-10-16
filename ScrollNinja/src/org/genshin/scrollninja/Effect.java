@@ -65,6 +65,7 @@ public class Effect extends ObJectBase {
 		position	= new Vector2(0.0f, 0.0f);
 		useFlag		= false;
 		myOwner		= owner;
+		sensor.setUserData(this);
 
 		Create();
 	}
