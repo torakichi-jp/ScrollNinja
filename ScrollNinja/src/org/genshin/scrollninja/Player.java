@@ -97,6 +97,8 @@ public class Player extends CharacterBase {
 		else
 			return sprite.get(FOOT);
 	}
+	public int GetMaxHP() { return MAX_HP;}
+	public int GetHP() { return hp; };
 
 	// コンストラクタ
 	public Player(String Name) {

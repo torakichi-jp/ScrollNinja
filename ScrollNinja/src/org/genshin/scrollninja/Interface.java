@@ -22,10 +22,17 @@ public class Interface {
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
 
-	private float percent;				// HPの
+	private Player player;				// プレイヤー情報格納
+	private float percentHP;			// 現在のHPの割合
+	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
+	private float percentChakra;		// 現在のチャクラの割合
+	private float countChakra;			// 巻物を0.01ずつ現在のチャクラの割合まで動かすためのカウンタ
 
 	// コンストラクタ
 	public Interface() {
+		player = new Player("プレイヤー");
+		weapon = new ArrayList<Sprite>();
+
 		// テクスチャ画像読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/interface.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -57,5 +64,37 @@ public class Interface {
 		chakra = new Sprite(tmpRegion);
 		//chakra.setPosition();
 		chakra.setScale(0.1f);
+
+		// 最初はHPMAX；
+		percentHP = 1;
+		countHP = percentHP;
+	}
+
+	public void update() {
+		// プレイヤー情報取得
+		player = PlayerManager.GetPlayer("プレイヤー");
+		// 現在のHPの割合を取得
+		percentHP = player.GetHP() / player.GetMaxHP();
+		// いくつ減らすか計算
+		countHP -= percentHP;
+
+		// HP回復 1フレームで0.01ずつ増加
+		if ( countHP > percentHP && countHP < 0.99) {
+			countHP += 0.01f;
+			hp.scroll(-0.01f, 0);
+		}
+
+		// HP減る　1フレームで0.01ずつ減少
+		if (countHP < percentHP && countHP > 0.01) {
+			countHP -= 0.01f;
+			hp.scroll(0.01f, 0);
+		}
+	}
+
+	public void draw() {
+		scroll.draw(GameMain.spriteBatch);
+		hp.draw(GameMain.spriteBatch);
+		hyoutan.draw(GameMain.spriteBatch);
+		chakra.draw(GameMain.spriteBatch);
 	}
 }
