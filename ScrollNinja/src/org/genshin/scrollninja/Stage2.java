@@ -26,4 +26,10 @@ public class Stage2 implements StageBase{
 		
 	}
 
+	@Override
+	public int GetStageNum() {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
 }

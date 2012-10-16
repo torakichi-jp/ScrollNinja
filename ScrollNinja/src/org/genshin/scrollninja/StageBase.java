@@ -16,5 +16,7 @@ public interface StageBase {
 	
 	// 開放関数
 	public void Release();
+
+	public int GetStageNum();
 	
 }
