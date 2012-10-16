@@ -20,6 +20,9 @@ public class Interface {
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
+	private TextureRegion nowFrame;		// 巻物の現在のコマ
+
+	private float percent;				// HPの
 
 	// コンストラクタ
 	public Interface() {
@@ -28,7 +31,6 @@ public class Interface {
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		// 巻物アニメーション
-		// アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
 		TextureRegion[] frame = new TextureRegion[3];
 		int index = 0;
@@ -36,17 +38,24 @@ public class Interface {
 			frame[index++] = tmp[0][i];
 		scrollAnimation = new Animation(5.0f, frame);
 
+		nowFrame = scrollAnimation.getKeyFrame(0, false);
+
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
-		//hp.setPosition(-sprite.get(NEAR).getWidth() * 0.5f,
-		//								-sprite.get(NEAR).getHeight() * 0.5f -41.05f);
+		//hp.setPosition();
 		hp.setScale(0.1f);
 
 		// ひょうたん
 		tmpRegion = new TextureRegion(texture, 0, 256, 128, 128);
 		hyoutan = new Sprite(tmpRegion);
+		//hyoutan.setPosition();
+		hyoutan.setScale(0.1f);
 
 		// チャクラ
+		tmpRegion = new TextureRegion(texture, 128, 256, 128, 128);
+		chakra = new Sprite(tmpRegion);
+		//chakra.setPosition();
+		chakra.setScale(0.1f);
 	}
 }

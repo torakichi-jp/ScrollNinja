@@ -3,6 +3,8 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -31,9 +33,10 @@ public class StageObject extends ObJectBase {
 		Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
-		sprite = new Sprite(tmpRegion);
-		sprite.setPosition(-sprite.getWidth() * 0.5f, -sprite.getHeight() * 0.5f);
-		sprite.setScale(0.1f);
+		sprite = new ArrayList<Sprite>();
+		sprite.add(new Sprite(tmpRegion));
+		sprite.get(0).setPosition(-sprite.get(0).getWidth() * 0.5f, -sprite.get(0).getHeight() * 0.5f);
+		sprite.get(0).setScale(0.1f);
 	}
 
 	//************************************************************
