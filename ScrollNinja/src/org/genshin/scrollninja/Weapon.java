@@ -102,7 +102,7 @@ public class Weapon extends ObJectBase{
 	}
 
 	// 更新
-	public void Update(World world) {
+	public void Update() {
 		player = PlayerManager.GetPlayer("プレイヤー");
 		enemy = EnemyManager.GetEnemy("1");
 
