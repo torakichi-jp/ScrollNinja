@@ -47,6 +47,8 @@ public class GameMain implements Screen{
 		world				= new World(new Vector2(0, -20.0f), true);
 		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		spriteBatch 		= new SpriteBatch();
+		
+		StageManager.GetNowStage().Init();
 	}
 
 	//************************************************************

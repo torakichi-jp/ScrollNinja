@@ -103,8 +103,8 @@ public class Background extends ObJectBase {
 	// 背景移動
 	//************************************************************
 	public void moveBackground() {
-/*		// プレイヤーの座標をカメラの座標に代入
-		cameraPos = player.GetPosition();
+		// プレイヤーの座標をカメラの座標に代入
+		cameraPos = PlayerManager.GetPlayer("プレイヤー").GetPosition();
 
 		// カメラ移動制限
 		if (cameraPos.x < -(sprite.get(MAIN).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * 0.1f)
@@ -119,11 +119,11 @@ public class Background extends ObJectBase {
 
 		// 近景
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
-		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - player.GetPosition().x * 1.5f,
-										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + player.GetPosition().y);
+		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - PlayerManager.GetPlayer("プレイヤー").GetPosition().x * 1.5f,
+										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + PlayerManager.GetPlayer("プレイヤー").GetPosition().y);
 		// 遠景
 		sprite.get(FAR).setPosition(cameraPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
-									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));*/
+									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));
 	}
 
 	//************************************************************

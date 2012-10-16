@@ -41,4 +41,8 @@ public class StageManager {
 	public static void StageTrance(StageBase stage) {
 		nowStage = stage;
 	}
+	
+	public static StageBase GetNowStage() {
+		return nowStage;
+	}
 }
