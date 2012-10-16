@@ -229,7 +229,7 @@ public class Stage implements StageBase {
 		WeaponManager.GetWeapon("手裏剣").SetFixture(WeaponManager.GetWeapon("手裏剣").GetBody().createFixture(poly, 0));
 		poly.dispose();
 		WeaponManager.GetWeapon("手裏剣").GetBody().setBullet(true);
-		WeaponManager.GetWeapon("手裏剣").GetBody().setTransform(50, 10, 0);
+		WeaponManager.GetWeapon("手裏剣").GetBody().setTransform(50, 100, 0);
 	}
 
 	//************************************************************
@@ -259,8 +259,8 @@ public class Stage implements StageBase {
 								StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.1f);
 		// とりあえず。後で調整
 		StageObjectManager.GetStageObject("block").GetBody().setTransform
-							(-StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.5f * 0.1f,
-							-StageObjectManager.GetStageObject("block").GetSprite().getHeight() * 0.5f * 0.1f, 0);
+							(-StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.5f,
+							-StageObjectManager.GetStageObject("block").GetSprite().getHeight() * 0.5f, 0);
 	}
 
 	//************************************************************

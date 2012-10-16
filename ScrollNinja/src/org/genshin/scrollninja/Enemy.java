@@ -1,5 +1,6 @@
 package org.genshin.scrollninja;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -11,8 +12,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // 制作メモ
 // 10/9	座標は動いてるけど絵が付いてってない。
@@ -64,6 +71,9 @@ public class Enemy extends CharacterBase {
 	private float 			fall;				// 落下量
 	private Player 			player;			// プレイヤー
 	private Weapon			shuri;
+	//private Sprite			sprite;
+	//private Fixture			sensor;
+	//private ArrayList<Sprite>		sprite;
 
 	// コンストラクタ
 	Enemy(String Name, int type, Vector2 pos) {
@@ -92,17 +102,19 @@ public class Enemy extends CharacterBase {
 		attackFlag = false;
 		fall = 0.0f;
 
-		sprite.setScale(-0.1f, 0.1f);
+		
+		
 		Create();
+		sprite.get(0).setScale(-0.1f, 0.1f);
 	}
 
 	//************************************************************
 	// Update
 	// 更新処理まとめ
 	//************************************************************
-	public void Update(World world) {
-		sprite.setPosition(position.x - 32, position.y - 32);
-		sprite.setRotation((float) (body.getAngle()*180/Math.PI));
+	public void Update() {
+		sprite.get(0).setPosition(position.x - 32, position.y - 32);
+		sprite.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
 
 		position = body.getPosition();
 		body.setTransform(position ,0);
@@ -110,11 +122,11 @@ public class Enemy extends CharacterBase {
 		stateTime ++;
 
 		// 敵移動
-		Move(world);
+		Move();
 		//重力
 		//Gravity(world);
 
-		sprite.setRegion(nowFrame);
+		sprite.get(0).setRegion(nowFrame);
 		body.setTransform(position, body.getAngle());
 	}
 
@@ -122,8 +134,8 @@ public class Enemy extends CharacterBase {
 	// Draw
 	// 描画処理まとめ
 	//************************************************************
-	public void Draw(SpriteBatch batch) {
-		sprite.draw(batch);
+	public void Draw() {
+		sprite.get(0).draw(batch);
 	}
 
 	//************************************************************
@@ -139,8 +151,9 @@ public class Enemy extends CharacterBase {
 			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 
 			// スプライトに反映
-			sprite = new Sprite(region);
-			sprite.setOrigin(sprite.getWidth() * 0.5f, sprite.getHeight() * 0.5f);
+			sprite = new ArrayList<Sprite>();
+			sprite.add(new Sprite(region));
+			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
 
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
@@ -153,6 +166,31 @@ public class Enemy extends CharacterBase {
 				}
 			}
 			animation = new Animation(20.0f, frame);
+			
+			
+			
+			BodyDef def	= new BodyDef();
+			def.type	= BodyType.DynamicBody;		// 動く物体
+			//player.SetBody(world.createBody(def));
+
+			// 当たり判定の作成
+			PolygonShape poly		= new PolygonShape();
+			poly.setAsBox(1.6f, 2.4f);
+
+			// ボディ設定
+			FixtureDef fd	= new FixtureDef();
+			fd.density		= 50;
+			fd.friction		= 0;
+			fd.restitution	= 0;
+			fd.shape		= poly;
+
+			sensor = new ArrayList<Fixture>();
+			
+			body.createFixture(fd);
+			sensor.add(body.createFixture(poly, 0));
+			body.setBullet(true);			// すり抜け防止
+			body.setTransform(0, 30, 0);	// 初期位置
+			
 
 			break;
 		}
@@ -162,11 +200,11 @@ public class Enemy extends CharacterBase {
 	// Move
 	// 移動処理。歩りたりジャンプしたり
 	//************************************************************
-	public void Move(World world) {
+	public void Move() {
 		switch(enemyType) {
 		case WALKENEMY :
 			WalkEnemy(player);
-			JumpEnemy(world);
+			JumpEnemy();
 			break;
 		case ATTACKENEMY :
 			// 手裏剣
@@ -213,7 +251,7 @@ public class Enemy extends CharacterBase {
 			attackFlag = true;
 		}
 		if(!hangingAround) {
-			sprite.setScale(0.1f, 0.1f);
+			sprite.get(0).setScale(0.1f, 0.1f);
 			direction = -1;
 			position.x -= CLIMBUP;
 			if(position.x <= 40) {
@@ -221,7 +259,7 @@ public class Enemy extends CharacterBase {
 			}
 		}
 		if(hangingAround) {
-			sprite.setScale(-0.1f, 0.1f);
+			sprite.get(0).setScale(-0.1f, 0.1f);
 			direction = 1;
 			position.x += 0.1f;
 			if(position.x >= 70) {
@@ -249,20 +287,20 @@ public class Enemy extends CharacterBase {
 		// プレイヤーのX座標が敵のX座標より右にあるとき
 		if(player.position.x > position.x ) {
 
-			sprite.setScale(-0.1f, 0.1f);
+			sprite.get(0).setScale(-0.1f, 0.1f);
 			position.x += enemyWalkSpeed;
 
 		}
 		else if(player.position.x < position.x) {
-			sprite.setScale(-0.1f, 0.1f);
+			sprite.get(0).setScale(-0.1f, 0.1f);
 			position.x -= enemyWalkSpeed;
 		}
 	}
 	//************************************************************
 	// jump
 	//************************************************************
-	public void JumpEnemy(World world) {
-		GetGroundJudge(world);
+	public void JumpEnemy() {
+		GetGroundJudge();
 		if(!jump) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.A)) {
@@ -288,12 +326,12 @@ public class Enemy extends CharacterBase {
 	// 戻り値： true:地面接地		false:空中
 	// 接触判定。長いのでここで関数化
 	//************************************************************
-	private boolean GetGroundJudge(World world) {
+	private boolean GetGroundJudge() {
 		List<Contact> contactList = world.getContactList();
 		for(int i = 0; i < contactList.size(); i++) {
 				Contact contact = contactList.get(i);
 			// 地面に当たったよ
-			if(contact.isTouching() && ( contact.getFixtureA() == sensor || contact.getFixtureB() == sensor )) {
+			if(contact.isTouching() && ( contact.getFixtureA() == sensor.get(i) || contact.getFixtureB() == sensor.get(i) )) {
 				jump = false;
 				fall = 0;
 				return true;
@@ -327,8 +365,11 @@ public class Enemy extends CharacterBase {
 	public String GetName(){ return name; }
 	public int GetDirection() { return direction; }
 
+	
+
 	//************************************************************
 	// Set
 	// セッターまとめ
 	//************************************************************
+
 }
