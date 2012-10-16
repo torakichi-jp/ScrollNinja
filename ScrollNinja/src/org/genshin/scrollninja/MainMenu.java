@@ -19,7 +19,7 @@ public class MainMenu implements Screen{
 	private Game scrollNinja;
 
 	private OrthographicCamera camera;
-	private SpriteBatch batch;
+	public static SpriteBatch batch;
 
 	private Texture texture;				// テクスチャー
 
@@ -46,7 +46,7 @@ public class MainMenu implements Screen{
 		this.scrollNinja = game;
 		stage1				= new Stage();
 		StageManager.StageTrance(stage1);			// 現在のステージの設定
-		backGround = new Background(stage1);
+		BackgroundManager.CreateBackground(stage1.GetStageNum());
 		/*
 		switch (ScroolNinja.aspectRatio) {
 		case XGA:	// 4:3
@@ -218,8 +218,8 @@ public class MainMenu implements Screen{
 		// スプライト描画
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		backGround.Draw(0);
-		backGround.Draw(1);
+		BackgroundManager.GetBackground(stage1.GetStageNum()).Draw(0, true);
+		BackgroundManager.GetBackground(stage1.GetStageNum()).Draw(1, true);
 
 		// メニュー選択肢描画
 		modeContinue.draw(batch);

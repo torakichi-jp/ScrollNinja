@@ -37,7 +37,7 @@ public class Stage implements StageBase {
 	// コンストラクタ
 	public Stage(){
 		stageNum = 1;
-		Background backGround = new Background(this);
+//		Background backGround = new Background(this);
 		//world = new World(new Vector2(0.0f, -20.0f), true );
 
 		/*
@@ -80,7 +80,7 @@ public class Stage implements StageBase {
 		EnemyManager.Update();
 
 		// 背景スクロール
-		backGround.moveBackground(player);
+//		BackgroundManager.GetBackground(stageNum).moveBackground(player);
 		GameMain.camera.position.set(backGround.GetCamPos().x, backGround.GetCamPos().y , 0);
 
 		GameMain.camera.update();
