@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -52,7 +51,7 @@ public class ScrollNinja extends Game {
 			aspectRatio = SXGA;
 		else //(window.x * 5 == window.y * 8)
 			aspectRatio = WUXGA;
-		
+
 		setScreen(new MainMenu(this));	// メインメニュー読み込み
 //		setScreen(new GameMain(this));	// メニュー無視
 	}

@@ -19,7 +19,7 @@ public class MainMenu implements Screen{
 	private Game scrollNinja;
 
 	private OrthographicCamera camera;
-	public static SpriteBatch batch;
+	public static SpriteBatch spriteBatch;
 
 	private Texture texture;				// テクスチャー
 
@@ -29,12 +29,12 @@ public class MainMenu implements Screen{
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;				// エグジット
-	private Background backGround;
-	private Stage			stage1;				// 最初に呼ばれるステージ
-	private Stage2			stage2;
+	private Stage  stage1;					// 最初に呼ばれるステージ
+	private Stage2 stage2;
+	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
 
-	private int spritePositionX;
 	// 画像座標
+	private int spritePositionX;
 	private final float MOVE_SPEED = 0.5f;	// スクロール時の移動速度
 	private boolean scrollFlag;				// スクロールフラグ
 	private boolean selectMenu;				// 選択したメニュー
@@ -44,10 +44,13 @@ public class MainMenu implements Screen{
 	// コンストラクタ
 	public MainMenu(Game game) {
 		this.scrollNinja = game;
-		stage1				= new Stage();
-		StageManager.StageTrance(stage1);			// 現在のステージの設定
-		BackgroundManager.CreateBackground(stage1.GetStageNum());
+		//stage1				= new Stage();
+		//StageManager.StageTrance(stage1);			// 現在のステージの設定
+		BackgroundManager.CreateBackground(0);		// メインメニューの表示はとりあえずステージ０扱いで
+		nextStageNum = 1;
+
 		/*
+		// アスペクト比によってカメラのビューポイント変更
 		switch (ScroolNinja.aspectRatio) {
 		case XGA:	// 4:3
 			camera = new OrthographicCamera(10.0f * 0.1f, 7.5f * 0.1f);
@@ -63,10 +66,11 @@ public class MainMenu implements Screen{
 			break;
 		}
 		*/
+
 		// カメラ作成
 		camera = new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		// スプライトバッチ作成
-		batch = new SpriteBatch();
+		spriteBatch = new SpriteBatch();
 
 		// テクスチャ読み込み
 		try {
@@ -119,30 +123,22 @@ public class MainMenu implements Screen{
 
 		// 初期化
 		scrollFlag = false;
-		selectMenu = false;
 	}
 
 	// 更新
 	public void update(float delta) {
-
-		// 選択肢をクリックしたら画像移動
-		moveSprite();
-
 		// エンターキーでコンティニュー　仮挿入中
-		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+		if (Gdx.input.isKeyPressed(Keys.ENTER))
 				scrollFlag = true;		// スプライトを動かすフラグオン
-				//scrollNinja.setScreen(new SettingsScreen(scrollNinja));
-		}
 
 		// クリックされたらゲームステート移行
 		if(Gdx.input.isTouched()) {
-
+			// クリック座標によってどにメニューが選択されたか判断
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 
 			// コンティニュー
 			if(x > 530 && x < 770 && y > 105 && y < 140) {
-				//stateC = true;
 				scrollFlag = true;
 			}
 
@@ -168,31 +164,25 @@ public class MainMenu implements Screen{
 
 			// 終了
 			if( x > 530 && x < 770 && y > 315 && y < 350 ) {
-
 				int message =
 						JOptionPane.showConfirmDialog(null, "終了しますか？", "Exit", JOptionPane.YES_NO_OPTION);
-
 				if(message == JOptionPane.OK_OPTION) {
-					//scrollNinja.dispose();
-
 					System.exit(0);
 				}
 			}
 		}
 
-		// ゲームメイン移行
-		if(selectMenu)
-			scrollNinja.setScreen(new GameMain(scrollNinja, backGround));
-
+		// 選択肢をクリックしたら画像移動
+		moveSprite();
 	}
 	//---------------------------------------------------
 	// 画像移動
 	// 画面端にいったらステート移行
 	//---------------------------------------------------
 	public void moveSprite() {
-
+		// クリックされたらメニューの文字が移動
 		if(scrollFlag) {
-			// 加速して画面外
+			// 加速して画面外へ
 			spritePositionX += MOVE_SPEED;
 
 			// スプライト移動
@@ -203,10 +193,10 @@ public class MainMenu implements Screen{
 			modeOption.setPosition(spritePositionX, -16);
 			modeExit.setPosition(spritePositionX, -20);
 		}
-		if(spritePositionX >= FADE_MENU) {
-			scrollFlag = false;
-			selectMenu = true;
-		}
+
+		// メニューの文字が画面外まで移動したらゲームメイン移行
+		if(spritePositionX >= FADE_MENU)
+			scrollNinja.setScreen(new GameMain(scrollNinja, nextStageNum));
 	}
 
 	// 描画関係
@@ -216,20 +206,23 @@ public class MainMenu implements Screen{
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		// スプライト描画
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		BackgroundManager.GetBackground(stage1.GetStageNum()).Draw(0, true);
-		BackgroundManager.GetBackground(stage1.GetStageNum()).Draw(1, true);
+		spriteBatch.setProjectionMatrix(camera.combined);
+		spriteBatch.begin();
+
+		// 背景描画
+		//（とりあえずメインと遠景）
+		BackgroundManager.GetBackground(0).Draw(0, true);
+		BackgroundManager.GetBackground(0).Draw(1, true);
 
 		// メニュー選択肢描画
-		modeContinue.draw(batch);
-		modeNewGame.draw(batch);
-		modeLoadGame.draw(batch);
-		modeNetwork.draw(batch);
-		modeOption.draw(batch);
-		modeExit.draw(batch);
+		modeContinue.draw(spriteBatch);
+		modeNewGame.draw(spriteBatch);
+		modeLoadGame.draw(spriteBatch);
+		modeNetwork.draw(spriteBatch);
+		modeOption.draw(spriteBatch);
+		modeExit.draw(spriteBatch);
 
-		batch.end();
+		spriteBatch.end();
 	}
 
 	@Override
@@ -260,7 +253,7 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
-		batch.dispose();
+		spriteBatch.dispose();
 		texture.dispose();
 	}
 }

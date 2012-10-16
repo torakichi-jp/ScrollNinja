@@ -152,6 +152,13 @@ public class Player extends CharacterBase {
 			frame[index++] = tmp[1][i];
 		walkAnimation = new Animation(5.0f, frame);
 
+		// 上半身・攻撃　３行目５フレーム
+		frame = new TextureRegion[5];
+		index = 0;
+		for (int i = 0; i < frame.length; i++)
+			frame[index++] = tmp[2][i];
+		attackAnimation = new Animation(5.0f, frame);
+
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
 		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
@@ -318,6 +325,8 @@ public class Player extends CharacterBase {
 		case JUMP:		// ジャンプ
 			break;
 		case ATTACK:
+			nowFrame = attackAnimation.getKeyFrame(stateTime, true);
+			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
 			count ++;
 			break;
 		}

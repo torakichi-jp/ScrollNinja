@@ -102,8 +102,6 @@ public class Enemy extends CharacterBase {
 		attackFlag = false;
 		fall = 0.0f;
 
-
-
 		Create();
 		sprite.get(0).setScale(-0.1f, 0.1f);
 	}
@@ -143,6 +141,32 @@ public class Enemy extends CharacterBase {
 	// テクスチャの読み込みとかスプライトのセットとかやる
 	//************************************************************
 	public void Create() {
+		sprite = new ArrayList<Sprite>();
+		sensor = new ArrayList<Fixture>();
+
+		BodyDef bd	= new BodyDef();
+		bd.type	= BodyType.DynamicBody;		// 動く物体
+		body = GameMain.world.createBody(bd);
+		body.setBullet(true);					// すり抜けない
+		body.setFixedRotation(true);			// 回転しない
+
+		// fixture生成
+		PolygonShape poly		= new PolygonShape();
+		poly.setAsBox(1.6f, 2.4f);
+
+		// ボディ設定
+		FixtureDef fd	= new FixtureDef();
+		fd.density		= 50;
+		fd.friction		= 0;
+		fd.restitution	= 0;
+		fd.shape		= poly;
+
+		//body.createFixture(fd);
+		sensor.add(body.createFixture(fd));
+		body.setBullet(true);			// すり抜け防止
+		body.setTransform(0, 30, 0);	// 初期位置
+
+		// エネミータイプによってテクスチャ変更
 		switch(enemyType) {
 		case WALKENEMY:
 			// テクスチャの読み込み
@@ -151,7 +175,6 @@ public class Enemy extends CharacterBase {
 			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 
 			// スプライトに反映
-			sprite = new ArrayList<Sprite>();
 			sprite.add(new Sprite(region));
 			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
 
@@ -166,31 +189,6 @@ public class Enemy extends CharacterBase {
 				}
 			}
 			animation = new Animation(20.0f, frame);
-
-
-
-			BodyDef def	= new BodyDef();
-			def.type	= BodyType.DynamicBody;		// 動く物体
-			//player.SetBody(world.createBody(def));
-
-			// 当たり判定の作成
-			PolygonShape poly		= new PolygonShape();
-			poly.setAsBox(1.6f, 2.4f);
-
-			// ボディ設定
-			FixtureDef fd	= new FixtureDef();
-			fd.density		= 50;
-			fd.friction		= 0;
-			fd.restitution	= 0;
-			fd.shape		= poly;
-
-			sensor = new ArrayList<Fixture>();
-
-			body.createFixture(fd);
-			sensor.add(body.createFixture(poly, 0));
-			body.setBullet(true);			// すり抜け防止
-			body.setTransform(0, 30, 0);	// 初期位置
-
 
 			break;
 		}
@@ -222,9 +220,7 @@ public class Enemy extends CharacterBase {
 	}
 
 	// 敵スピード(仮)
-
 	private float enemyWalkSpeed = 0.1f;
-
 
 	//************************************************************
 	// walk
@@ -327,6 +323,7 @@ public class Enemy extends CharacterBase {
 	// 接触判定。長いのでここで関数化
 	//************************************************************
 	private boolean GetGroundJudge() {
+		/*
 		List<Contact> contactList = GameMain.world.getContactList();
 		for(int i = 0; i < contactList.size(); i++) {
 				Contact contact = contactList.get(i);
@@ -337,6 +334,7 @@ public class Enemy extends CharacterBase {
 				return true;
 			}
 		}
+		*/
 		return false;
 	}
 

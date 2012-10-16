@@ -36,7 +36,7 @@ public class Stage implements StageBase {
 
 	// コンストラクタ
 	public Stage(){
-		stageNum = 1;
+		stageNum = 0;
 //		Background backGround = new Background(this);
 		//world = new World(new Vector2(0.0f, -20.0f), true );
 
@@ -116,7 +116,7 @@ public class Stage implements StageBase {
 			BackgroundManager.GetBackground(stageNum).Draw(1);
 //			StageObjectManager.GetStageObject("block").Draw();
 			PlayerManager.GetPlayer("プレイヤー").Draw();
-//			EnemyManager.GetEnemy("1").Draw();
+			EnemyManager.GetEnemy("1").Draw();
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
 //			WeaponManager.GetWeapon("手裏剣").Draw();
 //			EffectManager.GetEffect(Effect.FIRE_2).Draw();
@@ -338,6 +338,7 @@ public class Stage implements StageBase {
 	@Override
 	public void Init() {
 		PlayerManager.CreatePlayer("プレイヤー");
+		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 	}
 
 	@Override

@@ -5,6 +5,8 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import aurelienribon.bodyeditor.BodyEditorLoader;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +15,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 // メモ
 // このクラスは、背景を読み込んで表示するところ。
@@ -48,14 +53,18 @@ public class Background extends ObJectBase {
 
 		bgNum = num;
 		switch(num){
+		case 0:
+			LoadTexture();
+			break;
 		case 1:
 			LoadTexture();
+			createBody();
 			break;
 		}
 	}
 
 	public void Draw(int i, boolean flag) {
-		sprite.get(i).draw(MainMenu.batch);
+		sprite.get(i).draw(MainMenu.spriteBatch);
 	}
 
 	public void Draw(int i) {
@@ -96,6 +105,36 @@ public class Background extends ObJectBase {
 		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f,
 										-sprite.get(NEAR).getHeight() * 0.5f -41.05f);
 		sprite.get(NEAR).setScale(0.25f, 0.2f);
+	}
+
+	//************************************************************
+	// createBody
+	// 当たり判定用Body作成
+	//************************************************************
+	public void createBody() {
+		// 当たり判定作成用ファイル読み込み
+		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
+
+		// ボディタイプ設定
+		BodyDef bd	= new BodyDef();
+		bd.type		= BodyType.StaticBody;		// 動かない物体
+		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
+		bd.position.set(-sprite.get(1).getWidth() * 0.5f * 0.1f,
+								(-sprite.get(1).getHeight() * 0.5f -357.5f) * 0.1f);
+
+		// ボディ設定
+		FixtureDef fd	= new FixtureDef();
+		fd.density		= 1000;		// 密度
+		fd.friction		= 100;		// 摩擦
+		fd.restitution	= 0;		// 反発係数
+
+		// ボディ作成
+		body = GameMain.world.createBody(bd);
+		loader.attachFixture( body, "bgTest", fd, sprite.get(1).getWidth() * 0.1f);
+
+		for(int i = 0; i < body.getFixtureList().size(); i ++) {
+			sensor.add(body.getFixtureList().get(i));
+		}
 	}
 
 	//************************************************************
