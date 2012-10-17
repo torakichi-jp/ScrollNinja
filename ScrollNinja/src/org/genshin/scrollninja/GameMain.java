@@ -33,20 +33,25 @@ public class GameMain implements Screen{
 	public static World					world;			// ワールド
 	public static OrthographicCamera	camera;			// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
+	private Stage 			stage;						// ステージ
 	private long 			error			= 0;
 	private int				fps				= 60;
 	private long			idealSleep		= (1000 << 16) / fps;
 	private long			newTime			= System.currentTimeMillis() << 16;
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
-	private Background		backGround;
 
 	// コンストラクタ
-	public GameMain(Game game, Background bg) {
+	public GameMain(Game game, int stageNum) {
 		ScrollNinjya		= game;
 		world				= new World(new Vector2(0, -20.0f), true);
 		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		spriteBatch 		= new SpriteBatch();
+		stage				= new Stage();
+
+		StageManager.StageTrance(stage);
+		StageManager.GetNowStage().Init();
+		BackgroundManager.CreateBackground(stageNum);
 	}
 
 	//************************************************************
@@ -67,8 +72,19 @@ public class GameMain implements Screen{
 
 		StageManager.Update();
 		StageManager.Draw();
+		updateCamera();
 
 		FPS();
+	}
+
+	//************************************************************
+	// updateCamera
+	// カメラ情報更新
+	//************************************************************
+	public void updateCamera() {
+		Player player = PlayerManager.GetPlayer("プレイヤー");
+		camera.position.set(player.body.getPosition().x,
+							player.body.getPosition().y, 0);
 	}
 
 	//************************************************************

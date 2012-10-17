@@ -1,5 +1,7 @@
 package org.genshin.scrollninja;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -43,8 +46,8 @@ public class Player extends CharacterBase {
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
 	private static final float JUMP_POWER	=  100.0f;		// ジャンプ加速度
 
-	private static final int FOOT	= 0;
 	private static final int BODY	= 0;
+	private static final int FOOT	= 1;
 
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
@@ -105,12 +108,13 @@ public class Player extends CharacterBase {
 	 * @param Name		名前
 	 */
 	public Player(String Name) {
-		World world = GameMain.world;
+		sprite = new ArrayList<Sprite>();
+		sensor = new ArrayList<Fixture>();
 
 		// body生成
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DynamicBody;
-		body = world.createBody(bd);
+		body = GameMain.world.createBody(bd);
 		body.setBullet(true);					// すり抜けない
 		body.setFixedRotation(true);			// 回転しない
 		body.setTransform(0.0f, 3.0f, 0.0f);	// TODO プレイヤーの初期座標はクラス外から指定するハズ。
@@ -148,6 +152,13 @@ public class Player extends CharacterBase {
 			frame[index++] = tmp[1][i];
 		walkAnimation = new Animation(5.0f, frame);
 
+		// 上半身・攻撃　３行目５フレーム
+		frame = new TextureRegion[5];
+		index = 0;
+		for (int i = 0; i < frame.length; i++)
+			frame[index++] = tmp[2][i];
+		attackAnimation = new Animation(5.0f, frame);
+
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
 		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
@@ -158,7 +169,7 @@ public class Player extends CharacterBase {
 		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
 		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f);
 		footSprite.setScale(0.1f);
-		sprite.add(FOOT, bodySprite);
+		sprite.add(FOOT, footSprite);
 
 		// 一番最初の表示　現在は歩きで代用
 		nowFrame = walkAnimation.getKeyFrame(0, true);
@@ -194,7 +205,7 @@ public class Player extends CharacterBase {
 
 		{
 			Vector2 velocity = body.getLinearVelocity();
-			System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
+//			System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 		}
 	}
 
@@ -314,6 +325,8 @@ public class Player extends CharacterBase {
 		case JUMP:		// ジャンプ
 			break;
 		case ATTACK:
+			nowFrame = attackAnimation.getKeyFrame(stateTime, true);
+			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
 			count ++;
 			break;
 		}

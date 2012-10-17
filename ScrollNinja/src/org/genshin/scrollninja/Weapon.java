@@ -127,7 +127,7 @@ public class Weapon extends ObJectBase{
 		// 手裏剣表示時間
 		deleteTime += 1;
 		
-		if (Gdx.input.isKeyPressed(Keys.S)) {
+		if (Gdx.input.isKeyPressed(Keys.F)) {
 			FlyingFlag = true;
 			ShootFlag = true;
 			// 押されたら手裏剣の座標を敵の位置へ移動

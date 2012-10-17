@@ -5,6 +5,8 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import aurelienribon.bodyeditor.BodyEditorLoader;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +15,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 // メモ
 // このクラスは、背景を読み込んで表示するところ。
@@ -48,14 +53,18 @@ public class Background extends ObJectBase {
 
 		bgNum = num;
 		switch(num){
+		case 0:
+			LoadTexture();
+			break;
 		case 1:
 			LoadTexture();
+			createBody();
 			break;
 		}
 	}
 
 	public void Draw(int i, boolean flag) {
-		sprite.get(i).draw(MainMenu.batch);
+		sprite.get(i).draw(MainMenu.spriteBatch);
 	}
 
 	public void Draw(int i) {
@@ -99,12 +108,42 @@ public class Background extends ObJectBase {
 	}
 
 	//************************************************************
+	// createBody
+	// 当たり判定用Body作成
+	//************************************************************
+	public void createBody() {
+		// 当たり判定作成用ファイル読み込み
+		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
+
+		// ボディタイプ設定
+		BodyDef bd	= new BodyDef();
+		bd.type		= BodyType.StaticBody;		// 動かない物体
+		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
+		bd.position.set(-sprite.get(1).getWidth() * 0.5f * 0.1f,
+								(-sprite.get(1).getHeight() * 0.5f -357.5f) * 0.1f);
+
+		// ボディ設定
+		FixtureDef fd	= new FixtureDef();
+		fd.density		= 1000;		// 密度
+		fd.friction		= 100;		// 摩擦
+		fd.restitution	= 0;		// 反発係数
+
+		// ボディ作成
+		body = GameMain.world.createBody(bd);
+		loader.attachFixture( body, "bgTest", fd, sprite.get(1).getWidth() * 0.1f);
+
+		for(int i = 0; i < body.getFixtureList().size(); i ++) {
+			sensor.add(body.getFixtureList().get(i));
+		}
+	}
+
+	//************************************************************
 	// moveBackground
 	// 背景移動
 	//************************************************************
 	public void moveBackground() {
-/*		// プレイヤーの座標をカメラの座標に代入
-		cameraPos = player.GetPosition();
+		// プレイヤーの座標をカメラの座標に代入
+		cameraPos = PlayerManager.GetPlayer("プレイヤー").GetPosition();
 
 		// カメラ移動制限
 		if (cameraPos.x < -(sprite.get(MAIN).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * 0.1f)
@@ -119,11 +158,11 @@ public class Background extends ObJectBase {
 
 		// 近景
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
-		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - player.GetPosition().x * 1.5f,
-										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + player.GetPosition().y);
+		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - PlayerManager.GetPlayer("プレイヤー").GetPosition().x * 1.5f,
+										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + PlayerManager.GetPlayer("プレイヤー").GetPosition().y);
 		// 遠景
 		sprite.get(FAR).setPosition(cameraPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
-									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));*/
+									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));
 	}
 
 	//************************************************************

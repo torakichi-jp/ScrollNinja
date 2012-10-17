@@ -68,9 +68,9 @@ public class Effect extends ObJectBase {
 		position	= new Vector2(0.0f, 0.0f);
 		useFlag		= false;
 		myOwner		= owner;
-		sensor.get(0).setUserData(this);
 
 		Create();
+		sensor.get(0).setUserData(this);
 	}
 
 	//************************************************************
@@ -116,7 +116,7 @@ public class Effect extends ObJectBase {
 			//
 //			body.createFixture(fd);
 			sensor.add(body.createFixture(poly, 0));
-			sensor.get(1).setSensor(true);
+			sensor.get(0).setSensor(true);
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み
@@ -126,7 +126,7 @@ public class Effect extends ObJectBase {
 
 			// スプライトに反映
 			sprite.add(new Sprite(region));
-			sprite.get(0).setOrigin(sprite.get(1).getWidth() * 0.5f, sprite.get(1).getHeight() * 0.5f);
+			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
 			sprite.get(0).setScale(0.1f);
 
 			// アニメーション
