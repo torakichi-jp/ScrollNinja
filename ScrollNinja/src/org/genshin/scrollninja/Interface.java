@@ -25,14 +25,13 @@ public class Interface {
 	private float stateTime;			// アニメーション用
 
 	private Player player;				// プレイヤー情報格納
-	private float percentHP;			// 現在のHPの割合
+	private float percentHP;			// 現在のHPの割合　1が最大
 	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
-	private float percentChakra;		// 現在のチャクラの割合
+	private float percentChakra;		// 現在のチャクラの割合　1が最大
 	private float countChakra;			// 巻物を0.01ずつ現在のチャクラの割合まで動かすためのカウンタ
 
 	// コンストラクタ
 	public Interface() {
-		player = new Player("プレイヤー");
 		weapon = new ArrayList<Sprite>();
 
 		// テクスチャ画像読み込み
@@ -98,7 +97,7 @@ public class Interface {
 		player = PlayerManager.GetPlayer("プレイヤー");
 		// 現在の割合を取得
 		percentHP = player.GetHP() / player.GetMaxHP();
-		//percentChakra =
+		//percentChakra = player.GetChakra() / player.GetMaxChakra();
 		// いくつ減らすか計算
 		countHP -= percentHP;
 		countChakra -= percentChakra;

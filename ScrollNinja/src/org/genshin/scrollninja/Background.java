@@ -146,15 +146,25 @@ public class Background extends ObJectBase {
 		playerPos = PlayerManager.GetPlayer("プレイヤー").body.getPosition();
 
 		// 近景
+		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
+							&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
+				sprite.get(NEAR).setPosition
+							(-sprite.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f, sprite.get(NEAR).getY());
+		// 1333は実際の画像のサイズ　20は適当
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
-		sprite.get(NEAR).setPosition
-			(-sprite.get(NEAR).getWidth() * 0.5f - PlayerManager.GetPlayer("プレイヤー").body.getPosition().x * 1.5f,
-					-sprite.get(NEAR).getHeight() * 0.5f -11.05f
-													+ PlayerManager.GetPlayer("プレイヤー").body.getPosition().y);
+		if (playerPos.y > -(1333 - ScrollNinja.window.y) * 0.5  * 0.1 && playerPos.y < 20)
+			sprite.get(NEAR).setPosition
+							(sprite.get(NEAR).getX(), -sprite.get(NEAR).getHeight() * 0.5f -11.05f + playerPos.y);
+
 		// 遠景
-		// 62.4は(2048-800)÷2
-		if (playerPos.x > -62.4 && playerPos.x < 62.4)
+		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
+							&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
 			sprite.get(FAR).setPosition(playerPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (playerPos.x * -0.05f),
+									sprite.get(FAR).getY());
+		// 1333は実際のサイズ
+		if (playerPos.y > -(sprite.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * 0.1
+													&& playerPos.y < (1333 - ScrollNinja.window.y) * 0.5 * 0.1)
+			sprite.get(FAR).setPosition(sprite.get(FAR).getX(),
 									playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
 	}
 

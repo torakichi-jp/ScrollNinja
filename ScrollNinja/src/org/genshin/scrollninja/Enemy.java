@@ -44,14 +44,15 @@ public class Enemy extends CharacterBase {
 
 	private final static int CHECK			=  0;
 
-	private final static float CLIMBUP		=  0.7f;
-	private final static float CLIMBDOWN	=  0.7f;
+	private final static float CLIMBUP		=  0.5f;
+	private final static float CLIMBDOWN	=  0.5f;
 
 	private final static int RIGHT			=  1;
 	private final static int LEFT			= -1;
 
-	private static final float FIRST_SPEED	=  25f;		// 初速度
+	private static final float WARK_SPEED	=  10f;		// 通常の歩く速度
 	private static final float JUMP_POWER	=  25f;		// ジャンプ加速度
+	private static final float CHASE_SPEED	=  20f;		// 追いかける時
 	private static final float GRAVITY		= -20f;		// 重力
 	private Vector2 velocity;							// 移動用速度
 
@@ -72,9 +73,9 @@ public class Enemy extends CharacterBase {
 	private float 			fall;				// 落下量
 	private Player 			player;			// プレイヤー
 	private Weapon			shuri;
-	//private Sprite			sprite;
-	//private Fixture			sensor;
-	//private ArrayList<Sprite>		sprite;
+
+	// 敵スピード(仮)
+	private float enemyWalkSpeed = 0.5f;
 
 	// コンストラクタ
 	Enemy(String Name, int type, Vector2 pos) {
@@ -116,7 +117,6 @@ public class Enemy extends CharacterBase {
 		sprite.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
 
 		position = body.getPosition();
-		body.setTransform(position ,0);
 		nowFrame = animation.getKeyFrame(stateTime, true);
 		stateTime ++;
 
@@ -157,15 +157,15 @@ public class Enemy extends CharacterBase {
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
-		fd.density		= 50;
+		fd.density		= 10;
 		fd.friction		= 0;
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		//body.createFixture(fd);
 		sensor.add(body.createFixture(fd));
-		body.setBullet(true);			// すり抜け防止
 		body.setTransform(0, 30, 0);	// 初期位置
+
+		poly.dispose();
 
 		// エネミータイプによってテクスチャ変更
 		switch(enemyType) {
@@ -202,7 +202,8 @@ public class Enemy extends CharacterBase {
 	public void Move() {
 		switch(enemyType) {
 		case WALKENEMY :
-			WalkEnemy(player);
+			WalkEnemy();
+			//ChaseEnemy();
 			JumpEnemy();
 			break;
 		case ATTACKENEMY :
@@ -220,16 +221,13 @@ public class Enemy extends CharacterBase {
 		}
 	}
 
-	// 敵スピード(仮)
-	private float enemyWalkSpeed = 0.5f;
-
 	//************************************************************
 	// walk
 	// 基本はうろうろしているだけ、
 	// 範囲内にプレイヤーを見つけると攻撃をする。
 	// 範囲外に入ると何もして来ず、またうろうろし始める
 	//************************************************************
-	public void WalkEnemy(Player player) {
+	public void WalkEnemy() {
 
 		player = PlayerManager.GetPlayer("プレイヤー");
 
@@ -239,26 +237,28 @@ public class Enemy extends CharacterBase {
 		System.out.println(player.position.x);*/
 
 		// 範囲
-		if(	player.position.x > position.x - 25 &&
-			player.position.x < position.x + 25 &&
-			player.position.y > position.y - 20 &&
-			player.position.y < position.y + 20 ) {
+		if(	player.body.getPosition().x > position.x - 25 &&
+			player.body.getPosition().x < position.x + 25 &&
+			player.body.getPosition().y > position.y - 20 &&
+			player.body.getPosition().y < position.y + 20 ) {
 
 			// ここで攻撃フラグON
 			attackFlag = true;
 		}
 		if(!hangingAround) {
 			sprite.get(0).setScale(0.1f, 0.1f);
-			direction = -1;
-			position.x -= CLIMBUP;
+			direction = LEFT;
+			body.setLinearVelocity(WARK_SPEED * direction, GRAVITY);
+			//position.x -= CLIMBUP;
 			if(position.x <= 40) {
 				hangingAround = true;
 			}
 		}
 		if(hangingAround) {
 			sprite.get(0).setScale(-0.1f, 0.1f);
-			direction = 1;
-			position.x += CLIMBUP;
+			direction = RIGHT;
+			body.setLinearVelocity(WARK_SPEED * direction, GRAVITY);
+			//position.x += CLIMBUP;
 			if(position.x >= 70) {
 				hangingAround = false;
 			}
@@ -276,21 +276,25 @@ public class Enemy extends CharacterBase {
 	// chase
 	// プレイヤーを見つけたら追いかける
 	//**********************************************************
-	public void ChaseEnemy(Player player) {
+	public void ChaseEnemy() {
 
 		player = PlayerManager.GetPlayer("プレイヤー");
 
 		// 追いかける
 		// プレイヤーのX座標が敵のX座標より右にあるとき
-		if(player.position.x > position.x ) {
+		if(player.body.getPosition().x > position.x ) {
 
 			sprite.get(0).setScale(-0.1f, 0.1f);
-			position.x += enemyWalkSpeed;
+			direction = RIGHT;
+			body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
+			//position.x += enemyWalkSpeed;
 
 		}
-		else if(player.position.x < position.x) {
-			sprite.get(0).setScale(-0.1f, 0.1f);
-			position.x -= enemyWalkSpeed;
+		else if(player.body.getPosition().x < position.x) {
+			sprite.get(0).setScale(0.1f, 0.1f);
+			direction = LEFT;
+			body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
+			//position.x -= enemyWalkSpeed;
 		}
 	}
 	//************************************************************

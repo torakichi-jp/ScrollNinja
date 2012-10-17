@@ -132,6 +132,7 @@ public class Player extends CharacterBase {
 		fd.shape			= poly;	// 形状
 
 		sensor.add( body.createFixture(fd) );
+		poly.dispose();
 
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
