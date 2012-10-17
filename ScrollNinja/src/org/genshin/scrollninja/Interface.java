@@ -13,14 +13,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 //クラス宣言		インターフェース表示を扱うクラス
 //========================================
 public class Interface {
-	private Sprite scroll;				// HPの巻物本体部分
-	private Sprite hp;					// プレイヤーHP
-	private Sprite hyoutan;				// チャクラのひょうたん部分
-	private Sprite chakra;				// プレイヤーチャクラ
+	private static Sprite scroll;		// HPの巻物本体部分
+	private static Sprite hp;			// プレイヤーHP
+	private static Sprite hyoutan;		// チャクラのひょうたん部分
+	private static Sprite chakra;		// プレイヤーチャクラ
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
+	private float stateTime;			// アニメーション用
 
 	private Player player;				// プレイヤー情報格納
 	private float percentHP;			// 現在のHPの割合
@@ -44,25 +45,26 @@ public class Interface {
 		for (int i = 0; i < frame.length; i++)
 			frame[index++] = tmp[0][i];
 		scrollAnimation = new Animation(5.0f, frame);
+		scroll = new Sprite(scrollAnimation.getKeyFrame(0, false));
+		scroll.setOrigin(scroll.getX(), scroll.getY());
+		scroll.setScale(0.1f);
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
 
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
-		//hp.setPosition();
+		hp.setOrigin(hp.getX(), hp.getY());
 		hp.setScale(0.1f);
 
 		// ひょうたん
 		tmpRegion = new TextureRegion(texture, 0, 256, 128, 128);
 		hyoutan = new Sprite(tmpRegion);
-		//hyoutan.setPosition();
 		hyoutan.setScale(0.1f);
 
 		// チャクラ
 		tmpRegion = new TextureRegion(texture, 128, 256, 128, 128);
 		chakra = new Sprite(tmpRegion);
-		//chakra.setPosition();
 		chakra.setScale(0.1f);
 
 		// 最初の設定；
@@ -70,6 +72,8 @@ public class Interface {
 		countHP = percentHP;
 		percentChakra = 0;
 		countChakra = percentChakra;
+
+		stateTime = 0;
 	}
 
 	public void update() {
@@ -83,41 +87,52 @@ public class Interface {
 		countChakra -= percentChakra;
 
 		// HP回復　1フレームで0.01ずつ増加
-		if ( countHP > percentHP && countHP < 0.99) {
+		if ( countHP > percentHP && countHP < 0.99 ) {
 			countHP += 0.01f;
 			hp.scroll(-0.01f, 0);
+			stateTime += 1;
+			scrollAnimation.setPlayMode(Animation.LOOP_REVERSED);
+			nowFrame = scrollAnimation.getKeyFrame(stateTime, true);
+			scroll.setRegion(nowFrame);
 		}
 
 		// HP減る　1フレームで0.01ずつ減少
-		if (countHP < percentHP && countHP > 0.01) {
+		if ( countHP < percentHP && countHP > 0.01 ) {
 			countHP -= 0.01f;
 			hp.scroll(0.01f, 0);
+			stateTime += 1;
+			scrollAnimation.setPlayMode(Animation.LOOP);
+			nowFrame = scrollAnimation.getKeyFrame(stateTime, true);
+			scroll.setRegion(nowFrame);
 		}
 
 		// チャクラ増える　1フレームで0.01ずつ増加
-		if ( countChakra > percentChakra && countChakra < 0.99) {
+		if ( countChakra > percentChakra && countChakra < 0.99 ) {
 			countChakra += 0.01f;
-			chakra.scroll(-0.01f, 0);
+			chakra.scroll(0, -0.01f);
 		}
 
 		// チャクラ減る　1フレームで0.01ずつ減少
-		if (countChakra < percentChakra && countChakra > 0.01) {
+		if ( countChakra < percentChakra && countChakra > 0.01 ) {
 			countChakra -= 0.01f;
-			chakra.scroll(0.01f, 0);
+			chakra.scroll(0, 0.01f);
 		}
 
 		// 描画位置セット
-		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.1f),
-						   GameMain.camera.position.y + (ScrollNinja.window.y * 0.1f));
+		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.5f * 0.1f),
+						   GameMain.camera.position.y  - 12.8f + (ScrollNinja.window.y * 0.5f * 0.1f));
 		hp.setPosition(scroll.getX(), scroll.getY());
-		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY() + 51.2f);
+		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
+
+		if (stateTime > 60)
+			stateTime = 0;
 	}
 
-	public void draw() {
-		scroll.draw(GameMain.spriteBatch);
+	public void Draw() {
 		hp.draw(GameMain.spriteBatch);
-		hyoutan.draw(GameMain.spriteBatch);
+		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
+		hyoutan.draw(GameMain.spriteBatch);
 	}
 }

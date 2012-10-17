@@ -98,6 +98,8 @@ public class Stage implements StageBase {
 		if(Gdx.input.isKeyPressed(Keys.E)) {
 			ItemManager.DeleteItem(Item.ONIGIRI, 1);
 		}*/
+
+		GameMain.playerInfo.update();
 	}
 
 	//************************************************************
@@ -122,6 +124,7 @@ public class Stage implements StageBase {
 //			EffectManager.GetEffect(Effect.FIRE_2).Draw();
 //			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
+			GameMain.playerInfo.Draw();
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 

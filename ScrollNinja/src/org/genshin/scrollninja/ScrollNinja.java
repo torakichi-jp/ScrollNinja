@@ -10,10 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 public class ScrollNinja extends Game {
-
-	public static Texture texture;
-	public static Sprite stageSpr;
-	public static Sprite bgSpr;
 	public static Vector2 window;
 
 	// 定数　画面解像度
@@ -29,9 +25,22 @@ public class ScrollNinja extends Game {
 	public void create() {
 		/**
 			事前に初期設定が必要ならここで
+			セーブデータとか読み込むのも多分ここ
 		*/
 
+		// ウインドウサイズ取得
+		getWindowSize();
+		// アスペクト比計算
+		calculateAspectRatio();
+
+		setScreen(new MainMenu(this));	// メインメニュー読み込み
+	}
+
+	// ウインドウサイズ取得
+	public void getWindowSize() {
 		window = new Vector2();
+
+		// フルスクリーンかどうか
 		if (!FULL_SCREEN) {
 			window.x = Gdx.graphics.getWidth();
 			window.y = Gdx.graphics.getHeight();
@@ -41,8 +50,10 @@ public class ScrollNinja extends Game {
 			window.x = (float)d.width;
 			window.y = (float)d.height;
 		}
+	}
 
-		// アスペクト比計算
+	// アスペクト比計算
+	public void calculateAspectRatio() {
 		if (window.x * 3 == window.y * 4)
 			aspectRatio = XGA;
 		else if (window.x * 9 == window.y * 16)
@@ -51,11 +62,7 @@ public class ScrollNinja extends Game {
 			aspectRatio = SXGA;
 		else //(window.x * 5 == window.y * 8)
 			aspectRatio = WUXGA;
-
-		setScreen(new MainMenu(this));	// メインメニュー読み込み
-//		setScreen(new GameMain(this));	// メニュー無視
 	}
-
 
 	@Override
 	public void dispose() {

@@ -33,6 +33,7 @@ public class GameMain implements Screen{
 	public static World					world;			// ワールド
 	public static OrthographicCamera	camera;			// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
+	public static Interface 			playerInfo;		// インターフェース
 	private Stage 			stage;						// ステージ
 	private long 			error			= 0;
 	private int				fps				= 60;
@@ -48,6 +49,7 @@ public class GameMain implements Screen{
 		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		spriteBatch 		= new SpriteBatch();
 		stage				= new Stage();
+		playerInfo			= new Interface();
 
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();

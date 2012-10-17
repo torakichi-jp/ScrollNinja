@@ -328,8 +328,8 @@ public class GameScreen implements Screen {
 		// 奥に表示されるものから先に描画
 		// シミュレーション世界より後にやらないとポリゴンの線が見えてしまうので注意
 		// 背景描画
-		ScrollNinja.bgSpr.draw(batch);
-		ScrollNinja.stageSpr.draw(batch);
+		//ScrollNinja.bgSpr.draw(batch);
+		//ScrollNinja.stageSpr.draw(batch);
 
 		// ステージ描画
 		//stageSpr.draw(batch);
