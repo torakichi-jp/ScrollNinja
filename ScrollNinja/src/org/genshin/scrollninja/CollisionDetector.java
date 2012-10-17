@@ -6,8 +6,9 @@ import com.badlogic.gdx.physics.box2d.Contact;
 
 public class CollisionDetector {
 	
-	private CollisionDetector(){
-		//fixture.setUserData(a);
+	private CollisionDetector() {}
+	
+	public static void HitTest(){
 		
 		List<Contact> contactList = GameMain.world.getContactList();
 
@@ -17,8 +18,8 @@ public class CollisionDetector {
 			if( contact.isTouching() ) {
 				ObJectBase a = (ObJectBase)contact.getFixtureA().getUserData();
 				ObJectBase b = (ObJectBase)contact.getFixtureB().getUserData();
-//				a.dispatch(b);
-//				b.dispatch(a);
+				a.collisionDispatch(b, contact);
+				b.collisionDispatch(a, contact);
 			}
 		}
 	}

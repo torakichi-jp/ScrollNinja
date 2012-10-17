@@ -297,7 +297,6 @@ public class Enemy extends CharacterBase {
 	// jump
 	//************************************************************
 	public void JumpEnemy() {
-		GetGroundJudge();
 		if(!jump) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.G)) {
@@ -317,44 +316,31 @@ public class Enemy extends CharacterBase {
 	//************************************************************
 	public void AutoEnemy() {
 	}
-
-	//************************************************************
-	// GetGroundJudge
-	// 戻り値： true:地面接地		false:空中
-	// 接触判定。長いのでここで関数化
-	//************************************************************
-	private boolean GetGroundJudge() {
-		/*
-		List<Contact> contactList = GameMain.world.getContactList();
-		for(int i = 0; i < contactList.size(); i++) {
-				Contact contact = contactList.get(i);
-			// 地面に当たったよ
-			if(contact.isTouching() && ( contact.getFixtureA() == sensor.get(i) || contact.getFixtureB() == sensor.get(i) )) {
-				jump = false;
-				fall = 0;
-				return true;
-			}
-		}
-		*/
-		return false;
+	
+	public void collisionDispatch(ObJectBase obj, Contact contact) {
+		obj.collisionNotify(this, contact);
 	}
-
-	//************************************************************
-	// Gravity
-	// 重力計算処理。常にやってます
-	//************************************************************
-	private void Gravity() {
-		// 空中にいる時は落下移動
-		/*
-		if(!GetGroundJudge(world)) {
-			fall -= 0.25;
-			position.y -= 5;
-			if( fall < -5 ) {
-				fall = -5;
-			}
-		}
-		*/
-	}
+	
+	@Override
+	public void collisionNotify(Background obj, Contact contact){}	
+	
+	@Override
+	public void collisionNotify(Player obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Enemy obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Effect obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Item obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(StageObject obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Weapon obj, Contact contact){}
 
 	//************************************************************
 	// Get

@@ -134,6 +134,7 @@ public class Background extends ObJectBase {
 
 		for(int i = 0; i < body.getFixtureList().size(); i ++) {
 			sensor.add(body.getFixtureList().get(i));
+			sensor.get(i).setUserData(this);
 		}
 	}
 

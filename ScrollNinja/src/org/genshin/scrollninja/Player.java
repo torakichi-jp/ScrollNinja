@@ -63,6 +63,7 @@ public class Player extends CharacterBase {
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
 	private int				count;					// カウント用変数
+	private int				maxChakra;				// チャクラ最大値
 	private int				chakra;					// チャクラ
 	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
@@ -95,6 +96,8 @@ public class Player extends CharacterBase {
 	//************************************************************
 	public String GetName(){ return name; }
 	public int GetDirection(){ return direction; }
+	public int GetChakra(){ return chakra; }
+	public int GetMaxChakra(){ return maxChakra; }
 	public Sprite GetSprite(String type) {
 		if (type.equals("BODY"))
 			return sprite.get(BODY);
@@ -132,6 +135,7 @@ public class Player extends CharacterBase {
 		fd.shape			= poly;	// 形状
 
 		sensor.add( body.createFixture(fd) );
+		poly.dispose();
 
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
@@ -204,6 +208,11 @@ public class Player extends CharacterBase {
 		Jump();		// ジャンプ処理
 		Attack();
 		animation();		// アニメーション処理
+		
+		if(direction == RIGHT)
+			flip(true, false);
+		else
+			flip(false, false);
 
 		{
 			Vector2 velocity = body.getLinearVelocity();
@@ -225,8 +234,7 @@ public class Player extends CharacterBase {
 	// ジャンプ処理。上押すとジャンプ！
 	//************************************************************
 	private void Jump() {
-
-
+		
 		// 地面に接触しているならジャンプ可能
 		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
@@ -263,7 +271,7 @@ public class Player extends CharacterBase {
 			direction = RIGHT;				// プレイヤーの向きを変更。
 			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
 			int count = sprite.size();
-			flip(true, false);
+//			flip(true, false);
 
 			if( GetGroundJudge() ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
 				currentState = WALK;
@@ -273,7 +281,7 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 			direction = LEFT;
 			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
-			flip(false, false);
+//			flip(false, false);
 
 			if( GetGroundJudge() ) {
 				currentState = WALK;
@@ -369,14 +377,14 @@ public class Player extends CharacterBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact)
-	{
-		obj.collisionDispatch(this, contact);
-
+	public void collisionDispatch(ObJectBase obj, Contact contact) {
+		obj.collisionNotify(this, contact);
 	}
+	
 	@Override
-	protected void collisionNotify(Background obj, Contact contact)
+	public void collisionNotify(Background obj, Contact contact)
 	{
+//		jump = false;
 		// まだ作ってる途中なんだよ、こっちくんな
 		return;
 		/*
@@ -391,4 +399,22 @@ public class Player extends CharacterBase {
 		}
 		*/
 	}
+	
+	@Override
+	public void collisionNotify(Player obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Enemy obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Effect obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Item obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(StageObject obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Weapon obj, Contact contact){}
 }

@@ -98,6 +98,7 @@ public class Stage implements StageBase {
 
 		updateCamera();
 		GameMain.playerInfo.update();
+//		CollisionDetector.HitTest();
 	}
 
 	//************************************************************
