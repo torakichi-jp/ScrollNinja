@@ -51,6 +51,7 @@ public class Item extends ObJectBase {
 		appear		= true;
 		
 		Create();
+		sensor.get(0).setUserData(this);
 	}
 	
 	//************************************************************

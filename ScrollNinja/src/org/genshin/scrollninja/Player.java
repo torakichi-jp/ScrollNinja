@@ -59,12 +59,13 @@ public class Player extends CharacterBase {
 
 	// 変数宣言
 	private String			name;					// 名前
-	private int				charge;				// チャージゲージ
+	private int				charge;					// チャージゲージ
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
 	private int				count;					// カウント用変数
+	private int				chakra;					// チャクラ
 	private float			stateTime;
-	private Weapon			weapon;				// 武器のポインタ
+	private Weapon			weapon;					// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
 
 	private Animation		standAnimation;		// 立ちアニメーション
@@ -102,6 +103,7 @@ public class Player extends CharacterBase {
 	}
 	public int GetMaxHP() { return MAX_HP;}
 	public int GetHP() { return hp; };
+	public int GetNowAttack(){ return nowAttack; }
 
 	/**
 	 * コンストラクタ
