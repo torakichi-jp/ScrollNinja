@@ -58,9 +58,8 @@ public class StageObject extends ObJectBase {
 			Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
-			sprite = new ArrayList<Sprite>();
 			sprite.add(new Sprite(tmpRegion));
-			sprite.get(0).setPosition(-sprite.get(0).getWidth() * 0.5f, -sprite.get(0).getHeight() * 0.5f);
+			sprite.get(0).setOrigin(-sprite.get(0).getWidth() * 0.5f, -sprite.get(0).getHeight() * 0.5f);
 			sprite.get(0).setScale(0.1f);
 			
 			// 当たり判定読み込み
@@ -80,6 +79,11 @@ public class StageObject extends ObJectBase {
 
 			// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
 			loader.attachFixture(body, "gravestone", fd, sprite.get(0).getWidth() * 0.1f);
+			body.setTransform(position, 0);
+			System.out.println(body.getPosition());
+			System.out.println(sprite.get(0).getOriginX());
+			System.out.println(sprite.get(0).getOriginY());
+			
 			break;
 			
 		case HOUSE:
