@@ -79,10 +79,7 @@ public class Stage implements StageBase {
 		EnemyManager.Update();
 
 		// 背景スクロール
-//		BackgroundManager.GetBackground(stageNum).moveBackground();
-//		GameMain.camera.position.set(backGround.GetCamPos().x, backGround.GetCamPos().y , 0);
-
-		GameMain.camera.update();
+		BackgroundManager.GetBackground(stageNum).update();
 		PlayerManager.GetPlayer("プレイヤー").Update();
 		ItemManager.Update();
 //		WeaponManager.GetWeapon("手裏剣").Update();
@@ -99,6 +96,7 @@ public class Stage implements StageBase {
 			ItemManager.DeleteItem(Item.ONIGIRI, 1);
 		}
 
+		updateCamera();
 		GameMain.playerInfo.update();
 	}
 
@@ -131,6 +129,38 @@ public class Stage implements StageBase {
 		renderer.render(GameMain.world, GameMain.camera.combined);
 		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
 //		player.GetBody().setAwake(true);
+	}
+
+	//************************************************************
+	// updateCamera
+	// カメラ情報更新
+	//************************************************************
+	public void updateCamera() {
+		// カメラはプレイヤーに追随
+		GameMain.camera.position.set(PlayerManager.GetPlayer("プレイヤー").body.getPosition().x,
+							PlayerManager.GetPlayer("プレイヤー").body.getPosition().y, 0);
+
+		// カメラの移動制限
+		if (GameMain.camera.position.x <
+				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
+																		- ScrollNinja.window.x * 0.5f) * 0.1f)
+			GameMain.camera.position.x =
+				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
+																		- ScrollNinja.window.x * 0.5f) *0.1f;
+		if (GameMain.camera.position.x >
+			(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
+																		- ScrollNinja.window.x * 0.5f) * 0.1f)
+			GameMain.camera.position.x =
+				(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
+																		- ScrollNinja.window.x * 0.5f) * 0.1f;
+
+		// 1333は実際の画像のサイズ
+		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
+			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
+		if (GameMain.camera.position.y > (1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
+			GameMain.camera.position.y = (1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
+
+		GameMain.camera.update();
 	}
 
 /*	//************************************************************
@@ -207,7 +237,7 @@ public class Stage implements StageBase {
 	// CreateWeapon
 	// 敵武器作成
 	//************************************************************
-	
+
 	private void CreateEnemyWeapon() {
 
 		BodyDef def	= new BodyDef();

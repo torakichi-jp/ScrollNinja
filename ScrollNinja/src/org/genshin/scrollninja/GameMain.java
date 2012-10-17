@@ -35,6 +35,7 @@ public class GameMain implements Screen{
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
 	public static Interface 			playerInfo;		// インターフェース
 	private Stage 			stage;						// ステージ
+	private int				stageNum;					// ステージナンバー
 	private long 			error			= 0;
 	private int				fps				= 60;
 	private long			idealSleep		= (1000 << 16) / fps;
@@ -50,6 +51,7 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		stage				= new Stage();
 		playerInfo			= new Interface();
+		this.stageNum		= stageNum;
 
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();
@@ -74,19 +76,9 @@ public class GameMain implements Screen{
 
 		StageManager.Update();
 		StageManager.Draw();
-		updateCamera();
+		//updateCamera();
 
 		FPS();
-	}
-
-	//************************************************************
-	// updateCamera
-	// カメラ情報更新
-	//************************************************************
-	public void updateCamera() {
-		Player player = PlayerManager.GetPlayer("プレイヤー");
-		camera.position.set(player.body.getPosition().x,
-							player.body.getPosition().y, 0);
 	}
 
 	//************************************************************

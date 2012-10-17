@@ -41,7 +41,7 @@ public class Background extends ObJectBase {
 
 	// 変数宣言
 	private float				zIndex;								// Zインデックス
-	private Vector2				cameraPos;
+	private Vector2				playerPos;
 	private int					bgNum;
 
 	// コンストラクタ
@@ -49,7 +49,7 @@ public class Background extends ObJectBase {
 	public Background(int num) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
-		cameraPos = new Vector2(0.0f, 0.0f);
+		playerPos = new Vector2(0.0f, 0.0f);
 
 		bgNum = num;
 		switch(num){
@@ -141,28 +141,21 @@ public class Background extends ObJectBase {
 	// moveBackground
 	// 背景移動
 	//************************************************************
-	public void moveBackground() {
-		// プレイヤーの座標をカメラの座標に代入
-		cameraPos = PlayerManager.GetPlayer("プレイヤー").GetPosition();
-
-		// カメラ移動制限
-		if (cameraPos.x < -(sprite.get(MAIN).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * 0.1f)
-			cameraPos.x = -(sprite.get(MAIN).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) *0.1f;
-		if (cameraPos.x > (sprite.get(MAIN).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * 0.1f)
-			cameraPos.x = (sprite.get(MAIN).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * 0.1f;
-		// 1333は実際の画像のサイズ
-		if (cameraPos.y < -(1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
-			cameraPos.y = -(1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
-		if (cameraPos.y > (1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
-			cameraPos.y = (1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
+	public void update() {
+		// プレイヤーの座標を代入
+		playerPos = PlayerManager.GetPlayer("プレイヤー").body.getPosition();
 
 		// 近景
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
-		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - PlayerManager.GetPlayer("プレイヤー").GetPosition().x * 1.5f,
-										-sprite.get(NEAR).getHeight() * 0.5f -11.05f + PlayerManager.GetPlayer("プレイヤー").GetPosition().y);
+		sprite.get(NEAR).setPosition
+			(-sprite.get(NEAR).getWidth() * 0.5f - PlayerManager.GetPlayer("プレイヤー").body.getPosition().x * 1.5f,
+					-sprite.get(NEAR).getHeight() * 0.5f -11.05f
+													+ PlayerManager.GetPlayer("プレイヤー").body.getPosition().y);
 		// 遠景
-		sprite.get(FAR).setPosition(cameraPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
-									cameraPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));
+		// 62.4は(2048-800)÷2
+		if (playerPos.x > -62.4 && playerPos.x < 62.4)
+			sprite.get(FAR).setPosition(playerPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (playerPos.x * -0.05f),
+									playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
 	}
 
 	//************************************************************
@@ -172,7 +165,7 @@ public class Background extends ObJectBase {
 /*	public Sprite GetSprite(int i) { return sprite.get(i); }
 	public Body GetBody() { return body; }
 	public Fixture GetSensor(int i) { return sensor.get(i); }*/
-	public Vector2 GetCamPos() { return cameraPos; }
+	//public Vector2 GetCamPos() { return cameraPos; }
 	public Background GetBackground(){ return this; }
 	public int GetBackgroundNum(){ return bgNum; }
 

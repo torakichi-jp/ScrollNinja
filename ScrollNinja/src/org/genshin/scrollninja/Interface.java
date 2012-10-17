@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 //========================================
 public class Interface {
 	private static Sprite scroll;		// HPの巻物本体部分
+	private static Sprite scrollRight;	// 巻物の右端
 	private static Sprite hp;			// プレイヤーHP
 	private static Sprite hyoutan;		// チャクラのひょうたん部分
 	private static Sprite chakra;		// プレイヤーチャクラ
@@ -46,7 +47,7 @@ public class Interface {
 			frame[index++] = tmp[0][i];
 		scrollAnimation = new Animation(5.0f, frame);
 		scroll = new Sprite(scrollAnimation.getKeyFrame(0, false));
-		scroll.setOrigin(scroll.getX(), scroll.getY());
+		scroll.setOrigin(scroll.getX() * 0.5f, scroll.getY() * 0.5f);
 		scroll.setScale(0.1f);
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
@@ -54,17 +55,25 @@ public class Interface {
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
-		hp.setOrigin(hp.getX(), hp.getY());
+		hp.setOrigin(hp.getX() * 0.5f, hp.getY() * 0.5f);
 		hp.setScale(0.1f);
+
+		// 巻物の右端部分
+		tmpRegion = new TextureRegion(texture, 384, 0, 128, 128);
+		scrollRight = new Sprite(tmpRegion);
+		scrollRight.setOrigin(scrollRight.getX() * 0.5f, scrollRight.getY() * 0.5f);
+		scrollRight.setScale(0.1f);
 
 		// ひょうたん
 		tmpRegion = new TextureRegion(texture, 0, 256, 128, 128);
 		hyoutan = new Sprite(tmpRegion);
+		hyoutan.setOrigin(hyoutan.getX() * 0.5f, hyoutan.getY() * 0.5f);
 		hyoutan.setScale(0.1f);
 
 		// チャクラ
 		tmpRegion = new TextureRegion(texture, 128, 256, 128, 128);
 		chakra = new Sprite(tmpRegion);
+		chakra.setOrigin(chakra.getX() * 0.5f, chakra.getY() * 0.5f);
 		chakra.setScale(0.1f);
 
 		// 最初の設定；
@@ -77,6 +86,14 @@ public class Interface {
 	}
 
 	public void update() {
+		// 描画位置セット
+		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.5f * 0.1f),
+						   GameMain.camera.position.y  - 12.8f + (ScrollNinja.window.y * 0.5f * 0.1f));
+		scrollRight.setPosition(scroll.getX() + 42f, scroll.getY() + 0.5f);
+		hp.setPosition(scroll.getX(), scroll.getY());
+		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
+		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
+
 		// プレイヤー情報取得
 		player = PlayerManager.GetPlayer("プレイヤー");
 		// 現在の割合を取得
@@ -90,6 +107,7 @@ public class Interface {
 		if ( countHP > percentHP && countHP < 0.99 ) {
 			countHP += 0.01f;
 			hp.scroll(-0.01f, 0);
+			hp.translateX(-0.51f);
 			stateTime += 1;
 			scrollAnimation.setPlayMode(Animation.LOOP_REVERSED);
 			nowFrame = scrollAnimation.getKeyFrame(stateTime, true);
@@ -100,6 +118,7 @@ public class Interface {
 		if ( countHP < percentHP && countHP > 0.01 ) {
 			countHP -= 0.01f;
 			hp.scroll(0.01f, 0);
+			hp.translateX(0.51f);
 			stateTime += 1;
 			scrollAnimation.setPlayMode(Animation.LOOP);
 			nowFrame = scrollAnimation.getKeyFrame(stateTime, true);
@@ -118,18 +137,12 @@ public class Interface {
 			chakra.scroll(0, 0.01f);
 		}
 
-		// 描画位置セット
-		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.5f * 0.1f),
-						   GameMain.camera.position.y  - 12.8f + (ScrollNinja.window.y * 0.5f * 0.1f));
-		hp.setPosition(scroll.getX(), scroll.getY());
-		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
-		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
-
 		if (stateTime > 60)
 			stateTime = 0;
 	}
 
 	public void Draw() {
+		scrollRight.draw(GameMain.spriteBatch);
 		hp.draw(GameMain.spriteBatch);
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
