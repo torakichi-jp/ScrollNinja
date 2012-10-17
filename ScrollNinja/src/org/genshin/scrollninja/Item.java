@@ -129,6 +129,32 @@ public class Item extends ObJectBase {
 	public void GetEffect() {
 	}
 	
+	@Override
+	public void collisionDispatch(ObJectBase obj, Contact contact) {
+		obj.collisionNotify(this, contact);
+	}
+	
+	@Override
+	public void collisionNotify(Background obj, Contact contact){}	
+	
+	@Override
+	public void collisionNotify(Player obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Enemy obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Effect obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Item obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(StageObject obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Weapon obj, Contact contact){}
+	
 	//************************************************************
 	// Get
 	// ゲッターまとめ

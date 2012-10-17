@@ -68,7 +68,7 @@ public abstract class ObJectBase {
 	 * @param obj			衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
-	public void collisionDispatch(ObJectBase obj, Contact contact)
+	protected void collisionDispatch(ObJectBase obj, Contact contact)
 	{
 		// TODO いずれ抽象メソッド化する。
 	}
@@ -81,6 +81,10 @@ public abstract class ObJectBase {
 	protected void collisionNotify(Background obj, Contact contact){}
 	protected void collisionNotify(Player obj, Contact contact){}
 	protected void collisionNotify(Enemy obj, Contact contact){}
+	protected void collisionNotify(Effect obj, Contact contact){}
+	protected void collisionNotify(Item obj, Contact contact){}
+	protected void collisionNotify(StageObject obj, Contact contact){}
+	protected void collisionNotify(Weapon obj, Contact contact){}
 
 	protected void flip(boolean x, boolean y)
 	{

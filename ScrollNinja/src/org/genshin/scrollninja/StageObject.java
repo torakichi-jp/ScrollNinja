@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -59,7 +60,7 @@ public class StageObject extends ObJectBase {
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 			sprite.add(new Sprite(tmpRegion));
-			sprite.get(0).setOrigin(0, 0);
+			sprite.get(0).setOrigin(0.0f, 0.0f);
 			sprite.get(0).setScale(0.1f);
 
 			// 当たり判定読み込み
@@ -90,6 +91,32 @@ public class StageObject extends ObJectBase {
 			break;
 		}
 	}
+
+	@Override
+	public void collisionDispatch(ObJectBase obj, Contact contact) {
+		obj.collisionNotify(this, contact);
+	}
+
+	@Override
+	public void collisionNotify(Background obj, Contact contact){}
+
+	@Override
+	public void collisionNotify(Player obj, Contact contact){}
+
+	@Override
+	public void collisionNotify(Enemy obj, Contact contact){}
+
+	@Override
+	public void collisionNotify(Effect obj, Contact contact){}
+
+	@Override
+	public void collisionNotify(Item obj, Contact contact){}
+
+	@Override
+	public void collisionNotify(StageObject obj, Contact contact){}
+
+	@Override
+	public void collisionNotify(Weapon obj, Contact contact){}
 
 	//************************************************************
 	// Get
