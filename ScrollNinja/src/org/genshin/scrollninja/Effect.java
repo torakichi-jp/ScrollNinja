@@ -168,18 +168,16 @@ public class Effect extends ObJectBase {
 									PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
-			sprite.get(1).setPosition(position.x - 64 - (1 * PlayerManager.GetPlayer("プレイヤー").GetDirection()),
+			sprite.get(0).setPosition(position.x - 64 - (1 * PlayerManager.GetPlayer("プレイヤー").GetDirection()),
 								position.y - 64 + 1);
-			sprite.get(1).setScale(-PlayerManager.GetPlayer("プレイヤー").GetDirection() * 0.1f, 0.1f);
-
-			sprite.get(1).setRegion(nowFrame);
+			sprite.get(0).setScale(-PlayerManager.GetPlayer("プレイヤー").GetDirection() * 0.1f, 0.1f);
+			sprite.get(0).setRegion(nowFrame);
 
 			animation();
-			/*
+
 			body.setTransform(PlayerManager.GetPlayer("プレイヤー").GetPosition().x +
 								(PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
 									PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
-			*/
 
 			if( stateTime >= 18 ) {
 				useFlag = false;
@@ -191,7 +189,7 @@ public class Effect extends ObJectBase {
 			stateTime = 0;
 			body.setTransform( -100.0f, -100.0f, 0.0f);
 			position = body.getPosition();
-			sprite.get(1).setPosition(position.x - 100, position.y);
+			sprite.get(0).setPosition(position.x - 100, position.y);
 		}
 	}
 

@@ -84,9 +84,9 @@ public class Stage implements StageBase {
 
 		GameMain.camera.update();
 		PlayerManager.GetPlayer("プレイヤー").Update();
-//		ItemManager.Update();
+		ItemManager.Update();
 //		WeaponManager.GetWeapon("手裏剣").Update();
-/*		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
+		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
 			EffectManager.GetEffectForLoop(i).Update();
 		}
 
@@ -97,7 +97,7 @@ public class Stage implements StageBase {
 		}
 		if(Gdx.input.isKeyPressed(Keys.E)) {
 			ItemManager.DeleteItem(Item.ONIGIRI, 1);
-		}*/
+		}
 
 		GameMain.playerInfo.update();
 	}
@@ -116,13 +116,13 @@ public class Stage implements StageBase {
 		{
 			BackgroundManager.GetBackground(stageNum).Draw(0);
 			BackgroundManager.GetBackground(stageNum).Draw(1);
-//			StageObjectManager.GetStageObject("block").Draw();
+			StageObjectManager.Draw();
 			PlayerManager.GetPlayer("プレイヤー").Draw();
 			EnemyManager.GetEnemy("1").Draw();
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
 //			WeaponManager.GetWeapon("手裏剣").Draw();
-//			EffectManager.GetEffect(Effect.FIRE_2).Draw();
-//			ItemManager.Draw();
+			EffectManager.GetEffect(PlayerManager.GetPlayer("プレイヤー").GetNowAttack()).Draw();
+			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
 			GameMain.playerInfo.Draw();
 		}
@@ -341,6 +341,7 @@ public class Stage implements StageBase {
 	@Override
 	public void Init() {
 		PlayerManager.CreatePlayer("プレイヤー");
+		StageObjectManager.CreateStageObject(StageObject.ROCK, 100.0f, 50.0f);
 		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 	}
 
