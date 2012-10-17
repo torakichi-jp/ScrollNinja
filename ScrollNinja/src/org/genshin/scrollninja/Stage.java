@@ -343,7 +343,7 @@ public class Stage implements StageBase {
 	@Override
 	public void Init() {
 		PlayerManager.CreatePlayer("プレイヤー");
-		StageObjectManager.CreateStageObject(StageObject.ROCK, 100.0f, 50.0f);
+		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
 		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
 	}
 
