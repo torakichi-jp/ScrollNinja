@@ -44,7 +44,8 @@ public class Enemy extends CharacterBase {
 
 	private final static int CHECK			=  0;
 
-	private final static float CLIMBUP		=  0.3f;
+	private final static float CLIMBUP		=  0.7f;
+	private final static float CLIMBDOWN	=  0.7f;
 
 	private final static int RIGHT			=  1;
 	private final static int LEFT			= -1;
@@ -220,7 +221,7 @@ public class Enemy extends CharacterBase {
 	}
 
 	// 敵スピード(仮)
-	private float enemyWalkSpeed = 0.1f;
+	private float enemyWalkSpeed = 0.5f;
 
 	//************************************************************
 	// walk
@@ -257,7 +258,7 @@ public class Enemy extends CharacterBase {
 		if(hangingAround) {
 			sprite.get(0).setScale(-0.1f, 0.1f);
 			direction = 1;
-			position.x += 0.1f;
+			position.x += CLIMBUP;
 			if(position.x >= 70) {
 				hangingAround = false;
 			}
@@ -299,7 +300,7 @@ public class Enemy extends CharacterBase {
 		GetGroundJudge();
 		if(!jump) {
 			// 上押したらジャンプ！
-			if (Gdx.input.isKeyPressed(Keys.A)) {
+			if (Gdx.input.isKeyPressed(Keys.G)) {
 				jump = true;
 				velocity.y = JUMP_POWER;
 			}
@@ -340,7 +341,7 @@ public class Enemy extends CharacterBase {
 
 	//************************************************************
 	// Gravity
-	// 重力計算処理。常にやってます プレイヤーのをpublicにでもOK characterbase
+	// 重力計算処理。常にやってます
 	//************************************************************
 	private void Gravity() {
 		// 空中にいる時は落下移動

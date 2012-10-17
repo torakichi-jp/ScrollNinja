@@ -29,10 +29,13 @@ public class MainMenu implements Screen{
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;				// エグジット
+
+
 	private Stage  stage1;					// 最初に呼ばれるステージ
 	private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
-
+	
+	private int random;
 	// 画像座標
 	private int spritePositionX;
 	private final float MOVE_SPEED = 0.5f;	// スクロール時の移動速度
@@ -123,6 +126,14 @@ public class MainMenu implements Screen{
 
 		// 初期化
 		scrollFlag = false;
+
+		selectMenu = false;
+		
+
+		//System.out.println((int)(Math.random()*10));
+		//System.out.println((int)(Math.random()*10));
+		//System.out.println((int)(Math.random()*10));
+
 	}
 
 	// 更新

@@ -207,6 +207,7 @@ public class Stage implements StageBase {
 	// CreateWeapon
 	// 敵武器作成
 	//************************************************************
+	
 	private void CreateEnemyWeapon() {
 
 		BodyDef def	= new BodyDef();
@@ -308,6 +309,7 @@ public class Stage implements StageBase {
 	public void PopEnemy(Player player) {
 		if( player.GetPosition().x > 200 ) {
 			EnemyManager.CreateEnemy("1", 0, 20.0f, 30.0f);
+
 		}
 	}
 

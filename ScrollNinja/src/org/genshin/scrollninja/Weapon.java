@@ -36,7 +36,8 @@ public class Weapon extends ObJectBase{
 	private boolean	ShootFlag;		// シュートフラグ(手裏剣)
 	private int 		deleteTime;	// 手裏剣消去時間
 	private Vector2 	velocity;		// 移動用速度
-	private boolean 	FlyingFlag;
+	private boolean 	FlyingFlag;	// 手裏剣を動かすフラグ
+	private double	random;		// 手裏剣をランダムで複数出す用
 	
 	private Player player;
 	private Enemy enemy;
@@ -54,7 +55,6 @@ public class Weapon extends ObJectBase{
 		this.weaponLevel = 0;
 		this.use         = true;
 		this.velocity	   = new Vector2(0,0);
-
 
 		FlyingFlag = false;
 
@@ -97,7 +97,6 @@ public class Weapon extends ObJectBase{
 		body.setTransform(position, 0);		// 初期位置
 		
 		deleteTime = 120;		// 120fで消える
-
 	}
 
 	// 更新
@@ -113,9 +112,7 @@ public class Weapon extends ObJectBase{
 		//body.setLinearVelocity(position.x , 0);
 
 		shuriken();
-		
 		System.out.println(player.position.y);
-
 	}
 
 	// 手裏剣の動き
@@ -124,10 +121,13 @@ public class Weapon extends ObJectBase{
 		sprite.setPosition(position.x - 32, position.y - 32);
 		sprite.setRotation((float) (body.getAngle()*180/Math.PI));
 		
+		random = Math.random();
+		System.out.println(random);
+		
 		// 手裏剣表示時間
 		deleteTime += 1;
 		
-		if (Gdx.input.isKeyPressed(Keys.S)) {
+		if (Gdx.input.isKeyPressed(Keys.F)) {
 			FlyingFlag = true;
 			ShootFlag = true;
 			// 押されたら手裏剣の座標を敵の位置へ移動
@@ -161,6 +161,8 @@ public class Weapon extends ObJectBase{
 		if(deleteTime >= 120 && FlyingFlag) {
 			// 120fたったら手裏剣を画面外へ
 			sprite.setPosition(0, -60);
+			FlyingFlag = false;
+			ShootFlag = false;
 		}
 		
 		
@@ -170,9 +172,7 @@ public class Weapon extends ObJectBase{
 	public void Draw(SpriteBatch batch) {
 		sprite.draw(batch);
 	}
-
-
-
+	
 	//武器座標ゲット
 	public Vector2 GetWeaponPosition() {
 		return position;
