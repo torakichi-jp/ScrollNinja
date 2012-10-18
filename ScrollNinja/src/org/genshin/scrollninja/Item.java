@@ -32,7 +32,7 @@ public class Item extends ObJectBase {
 	public final static int		ONIGIRI		= 0;
 	public final static int		OKANE		= 1;
 	
-	private final static float JUMP_POWER	=  0.3f;	// ジャンプ加速度
+	private final static float JUMP_POWER	=  20.0f;	// ジャンプ加速度
 	
 	// 変数宣言
 	private int 		number;				// アイテム番号
@@ -45,12 +45,12 @@ public class Item extends ObJectBase {
 	private boolean		groundJudge;
 	
 	// コンストラクタ
-	public Item(int Type, int num, Vector2 pos) {
+	public Item(int Type, int num, float x,  float y) {
 		sprite		= new ArrayList<Sprite>();
 		sensor		= new ArrayList<Fixture>();
 		type		= Type;
 		number		= num;
-		position	= new Vector2(pos);
+		position	= new Vector2(x,y);
 		velocity	= new Vector2(0.0f, 0.0f);
 		appear		= true;
 		deleteFlag	= false;
@@ -124,27 +124,25 @@ public class Item extends ObJectBase {
 	}
 	
 	/**
-	 * 落ちてくるアイテムに当たるとプレイヤーが
-	 * 影響受けちゃうのでTransformにしました
+	 * アイテム出現時の動き
 	 */
 	public void Appear() {
 		if(appear) {
-//			velocity.y = JUMP_POWER;
-			fall = JUMP_POWER;
+			velocity.y = JUMP_POWER;
 			appear = false;
 		}
 		else {
-/*			if( !groundJudge ) {
-				body.setLinearVelocity(velocity.x, velocity.y);
-				velocity.y -= 0.1f;	
-			}*/
-			fall -= 0.01;
-			if( fall < -0.3f ) {
-				fall = -0.3f;
-			}
-			
 			if( !groundJudge ) {
-				body.setTransform(body.getPosition().x, body.getPosition().y + fall, 0);
+				body.setLinearVelocity(velocity);
+				velocity.y -= 0.5f;
+				
+				if( velocity.y < -20.0f ) {
+					velocity.y = -20.0f;
+				}
+			}
+			else {
+				velocity.y = 0.0f;
+				body.setLinearVelocity(velocity);
 			}
 		}
 	}

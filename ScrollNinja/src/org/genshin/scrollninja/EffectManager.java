@@ -17,8 +17,8 @@ public class EffectManager {
 	private EffectManager(){}
 	
 	// エフェクトの生成
-	public static void CreateEffect(int Type, CharacterBase owner) {
-		Effect pEffect = new Effect(Type, owner);	// オブジェクトを生成（&初期化）して
+	public static void CreateEffect(int Type) {
+		Effect pEffect = new Effect(Type);	// オブジェクトを生成（&初期化）して
 		effectList.add(pEffect);					// リストに追加
 	}
 	

@@ -55,10 +55,13 @@ public class Effect extends ObJectBase {
 	private TextureRegion[]	frame;			// アニメーションのコマ
 	private TextureRegion	nowFrame;		// 現在のコマ
 	private Animation		animation;		// アニメーション
-	private CharacterBase	myOwner;		// エフェクトを発生させたキャラクター
 
-	//コンストラクタ
-	public Effect(int type, CharacterBase owner) {
+	/**************************************************
+	 * @param type		エフェクトの種類
+	 * 
+	 * コンストラクタ
+	 ***************************************************/
+	public Effect(int type ) {
 		sprite		= new ArrayList<Sprite>();
 		sensor		= new ArrayList<Fixture>();
 		effectType	= type;
@@ -67,16 +70,16 @@ public class Effect extends ObJectBase {
 		attackNum	= 0;
 		position	= new Vector2(0.0f, 0.0f);
 		useFlag		= false;
-		myOwner		= owner;
 
 		Create();
 		sensor.get(0).setUserData(this);
 	}
 
-	//************************************************************
-	// Get
-	// ゲッターまとめ
-	//************************************************************
+	/**************************************************
+	 * @return
+	 * 
+	 * ゲッターまとめ
+	 ***************************************************/
 	public int GetType() { return effectType; }
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
@@ -90,10 +93,9 @@ public class Effect extends ObJectBase {
 	public void SetAttackNum(int num){ attackNum = num; }
 //	public void SetOwner(CharacterBase owner) { myOwner = owner; }
 
-	//************************************************************
-	// Create
-	// エフェクトの生成
-	//************************************************************
+	/**************************************************
+	 * エフェクト生成
+	 ***************************************************/
 	public void Create() {
 		switch(effectType) {
 		case FIRE_1:
@@ -114,11 +116,8 @@ public class Effect extends ObJectBase {
 			fd.restitution	= 0;
 			fd.shape		= poly;
 
-			//
-//			body.createFixture(fd);
 			sensor.add(body.createFixture(poly, 0));
 			sensor.get(0).setSensor(true);
-			body.setGravityScale(20.0f);
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み
@@ -155,10 +154,9 @@ public class Effect extends ObJectBase {
 		}
 	}
 
-	//************************************************************
-	// Update
-	// 更新関数まとめ
-	//************************************************************
+	/**************************************************
+	 * 更新処理
+	 ***************************************************/
 	public void Update() {
 		if( useFlag ) {
 
@@ -195,36 +193,9 @@ public class Effect extends ObJectBase {
 		}
 	}
 
-	//************************************************************
-	// Colision
-	// 当たり判定処理
-	//************************************************************
-/*	private boolean Colision(CharacterBase chara) {
-		List<Contact> contactList = GameMain.world.getContactList();
-
-		for(int i = 0; i < contactList.size(); i++) {
-			Contact contact = contactList.get(i);
-
-			// 当たったよ！
-			for( int j = 0; j < Background.GetBody().getFixtureList().size(); j ++) {
-				if( chara == myOwner ) {
-					continue;
-				}
-
-				if(contact.isTouching() &&
-						(( contact.getFixtureA() == sensor && contact.getFixtureB() == chara.GetSensor() ) ||
-						( contact.getFixtureA() == chara.GetSensor() && contact.getFixtureB() == sensor ))) {
-						return true;
-				}
-			}
-		}
-		return false;
-	}*/
-
-	//************************************************************
-	// animation
-	// アニメーション処理
-	//************************************************************
+	/**************************************************
+	 * アニメーション処理
+	 ***************************************************/
 	private void animation() {
 		switch(effectType) {
 		case FIRE_1:
