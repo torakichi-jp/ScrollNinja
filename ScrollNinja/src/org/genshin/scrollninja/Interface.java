@@ -27,6 +27,7 @@ public class Interface {
 	private float stateTime;			// アニメーション用
 
 	private Player player;				// プレイヤー情報格納
+	private GameMain gamemain;
 	private float percentHP;			// 現在のHPの割合　1が最大
 	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
 	private float percentChakra;		// 現在のチャクラの割合　1が最大
@@ -41,6 +42,9 @@ public class Interface {
 		// テクスチャ画像読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/interface.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		Texture maptexture = new Texture(Gdx.files.internal("data/stage_main.png"));
+		maptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -54,6 +58,8 @@ public class Interface {
 		scroll.setScale(0.1f);
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
+		
+		
 
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
@@ -80,10 +86,10 @@ public class Interface {
 		chakra.setScale(0.1f);
 		
 		// マップ
-		//tmpRegion = new TextureRegion(texture,0,0,0,0);
-		//map = new Sprite(tmpRegion);
-		//map.setOrigin(map.getX() * 0.5f , map.getY() * 0.5f);
-		//map.setScale(0.1f);
+		TextureRegion maptmpRegion = new TextureRegion(maptexture);
+		map = new Sprite(maptmpRegion);
+		map.setOrigin(scrollRight.getX() , scrollRight.getY());
+		map.setScale(0.01f);
 		
 		
 
@@ -106,8 +112,8 @@ public class Interface {
 		hp.setPosition(scroll.getX(), scroll.getY());
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
-		// 未設定
-		//map.setPosition(scroll.getX(), scroll.getY());
+		// 位置調整
+		map.setPosition(scroll.getX() + 60.0f, scroll.getY() + -5.0f);
 
 		// プレイヤー情報取得
 		player = PlayerManager.GetPlayer("プレイヤー");
@@ -159,23 +165,33 @@ public class Interface {
 	}
 	
 	public void Map() {
+		
+		if(Gdx.input.isTouched()) {
+			
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY();
+			
+			if(x > 600 && y < 150) {
+				pauseFlag = true;
+				
+			}
+		}
+		
 		if(Gdx.input.isKeyPressed(Keys.M)) {
 			// マップを前画面表示
 			// ゲーム進行をストップ
 			pauseFlag = true;
 			System.out.println(pauseFlag);
-			
 		}
 		
-		if(Gdx.input.isKeyPressed(Keys.L)) {
-			pauseFlag = false;
 
-			System.out.println(pauseFlag);
-		}
 	}
 	
 	public boolean GetPauseFlag() {
 		return pauseFlag;
+	}
+	public void SetPauseFlag(boolean pauseflag) {
+		pauseFlag = pauseflag;
 	}
 
 	public void Draw() {
@@ -184,6 +200,18 @@ public class Interface {
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
-		//map.draw(GameMain.spriteBatch);
+		if(pauseFlag) {
+			map.setScale(0.1f);
+			/* 
+			 * TODO:マップの絵ができたら座標など変更する
+			 * */
+			map.setPosition(0,-90);
+		}
+		else {
+			map.setScale(0.01f);
+		}
+			map.draw(GameMain.spriteBatch);
+		
+		
 	}
 }

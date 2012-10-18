@@ -59,7 +59,8 @@ public class GameMain implements Screen{
 		playerInfo			= new Interface();
 		this.stageNum		= stageNum;
 		
-		PauseFlag = playerInfo.GetPauseFlag();
+		
+		System.out.println(PauseFlag);
 
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();
@@ -83,13 +84,14 @@ public class GameMain implements Screen{
 		oldTime = newTime;
 
 		if(!PauseFlag) {
-		System.out.println(PauseFlag);
-			
+		PauseFlag = playerInfo.GetPauseFlag();
 		StageManager.Update();
 		StageManager.Draw();
 		//updateCamera();
 		}
-
+		else {
+			pause();
+		}
 		
 		FPS();
 	}
@@ -111,6 +113,10 @@ public class GameMain implements Screen{
 		newTime = System.currentTimeMillis() << 16;
 		error = newTime - oldTime - sleepTime; // 休止時間の誤差
 	}
+	
+	public boolean GetPauseFlag() {
+		return PauseFlag;
+	}
 
 	@Override
 	public void resize(int width, int height) {}
@@ -126,8 +132,22 @@ public class GameMain implements Screen{
 	public void pause() {
 		
 		// ポーズしたら全画面マップ表示
-		
-		
+		if(Gdx.input.isKeyPressed(Keys.L)) {
+			PauseFlag = false;
+			
+		}
+		if(Gdx.input.isTouched()) {
+			
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY();
+			
+			if(x < 600 && y > 150) {
+				PauseFlag = false;
+				
+			}
+		}
+		if(!PauseFlag)
+			playerInfo.SetPauseFlag(PauseFlag);
 	}
 
 	@Override
