@@ -71,6 +71,7 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
+		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update();
 		BackgroundManager.GetBackground(stageNum).update();
 		PlayerManager.GetPlayer("プレイヤー").Update();
@@ -91,7 +92,6 @@ public class Stage implements StageBase {
 
 		updateCamera();
 		GameMain.playerInfo.update();
-		CollisionDetector.HitTest();
 	}
 
 	//************************************************************

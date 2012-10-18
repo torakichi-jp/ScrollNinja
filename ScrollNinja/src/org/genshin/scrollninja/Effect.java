@@ -118,6 +118,7 @@ public class Effect extends ObJectBase {
 //			body.createFixture(fd);
 			sensor.add(body.createFixture(poly, 0));
 			sensor.get(0).setSensor(true);
+			body.setGravityScale(20.0f);
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み

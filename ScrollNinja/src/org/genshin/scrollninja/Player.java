@@ -41,10 +41,10 @@ import com.badlogic.gdx.physics.box2d.WorldManifold;
 public class Player extends CharacterBase {
 	// 定数宣言
 	private static final float RUN_MAX_VEL		= 30.0f;	// 走りの最高速度
-	private static final float DASH_MAX_VEL	= 30.0f;	// ダッシュの最高速度
+	private static final float DASH_MAX_VEL		= 30.0f;	// ダッシュの最高速度
 	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
-	private static final float JUMP_POWER	=  30.0f;		// ジャンプ加速度
+	private static final float JUMP_POWER		=  30.0f;	// ジャンプ加速度
 
 	private static final int BODY	= 0;
 	private static final int FOOT	= 1;
@@ -182,6 +182,7 @@ public class Player extends CharacterBase {
 		nowFrame = walkAnimation.getKeyFrame(0, true);
 		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
 
+		hp			 = 1;
 		name		 = Name;
 		charge		 = 0;
 		money		 = 0;
@@ -216,6 +217,8 @@ public class Player extends CharacterBase {
 		
 		Vector2 velocity = body.getLinearVelocity();
 //		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
+		
+		groundJudge = false;
 	}
 
 	/**
@@ -243,8 +246,9 @@ public class Player extends CharacterBase {
 
 		// ジャンプ中の処理
 		if( jump ) {
-//			body.setLinearVelocity(velocity.x, velocity.y);
-//			velocity.y -= 1;
+			Vector2 velocity = body.getLinearVelocity();
+			body.setLinearVelocity(velocity.x, velocity.y);
+			velocity.y -= 1;
 		}
 	}
 
@@ -264,15 +268,19 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.D)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
 			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
-			
-			currentState = WALK;
+
+			if( groundJudge ) {
+				currentState = WALK;
+			}
 		}
 		// 左が押された
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 			direction = LEFT;
 			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
 
-			currentState = WALK;
+			if( groundJudge ) {
+				currentState = WALK;
+			}
 		}
 		// 移動キーが押されていない時は少しずつ減速
 		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) {
@@ -349,6 +357,7 @@ public class Player extends CharacterBase {
 	public void collisionNotify(Background obj, Contact contact) {
 		jump = false;
 		currentState = STAND;
+		groundJudge = true;
 		
 		// まだ作ってる途中なんだよ、こっちくんな
 //		return;
@@ -365,17 +374,40 @@ public class Player extends CharacterBase {
 		*/
 	}
 
-	@Override
+	/**
+	 * @Override
+	 * 
+	 */
 	public void collisionNotify(Player obj, Contact contact){}
 
-	@Override
+	/**
+	 * @Override
+	 * 敵と当たった時の処理
+	 */
 	public void collisionNotify(Enemy obj, Contact contact){}
 
-	@Override
+	/**
+	 * @Override
+	 * 
+	 */
 	public void collisionNotify(Effect obj, Contact contact){}
 
-	@Override
-	public void collisionNotify(Item obj, Contact contact){}
+	/**
+	 * @Override
+	 * アイテムと当たった時
+	 */
+	public void collisionNotify(Item obj, Contact contact){
+		switch(obj.GetType()) {
+		case Item.ONIGIRI:
+			hp += 50;
+			if( hp > 100 ) {
+				hp = 100;
+			}
+			break;
+		case Item.OKANE:
+			break;
+		}
+	}
 
 	@Override
 	public void collisionNotify(StageObject obj, Contact contact){}
