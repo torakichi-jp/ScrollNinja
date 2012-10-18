@@ -83,7 +83,7 @@ public class Stage implements StageBase {
 
 		if( Gdx.input.isKeyPressed(Keys.I) ) {
 			if( ItemManager.onigiriList.size() == 0) {
-				ItemManager.CreateItem(Item.ONIGIRI, PlayerManager.GetPlayer("プレイヤー").GetPosition());		// アイテム生成
+				ItemManager.CreateItem(Item.ONIGIRI, 0.0f, 0.0f);		// アイテム生成
 			}
 		}
 		if(Gdx.input.isKeyPressed(Keys.E)) {

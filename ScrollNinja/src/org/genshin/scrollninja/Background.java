@@ -43,7 +43,9 @@ public class Background extends ObJectBase {
 	private Vector2				playerPos;
 	private int					bgNum;
 
-	// コンストラクタ
+	/**
+	 *  コンストラクタ
+	 */
 	public Background(){}
 	public Background(int num) {
 		sprite = new ArrayList<Sprite>();
@@ -63,18 +65,30 @@ public class Background extends ObJectBase {
 		}
 	}
 
+	/**************************************************
+	 * @Override
+	 * @param i		スプライト番号
+	 * @param flag	とりあえず付けときました＾ｑ＾
+	 * 
+	 * 描画処理
+	 ***************************************************/
 	public void Draw(int i, boolean flag) {
 		sprite.get(i).draw(MainMenu.spriteBatch);
 	}
 
+	/**************************************************
+	 * @Override
+	 * @param i		スプライト番号
+	 * 
+	 * 描画処理
+	 ***************************************************/
 	public void Draw(int i) {
 		sprite.get(i).draw(GameMain.spriteBatch);
 	}
 
-	//************************************************************
-	// LoadTexture
-	// テクスチャを読み込んでスプライトにセット！
-	//************************************************************
+	/**************************************************
+	 * テクスチャ読み込み、スプライトセット
+	 ***************************************************/
 	public void LoadTexture() {
 		// 奥から作成
 		// 奥
@@ -107,10 +121,9 @@ public class Background extends ObJectBase {
 		sprite.get(NEAR).setScale(0.25f, 0.2f);
 	}
 
-	//************************************************************
-	// createBody
-	// 当たり判定用Body作成
-	//************************************************************
+	/**************************************************
+	 * 当たり判定作成
+	 ***************************************************/
 	public void createBody() {
 		// 当たり判定作成用ファイル読み込み
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
@@ -138,10 +151,9 @@ public class Background extends ObJectBase {
 		}
 	}
 
-	//************************************************************
-	// moveBackground
-	// 背景移動
-	//************************************************************
+	/**************************************************
+	 * 更新処理
+	 ***************************************************/
 	public void update() {
 		// プレイヤーの座標を代入
 		playerPos = PlayerManager.GetPlayer("プレイヤー").body.getPosition();

@@ -62,11 +62,9 @@ public class Player extends CharacterBase {
 	private int				charge;					// チャージゲージ
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
-	private int				count;					// カウント用変数
 	private int				maxChakra;				// チャクラ最大値
 	private int				chakra;					// チャクラ
 	private float			stateTime;
-	private Weapon			weapon;					// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
 	private boolean			groundJudge;			// 地面と当たってますよフラグ
 
@@ -80,15 +78,11 @@ public class Player extends CharacterBase {
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
 
-	private Sprite			footSprite;				// 下半身用のスプライト
-
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
 
 	// おそらく使わなくなる変数
-	private static final float FIRST_SPEED	=  30f;		// 初速度
 	private int				nowAttack;				// 現在の攻撃方法
-	private float			fall;					// 落下量
 
 
 	//************************************************************
@@ -188,13 +182,11 @@ public class Player extends CharacterBase {
 		money		 = 0;
 		direction	 = 1;
 		currentState = STAND;
-		fall		 = 0;
-		count		 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 		sensor.get(0).setUserData(this);
 
-		EffectManager.CreateEffect(Effect.FIRE_2, this);
+		EffectManager.CreateEffect(Effect.FIRE_2);
 		nowAttack = Effect.FIRE_2;
 	}
 
@@ -217,6 +209,8 @@ public class Player extends CharacterBase {
 		
 		Vector2 velocity = body.getLinearVelocity();
 //		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
+		
+		position = body.getPosition();
 		
 		groundJudge = false;
 	}
@@ -246,9 +240,9 @@ public class Player extends CharacterBase {
 
 		// ジャンプ中の処理
 		if( jump ) {
-			Vector2 velocity = body.getLinearVelocity();
-			body.setLinearVelocity(velocity.x, velocity.y);
-			velocity.y -= 1;
+//			Vector2 velocity = body.getLinearVelocity();
+//			body.setLinearVelocity(velocity.x, velocity.y);
+//			velocity.y -= 1;
 		}
 	}
 

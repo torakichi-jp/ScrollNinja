@@ -11,36 +11,35 @@ public class ItemManager {
 	public static ArrayList<Item>		onigiriList		= new ArrayList<Item>();	// 管理番号
 //	private static ArrayList<Item>		
 	
-	// コンストラクタ
+	/**
+	 * コンストラクタ
+	 */
 	private ItemManager(){}
 	
-	//************************************************************
-	// Update
-	// 更新処理まとめ
-	//************************************************************
+	/**
+	 * 更新
+	 */
 	public static void Update() {
 		for( int i = 0; i < onigiriList.size(); i ++) {
 			onigiriList.get(i).Update();
 		}
 	}
 	
-	//************************************************************
-	// Draw
-	// 描画処理まとめ
-	//************************************************************
+	/**
+	 * スプライト描画
+	 */
 	public static void Draw() {
 		for( int i = 0; i < onigiriList.size(); i ++) {
 			onigiriList.get(i).Draw();
 		}
 	}
 	
-	//************************************************************
-	// CreateItem
-	// アイテム生成
-	// 同じ種類が既にある場合は最後に追加
-	// まだその種類がリストにない場合は新規で追加
-	//************************************************************
-	public static int CreateItem(int Type, Vector2 pos) {
+	/**
+	 * アイテム生成
+	 * 同じ種類が既にある場合は最後に追加
+	 * まだその種類がリストにない場合は新規で追加
+	 */
+	public static int CreateItem(int Type, float x, float y) {
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < itemList.size(); i ++ ) {
 			// 同じ種類発見
@@ -49,7 +48,7 @@ public class ItemManager {
 				switch( Type ) {
 				case Item.ONIGIRI:
 					int j = onigiriList.size() + 1;
-					Item pItem = new Item(Type, j, pos);		// 最後の番号を管理番号に
+					Item pItem = new Item(Type, j, x, y);		// 最後の番号を管理番号に
 					onigiriList.add(pItem);					// 追加
 				break;
 				}
@@ -59,7 +58,7 @@ public class ItemManager {
 		}
 		// なかった
 		itemList.add(Type);						// この種類の項目を増やす
-		Item pItem = new Item(Type, 1, pos);	// 最初の一つ目なので管理番号は１
+		Item pItem = new Item(Type, 1, x, y);	// 最初の一つ目なので管理番号は１
 		
 		switch( Type ) {
 		case Item.ONIGIRI:
@@ -71,11 +70,9 @@ public class ItemManager {
 	}
 	
 	/**
-	 * 
+	 * 削除とソート
 	 * @param Type		アイテムの種類
 	 * @param Num		管理番号
-	 * 
-	 * 削除とソート
 	 */
 	public static void DeleteItem(int Type, int Num) {
 		for(int i = 0; i < itemList.size(); i ++ ) {
@@ -98,10 +95,8 @@ public class ItemManager {
 	}
 	
 	/**
-	 * 
-	 * @param item		削除するアイテムのポインタ
-	 * 
 	 * 削除とソート
+	 * @param item		削除するアイテムのポインタ
 	 */
 	public static void DeleteItem(Item item) {
 		for(int i = 0; i < itemList.size(); i ++ ) {
