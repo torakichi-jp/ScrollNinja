@@ -59,6 +59,7 @@ public class Weapon extends ObJectBase{
 		this.velocity	   = new Vector2(0,0);
 
 		FlyingFlag = false;
+		ShootFlag = true;
 		rotate = 0;
 
 		create();
@@ -96,12 +97,16 @@ public class Weapon extends ObJectBase{
 		sensor.get(0).setUserData(this);
 		body.setBullet(true);			// すり抜け防止
 		body.setFixedRotation(true);	// シミュレーションでの自動回転をしない
-		body.setTransform(position, 0);		// 初期位置
-		body.setLinearVelocity(1, 0);
+		body.setTransform(0, 0, 0);		// 初期位置
+		body.setLinearVelocity(0, 0);
+		body.setGravityScale(0);
+		sensor.get(0).setSensor(true);
 
 		deleteTime = 120;		// 120fで消える
 
-		System.out.println(body.getPosition());
+		body.setTransform(EnemyManager.GetEnemy("1").body.getPosition().x + 3.2f + 5 * enemy.GetDirection(),
+				EnemyManager.GetEnemy("1").body.getPosition().y, rotate);
+		body.setLinearVelocity(30 * EnemyManager.GetEnemy("1").GetDirection(), 0);
 	}
 
 	// 更新
@@ -123,17 +128,26 @@ public class Weapon extends ObJectBase{
 	public void shuriken() {
 
 		// 手裏剣表示時間
-		deleteTime += 1;
-		rotate++;
+		if (ShootFlag) {
+			deleteTime -= 1;
+			rotate++;
+		}
 
 		//if (Gdx.input.isKeyPressed(Keys.F)) {
+		/*
 		if (!FlyingFlag) {
 			FlyingFlag = true;
 			ShootFlag = true;
 			// 押されたら手裏剣の座標を敵の位置へ移動
-			body.setTransform(enemy.position.x + 5, enemy.position.y, rotate);
+			body.setTransform(EnemyManager.GetEnemy("1").body.getPosition().x + 3.2f + 5 * enemy.GetDirection(),
+					EnemyManager.GetEnemy("1").body.getPosition().y, rotate);
+			body.setLinearVelocity(30 * EnemyManager.GetEnemy("1").GetDirection(), 0);
 		}
+		*/
 
+		body.setTransform(position, rotate);
+
+		/*
 		// debug
 		if(FlyingFlag) {
 			//position.x += 1.0f;
@@ -146,9 +160,8 @@ public class Weapon extends ObJectBase{
 				// 加速度減算
 				velocity.x -= 1.0f;
 			}
-			body.setLinearVelocity(velocity.x + 1, 0);
+			body.setLinearVelocity(10, 0);
 
-			/*
 			// 敵とプレイヤーの高低チェック
 			if(enemy.position.y > player.position.y) {
 				// 敵の方が上にいる場合
@@ -158,15 +171,17 @@ public class Weapon extends ObJectBase{
 				// プレイヤーのほうが上にいる場合
 				velocity.y -= 0.1f;
 			}
-			*/
-		}
-
-		if(deleteTime >= 120 && FlyingFlag) {
-			// 120fたったら手裏剣を画面外へ
-			sprite.get(0).setPosition(0, -60);
 			FlyingFlag = false;
+		}*/
+
+		if(deleteTime < 0) {
+			// 120fたったら手裏剣を画面外へ
+			WeaponManager.DeleteWeapon("敵手裏剣");
+			//FlyingFlag = false;
 			ShootFlag = false;
+			deleteTime = 120;
 		}
+		System.out.println(deleteTime);
 	}
 
 	//武器座標ゲット

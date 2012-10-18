@@ -69,6 +69,7 @@ public class Enemy extends CharacterBase {
 	private Player 			player;			// プレイヤー
 	private Weapon			syuriken;		// 手裏剣での攻撃
 	private Weapon			blade;			// 刀での攻撃
+	private int				attackInterval;	// 攻撃間隔
 
 	private Vector2			wanderingPosition;	// うろうろ場所用に出現位置を保存
 
@@ -87,6 +88,7 @@ public class Enemy extends CharacterBase {
 		hp				= 100;
 		speed			= 0;
 		invincibleTime	= 0;
+		attackInterval	= 0;
 		velocity = new Vector2(0, 0);
 
 		jump = false;
@@ -294,13 +296,8 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	public void attack() {
 		// TODO WeaponManager要調整
-	if ( WeaponManager.weaponList.size() == 0) {
-			WeaponManager.CreateWeapon("敵手裏剣");
-
-//			syuriken = WeaponManager.GetWeapon("敵手裏剣");
-			// 出現位置
-//			syuriken.sprite.get(0).setPosition(position.x, position.y);
-		}
+		if ( WeaponManager.weaponList.size() == 0 && attackInterval == 0)
+				WeaponManager.CreateWeapon("敵手裏剣");
 	}
 
 	/**************************************************

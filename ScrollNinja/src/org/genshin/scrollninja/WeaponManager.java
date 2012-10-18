@@ -32,12 +32,22 @@ public class WeaponManager {
 
 	// 武器の削除
 	public static int DeleteWeapon(String Name) {
+		for(int i = 0; i < weaponList.size(); i ++) {
+			if( weaponList.get(i).GetName().equals(Name) ) {
+				weaponList.get(i).Release();
+				weaponList.remove(i);		// 引数で渡されたオブジェクトを削除
+				return 1;
+			}
+		}
+		/*
 		if( !weaponList.contains(Name) ) {		// 名前が見つからなかった場合はエラー
 			return -1;		// エラー処理
 		}
-
+		System.out.println("in");
+		weaponList.get(weaponList.indexOf(Name)).Release();
 		weaponList.remove(weaponList.indexOf(Name));		// 引数で渡されたオブジェクトを削除
-		return 1;
+		*/
+		return -1;
 	}
 
 	// 参照
