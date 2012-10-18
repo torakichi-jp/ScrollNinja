@@ -4,6 +4,7 @@ import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,9 +32,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class GameMain implements Screen{
 	private Game						ScrollNinjya;
 	public static World					world;			// ワールド
-	public static OrthographicCamera	camera;			// カメラ
+	public static OrthographicCamera	camera;		// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
-	public static Interface 			playerInfo;		// インターフェース
+	public static Interface 				playerInfo;	// インターフェース
+	public boolean				PauseFlag;
 	private Stage 			stage;						// ステージ
 	private int				stageNum;					// ステージナンバー
 	private long 			error			= 0;
@@ -42,6 +44,10 @@ public class GameMain implements Screen{
 	private long			newTime			= System.currentTimeMillis() << 16;
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
+	
+	public int gamestate;
+	public final static int GAME	= 0;
+	public final static int PAUSE	= 1;
 
 	// コンストラクタ
 	public GameMain(Game game, int stageNum) {
@@ -52,6 +58,8 @@ public class GameMain implements Screen{
 		stage				= new Stage();
 		playerInfo			= new Interface();
 		this.stageNum		= stageNum;
+		
+		PauseFlag = playerInfo.GetPauseFlag();
 
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();
@@ -74,10 +82,15 @@ public class GameMain implements Screen{
 	public void render(float delta) {
 		oldTime = newTime;
 
+		if(!PauseFlag) {
+		System.out.println(PauseFlag);
+			
 		StageManager.Update();
 		StageManager.Draw();
 		//updateCamera();
+		}
 
+		
 		FPS();
 	}
 
@@ -111,6 +124,10 @@ public class GameMain implements Screen{
 
 	@Override
 	public void pause() {
+		
+		// ポーズしたら全画面マップ表示
+		
+		
 	}
 
 	@Override

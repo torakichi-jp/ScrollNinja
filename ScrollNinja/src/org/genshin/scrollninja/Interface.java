@@ -3,6 +3,7 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -18,6 +19,7 @@ public class Interface {
 	private static Sprite hp;			// プレイヤーHP
 	private static Sprite hyoutan;		// チャクラのひょうたん部分
 	private static Sprite chakra;		// プレイヤーチャクラ
+	private static Sprite map;			// マップ
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
@@ -29,6 +31,8 @@ public class Interface {
 	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
 	private float percentChakra;		// 現在のチャクラの割合　1が最大
 	private float countChakra;			// 巻物を0.01ずつ現在のチャクラの割合まで動かすためのカウンタ
+	
+	private boolean pauseFlag;			// ポーズフラグ
 
 	// コンストラクタ
 	public Interface() {
@@ -74,12 +78,22 @@ public class Interface {
 		chakra = new Sprite(tmpRegion);
 		chakra.setOrigin(chakra.getX() * 0.5f, chakra.getY() * 0.5f);
 		chakra.setScale(0.1f);
+		
+		// マップ
+		//tmpRegion = new TextureRegion(texture,0,0,0,0);
+		//map = new Sprite(tmpRegion);
+		//map.setOrigin(map.getX() * 0.5f , map.getY() * 0.5f);
+		//map.setScale(0.1f);
+		
+		
 
 		// 最初の設定；
 		percentHP = 1;
 		countHP = percentHP;
 		percentChakra = 0;
 		countChakra = percentChakra;
+		
+		pauseFlag = false;
 
 		stateTime = 0;
 	}
@@ -92,6 +106,8 @@ public class Interface {
 		hp.setPosition(scroll.getX(), scroll.getY());
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
+		// 未設定
+		//map.setPosition(scroll.getX(), scroll.getY());
 
 		// プレイヤー情報取得
 		player = PlayerManager.GetPlayer("プレイヤー");
@@ -138,6 +154,28 @@ public class Interface {
 
 		if (stateTime > 60)
 			stateTime = 0;
+		
+		Map();
+	}
+	
+	public void Map() {
+		if(Gdx.input.isKeyPressed(Keys.M)) {
+			// マップを前画面表示
+			// ゲーム進行をストップ
+			pauseFlag = true;
+			System.out.println(pauseFlag);
+			
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.L)) {
+			pauseFlag = false;
+
+			System.out.println(pauseFlag);
+		}
+	}
+	
+	public boolean GetPauseFlag() {
+		return pauseFlag;
 	}
 
 	public void Draw() {
@@ -146,5 +184,6 @@ public class Interface {
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
+		//map.draw(GameMain.spriteBatch);
 	}
 }
