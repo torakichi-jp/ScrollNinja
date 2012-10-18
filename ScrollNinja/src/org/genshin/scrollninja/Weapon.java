@@ -32,7 +32,6 @@ public class Weapon extends ObJectBase{
 	private float 	attackNum;		// 武器威力
 	private int 		weaponLevel;	// 武器レベル
 	private Boolean 	use;			// 使用フラグ
-	private Body		body;			// ボディ
 	private boolean	ShootFlag;		// シュートフラグ(手裏剣)
 	private int 		deleteTime;	// 手裏剣消去時間
 	private Vector2 	velocity;		// 移動用速度
@@ -168,11 +167,6 @@ public class Weapon extends ObJectBase{
 			FlyingFlag = false;
 			ShootFlag = false;
 		}
-	}
-
-	// 描画
-	public void Draw(SpriteBatch batch) {
-		sprite.get(0).draw(batch);
 	}
 
 	//武器座標ゲット

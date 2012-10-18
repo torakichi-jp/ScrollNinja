@@ -294,12 +294,12 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	public void attack() {
 		// TODO WeaponManager要調整
-		if ( WeaponManager.weaponList.size() == 0) {
+	if ( WeaponManager.weaponList.size() == 0) {
 			WeaponManager.CreateWeapon("敵手裏剣");
 
-			syuriken = WeaponManager.GetWeapon("敵手裏剣");
+//			syuriken = WeaponManager.GetWeapon("敵手裏剣");
 			// 出現位置
-			syuriken.sprite.get(0).setPosition(position.x, position.y);
+//			syuriken.sprite.get(0).setPosition(position.x, position.y);
 		}
 	}
 
