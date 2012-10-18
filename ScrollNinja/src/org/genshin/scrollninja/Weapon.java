@@ -26,40 +26,56 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 
 public class Weapon extends ObJectBase{
+	// 定数
+	// 武器の種類 TODO 増えるごとに追加する必要が…
+	private final int SYURIKEN		= 0;		// 手裏剣
+	private final int EXIST_TIME	= 240;		// 手裏剣の存在時間
+	private final int SYURIKEN_SPEED	= 30;	// 手裏剣の速さ
 
-	private String	name;			// 名前
+	private int			type;			// 武器のタイプ
+	private String		name;			// 名前
 	private Vector2 	position;		// 武器座標
-	private float 	attackNum;		// 武器威力
+	private float 		attackNum;		// 武器威力
 	private int 		weaponLevel;	// 武器レベル
 	private Boolean 	use;			// 使用フラグ
-	private boolean	ShootFlag;		// シュートフラグ(手裏剣)
-	private int 		deleteTime;	// 手裏剣消去時間
-	private Vector2 	velocity;		// 移動用速度
-	private boolean 	FlyingFlag;	// 手裏剣を動かすフラグ
-	private float	rotate;			// 手裏剣回転要
-	private double	random;		// 手裏剣をランダムで複数出す用
+	private int			timeCount;		// 手裏剣の経過時間
+	private float		rotate;			// 手裏剣回転要
+	private double		random;			// 手裏剣をランダムで複数出す用
 
 	private Player player;
 	private Enemy enemy;
 
-	private static final float FIRST_SPEED	=  30f;		// 初速度
-	private static final float GRAVITY		= -20f;		// 重力
-	private static final int   MAX_WIDTH	= 100;
-
-	//コンストラクタ
-	public Weapon(String Name) {
+	//コンストラクタ　プレイヤーの場合
+	public Weapon(String Name, Player player, int type) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
-		enemy = EnemyManager.GetEnemy("1");
-		name			 = new String(Name);
-		this.position    = new Vector2(0,-20);		// 初期位置は画面外
-		this.attackNum   = 0;
-		this.weaponLevel = 0;
-		this.use         = true;
-		this.velocity	   = new Vector2(0,0);
 
-		FlyingFlag = false;
-		ShootFlag = true;
+		name				= new String(Name);
+		this.player			= player;
+		this.enemy			= null;
+		this.type			= type;
+
+		this.position		= new Vector2(0, 0);
+		this.attackNum		= 0;
+		this.weaponLevel	= 0;
+		this.use			= true;
+		rotate = 0;
+
+		create();
+	}
+
+	//コンストラクタ　敵の場合
+	public Weapon(String Name, Enemy enemy, int Type) {
+		sprite = new ArrayList<Sprite>();
+		sensor = new ArrayList<Fixture>();
+
+		name		= new String(Name);
+		this.player	= null;
+		this.enemy	= enemy;
+		this.type	= type;
+
+		this.position	= new Vector2(0, 0);
+		this.use		= true;
 		rotate = 0;
 
 		create();
@@ -68,10 +84,17 @@ public class Weapon extends ObJectBase{
 	// 武器生成
 	public void create() {
 		// テクスチャー読み込み
-		// TODO 手裏剣テクスチャの位置はとりあえずなので後で要調整
-		Texture texture = new Texture(Gdx.files.internal("data/enemy.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion region = new TextureRegion(texture, 0, 448, 64, 64);
+		// TODO 武器によって位置が違ってくるので調整
+		// 手裏剣テクスチャの位置はとりあえずなので後で要調整
+		Texture texture = null;
+		TextureRegion region = null;
+		switch (type) {
+		case SYURIKEN:
+			texture = new Texture(Gdx.files.internal("data/enemy.png"));
+			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			region = new TextureRegion(texture, 0, 448, 64, 64);
+			break;
+		}
 
 		// スプライト反映
 		sprite.add(new Sprite(region));
@@ -93,132 +116,83 @@ public class Weapon extends ObJectBase{
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		sensor.add(body.createFixture(fd));
-		sensor.get(0).setUserData(this);
-		body.setBullet(true);			// すり抜け防止
-		body.setFixedRotation(true);	// シミュレーションでの自動回転をしない
-		body.setTransform(0, 0, 0);		// 初期位置
-		body.setLinearVelocity(0, 0);
-		body.setGravityScale(0);
-		sensor.get(0).setSensor(true);
+		sensor.add(body.createFixture(fd));	// センサーに追加
+		sensor.get(0).setUserData(this);	// 当たり判定用にUserDataセット
+		sensor.get(0).setSensor(true);		// 他の当たり判定に影響しない
+		body.setBullet(true);				// すり抜け防止
+		body.setFixedRotation(true);		// シミュレーションでの自動回転をしない
+		body.setGravityScale(0);			// 重力の影響を受けない
 
-		deleteTime = 120;		// 120fで消える
+		// プレイヤーの武器の設定
+		if (player != null) {
 
-		body.setTransform(EnemyManager.GetEnemy("1").body.getPosition().x + 3.2f + 5 * enemy.GetDirection(),
-				EnemyManager.GetEnemy("1").body.getPosition().y, rotate);
-		body.setLinearVelocity(30 * EnemyManager.GetEnemy("1").GetDirection(), 0);
+		}
+
+		// エネミーの武器の設定
+		if (enemy != null) {
+			switch (type) {
+			case SYURIKEN:
+				timeCount = EXIST_TIME;		// 240で消える
+				body.setTransform(enemy.body.getPosition().x + 3.2f + 5 * enemy.GetDirection(),
+																			enemy.body.getPosition().y, 0);
+				body.setLinearVelocity(30 * enemy.GetDirection(), 0);
+				break;
+			}
+		}
+
 	}
 
 	// 更新
 	public void Update() {
-		player = PlayerManager.GetPlayer("プレイヤー");
-		enemy = EnemyManager.GetEnemy("1");
-
+		// 現在位置
 		position = body.getPosition();
-		//body.setTransform(position ,0);
 
-		//if(ShootFlag)
-		//body.setTransform(position, body.getAngle());
-		//body.setLinearVelocity(position.x , 0);
-
-		shuriken();
+		// 武器の種類によって分岐
+		switch (type) {
+		case SYURIKEN :
+			shuriken();
+			break;
+		}
 	}
 
 	// 手裏剣の動き
 	public void shuriken() {
-
 		// 手裏剣表示時間
-		if (ShootFlag) {
-			deleteTime -= 1;
-			rotate++;
-		}
-
-		//if (Gdx.input.isKeyPressed(Keys.F)) {
-		/*
-		if (!FlyingFlag) {
-			FlyingFlag = true;
-			ShootFlag = true;
-			// 押されたら手裏剣の座標を敵の位置へ移動
-			body.setTransform(EnemyManager.GetEnemy("1").body.getPosition().x + 3.2f + 5 * enemy.GetDirection(),
-					EnemyManager.GetEnemy("1").body.getPosition().y, rotate);
-			body.setLinearVelocity(30 * EnemyManager.GetEnemy("1").GetDirection(), 0);
-		}
-		*/
+		timeCount -= 1;
+		// 回転
+		rotate++;
 
 		body.setTransform(position, rotate);
 
-		/*
-		// debug
-		if(FlyingFlag) {
-			//position.x += 1.0f;
-			// 向きで飛ぶ方向決定
-			if(enemy.GetDirection() == 1) {
-				// 加速度加算
-				velocity.x += 1.0f;
-			}
-			else {
-				// 加速度減算
-				velocity.x -= 1.0f;
-			}
-			body.setLinearVelocity(10, 0);
-
-			// 敵とプレイヤーの高低チェック
-			if(enemy.position.y > player.position.y) {
-				// 敵の方が上にいる場合
-				velocity.y += 0.1f;
-			}
-			else if(enemy.position.y < player.position.y) {
-				// プレイヤーのほうが上にいる場合
-				velocity.y -= 0.1f;
-			}
-			FlyingFlag = false;
-		}*/
-
-		if(deleteTime < 0) {
-			// 120fたったら手裏剣を画面外へ
-			WeaponManager.DeleteWeapon("敵手裏剣");
-			//FlyingFlag = false;
-			ShootFlag = false;
-			deleteTime = 120;
+		// 消滅
+		if(timeCount < 0) {
+			WeaponManager.DeleteEnemyWeapon("手裏剣");
+			timeCount = EXIST_TIME;
 		}
-		System.out.println(deleteTime);
 	}
 
-	//武器座標ゲット
-	public Vector2 GetWeaponPosition() {
-		return position;
-	}
-
-	//武器威力ゲット
-	public float GetAttackNum() {
-		return attackNum;
-	}
-
-
-	//武器レベルゲット
-	public int GetWeaponLv() {
-		return GetWeaponLv();
-	}
-
-	// フラグゲット
-	public boolean GetUseFlag() {
-		return use;
-	}
-
-	// 武器モーション
+	/**************************************************
+	* WeaponMove()
+	* 武器モーション
+	**************************************************/
 	public void WeaponMove() {
-
 		//------------------
-		// 武器動作
+		// TODO 武器動作
 		//------------------
 	}
 
-	// 武器のレベルアップ(仮)
+	/**************************************************
+	* WeaponLvUp
+	* 武器のレベルアップ(仮)
+	**************************************************/
 	public int WeaponLvUp(int chakra) {
-
 		return this.weaponLevel;
 	}
 
+	/**************************************************
+	* collisionDispatch
+	* 当たり判定
+	**************************************************/
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
@@ -245,13 +219,14 @@ public class Weapon extends ObJectBase{
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
 
-	//************************************************************
-	// Get
-	// ゲッターまとめ
-	//************************************************************
+	/**************************************************
+	* Get
+	* ゲッターまとめ
+	**************************************************/
 	public Weapon GetWeapon() { return this; }
 	public String GetName(){ return name; }
-
-
-
+	public Vector2 GetWeaponPosition() { return position; } 	//武器座標ゲット
+	public float GetAttackNum() { return attackNum; }			//武器威力ゲット
+	public int GetWeaponLv() { return GetWeaponLv(); }			//武器レベルゲット
+	public boolean GetUseFlag() { return use; }					// フラグゲット
 }

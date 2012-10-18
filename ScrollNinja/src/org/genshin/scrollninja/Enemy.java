@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -69,7 +68,7 @@ public class Enemy extends CharacterBase {
 	private Player 			player;			// プレイヤー
 	private Weapon			syuriken;		// 手裏剣での攻撃
 	private Weapon			blade;			// 刀での攻撃
-	private int				attackInterval;	// 攻撃間隔
+	private int				attackInterval;	// 攻撃間隔		TODO 未実装
 
 	private Vector2			wanderingPosition;	// うろうろ場所用に出現位置を保存
 
@@ -99,10 +98,10 @@ public class Enemy extends CharacterBase {
 		// ランダムでモードを設定してみる
 		rand = new Random();
 		int i = rand.nextInt(10);
-		//if (i == 0)
+		if (i == 0)
 			enemyMode = ACTIVE;
-		//else
-			//enemyMode = NON_ACTIVE;
+		else
+			enemyMode = NON_ACTIVE;
 
 		Create();
 	}
@@ -112,6 +111,7 @@ public class Enemy extends CharacterBase {
 	 * 更新処理まとめ
 	 **************************************************/
 	public void Update() {
+		// 現在位置
 		position = body.getPosition();
 
 		// 敵の行動
@@ -124,17 +124,6 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* Draw
-	* 描画処理まとめ
-	**************************************************/
-	// TODO ObjectBaseに統合？
-	/*
-	public void Draw() {
-		sprite.get(0).draw(GameMain.spriteBatch);
-	}
-	 */
-
-	/**************************************************
 	* Create
 	* body、sensor、sprite、アニメーション作成
 	**************************************************/
@@ -145,9 +134,6 @@ public class Enemy extends CharacterBase {
 		BodyDef bd	= new BodyDef();
 		bd.type	= BodyType.DynamicBody;			// 動く物体
 		body = GameMain.world.createBody(bd);
-		body.setTransform(position, 0);			// 最初の位置
-		body.setBullet(true);					// すり抜けない
-		body.setFixedRotation(true);			// 回転しない
 
 		// fixture生成
 		PolygonShape poly		= new PolygonShape();
@@ -160,8 +146,11 @@ public class Enemy extends CharacterBase {
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		sensor.add(body.createFixture(fd));
-		sensor.get(0).setUserData(this);
+		sensor.add(body.createFixture(fd));		// センサーに追加
+		sensor.get(0).setUserData(this);		// 当たり判定要にUserDataセット
+		body.setTransform(position, 0);			// 最初の位置
+		body.setBullet(true);					// すり抜けない
+		body.setFixedRotation(true);			// 回転しない
 
 		poly.dispose();
 
@@ -205,12 +194,16 @@ public class Enemy extends CharacterBase {
 		switch(enemyMode) {
 		case NON_ACTIVE :
 			walk();
-			//jump();
+			/*
+			int i = rand.nextInt(10);
+			System.out.println(i);
+			if (i == 1)
+				jump();
+			*/
 			break;
 		case ACTIVE :
 			walk();
 			chase();
-			//jump();
 			if (attackFlag)
 				attack();
 			break;
@@ -295,9 +288,9 @@ public class Enemy extends CharacterBase {
 	* 手裏剣での攻撃と刀での攻撃
 	**************************************************/
 	public void attack() {
-		// TODO WeaponManager要調整
-		if ( WeaponManager.weaponList.size() == 0 && attackInterval == 0)
-				WeaponManager.CreateWeapon("敵手裏剣");
+		// TODO WeaponManager要調整　刀での攻撃も後で追加
+		if ( WeaponManager.enemyWeaponList.size() == 0 && attackInterval == 0)
+				WeaponManager.CreateWeapon("手裏剣", this, 0);		// 0は手裏剣
 	}
 
 	/**************************************************
@@ -325,22 +318,23 @@ public class Enemy extends CharacterBase {
 	/**************************************************
 	 * 当たり判定取得
 	**************************************************/
+	// TODO ジャンプの接地判定と、ダメージくらったらノンアクティブをアクティブに変更
+
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}
+	public void collisionNotify(Background obj, Contact contact){
+		jump = false;
+		body.setLinearVelocity(body.getLinearVelocity().x, GRAVITY);
+	}
 
 	@Override
 	public void collisionNotify(Player obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){
-		jump = false;
-		body.setLinearVelocity(body.getLinearVelocity().x, GRAVITY);
-		System.out.println("in");
-	}
+	public void collisionNotify(Enemy obj, Contact contact){}
 
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){}
