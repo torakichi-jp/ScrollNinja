@@ -320,29 +320,29 @@ public class Enemy extends CharacterBase {
 	//************************************************************
 	public void AutoEnemy() {
 	}
-	
+
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
-	
+
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}	
-	
+	public void collisionNotify(Background obj, Contact contact){}
+
 	@Override
 	public void collisionNotify(Player obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Item obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(StageObject obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
 
