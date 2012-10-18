@@ -48,7 +48,6 @@ public abstract class ObJectBase {
 	 */
 	public void Draw()
 	{
-		System.out.println(body);
 		Vector2 pos = body.getPosition();
 		float rot = (float) Math.toDegrees(body.getAngle());
 

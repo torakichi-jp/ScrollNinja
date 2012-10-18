@@ -169,11 +169,6 @@ public class Weapon extends ObJectBase{
 		}
 	}
 
-	// 描画
-	public void Draw(SpriteBatch batch) {
-		sprite.get(0).draw(batch);
-	}
-
 	//武器座標ゲット
 	public Vector2 GetWeaponPosition() {
 		return position;
