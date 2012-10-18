@@ -70,10 +70,13 @@ public class ItemManager {
 		return 0;
 	}
 	
-	//************************************************************
-	// DeleteItem
-	// アイテム削除と同時にソートして管理番号変更
-	//************************************************************
+	/**
+	 * 
+	 * @param Type		アイテムの種類
+	 * @param Num		管理番号
+	 * 
+	 * 削除とソート
+	 */
 	public static void DeleteItem(int Type, int Num) {
 		for(int i = 0; i < itemList.size(); i ++ ) {
 			
@@ -81,6 +84,32 @@ public class ItemManager {
 			if( itemList.get(i).equals(Type) ) {
 				for( int j = 0; j < onigiriList.size(); j ++ ) {
 					if( onigiriList.get(j).GetNum() == Num ) {
+						onigiriList.get(j).Release();
+						onigiriList.remove(j);					// 削除！
+					}
+				}
+				
+				// 削除に合わせて管理番号変更。とりあえず全部
+				for( int j = 0; j < onigiriList.size(); j ++ ) {
+					onigiriList.get(j).SetNum(j + 1);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param item		削除するアイテムのポインタ
+	 * 
+	 * 削除とソート
+	 */
+	public static void DeleteItem(Item item) {
+		for(int i = 0; i < itemList.size(); i ++ ) {
+			
+			// 発見
+			if( itemList.get(i).equals(item.GetType()) ) {
+				for( int j = 0; j < onigiriList.size(); j ++ ) {
+					if( onigiriList.get(j).GetNum() == item.GetNum() ) {
 						onigiriList.get(j).Release();
 						onigiriList.remove(j);					// 削除！
 					}

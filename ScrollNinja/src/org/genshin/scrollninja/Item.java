@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // *メモ*
 // アイテム番号はマネージャで自動に割り振る
+// 当たり判定が二重になっているとき（地面とプレイヤー同時HITとか）にうまく削除が出来ないので削除フラグ追加
 
 public class Item extends ObJectBase {
 	
@@ -31,14 +32,17 @@ public class Item extends ObJectBase {
 	public final static int		ONIGIRI		= 0;
 	public final static int		OKANE		= 1;
 	
-	private final static float JUMP_POWER	=  30.0f;	// ジャンプ加速度
+	private final static float JUMP_POWER	=  0.3f;	// ジャンプ加速度
 	
 	// 変数宣言
 	private int 		number;				// アイテム番号
 	private int 		type;				// アイテムの種類
+	private float		fall;				// 落下量
 	private boolean		appear;				// 出現フラグ
 	private Vector2		position;			// 座標
 	private Vector2 	velocity;			// 移動用速度
+	private boolean		deleteFlag;			// 削除フラグ
+	private boolean		groundJudge;
 	
 	// コンストラクタ
 	public Item(int Type, int num, Vector2 pos) {
@@ -49,6 +53,8 @@ public class Item extends ObJectBase {
 		position	= new Vector2(pos);
 		velocity	= new Vector2(0.0f, 0.0f);
 		appear		= true;
+		deleteFlag	= false;
+		fall		= 0.0f;
 		
 		Create();
 		sensor.get(0).setUserData(this);
@@ -78,16 +84,19 @@ public class Item extends ObJectBase {
 
 			// ボディ設定
 			FixtureDef fd	= new FixtureDef();
-			fd.density		= 50;
-			fd.friction		= 100.0f;
+			fd.density		= 0;
+			fd.friction		= 0;//100.0f;
 			fd.restitution	= 0;
 			fd.shape		= poly;
 
-			body.createFixture(fd);
 			sensor.add(body.createFixture(poly, 0));
+			sensor.get(0).setSensor(true);		// 物理シミュレーションの影響を受けない
+			poly.dispose();
+			body.setGravityScale(0.0f);			// 重力無視
 			body.setBullet(true);			// すり抜け防止
 			body.setFixedRotation(true);	// シミュレーションでの自動回転をしない
 			body.setTransform(position, 0);		// 初期位置
+			body.setLinearVelocity(0.0f, 0.0f);
 			break;
 		}
 	}
@@ -97,6 +106,11 @@ public class Item extends ObJectBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
+		
+		if(deleteFlag) {
+			ItemManager.DeleteItem(this);
+			return;
+		}
 
 		position = body.getPosition();
 		body.setTransform(position ,0);
@@ -105,20 +119,33 @@ public class Item extends ObJectBase {
 		sprite.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
 		
 		Appear();
+		
+		groundJudge = false;
 	}
 	
-	//************************************************************
-	// Appear
-	// アイテム出現時の動き
-	//************************************************************
+	/**
+	 * 落ちてくるアイテムに当たるとプレイヤーが
+	 * 影響受けちゃうのでTransformにしました
+	 */
 	public void Appear() {
 		if(appear) {
-			velocity.y = JUMP_POWER;
+//			velocity.y = JUMP_POWER;
+			fall = JUMP_POWER;
 			appear = false;
 		}
 		else {
-			body.setLinearVelocity(velocity.x, velocity.y);
-			velocity.y -= 1.0f;
+/*			if( !groundJudge ) {
+				body.setLinearVelocity(velocity.x, velocity.y);
+				velocity.y -= 0.1f;	
+			}*/
+			fall -= 0.01;
+			if( fall < -0.3f ) {
+				fall = -0.3f;
+			}
+			
+			if( !groundJudge ) {
+				body.setTransform(body.getPosition().x, body.getPosition().y + fall, 0);
+			}
 		}
 	}
 	
@@ -135,10 +162,14 @@ public class Item extends ObJectBase {
 	}
 	
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}	
+	public void collisionNotify(Background obj, Contact contact){
+		groundJudge = true;
+	}
 	
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void collisionNotify(Player obj, Contact contact){
+		deleteFlag = true;
+	}
 	
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}

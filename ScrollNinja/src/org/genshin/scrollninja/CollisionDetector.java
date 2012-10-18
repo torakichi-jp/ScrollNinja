@@ -5,9 +5,14 @@ import java.util.List;
 import com.badlogic.gdx.physics.box2d.Contact;
 
 public class CollisionDetector {
-	
+	/**
+	 * コンストラクタ
+	 */
 	private CollisionDetector() {}
 	
+	/**
+	 * 当たり判定検出
+	 */
 	public static void HitTest(){
 		
 		List<Contact> contactList = GameMain.world.getContactList();
