@@ -141,7 +141,8 @@ public class GameMain implements Screen{
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 			
-			if(x < 600 && y > 150) {
+			if(x < 600) {
+				// ポーズボタンがあったらそこに座標を合わせる
 				PauseFlag = false;
 				
 			}
