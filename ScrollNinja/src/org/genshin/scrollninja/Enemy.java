@@ -105,7 +105,6 @@ public class Enemy extends CharacterBase {
 		fall = 0.0f;
 
 		Create();
-		sprite.get(0).setScale(-0.1f, 0.1f);
 	}
 
 	//************************************************************
@@ -179,6 +178,7 @@ public class Enemy extends CharacterBase {
 			// スプライトに反映
 			sprite.add(new Sprite(region));
 			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
+			sprite.get(0).setScale(0.1f, 0.1f);
 
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);

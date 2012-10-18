@@ -81,9 +81,6 @@ public class StageObject extends ObJectBase {
 			// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
 			loader.attachFixture(body, "gravestone", fd, sprite.get(0).getWidth() * 0.1f);
 			body.setTransform(200, 50, 0);
-			System.out.println(body.getPosition());
-			System.out.println(sprite.get(0).getOriginX());
-			System.out.println(sprite.get(0).getOriginY());
 
 			break;
 

@@ -44,7 +44,7 @@ public class Player extends CharacterBase {
 	private static final float DASH_MAX_VEL	= 30.0f;	// ダッシュの最高速度
 	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
-	private static final float JUMP_POWER	=  100.0f;		// ジャンプ加速度
+	private static final float JUMP_POWER	=  50.0f;		// ジャンプ加速度
 
 	private static final int BODY	= 0;
 	private static final int FOOT	= 1;
@@ -209,7 +209,7 @@ public class Player extends CharacterBase {
 		Jump();		// ジャンプ処理
 		Attack();
 		animation();		// アニメーション処理
-		
+
 		if(direction == RIGHT)
 			flip(true, false);
 		else
@@ -235,7 +235,7 @@ public class Player extends CharacterBase {
 	// ジャンプ処理。上押すとジャンプ！
 	//************************************************************
 	private void Jump() {
-		
+
 		// 地面に接触しているならジャンプ可能
 		if( /*GetGroundJudge(world)*/ !jump ) {
 			// 上押したらジャンプ！
@@ -381,7 +381,7 @@ public class Player extends CharacterBase {
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
-	
+
 	@Override
 	public void collisionNotify(Background obj, Contact contact)
 	{
@@ -400,22 +400,22 @@ public class Player extends CharacterBase {
 		}
 		*/
 	}
-	
+
 	@Override
 	public void collisionNotify(Player obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Item obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(StageObject obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
 }
