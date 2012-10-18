@@ -190,6 +190,7 @@ public class Player extends CharacterBase {
 		count		 = 0;
 //		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
+		sensor.get(0).setUserData(this);
 
 		EffectManager.CreateEffect(Effect.FIRE_2, this);
 		nowAttack = Effect.FIRE_2;

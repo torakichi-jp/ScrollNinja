@@ -48,6 +48,7 @@ public class Background extends ObJectBase {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 		playerPos = new Vector2(0.0f, 0.0f);
+		
 
 		bgNum = num;
 		switch(num){
