@@ -96,6 +96,9 @@ public class Stage implements StageBase {
 			ItemManager.DeleteItem(Item.ONIGIRI, 1);
 		}
 
+		if( WeaponManager.weaponList.size() != 0)
+			WeaponManager.weaponList.get(0).Update();
+
 		updateCamera();
 		GameMain.playerInfo.update();
 		CollisionDetector.HitTest();
@@ -118,6 +121,8 @@ public class Stage implements StageBase {
 			StageObjectManager.Draw();
 			PlayerManager.GetPlayer("プレイヤー").Draw();
 			EnemyManager.GetEnemy("1").Draw();
+			if( WeaponManager.weaponList.size() != 0)
+				WeaponManager.weaponList.get(0).Draw();
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
 //			WeaponManager.GetWeapon("手裏剣").Draw();
 			EffectManager.GetEffect(PlayerManager.GetPlayer("プレイヤー").GetNowAttack()).Draw();
@@ -375,7 +380,7 @@ public class Stage implements StageBase {
 	public void Init() {
 		PlayerManager.CreatePlayer("プレイヤー");
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
-		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
+		EnemyManager.CreateEnemy("1", 0, 10.0f, 20.0f);
 	}
 
 	@Override
