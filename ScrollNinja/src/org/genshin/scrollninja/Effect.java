@@ -80,6 +80,7 @@ public class Effect extends ObJectBase {
 	public int GetType() { return effectType; }
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
+	public boolean GetUseFlag(){ return useFlag; }
 
 	//************************************************************
 	// Set

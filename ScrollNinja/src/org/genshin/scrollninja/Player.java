@@ -44,7 +44,7 @@ public class Player extends CharacterBase {
 	private static final float DASH_MAX_VEL	= 30.0f;	// ダッシュの最高速度
 	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
-	private static final float JUMP_POWER	=  50.0f;		// ジャンプ加速度
+	private static final float JUMP_POWER	=  30.0f;		// ジャンプ加速度
 
 	private static final int BODY	= 0;
 	private static final int FOOT	= 1;
@@ -68,18 +68,19 @@ public class Player extends CharacterBase {
 	private float			stateTime;
 	private Weapon			weapon;					// 武器のポインタ
 	private boolean			jump;					// ジャンプフラグ
+	private boolean			groundJudge;			// 地面と当たってますよフラグ
 
-	private Animation		standAnimation;		// 立ちアニメーション
-	private Animation		walkAnimation;		// 歩きアニメーション
-	private Animation		dashAnimation;		// ダッシュアニメーション
-	private Animation		jumpAnimation;		// ジャンプアニメーション
+	private Animation		standAnimation;			// 立ちアニメーション
+	private Animation		walkAnimation;			// 歩きアニメーション
+	private Animation		dashAnimation;			// ダッシュアニメーション
+	private Animation		jumpAnimation;			// ジャンプアニメーション
 	private Animation		attackAnimation;		// 攻撃アニメーション
-	private Animation		footWalkAnimation;	// 下半身・歩きアニメーション
+	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
 	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
 
-	private Sprite			footSprite;			// 下半身用のスプライト
+	private Sprite			footSprite;				// 下半身用のスプライト
 
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
@@ -196,39 +197,32 @@ public class Player extends CharacterBase {
 		nowAttack = Effect.FIRE_2;
 	}
 
-	//************************************************************
-	// Update
-	// 更新処理はここにまとめる
-	//************************************************************
+
+	/**
+	 * 更新処理
+	 */
 	public void Update() {
 		sprite.get(BODY).setRegion(nowFrame);
 		sprite.get(FOOT).setRegion(nowFootFrame);
 
-		Stand();		// 立ち処理
-		Move();		// 移動処理
-		Jump();		// ジャンプ処理
-		Attack();
-		animation();		// アニメーション処理
+		Stand();			// 立ち処理
+		Move();				// 移動処理
+		Jump();				// ジャンプ処理
+		Attack();			// 攻撃処理
+		animation();		// アニメーション処理（これ最後で）
 
-		if(direction == RIGHT)
-			flip(true, false);
-		else
-			flip(false, false);
-
-		{
-			Vector2 velocity = body.getLinearVelocity();
-//			System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
-		}
+		// 画像反転処理
+		if(direction == RIGHT) flip(true, false); else flip(false, false);
+		
+		Vector2 velocity = body.getLinearVelocity();
+//		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 	}
 
-	//************************************************************
-	// Stand
-	// 立ち処理。
-	//************************************************************
+	/**
+	 * 
+	 */
 	private void Stand() {
-		if( GetGroundJudge() ) {
-			currentState = STAND;
-		}
+			
 	}
 	//************************************************************
 	// Jump
@@ -262,8 +256,7 @@ public class Player extends CharacterBase {
 	private void Move() {
 		// 速度制限
 		Vector2 vel = body.getLinearVelocity();
-		if( Math.abs(vel.x) > RUN_MAX_VEL )
-		{
+		if( Math.abs(vel.x) > RUN_MAX_VEL ) {
 			body.setLinearVelocity(Math.signum(vel.x)*RUN_MAX_VEL, vel.y);
 		}
 
@@ -271,22 +264,15 @@ public class Player extends CharacterBase {
 		if (Gdx.input.isKeyPressed(Keys.D)) {
 			direction = RIGHT;				// プレイヤーの向きを変更。
 			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
-			int count = sprite.size();
-//			flip(true, false);
-
-			if( GetGroundJudge() ) {	// もし地面なら歩くモーションにするので現在の状態を歩きに。
-				currentState = WALK;
-			}
+			
+			currentState = WALK;
 		}
 		// 左が押された
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 			direction = LEFT;
 			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
-//			flip(false, false);
 
-			if( GetGroundJudge() ) {
-				currentState = WALK;
-			}
+			currentState = WALK;
 		}
 		// 移動キーが押されていない時は少しずつ減速
 		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) {
@@ -302,6 +288,10 @@ public class Player extends CharacterBase {
 	// 攻撃処理。左クリックで攻撃
 	//************************************************************
 	private void Attack() {
+		if(EffectManager.GetEffect(Effect.FIRE_2).GetUseFlag() ) {
+			currentState = ATTACK;
+		}
+		
 		if(Gdx.input.isKeyPressed(Keys.Z)) {
 			currentState = ATTACK;
 
@@ -338,7 +328,7 @@ public class Player extends CharacterBase {
 		case ATTACK:
 			nowFrame = attackAnimation.getKeyFrame(stateTime, true);
 			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
-			count ++;
+			stateTime ++;
 			break;
 		}
 	}
@@ -347,47 +337,21 @@ public class Player extends CharacterBase {
 	private void changeWeapon() {
 	}
 
-	//************************************************************
-	// GetGroundJudge
-	// 戻り値： true:地面接地		false:空中
-	// 接触判定。長いのでここで関数化
-	//************************************************************
-	private boolean GetGroundJudge() {
-		// この処理はStageあたりに任せる予定。
-		/*
-		List<Contact> contactList = GameMain.world.getContactList();
-		Fixture sensor = super.sensor.get(0);
-
-		for(int i = 0; i < contactList.size(); i++) {
-			Contact contact = contactList.get(i);
-
-			// 地面に当たったよ
-			for( int j = 0; j < Background.GetBody().getFixtureList().size(); j ++) {
-				if(contact.isTouching() &&
-						(( contact.getFixtureA() == sensor && contact.getFixtureB() == Background.GetSensor(j) ) ||
-						( contact.getFixtureA() == Background.GetSensor(j) && contact.getFixtureB() == sensor ))) {
-					jump = false;
-					fall = 0;
-					//System.out.println("地面！");
-					return true;
-				}
-			}
-		}
-		*/
-		return false;
-	}
-
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 
-	@Override
-	public void collisionNotify(Background obj, Contact contact)
-	{
-//		jump = false;
+	/**
+	 * @Override
+	 * 地面との当たり判定
+	 */
+	public void collisionNotify(Background obj, Contact contact) {
+		jump = false;
+		currentState = STAND;
+		
 		// まだ作ってる途中なんだよ、こっちくんな
-		return;
+//		return;
 		/*
 		// TODO プレイヤーと地形の衝突処理
 		WorldManifold manifold = contact.getWorldManifold();

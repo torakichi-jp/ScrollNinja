@@ -75,7 +75,7 @@ public abstract class ObJectBase {
 
 	/**
 	 * 衝突を通知する。
-	 * @param obj			衝突したオブジェクト
+	 * @param obj		衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
 	protected void collisionNotify(Background obj, Contact contact){}

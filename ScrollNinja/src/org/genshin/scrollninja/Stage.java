@@ -71,14 +71,7 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
-
-//		player.GetSprite("BODY").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-//		player.GetSprite("BODY").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
-//		player.GetSprite("FOOT").setPosition(player.GetPosition().x - 32, player.GetPosition().y - 32);
-//		player.GetSprite("FOOT").setRotation((float) (player.GetBody().getAngle()*180/Math.PI));
 		EnemyManager.Update();
-
-		// 背景スクロール
 		BackgroundManager.GetBackground(stageNum).update();
 		PlayerManager.GetPlayer("プレイヤー").Update();
 		ItemManager.Update();

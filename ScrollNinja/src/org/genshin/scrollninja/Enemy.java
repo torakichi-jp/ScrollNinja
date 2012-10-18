@@ -278,7 +278,7 @@ public class Enemy extends CharacterBase {
 	// プレイヤーを見つけたら追いかける
 	//**********************************************************
 	public void ChaseEnemy() {
-
+		
 		player = PlayerManager.GetPlayer("プレイヤー");
 
 		// 追いかける

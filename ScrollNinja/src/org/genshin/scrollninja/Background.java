@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
@@ -167,6 +168,31 @@ public class Background extends ObJectBase {
 			sprite.get(FAR).setPosition(sprite.get(FAR).getX(),
 									playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
 	}
+	
+	@Override
+	public void collisionDispatch(ObJectBase obj, Contact contact) {
+		obj.collisionNotify(this, contact);
+	}
+	
+	@Override
+	public void collisionNotify(Player obj, Contact contact) {
+		
+	}
+	
+	@Override
+	public void collisionNotify(Enemy obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Effect obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Item obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(StageObject obj, Contact contact){}
+	
+	@Override
+	public void collisionNotify(Weapon obj, Contact contact){}
 
 	//************************************************************
 	// Get

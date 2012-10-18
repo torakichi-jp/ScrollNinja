@@ -138,7 +138,8 @@ public class Item extends ObJectBase {
 	public void collisionNotify(Background obj, Contact contact){}	
 	
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void collisionNotify(Player obj, Contact contact){
+	}
 	
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
