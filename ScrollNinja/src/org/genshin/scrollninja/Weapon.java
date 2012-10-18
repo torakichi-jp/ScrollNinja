@@ -32,7 +32,6 @@ public class Weapon extends ObJectBase{
 	private float 	attackNum;		// 武器威力
 	private int 		weaponLevel;	// 武器レベル
 	private Boolean 	use;			// 使用フラグ
-	private Body		body;			// ボディ
 	private boolean	ShootFlag;		// シュートフラグ(手裏剣)
 	private int 		deleteTime;	// 手裏剣消去時間
 	private Vector2 	velocity;		// 移動用速度
@@ -98,7 +97,7 @@ public class Weapon extends ObJectBase{
 		body.setBullet(true);			// すり抜け防止
 		body.setFixedRotation(true);	// シミュレーションでの自動回転をしない
 		body.setTransform(position, 0);		// 初期位置
-		body.setLinearVelocity(0, 0);
+		body.setLinearVelocity(1, 0);
 
 		deleteTime = 120;		// 120fで消える
 
@@ -111,7 +110,7 @@ public class Weapon extends ObJectBase{
 		enemy = EnemyManager.GetEnemy("1");
 
 		position = body.getPosition();
-		body.setTransform(position ,0);
+		//body.setTransform(position ,0);
 
 		//if(ShootFlag)
 		//body.setTransform(position, body.getAngle());
@@ -132,7 +131,7 @@ public class Weapon extends ObJectBase{
 			FlyingFlag = true;
 			ShootFlag = true;
 			// 押されたら手裏剣の座標を敵の位置へ移動
-			body.setTransform(enemy.position, rotate);
+			body.setTransform(enemy.position.x + 5, enemy.position.y, rotate);
 		}
 
 		// debug
