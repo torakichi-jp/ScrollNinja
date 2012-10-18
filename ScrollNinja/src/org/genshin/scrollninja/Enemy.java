@@ -164,6 +164,7 @@ public class Enemy extends CharacterBase {
 
 		sensor.add(body.createFixture(fd));
 		body.setTransform(0, 30, 0);	// 初期位置
+		sensor.get(0).setUserData(this);
 
 		poly.dispose();
 
