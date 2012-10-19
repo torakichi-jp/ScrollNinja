@@ -39,7 +39,7 @@ public class ItemManager {
 	 * 同じ種類が既にある場合は最後に追加
 	 * まだその種類がリストにない場合は新規で追加
 	 */
-	public static int CreateItem(int Type, float x, float y) {
+	public static void CreateItem(int Type, float x, float y) {
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < itemList.size(); i ++ ) {
 			// 同じ種類発見
@@ -53,7 +53,7 @@ public class ItemManager {
 				break;
 				}
 				
-				return 0;
+				return;
 			}	
 		}
 		// なかった
@@ -66,7 +66,7 @@ public class ItemManager {
 			break;
 		}
 		
-		return 0;
+		return;
 	}
 	
 	/**
