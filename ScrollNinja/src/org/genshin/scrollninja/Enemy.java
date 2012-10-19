@@ -128,7 +128,8 @@ public class Enemy extends CharacterBase {
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少
 		position = body.getPosition();					// 現在位置の更新
 
-		Action();							// 行動
+		Action();			// 行動
+		Flashing();			// 点滅処理
 
 		// 手裏剣更新
 		if (syuriken != null) {
@@ -390,6 +391,25 @@ public class Enemy extends CharacterBase {
 	// Artificial Intelligence
 	**************************************************/
 	public void AutoEnemy() {
+	}
+	
+	/**************************************************
+	 * 点滅処理
+	 **************************************************/
+	public void Flashing() {
+		// 高速点滅
+		if( invincibleTime != 0 ) {
+			if( invincibleTime % 10 > 5 ) {
+				for(int i = 0; i < sprite.size(); i ++) {
+					sprite.get(i).setColor( 0, 0, 0, 0);
+				}
+			}
+			else {
+				for(int i = 0; i < sprite.size(); i ++) {
+					sprite.get(i).setColor(1, 1, 1, 1);
+				}
+			}
+		}
 	}
 
 	/**************************************************

@@ -30,6 +30,7 @@ import com.badlogic.gdx.physics.box2d.WorldManifold;
 // 10/19 	・エフェクトとのアニメーションを一致させました
 //			・上半身を下半身の前に描画するようにしました
 //			・攻撃後すぐ戻ると不自然だったので上半身がそのまましばらく残るようにしました
+//			・落下速度の調整
 
 // *メモ*
 // 攻撃はダッシュしながら攻撃可能（足は止まらない）
@@ -51,11 +52,12 @@ public class Player extends CharacterBase {
 	private static final float DASH_MAX_VEL		= 30.0f;	// ダッシュの最高速度
 	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
-	private static final float JUMP_POWER		=  30.0f;	// ジャンプ加速度
+	private static final float JUMP_POWER		= 50.0f;	// ジャンプ加速度
+	private static final float FALL_SPEED		= -1.0f;	// 落下加速度
 
 	private static final int FOOT	= 0;
 	private static final int BODY	= 1;
-
+	
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
 	private static final int STAND			=  0;
@@ -214,11 +216,13 @@ public class Player extends CharacterBase {
 		int prevState = currentState;
 		System.out.println(hp);
 		
-		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の現象
+		if( !groundJudge ) body.applyLinearImpulse(0.0f, FALL_SPEED, position.x, position.y);	// 落下処理
+		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少
 		if( count > 0 ) count --;						// アニメーションカウントの減少
 
-		Stand();			// 立ち処理
+		Flashing();			// 点滅処理
 		Move();				// 移動処理
+		Stand();			// 立ち処理
 		Jump();				// ジャンプ処理
 		Attack();			// 攻撃処理
 		
@@ -230,11 +234,10 @@ public class Player extends CharacterBase {
 		// 画像反転処理
 		if(direction == RIGHT) flip(true, false); else flip(false, false);
 		
-		Vector2 velocity = body.getLinearVelocity();
 //		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 		
 		position = body.getPosition();
-		
+
 		groundJudge = false;
 	}
 
@@ -242,12 +245,15 @@ public class Player extends CharacterBase {
 	 * 
 	 */
 	private void Stand() {
-			
+		Vector2 velocity = body.getLinearVelocity();
+		if( velocity.x == 0 ) {
+			currentState = STAND;
+		}
 	}
-	//************************************************************
-	// Jump
-	// ジャンプ処理。上押すとジャンプ！
-	//************************************************************
+	/**
+	 * ジャンプ処理
+	 * Ｗでジャンプ
+	 */
 	private void Jump() {
 
 		// 地面に接触しているならジャンプ可能
@@ -268,11 +274,10 @@ public class Player extends CharacterBase {
 		}
 	}
 
-	//************************************************************
-	// Move
-	// 移動処理。左右押すと移動します
-	// 状態遷移は空中にいなければ歩きに！
-	//************************************************************
+	/**
+	 * 移動処理
+	 * 左右で移動
+	 */
 	private void Move() {
 		// 速度制限
 		Vector2 vel = body.getLinearVelocity();
@@ -300,10 +305,14 @@ public class Player extends CharacterBase {
 		}
 		// 移動キーが押されていない時は少しずつ減速
 		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) {
-//			velocity.x *= 0.9;
-//			if (velocity.x < 5)
-//				velocity.x = 0;
-//			body.setLinearVelocity(velocity.x, GRAVITY);
+			if( groundJudge ) {
+				Vector2 velocity = body.getLinearVelocity();
+				velocity.x *= 0.8;
+				if( velocity.x < 0.5 && velocity.x > -0.5 ) {
+					velocity.x = 0;
+				}
+				body.setLinearVelocity(velocity);
+			}
 		}
 	}
 
@@ -361,6 +370,25 @@ public class Player extends CharacterBase {
 	// 武器変更
 	private void changeWeapon() {
 	}
+	
+	/**
+	 * 点滅処理
+	 */
+	public void Flashing() {
+		// 高速点滅
+		if( invincibleTime != 0 ) {
+			if( invincibleTime % 10 > 5 ) {
+				for(int i = 0; i < sprite.size(); i ++) {
+					sprite.get(i).setColor( 0, 0, 0, 0);
+				}
+			}
+			else {
+				for(int i = 0; i < sprite.size(); i ++) {
+					sprite.get(i).setColor(1, 1, 1, 1);
+				}
+			}
+		}
+	}
 
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
@@ -375,7 +403,7 @@ public class Player extends CharacterBase {
 		jump = false;
 		
 		if( currentState != ATTACK ) {
-//			currentState = STAND;
+			//currentState = STAND;
 			currentState = WALK;
 		}
 		
