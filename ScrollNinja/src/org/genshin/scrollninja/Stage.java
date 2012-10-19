@@ -24,15 +24,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Stage implements StageBase {
-	private Player 						player;			// プレイヤー
-	private Box2DDebugRenderer			renderer;		//
-	private ArrayList<Item>				popItems;		//
-	private ArrayList<Enemy>			popEnemys;		//
+	
+	private Box2DDebugRenderer		renderer;		//
+	private ArrayList<Item>			popItems;		//
+	private ArrayList<Enemy>		popEnemys;		//
 	private ArrayList<Weapon>		popWeapons;
 
-	private Weapon					weapon;
 	private int						stageNum;
-	private Background				backGround;
 
 	// コンストラクタ
 	public Stage(){
@@ -81,18 +79,8 @@ public class Stage implements StageBase {
 			EffectManager.GetEffectForLoop(i).Update();
 		}
 
-		if( Gdx.input.isKeyPressed(Keys.I) ) {
-			if( ItemManager.onigiriList.size() == 0) {
-				ItemManager.CreateItem(Item.ONIGIRI, 0.0f, 0.0f);		// アイテム生成
-			}
-		}
-		if(Gdx.input.isKeyPressed(Keys.E)) {
-			ItemManager.DeleteItem(Item.ONIGIRI, 1);
-		}
-
-		if( WeaponManager.enemyWeaponList.size() != 0) {
-			for (int i = 0; i < WeaponManager.enemyWeaponList.size(); i++)
-				WeaponManager.enemyWeaponList.get(i).Update();
+		if( EnemyManager.normalEnemyList.size() == 0) {
+			EnemyManager.CreateEnemy(Enemy.NORMAL, 0.0f, 0.0f);
 		}
 
 		updateCamera();
@@ -116,10 +104,6 @@ public class Stage implements StageBase {
 			StageObjectManager.Draw();
 			PlayerManager.GetPlayer("プレイヤー").Draw();
 			EnemyManager.Draw();
-			if( WeaponManager.enemyWeaponList.size() != 0) {
-				for (int i = 0; i < WeaponManager.enemyWeaponList.size(); i++)
-					WeaponManager.enemyWeaponList.get(i).Draw();
-			}
 			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
 //			WeaponManager.GetWeapon("手裏剣").Draw();
 			EffectManager.GetEffect(PlayerManager.GetPlayer("プレイヤー").GetNowAttack()).Draw();
@@ -339,11 +323,11 @@ public class Stage implements StageBase {
 	// PopEnemy
 	// 敵の出現タイミングの設定
 	//************************************************************
-	public void PopEnemy(Player player) {
-		if( player.GetPosition().x > 200 ) {
+	public void PopEnemy() {
+/*		if( PlayerManager.GetPlayer("プレイヤー").GetPosition().x > 200 ) {
 			EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
 
-		}
+		}*/
 	}
 
 	// アイテムポップ

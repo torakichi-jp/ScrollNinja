@@ -63,8 +63,6 @@ public class Interface {
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
 		
-		
-
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
@@ -89,7 +87,7 @@ public class Interface {
 		chakra.setOrigin(chakra.getX() * 0.5f, chakra.getY() * 0.5f);
 		chakra.setScale(0.1f);
 		
-		// マップ
+		// マップ ワールドマップ or ミニマップ
 		TextureRegion maptmpRegion = new TextureRegion(maptexture);
 		map = new Sprite(maptmpRegion);
 		map.setOrigin(scrollRight.getX() , scrollRight.getY());
@@ -98,8 +96,6 @@ public class Interface {
 		TextureRegion pauseRegion = new TextureRegion(pausetexture);
 		quitPause = new Sprite(pauseRegion);
 		quitPause.setOrigin(scrollRight.getX(),scrollRight.getY());
-
-		
 
 		// 最初の設定；
 		percentHP = 1;
@@ -157,9 +153,9 @@ public class Interface {
 		// チャクラ増える　1フレームで0.01ずつ増加
 		if ( countChakra > percentChakra && countChakra < 0.99 ) {
 			countChakra += 0.01f;
-			chakra.scroll(0, -0.01f);			System.out.println(scroll.getX());
+			chakra.scroll(0, -0.01f);		
+			System.out.println(scroll.getX());
 			System.out.println(scroll.getY());
-			
 		}
 
 		// チャクラ減る　1フレームで0.01ずつ減少
@@ -175,7 +171,6 @@ public class Interface {
 	}
 	
 	public void Map() {
-		
 		if(Gdx.input.isTouched()) {
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
@@ -198,12 +193,12 @@ public class Interface {
 			 * マップの絵ができたら座標など変更する
 			 * (512*512)
 			 * */
-			map.setPosition(scroll.getX(), scroll.getY() - 70);
+			map.setPosition(scroll.getX(), scroll.getY() - 65);
 			quitPause.setScale(0.1f);
 			quitPause.setPosition(scroll.getX() + 50 ,scroll.getY() + 5);
 		}
 		else {
-			map.setScale(0.01f);
+			map.setScale(0.009f);
 		}
 	}
 	

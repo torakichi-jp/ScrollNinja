@@ -37,7 +37,7 @@ public class Weapon extends ObJectBase{
 	private Vector2 	position;		// 武器座標
 	private float 		attackNum;		// 武器威力
 	private int 		weaponLevel;	// 武器レベル
-	private Boolean 	use;			// 使用フラグ
+	private boolean 	use;			// 使用フラグ
 	private int			timeCount;		// 手裏剣の経過時間
 	private float		rotate;			// 手裏剣回転要
 	private double		random;			// 手裏剣をランダムで複数出す用
@@ -188,7 +188,8 @@ public class Weapon extends ObJectBase{
 
 		// 消滅
 		if(timeCount < 0) {
-			WeaponManager.DeleteEnemyWeapon("手裏剣");
+			use = false;
+			//WeaponManager.DeleteEnemyWeapon("手裏剣");
 			timeCount = EXIST_TIME;
 		}
 	}
@@ -256,4 +257,10 @@ public class Weapon extends ObJectBase{
 	public float GetAttackNum() { return attackNum; }			//武器威力ゲット
 	public int GetWeaponLv() { return GetWeaponLv(); }			//武器レベルゲット
 	public boolean GetUseFlag() { return use; }					// フラグゲット
+
+	/**************************************************
+	* Set
+	* セッターまとめ
+	**************************************************/
+	public void SetUseFlag(boolean flag) { this.use = flag; };
 }

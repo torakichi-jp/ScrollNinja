@@ -44,6 +44,10 @@ public class Enemy extends CharacterBase {
 	private final int RIGHT			=  1;
 	private final int LEFT			= -1;
 
+	// 手裏剣所持数
+	private final int MAX_SYURIKEN	= 10;
+	private final int INTERVAL		= 60;
+
 	// 速度
 	private final float WALK_SPEED	=  15f;		// 通常の歩く速度
 	private final float JUMP_POWER	=  25f;		// ジャンプ加速度
@@ -67,8 +71,8 @@ public class Enemy extends CharacterBase {
 	private boolean			chase;			// 追いかけフラグ
 	private boolean			deleteFlag;		// 削除フラグ
 	private Player 			player;			// プレイヤー
-	private Weapon			syuriken;		// 手裏剣での攻撃
-	private Weapon			blade;			// 刀での攻撃
+	private ArrayList<Weapon>	syuriken;		// 手裏剣
+	private Weapon			blade;			// 刀
 	private int				attackInterval;	// 攻撃間隔		TODO 未実装
 
 	private Vector2			wanderingPosition;	// うろうろ場所用に出現位置を保存
@@ -91,6 +95,8 @@ public class Enemy extends CharacterBase {
 		velocity			= new Vector2(0, 0);
 		wanderingPosition	= new Vector2(x, y);
 
+		syuriken = null;
+
 		jump				= false;
 		attackFlag			= false;
 		chase				= false;
@@ -100,10 +106,10 @@ public class Enemy extends CharacterBase {
 		// ランダムでモードを設定してみる
 		rand = new Random();
 		int i = rand.nextInt(10);
-		if (i == 0)
+		//if (i == 0)
 			enemyMode = ACTIVE;
-		else
-			enemyMode = NON_ACTIVE;
+		//else
+			//enemyMode = NON_ACTIVE;
 
 		Create();
 	}
@@ -118,14 +124,22 @@ public class Enemy extends CharacterBase {
 			EnemyManager.Deleteenemy(this);
 			return;
 		}
-		
+
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の現象
 		position = body.getPosition();					// 現在位置の更新
-		
-		System.out.println("HP:" + hp);
-		System.out.println("無敵:" + invincibleTime);
-		
+
 		Action();							// 行動
+
+		if (syuriken != null) {
+			for (int i = 0; i < syuriken.size(); i++) {
+				if (syuriken.get(i).GetUseFlag())
+					syuriken.get(i).Update();
+				else {
+					syuriken.get(i).Release();
+					syuriken.remove(i);
+				}
+			}
+		}
 
 		// アニメーション更新
 		nowFrame = animation.getKeyFrame(stateTime, true);
@@ -214,8 +228,12 @@ public class Enemy extends CharacterBase {
 		case ACTIVE :
 			walk();
 			chase();
-			if (attackFlag)
-				attack();
+			if (attackFlag) {
+				if (attackInterval == 0)
+					attack();
+				else
+					attackInterval -= 1;
+			}
 			break;
 		case AUTO :
 			// 範囲内にプレイヤーがいるかを検知し
@@ -298,9 +316,28 @@ public class Enemy extends CharacterBase {
 	* 手裏剣での攻撃と刀での攻撃
 	**************************************************/
 	public void attack() {
+		// 配列が空の時
+		if (syuriken == null) {
+			syuriken = new ArrayList<Weapon>(MAX_SYURIKEN);
+			syuriken.add(new Weapon("手裏剣", this, 0));		// 0は手裏剣
+			syuriken.get(0).SetUseFlag(true);
+		}
+		// 空じゃないかつ最大数以下より
+		else if (syuriken != null && syuriken.size() < MAX_SYURIKEN) {
+			syuriken.add(new Weapon("手裏剣", this, 0));		// 0は手裏剣
+			syuriken.get(syuriken.size() - 1).SetUseFlag(true);
+		}
+
+		// 最大数になったら空に戻す
+		if (syuriken.size() == MAX_SYURIKEN)
+			syuriken = null;
+
+		attackInterval = INTERVAL;
+		/*
 		// TODO WeaponManager要調整　刀での攻撃も後で追加
 		if ( WeaponManager.enemyWeaponList.size() == 0 && attackInterval == 0)
 				WeaponManager.CreateWeapon("手裏剣", this, 0);		// 0は手裏剣
+		*/
 	}
 
 	/**************************************************
@@ -348,7 +385,6 @@ public class Enemy extends CharacterBase {
 
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){
-		
 		// 無敵じゃない時はダメージ
 		if( invincibleTime == 0 ) {
 			invincibleTime = 120;		// 無敵時間付与
