@@ -142,6 +142,7 @@ public class Effect extends ObJectBase {
 			}
 
 			animation = new Animation(3.0f, frame);
+			attackNum = 50.0f;
 			break;
 		case FIRE_3:
 			break;

@@ -36,9 +36,9 @@ public class Enemy extends CharacterBase {
 	private final int NON_ACTIVE	= 100;	// 攻撃が当たるまでうろうろしてるだけ
 	private final int ACTIVE		= 101;	// 近づいたら攻撃してくる
 	// 敵のタイプ
-	private final int NORMAL		= 0;	// ノーマル
-	private final int RARE			= 1;	// レア
-	private final int AUTO			= 2;	// AI
+	public final static int NORMAL			= 0;	// ノーマル
+	public final static int RARE			= 1;	// レア
+	public final static int AUTO			= 2;	// AI
 
 	// 方向
 	private final int RIGHT			=  1;
@@ -54,8 +54,8 @@ public class Enemy extends CharacterBase {
 	// 変数宣言
 	private int				invincibleTime;	// 無敵時間
 
-	private String			name;			// 呼び出す時の名前
 	private int				enemyType;		// 敵のタイプ
+	private int				number;			// 管理番号
 	private int				enemyMode;		// 敵のモード
 	private int				direction;		// 向いてる方向
 	private float			stateTime;		//
@@ -65,6 +65,7 @@ public class Enemy extends CharacterBase {
 	private boolean			attackFlag;		// 攻撃可能フラグ
 	private boolean 		jump;			// ジャンプフラグ
 	private boolean			chase;			// 追いかけフラグ
+	private boolean			deleteFlag;		// 削除フラグ
 	private Player 			player;			// プレイヤー
 	private Weapon			syuriken;		// 手裏剣での攻撃
 	private Weapon			blade;			// 刀での攻撃
@@ -77,22 +78,23 @@ public class Enemy extends CharacterBase {
 	/**************************************************
 	 * コンストラクタ
 	 **************************************************/
-	Enemy(String Name, int type, float x, float y) {
-		name			= new String(Name);
-		enemyType		= type;
-		position.x		= x;
-		position.y		= y;
+	Enemy(int type, int num, float x, float y) {
+		enemyType			= type;
+		number				= num;
+		position.x			= x;
+		position.y			= y;
+		direction			= LEFT;
+		hp					= 100;
+		speed				= 0;
+		invincibleTime		= 0;
+		attackInterval		= 0;
+		velocity			= new Vector2(0, 0);
 		wanderingPosition	= new Vector2(x, y);
-		direction		= LEFT;
-		hp				= 100;
-		speed			= 0;
-		invincibleTime	= 0;
-		attackInterval	= 0;
-		velocity = new Vector2(0, 0);
 
-		jump = false;
-		attackFlag = false;
-		chase = false;
+		jump				= false;
+		attackFlag			= false;
+		chase				= false;
+		deleteFlag			= false;
 
 		// TODO 色々いじり中
 		// ランダムでモードを設定してみる
@@ -111,11 +113,19 @@ public class Enemy extends CharacterBase {
 	 * 更新処理まとめ
 	 **************************************************/
 	public void Update() {
-		// 現在位置
-		position = body.getPosition();
-
-		// 敵の行動
-		Action();
+		if( deleteFlag ) {
+			ItemManager.CreateItem(Item.ONIGIRI, position.x, position.y);
+			EnemyManager.Deleteenemy(this);
+			return;
+		}
+		
+		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の現象
+		position = body.getPosition();					// 現在位置の更新
+		
+		System.out.println("HP:" + hp);
+		System.out.println("無敵:" + invincibleTime);
+		
+		Action();							// 行動
 
 		// アニメーション更新
 		nowFrame = animation.getKeyFrame(stateTime, true);
@@ -337,7 +347,17 @@ public class Enemy extends CharacterBase {
 	public void collisionNotify(Enemy obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Effect obj, Contact contact){}
+	public void collisionNotify(Effect obj, Contact contact){
+		
+		// 無敵じゃない時はダメージ
+		if( invincibleTime == 0 ) {
+			invincibleTime = 120;		// 無敵時間付与
+			hp -= obj.GetAttackNum();
+		}
+		if( hp <= 0 ) {
+			deleteFlag = true;
+		}
+	}
 
 	@Override
 	public void collisionNotify(Item obj, Contact contact){}
@@ -353,12 +373,14 @@ public class Enemy extends CharacterBase {
 	* ゲッターまとめ
 	**************************************************/
 	public Enemy GetEnemy() { return this; }
-	public String GetName(){ return name; }
+	public int GetType(){ return enemyType; }
+	public int GetNum(){ return number; }
 	public int GetDirection() { return direction; }
 
 	/**************************************************
 	* Set
 	* セッターまとめ
 	**************************************************/
+	public void SetNum(int num){ number = num; }
 
 }

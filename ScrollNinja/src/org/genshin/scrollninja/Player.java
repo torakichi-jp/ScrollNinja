@@ -294,7 +294,7 @@ public class Player extends CharacterBase {
 			currentState = ATTACK;
 		}
 		
-		if(Gdx.input.isKeyPressed(Keys.Z)) {
+		if(Gdx.input.isKeyPressed(Keys.J)) {
 			currentState = ATTACK;
 
 			switch(nowAttack) {

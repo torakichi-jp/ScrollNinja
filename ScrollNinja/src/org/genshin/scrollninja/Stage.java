@@ -115,7 +115,7 @@ public class Stage implements StageBase {
 			BackgroundManager.GetBackground(stageNum).Draw(1);
 			StageObjectManager.Draw();
 			PlayerManager.GetPlayer("プレイヤー").Draw();
-			EnemyManager.GetEnemy("1").Draw();
+			EnemyManager.Draw();
 			if( WeaponManager.enemyWeaponList.size() != 0) {
 				for (int i = 0; i < WeaponManager.enemyWeaponList.size(); i++)
 					WeaponManager.enemyWeaponList.get(i).Draw();
@@ -341,7 +341,7 @@ public class Stage implements StageBase {
 	//************************************************************
 	public void PopEnemy(Player player) {
 		if( player.GetPosition().x > 200 ) {
-			EnemyManager.CreateEnemy("1", 0, 20.0f, 30.0f);
+			EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
 
 		}
 	}
@@ -377,7 +377,7 @@ public class Stage implements StageBase {
 	public void Init() {
 		PlayerManager.CreatePlayer("プレイヤー");
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
-		EnemyManager.CreateEnemy("1", 0, 10.0f, 20.0f);
+		EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
 	}
 
 	@Override
