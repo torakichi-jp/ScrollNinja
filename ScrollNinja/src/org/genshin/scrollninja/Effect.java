@@ -183,8 +183,6 @@ public class Effect extends ObJectBase {
 			if( stateTime % 18 == 0 ) {
 				useFlag = false;
 			}
-			
-			System.out.println("E:" + stateTime);
 		}
 
 		// 画面外へ

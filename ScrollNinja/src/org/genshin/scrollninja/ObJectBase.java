@@ -34,7 +34,6 @@ public abstract class ObJectBase {
 		GameMain.world.destroyBody(body);
 		body = null;
 		sprite = null;
-
 	}
 
 	/**

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,6 +38,7 @@ public class Item extends ObJectBase {
 	// 変数宣言
 	private int 		number;				// アイテム番号
 	private int 		type;				// アイテムの種類
+	private int			survivalTime;		// 生存時間
 	private boolean		appear;				// 出現フラグ
 	private Vector2		position;			// 座標
 	private Vector2 	velocity;			// 移動用速度
@@ -45,14 +47,15 @@ public class Item extends ObJectBase {
 	
 	// コンストラクタ
 	public Item(int Type, int num, float x,  float y) {
-		sprite		= new ArrayList<Sprite>();
-		sensor		= new ArrayList<Fixture>();
-		type		= Type;
-		number		= num;
-		position	= new Vector2(x,y);
-		velocity	= new Vector2(0.0f, 0.0f);
-		appear		= true;
-		deleteFlag	= false;
+		sprite			= new ArrayList<Sprite>();
+		sensor			= new ArrayList<Fixture>();
+		type			= Type;
+		number			= num;
+		position		= new Vector2(x,y);
+		velocity		= new Vector2(0.0f, 0.0f);
+		appear			= true;
+		deleteFlag		= false;
+		survivalTime	= 600;
 		
 		Create();
 		sensor.get(0).setUserData(this);
@@ -105,11 +108,19 @@ public class Item extends ObJectBase {
 	//************************************************************
 	public void Update() {
 		
+		System.out.println(survivalTime);
+		
+		survivalTime --;			// 生存時間減少
+		
+		if( survivalTime <= 0 ) {
+			deleteFlag = true;
+		}
+		
 		if(deleteFlag) {
 			ItemManager.DeleteItem(this);
 			return;
 		}
-
+		
 		position = body.getPosition();
 		body.setTransform(position ,0);
 		
@@ -117,6 +128,7 @@ public class Item extends ObJectBase {
 		sprite.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
 		
 		Appear();
+		Flashing();
 		
 		groundJudge = false;
 	}
@@ -141,6 +153,41 @@ public class Item extends ObJectBase {
 			else {
 				velocity.y = 0.0f;
 				body.setLinearVelocity(velocity);
+			}
+		}
+	}
+	
+	/**
+	 * 点滅処理
+	 */
+	public void Flashing() {
+		// 高速点滅
+		if( survivalTime < 60 ) {
+			if( survivalTime % 3 > 0 ) {
+				sprite.get(0).setColor( 0, 0, 0, 0);
+			}
+			else {
+				sprite.get(0).setColor(1, 1, 1, 1);
+			}
+		}
+		
+		// まぁ早め
+		else if( survivalTime < 180 ) {
+			if( survivalTime % 30 > 15 ) {
+				sprite.get(0).setColor( 0, 0, 0, 0);
+			}
+			else {
+				sprite.get(0).setColor(1, 1, 1, 1);
+			}
+		}
+		
+		// 普通
+		else if( survivalTime < 300 ) {
+			if( survivalTime % 60 > 30 ) {
+				sprite.get(0).setColor(0, 0, 0, 0);
+			}
+			else {
+				sprite.get(0).setColor(1, 1, 1, 1);
 			}
 		}
 	}
