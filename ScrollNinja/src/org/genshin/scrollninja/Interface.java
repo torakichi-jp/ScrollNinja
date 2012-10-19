@@ -21,6 +21,7 @@ public class Interface {
 	private static Sprite chakra;		// プレイヤーチャクラ
 	private static Sprite map;			// マップ
 	private static Sprite quitPause;	// ポーズ画面から抜ける用
+
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
@@ -33,7 +34,11 @@ public class Interface {
 	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
 	private float percentChakra;		// 現在のチャクラの割合　1が最大
 	private float countChakra;			// 巻物を0.01ずつ現在のチャクラの割合まで動かすためのカウンタ
-	
+	public static boolean calculateHP;		// HP計算
+	public static boolean calculateChakra;	// チャクラ計算
+	private static float transrateX;		// X移動量
+	private boolean stopHP;
+
 	private boolean pauseFlag;			// ポーズフラグ
 
 	// コンストラクタ
@@ -46,7 +51,7 @@ public class Interface {
 
 		Texture maptexture = new Texture(Gdx.files.internal("data/stage_main.png"));
 		maptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		Texture pausetexture = new Texture(Gdx.files.internal("data/shuriken.png"));
 		pausetexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
@@ -62,7 +67,7 @@ public class Interface {
 		scroll.setScale(0.1f);
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
-		
+
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
@@ -86,12 +91,12 @@ public class Interface {
 		chakra = new Sprite(tmpRegion);
 		chakra.setOrigin(chakra.getX() * 0.5f, chakra.getY() * 0.5f);
 		chakra.setScale(0.1f);
-		
+
 		// マップ ワールドマップ or ミニマップ
 		TextureRegion maptmpRegion = new TextureRegion(maptexture);
 		map = new Sprite(maptmpRegion);
 		map.setOrigin(scrollRight.getX() , scrollRight.getY());
-		
+
 		// ポーズ終了
 		TextureRegion pauseRegion = new TextureRegion(pausetexture);
 		quitPause = new Sprite(pauseRegion);
@@ -102,7 +107,11 @@ public class Interface {
 		countHP = percentHP;
 		percentChakra = 0;
 		countChakra = percentChakra;
-		
+		calculateHP = false;
+		calculateChakra = false;
+		transrateX = 0;
+		stopHP = true;
+
 		pauseFlag = false;
 
 		stateTime = 0;
@@ -112,52 +121,59 @@ public class Interface {
 		// 描画位置セット
 		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.5f * 0.1f),
 						   GameMain.camera.position.y  - 12.8f + (ScrollNinja.window.y * 0.5f * 0.1f));
-		scrollRight.setPosition(scroll.getX() + 42f, scroll.getY() + 0.5f);
-		hp.setPosition(scroll.getX(), scroll.getY());
+		hp.setPosition(scroll.getX() - transrateX, scroll.getY());
+		scrollRight.setPosition(scroll.getX() + 42f - transrateX, scroll.getY() + 0.5f);
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
 		// 位置調整
 		map.setPosition(scroll.getX() + 60.0f, scroll.getY() + -5.0f);
+		System.out.println("h "   + hp.getX());
+		System.out.println("r "   + scrollRight.getX());
 
-		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
-		// 現在の割合を取得
-		percentHP = player.GetHP() / player.GetMaxHP();
-		//percentChakra = player.GetChakra() / player.GetMaxChakra();
-		// いくつ減らすか計算
-		countHP -= percentHP;
-		countChakra -= percentChakra;
+		// HPに変動があれば計算
+		if (calculateHP)
+			calculateHP();
+
+		// チャクラに変動があれば計算
+		if (calculateChakra)
+			calculateChakra();
 
 		// HP回復　1フレームで0.01ずつ増加
-		if ( countHP > percentHP && countHP < 0.99 ) {
+		if ( !stopHP && countHP < 0 ) {
 			countHP += 0.01f;
-			hp.scroll(-0.01f, 0);
-			hp.translateX(-0.51f);
+			hp.scroll(0.01f, 0);
+			transrateX -= 0.51f;
+			hp.translateX(0.51f);
+
 			stateTime += 1;
 			scrollAnimation.setPlayMode(Animation.LOOP_REVERSED);
 			nowFrame = scrollAnimation.getKeyFrame(stateTime, true);
 			scroll.setRegion(nowFrame);
-		}
 
+			if (countHP > 0)
+				stopHP = true;
+		}
 		// HP減る　1フレームで0.01ずつ減少
-		if ( countHP < percentHP && countHP > 0.01 ) {
+		if ( !stopHP && countHP > 0 ) {
 			countHP -= 0.01f;
-			hp.scroll(0.01f, 0);
-			hp.translateX(0.51f);
+			hp.scroll(-0.01f, 0);
+			transrateX += 0.51f;
+			hp.translateX(-0.51f);
+
 			stateTime += 1;
 			scrollAnimation.setPlayMode(Animation.LOOP);
 			nowFrame = scrollAnimation.getKeyFrame(stateTime, true);
 			scroll.setRegion(nowFrame);
+
+			if (countHP < 0)
+				stopHP = true;
 		}
 
 		// チャクラ増える　1フレームで0.01ずつ増加
 		if ( countChakra > percentChakra && countChakra < 0.99 ) {
 			countChakra += 0.01f;
-			chakra.scroll(0, -0.01f);		
-			System.out.println(scroll.getX());
-			System.out.println(scroll.getY());
+			chakra.scroll(0, -0.01f);
 		}
-
 		// チャクラ減る　1フレームで0.01ずつ減少
 		if ( countChakra < percentChakra && countChakra > 0.01 ) {
 			countChakra -= 0.01f;
@@ -166,10 +182,36 @@ public class Interface {
 
 		if (stateTime > 60)
 			stateTime = 0;
+
 		// ポーズ
 		Map();
 	}
-	
+
+	public void calculateHP() {
+		countHP = percentHP;
+		// プレイヤー情報取得
+		player = PlayerManager.GetPlayer("プレイヤー");
+		// 現在の割合を取得
+		percentHP = (float)player.GetHP() / (float)player.GetMaxHP();
+		// いくつ減らすか計算
+		countHP -= percentHP;
+		calculateHP = false;
+		stopHP = false;
+		System.out.println(countHP);
+		System.out.println(stopHP);
+	}
+
+	public void calculateChakra() {
+		countChakra = percentChakra;
+		// プレイヤー情報取得
+		player = PlayerManager.GetPlayer("プレイヤー");
+		// 現在の割合を取得
+		percentChakra = (float)player.GetChakra() / (float)player.GetMaxChakra();
+		// いくつ減らすか計算
+		countChakra -= percentChakra;
+		calculateChakra = false;
+	}
+
 	public void Map() {
 		if(Gdx.input.isTouched()) {
 			int x = Gdx.input.getX();
@@ -181,7 +223,7 @@ public class Interface {
 			if(x > 600 && y < 150)
 				pauseFlag = true;
 		}
-		
+
 		if(Gdx.input.isKeyPressed(Keys.M)) {
 			// マップを表示
 			// ゲーム進行をストップ
@@ -189,7 +231,7 @@ public class Interface {
 		}
 		if(pauseFlag) {
 			map.setScale(0.04f);
-			/* 
+			/*
 			 * マップの絵ができたら座標など変更する
 			 * (512*512)
 			 * */
@@ -201,7 +243,7 @@ public class Interface {
 			map.setScale(0.009f);
 		}
 	}
-	
+
 	public boolean GetPauseFlag() {
 		return pauseFlag;
 	}
@@ -216,8 +258,8 @@ public class Interface {
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
 		map.draw(GameMain.spriteBatch);
-		
-		if(pauseFlag) 
+
+		if(pauseFlag)
 			quitPause.draw(GameMain.spriteBatch);
 	}
 }

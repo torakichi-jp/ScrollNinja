@@ -154,7 +154,7 @@ public class Player extends CharacterBase {
 		for (int i = 0; i < frame.length; i++)
 			frame[index++] = tmp[1][i];
 		walkAnimation = new Animation(5.0f, frame);
-		
+
 		// 下半身・歩き １行目６フレーム
 		frame = new TextureRegion[6];
 		index = 0;
@@ -175,7 +175,7 @@ public class Player extends CharacterBase {
 		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f);
 		footSprite.setScale(0.1f);
 		sprite.add(FOOT, footSprite);
-		
+
 		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
 		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f);
 		bodySprite.setScale(0.1f);
@@ -187,7 +187,7 @@ public class Player extends CharacterBase {
 		nowFrame = walkAnimation.getKeyFrame(0, true);
 		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
 
-		hp			 = 1;
+		hp			 = MAX_HP;
 		name		 = Name;
 		charge		 = 0;
 		money		 = 0;
@@ -210,10 +210,10 @@ public class Player extends CharacterBase {
 	public void Update() {
 		sprite.get(BODY).setRegion(nowFrame);
 		sprite.get(FOOT).setRegion(nowFootFrame);
-		
+
 		int prevState = currentState;
-		System.out.println(hp);
-		
+		//System.out.println(hp);
+
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の現象
 		if( count > 0 ) count --;						// アニメーションカウントの減少
 
@@ -221,7 +221,7 @@ public class Player extends CharacterBase {
 		Move();				// 移動処理
 		Jump();				// ジャンプ処理
 		Attack();			// 攻撃処理
-		
+
 		if( prevState != currentState ) {
 			stateTime = 0;
 		}
@@ -229,20 +229,20 @@ public class Player extends CharacterBase {
 
 		// 画像反転処理
 		if(direction == RIGHT) flip(true, false); else flip(false, false);
-		
+
 		Vector2 velocity = body.getLinearVelocity();
 //		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
-		
+
 		position = body.getPosition();
-		
+
 		groundJudge = false;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void Stand() {
-			
+
 	}
 	//************************************************************
 	// Jump
@@ -318,7 +318,7 @@ public class Player extends CharacterBase {
 		else if( currentState != WALK/*STAND*/ ){
 			currentState = JUMP;
 		}
-		
+
 		if(Gdx.input.isKeyPressed(Keys.J) && currentState != ATTACK ) {
 			count = 30 + 18;
 			currentState = ATTACK;
@@ -373,14 +373,14 @@ public class Player extends CharacterBase {
 	 */
 	public void collisionNotify(Background obj, Contact contact) {
 		jump = false;
-		
+
 		if( currentState != ATTACK ) {
 //			currentState = STAND;
 			currentState = WALK;
 		}
-		
+
 		groundJudge = true;
-		
+
 		// まだ作ってる途中なんだよ、こっちくんな
 //		return;
 		/*
@@ -398,7 +398,7 @@ public class Player extends CharacterBase {
 
 	/**
 	 * @Override
-	 * 
+	 *
 	 */
 	public void collisionNotify(Player obj, Contact contact){}
 
@@ -410,7 +410,7 @@ public class Player extends CharacterBase {
 
 	/**
 	 * @Override
-	 * 
+	 *
 	 */
 	public void collisionNotify(Effect obj, Contact contact){}
 
@@ -425,6 +425,7 @@ public class Player extends CharacterBase {
 			if( hp > 100 ) {
 				hp = 100;
 			}
+			Interface.calculateHP = true;
 			break;
 		case Item.OKANE:
 			break;
@@ -439,6 +440,7 @@ public class Player extends CharacterBase {
 		if( invincibleTime == 0 ) {
 			invincibleTime = 120;		// 無敵時間付与
 			hp -= 10;
+			Interface.calculateHP = true;
 		}
 		if( hp <= 0 ) {
 			hp = 100;
