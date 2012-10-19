@@ -16,9 +16,11 @@ import com.badlogic.gdx.physics.box2d.World;
 public class EnemyManager {
 	// 変数宣言
 	private static ArrayList<Integer>	enemyList		= new ArrayList<Integer>();		// 敵リスト
-	private static ArrayList<Enemy>		normalEnemyList	= new ArrayList<Enemy>();
-	private static ArrayList<Enemy>		rareEnemyList	= new ArrayList<Enemy>();
-	private static ArrayList<Enemy>		autoEnemyList	= new ArrayList<Enemy>();
+	
+	// デバッグのために公開にしてあります
+	public static ArrayList<Enemy>		normalEnemyList	= new ArrayList<Enemy>();
+	public static ArrayList<Enemy>		rareEnemyList	= new ArrayList<Enemy>();
+	public static ArrayList<Enemy>		autoEnemyList	= new ArrayList<Enemy>();
 
 	// コンストラクタ
 	private EnemyManager() {}
@@ -117,7 +119,7 @@ public class EnemyManager {
 	
 	/**
 	 * 削除とソート
-	 * @param item		削除するアイテムのポインタ
+	 * @param enemy		削除する敵のポインタ
 	 */
 	public static void Deleteenemy(Enemy enemy) {
 		for(int i = 0; i < enemyList.size(); i ++ ) {

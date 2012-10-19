@@ -141,7 +141,7 @@ public class Effect extends ObJectBase {
 				}
 			}
 
-			animation = new Animation(3.0f, frame);
+			animation = new Animation(3.000f, frame);
 			attackNum = 50.0f;
 			break;
 		case FIRE_3:
@@ -180,9 +180,11 @@ public class Effect extends ObJectBase {
 								(PlayerManager.GetPlayer("プレイヤー").GetDirection() * 5),
 									PlayerManager.GetPlayer("プレイヤー").GetPosition().y, 0);
 
-			if( stateTime >= 18 ) {
+			if( stateTime % 18 == 0 ) {
 				useFlag = false;
 			}
+			
+			System.out.println("E:" + stateTime);
 		}
 
 		// 画面外へ

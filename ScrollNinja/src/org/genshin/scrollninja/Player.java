@@ -27,6 +27,7 @@ import com.badlogic.gdx.physics.box2d.WorldManifold;
 //		明日アニメーション関連進行。今週までに表示までいきたい
 // 10/8 移動だけ動作確認。段差のところで空中移行になってるのを直そう
 //		重力弱いから要調整。ジャンプできてねー＾ｑ＾
+// 10/19 エフェクトとのアニメーションの一致
 
 // *メモ*
 // 攻撃はダッシュしながら攻撃可能（足は止まらない）
@@ -158,7 +159,7 @@ public class Player extends CharacterBase {
 		index = 0;
 		for (int i = 0; i < frame.length; i++)
 			frame[index++] = tmp[2][i];
-		attackAnimation = new Animation(5.0f, frame);
+		attackAnimation = new Animation(3.600f, frame);
 
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
@@ -197,11 +198,16 @@ public class Player extends CharacterBase {
 	public void Update() {
 		sprite.get(BODY).setRegion(nowFrame);
 		sprite.get(FOOT).setRegion(nowFootFrame);
+		
+		int prevState = currentState;
 
 		Stand();			// 立ち処理
 		Move();				// 移動処理
 		Jump();				// ジャンプ処理
 		Attack();			// 攻撃処理
+		if( prevState != currentState ) {
+			stateTime = 0;
+		}
 		animation();		// アニメーション処理（これ最後で）
 
 		// 画像反転処理
@@ -213,6 +219,8 @@ public class Player extends CharacterBase {
 		position = body.getPosition();
 		
 		groundJudge = false;
+		
+		System.out.println("P：" + stateTime);
 	}
 
 	/**
@@ -228,7 +236,7 @@ public class Player extends CharacterBase {
 	private void Jump() {
 
 		// 地面に接触しているならジャンプ可能
-		if( /*GetGroundJudge(world)*/ !jump ) {
+		if( /*GetGroundJudge(world)!jump*/ groundJudge ) {
 			// 上押したらジャンプ！
 			if (Gdx.input.isKeyPressed(Keys.W)) {
 				jump = true;
@@ -240,7 +248,6 @@ public class Player extends CharacterBase {
 
 		// ジャンプ中の処理
 		if( jump ) {
-//			Vector2 velocity = body.getLinearVelocity();
 //			body.setLinearVelocity(velocity.x, velocity.y);
 //			velocity.y -= 1;
 		}
@@ -293,17 +300,13 @@ public class Player extends CharacterBase {
 		if(EffectManager.GetEffect(Effect.FIRE_2).GetUseFlag() ) {
 			currentState = ATTACK;
 		}
+		else if( currentState != WALK/*STAND*/ ){
+			currentState = JUMP;
+		}
 		
-		if(Gdx.input.isKeyPressed(Keys.J)) {
+		if(Gdx.input.isKeyPressed(Keys.J) && currentState != ATTACK ) {
 			currentState = ATTACK;
-
-			switch(nowAttack) {
-			case Effect.FIRE_1:
-				break;
-			case Effect.FIRE_2:
-				EffectManager.GetEffect(Effect.FIRE_2).SetUseFlag(true);
-				break;
-			}
+			EffectManager.GetEffect(nowAttack).SetUseFlag(true);
 		}
 	}
 
@@ -350,7 +353,12 @@ public class Player extends CharacterBase {
 	 */
 	public void collisionNotify(Background obj, Contact contact) {
 		jump = false;
-		currentState = STAND;
+		
+		if( currentState != ATTACK ) {
+//			currentState = STAND;
+			currentState = WALK;
+		}
+		
 		groundJudge = true;
 		
 		// まだ作ってる途中なんだよ、こっちくんな

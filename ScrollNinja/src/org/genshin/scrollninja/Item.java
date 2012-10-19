@@ -37,7 +37,6 @@ public class Item extends ObJectBase {
 	// 変数宣言
 	private int 		number;				// アイテム番号
 	private int 		type;				// アイテムの種類
-	private float		fall;				// 落下量
 	private boolean		appear;				// 出現フラグ
 	private Vector2		position;			// 座標
 	private Vector2 	velocity;			// 移動用速度
@@ -54,7 +53,6 @@ public class Item extends ObJectBase {
 		velocity	= new Vector2(0.0f, 0.0f);
 		appear		= true;
 		deleteFlag	= false;
-		fall		= 0.0f;
 		
 		Create();
 		sensor.get(0).setUserData(this);

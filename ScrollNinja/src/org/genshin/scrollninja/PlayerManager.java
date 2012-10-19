@@ -2,8 +2,6 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
-// とりあえず保留で
-
 public class PlayerManager {
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 	
