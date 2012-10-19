@@ -122,9 +122,6 @@ public class Enemy extends CharacterBase {
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の現象
 		position = body.getPosition();					// 現在位置の更新
 		
-		System.out.println("HP:" + hp);
-		System.out.println("無敵:" + invincibleTime);
-		
 		Action();							// 行動
 
 		// アニメーション更新

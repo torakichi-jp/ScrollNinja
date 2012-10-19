@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 public class ItemManager {
 	
 	private static ArrayList<Integer>	itemList		= new ArrayList<Integer>();	// アイテムリスト
-	public static ArrayList<Item>		onigiriList		= new ArrayList<Item>();	// 管理番号
+	private static ArrayList<Item>		onigiriList		= new ArrayList<Item>();	// 管理番号
 //	private static ArrayList<Item>		
 	
 	/**
