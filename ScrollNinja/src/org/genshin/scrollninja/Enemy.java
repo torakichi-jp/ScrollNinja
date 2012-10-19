@@ -125,7 +125,7 @@ public class Enemy extends CharacterBase {
 			return;
 		}
 
-		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の現象
+		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少
 		position = body.getPosition();					// 現在位置の更新
 
 		Action();							// 行動
