@@ -28,8 +28,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class Weapon extends ObJectBase{
 	// 定数
 	// 武器の種類 TODO 増えるごとに追加する必要が…
-	private final int SYURIKEN		= 0;		// 手裏剣
-	private final int EXIST_TIME	= 240;		// 手裏剣の存在時間
+	private final int SYURIKEN			= 0;	// 手裏剣
+	private final int EXIST_TIME		= 240;	// 手裏剣の存在時間
 	private final int SYURIKEN_SPEED	= 30;	// 手裏剣の速さ
 
 	private int			type;			// 武器のタイプ
@@ -61,7 +61,7 @@ public class Weapon extends ObJectBase{
 		this.use			= true;
 		rotate = 0;
 
-		create();
+		Create();
 	}
 
 	//コンストラクタ　敵の場合
@@ -78,11 +78,14 @@ public class Weapon extends ObJectBase{
 		this.use		= true;
 		rotate = 0;
 
-		create();
+		Create();
 	}
 
-	// 武器生成
-	public void create() {
+	/**************************************************
+	* create
+	* 武器生成
+	**************************************************/
+	public void Create() {
 		// テクスチャー読み込み
 		// TODO 武器によって位置が違ってくるので調整
 		// 手裏剣テクスチャの位置はとりあえずなので後で要調整
@@ -101,8 +104,9 @@ public class Weapon extends ObJectBase{
 		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
 		sprite.get(0).setScale(0.05f);
 
+		// Body作成
 		BodyDef def	= new BodyDef();
-		def.type	= BodyType.DynamicBody;		// 動く物体
+		def.type	= BodyType.DynamicBody;
 		body = GameMain.world.createBody(def);
 
 		// 当たり判定の作成
@@ -133,16 +137,31 @@ public class Weapon extends ObJectBase{
 			switch (type) {
 			case SYURIKEN:
 				timeCount = EXIST_TIME;		// 240で消える
-				body.setTransform(enemy.body.getPosition().x + 3.2f + 5 * enemy.GetDirection(),
-																			enemy.body.getPosition().y, 0);
-				body.setLinearVelocity(30 * enemy.GetDirection(), 0);
+
+				// 出現位置
+				Vector2 current = new Vector2(enemy.body.getPosition());
+				body.setTransform(current.x + 3 * enemy.GetDirection(), current.y/* + 3.2f*/, 0);
+				// 角度を求める
+				// TODO 現在操作中のプレイヤー情報を求められるように変更必要あり
+				Vector2 terget = new Vector2(PlayerManager.GetPlayer("プレイヤー").body.getPosition());
+				float rad = (float) Math.atan2(terget.y - current.y, terget.x - current.x);
+				// 移動速度を求める
+				Vector2 vel = new Vector2(0, 0);
+				vel.x = (float) (Math.cos(rad) * SYURIKEN_SPEED);
+				vel.y = (float) (Math.sin(rad) * SYURIKEN_SPEED);
+
+				body.setLinearVelocity(vel.x, vel.y);
+
+				player = null;
 				break;
 			}
 		}
-
 	}
 
-	// 更新
+	/**************************************************
+	* Update
+	* 更新まとめ
+	**************************************************/
 	public void Update() {
 		// 現在位置
 		position = body.getPosition();
@@ -150,13 +169,16 @@ public class Weapon extends ObJectBase{
 		// 武器の種類によって分岐
 		switch (type) {
 		case SYURIKEN :
-			shuriken();
+			syuriken();
 			break;
 		}
 	}
 
-	// 手裏剣の動き
-	public void shuriken() {
+	/**************************************************
+	* syuriken
+	* 手裏剣の動き
+	**************************************************/
+	public void syuriken() {
 		// 手裏剣表示時間
 		timeCount -= 1;
 		// 回転
@@ -202,7 +224,12 @@ public class Weapon extends ObJectBase{
 	public void collisionNotify(Background obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void collisionNotify(Player obj, Contact contact){
+		// 敵の攻撃だった場合
+		if (player == null) {
+
+		}
+	}
 
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
