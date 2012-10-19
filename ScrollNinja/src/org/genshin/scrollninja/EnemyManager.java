@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class EnemyManager {
 	// 変数宣言
 	private static ArrayList<Integer>	enemyList		= new ArrayList<Integer>();		// 敵リスト
-	
+
 	// デバッグのために公開にしてあります
 	public static ArrayList<Enemy>		normalEnemyList	= new ArrayList<Enemy>();
 	public static ArrayList<Enemy>		rareEnemyList	= new ArrayList<Enemy>();
@@ -33,7 +33,7 @@ public class EnemyManager {
 			normalEnemyList.get(i).Update();
 		}
 	}
-	
+
 	/**
 	 * スプライト描画
 	 */
@@ -53,22 +53,22 @@ public class EnemyManager {
 		for(int i = 0; i < enemyList.size(); i ++ ) {
 			// 同じ種類発見
 			if( enemyList.get(i).equals(Type) ) {
-				
+
 				switch( Type ) {
 				case Enemy.NORMAL:
 					int j = normalEnemyList.size() + 1;
 					Enemy pEnemy = new Enemy(Type, j, x, y);	// 最後の番号を管理番号に
 					normalEnemyList.add(pEnemy);				// 追加
-				break;	
+				break;
 				}
-					
+
 				return;
-				}	
+				}
 			}
 		// なかった
 		enemyList.add(Type);						// この種類の項目を増やす
 		Enemy pEnemy = new Enemy(Type, 1, x, y);	// 最初の一つ目なので管理番号は１
-			
+
 		switch( Type ) {
 		case Enemy.NORMAL:
 			normalEnemyList.add(pEnemy);					// 追加
@@ -81,7 +81,7 @@ public class EnemyManager {
 			break;
 		}
 	}
-	
+
 	/**
 	 * 削除とソート
 	 * @param Type		敵の種類
@@ -89,10 +89,10 @@ public class EnemyManager {
 	 */
 	public static void DeleteEnemy(int Type, int Num) {
 		for(int i = 0; i < enemyList.size(); i ++ ) {
-			
+
 			// 発見
 			if( enemyList.get(i).equals(Type) ) {
-				
+
 				switch( Type ) {
 				case Enemy.NORMAL:
 					for( int j = 0; j < normalEnemyList.size(); j ++ ) {
@@ -101,13 +101,13 @@ public class EnemyManager {
 							normalEnemyList.remove(j);					// 削除！
 						}
 					}
-					
+
 					// 削除に合わせて管理番号変更。とりあえず全部
 					for( int j = 0; j < normalEnemyList.size(); j ++ ) {
 						normalEnemyList.get(j).SetNum(j + 1);
 					}
 					break;
-					
+
 				case Enemy.RARE:
 					break;
 				case Enemy.AUTO:
@@ -116,17 +116,17 @@ public class EnemyManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * 削除とソート
 	 * @param enemy		削除する敵のポインタ
 	 */
 	public static void Deleteenemy(Enemy enemy) {
 		for(int i = 0; i < enemyList.size(); i ++ ) {
-			
+
 			// 発見
 			if( enemyList.get(i).equals(enemy.GetType()) ) {
-				
+
 				switch( enemy.GetType() ) {
 				case Enemy.NORMAL:
 					for( int j = 0; j < normalEnemyList.size(); j ++ ) {
@@ -135,7 +135,7 @@ public class EnemyManager {
 							normalEnemyList.remove(j);					// 削除！
 						}
 					}
-					
+
 					// 削除に合わせて管理番号変更。とりあえず全部
 					for( int j = 0; j < normalEnemyList.size(); j ++ ) {
 						normalEnemyList.get(j).SetNum(j + 1);

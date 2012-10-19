@@ -7,20 +7,16 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 
@@ -31,6 +27,8 @@ public class Weapon extends ObJectBase{
 	private final int SYURIKEN			= 0;	// 手裏剣
 	private final int EXIST_TIME		= 240;	// 手裏剣の存在時間
 	private final int SYURIKEN_SPEED	= 30;	// 手裏剣の速さ
+	// 武器の攻撃力
+	private final int ATTACKNUM_SYURIKEN = 5;
 
 	private int			type;			// 武器のタイプ
 	private String		name;			// 名前
@@ -65,7 +63,7 @@ public class Weapon extends ObJectBase{
 	}
 
 	//コンストラクタ　敵の場合
-	public Weapon(String Name, Enemy enemy, int Type) {
+	public Weapon(String Name, Enemy enemy, int type) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 
@@ -136,11 +134,12 @@ public class Weapon extends ObJectBase{
 		if (enemy != null) {
 			switch (type) {
 			case SYURIKEN:
-				timeCount = EXIST_TIME;		// 240で消える
+				attackNum = ATTACKNUM_SYURIKEN;
+				timeCount = EXIST_TIME;				// 240で消える
 
 				// 出現位置
 				Vector2 current = new Vector2(enemy.body.getPosition());
-				body.setTransform(current.x + 3 * enemy.GetDirection(), current.y/* + 3.2f*/, 0);
+				body.setTransform(current.x + 3 * enemy.GetDirection(), current.y, 0);
 				// 角度を求める
 				// TODO 現在操作中のプレイヤー情報を求められるように変更必要あり
 				Vector2 terget = new Vector2(PlayerManager.GetPlayer("プレイヤー").body.getPosition());
@@ -189,7 +188,6 @@ public class Weapon extends ObJectBase{
 		// 消滅
 		if(timeCount < 0) {
 			use = false;
-			//WeaponManager.DeleteEnemyWeapon("手裏剣");
 			timeCount = EXIST_TIME;
 		}
 	}

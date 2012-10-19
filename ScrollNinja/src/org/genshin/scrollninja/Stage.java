@@ -3,28 +3,13 @@
 package org.genshin.scrollninja;
 
 import java.util.ArrayList;
-import java.util.Vector;
-
-import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Stage implements StageBase {
-	
+
 	private Box2DDebugRenderer		renderer;		//
 	private ArrayList<Item>			popItems;		//
 	private ArrayList<Enemy>		popEnemys;		//
@@ -35,8 +20,6 @@ public class Stage implements StageBase {
 	// コンストラクタ
 	public Stage(){
 		stageNum = 0;
-//		Background backGround = new Background(this);
-		//world = new World(new Vector2(0.0f, -20.0f), true );
 
 		/*
 		switch (ScroolNinja.aspectRatio) {
@@ -55,13 +38,6 @@ public class Stage implements StageBase {
 		}
 		*/
 		renderer			= new Box2DDebugRenderer();
-
-//		CreateStage();
-//		CreateStageObject();
-//		EnemyManager.CreateEnemy("1", 0, 100.0f, 50.0f);
-//		CreatePlayer();
-		//WeaponManager.CreateWeapon("手裏剣");
-		//weapon.create();
 	}
 
 	//************************************************************
@@ -104,8 +80,6 @@ public class Stage implements StageBase {
 			StageObjectManager.Draw();
 			PlayerManager.GetPlayer("プレイヤー").Draw();
 			EnemyManager.Draw();
-			//WeaponManager.GetWeapon("1").GetSprite().draw(spriteBatch);
-//			WeaponManager.GetWeapon("手裏剣").Draw();
 			EffectManager.GetEffect(PlayerManager.GetPlayer("プレイヤー").GetNowAttack()).Draw();
 			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
@@ -149,175 +123,6 @@ public class Stage implements StageBase {
 
 		GameMain.camera.update();
 	}
-
-/*	//************************************************************
-	// CreateStage
-	// ステージのあたり判定の作成
-	//************************************************************
-	private void CreateStage() {
-		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
-
-		// ボディタイプ設定
-		BodyDef bd	= new BodyDef();
-		bd.type		= BodyType.StaticBody;		// 動かない物体
-		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
-		bd.position.set(-Background.GetSprite(1).getWidth() * 0.5f * 0.1f,
-								(-Background.GetSprite(1).getHeight() * 0.5f -357.5f) * 0.1f);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 1000;		// 密度
-		fd.friction		= 100;		// 摩擦
-		fd.restitution	= 0;		// 反発係数
-
-		// ボディ作成
-		Background.SetBody(world.createBody(bd));
-		loader.attachFixture( Background.GetBody(), "bgTest", fd, Background.GetSprite(1).getWidth() * 0.1f);
-
-		for(int i = 0; i < Background.GetBody().getFixtureList().size(); i ++) {
-			Background.SetFixture( Background.GetBody().getFixtureList().get(i));
-		}
-//		System.out.println(Background.GetBody().getFixtureList().size());
-	}
-
-	//************************************************************
-	// CreatePlayer
-	// プレイヤーの作成
-	//************************************************************
-	private void CreatePlayer() {
-		PlayerManager.CreatePlayer("プレイヤー");
-		player = PlayerManager.GetPlayer("プレイヤー");
-
-		BodyDef def	= new BodyDef();
-		def.type	= BodyType.DynamicBody;		// 動く物体
-		player.SetBody(world.createBody(def));
-
-		// 当たり判定の作成
-		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density			= 0;
-		fd.friction		= 0;
-		fd.restitution	= 0;
-		fd.shape			= poly;
-
-		player.GetBody().createFixture(fd);
-		player.SetFixture(player.GetBody().createFixture(poly, 0));
-		player.GetBody().setBullet(true);			// すり抜け防止
-		player.GetBody().setFixedRotation(true);	// シミュレーションでの自動回転をしない
-		player.GetBody().setTransform(0, 3, 0);	// 初期位置
-
-		// とりあえず
-		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
-		EnemyManager.GetEnemy("1").GetBody().createFixture(fd);
-		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
-		poly.dispose();
-		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
-		EnemyManager.GetEnemy("1").GetBody().setTransform(50, 10, 0);
-
-
-	}
-
-	//************************************************************
-	// CreateWeapon
-	// 敵武器作成
-	//************************************************************
-
-	private void CreateEnemyWeapon() {
-
-		BodyDef def	= new BodyDef();
-		def.type	= BodyType.DynamicBody;		// 動く物体
-		player.SetBody(world.createBody(def));
-
-		// 当たり判定の作成
-		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 50;
-		fd.friction		= 0;
-		fd.restitution	= 0;
-		fd.shape		= poly;
-
-		// 敵手裏剣
-		WeaponManager.GetWeapon("手裏剣").SetBody(world.createBody(def));
-		WeaponManager.GetWeapon("手裏剣").GetBody().createFixture(fd);
-		WeaponManager.GetWeapon("手裏剣").SetFixture(WeaponManager.GetWeapon("手裏剣").GetBody().createFixture(poly, 0));
-		poly.dispose();
-		WeaponManager.GetWeapon("手裏剣").GetBody().setBullet(true);
-		WeaponManager.GetWeapon("手裏剣").GetBody().setTransform(50, 100, 0);
-	}
-
-	//************************************************************
-	// CreateStageObject
-	// ステージオブジェクトの作成
-	//************************************************************
-	private void CreateStageObject() {
-		// 当たり判定読み込み
-		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/stageObject.json"));
-
-		// Bodyのタイプを設定 Staticは動かない物体
-		BodyDef bd = new BodyDef();
-		bd.type = BodyType.StaticBody;
-
-		// Bodyの設定を設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 1000;				// 密度
-		fd.friction		= 0;				// 摩擦
-		fd.restitution	= 0;				// 反発係数
-
-		// ステージオブジェクトの作成
-		StageObjectManager.CreateStageObject("block");
-		StageObjectManager.GetStageObject("block").SetBody(world.createBody(bd));
-
-		// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-		loader.attachFixture(StageObjectManager.GetStageObject("block").GetBody(), "gravestone", fd,
-								StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.1f);
-		// とりあえず。後で調整
-		StageObjectManager.GetStageObject("block").GetBody().setTransform
-							(-StageObjectManager.GetStageObject("block").GetSprite().getWidth() * 0.5f,
-							-StageObjectManager.GetStageObject("block").GetSprite().getHeight() * 0.5f, 0);
-	}
-
-	//************************************************************
-	// CreateEnemy
-	// 敵の作成
-	//************************************************************
-	public void CreateEnemy() {
-		BodyDef def	= new BodyDef();
-		def.type	= BodyType.DynamicBody;		// 動く物体
-		player.SetBody(world.createBody(def));
-
-		// 当たり判定の作成
-		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 50;
-		fd.friction		= 0;
-		fd.restitution	= 0;
-		fd.shape		= poly;
-
-		//
-		player.GetBody().createFixture(fd);
-		player.SetFixture(player.GetBody().createFixture(poly, 0));
-		player.GetBody().setBullet(true);			// すり抜け防止
-		player.GetBody().setTransform(0, 30, 0);	// 初期位置
-
-		// とりあえず
-		EnemyManager.GetEnemy("1").SetBody(world.createBody(def));
-		EnemyManager.GetEnemy("1").GetBody().createFixture(fd);
-		EnemyManager.GetEnemy("1").SetFixture(EnemyManager.GetEnemy("1").GetBody().createFixture(poly, 0));
-		poly.dispose();
-		EnemyManager.GetEnemy("1").GetBody().setBullet(true);
-		EnemyManager.GetEnemy("1").GetBody().setTransform(0, 30, 0);
-
-
-	}*/
 
 	//************************************************************
 	// PopEnemy

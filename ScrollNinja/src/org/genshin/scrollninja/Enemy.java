@@ -36,9 +36,9 @@ public class Enemy extends CharacterBase {
 	private final int NON_ACTIVE	= 100;	// 攻撃が当たるまでうろうろしてるだけ
 	private final int ACTIVE		= 101;	// 近づいたら攻撃してくる
 	// 敵のタイプ
-	public final static int NORMAL			= 0;	// ノーマル
-	public final static int RARE			= 1;	// レア
-	public final static int AUTO			= 2;	// AI
+	public final static int NORMAL		= 0;	// ノーマル
+	public final static int RARE		= 1;	// レア
+	public final static int AUTO		= 2;	// AI
 
 	// 方向
 	private final int RIGHT			=  1;
@@ -56,26 +56,26 @@ public class Enemy extends CharacterBase {
 	private Vector2 velocity;					// 移動用速度
 
 	// 変数宣言
-	private int				invincibleTime;	// 無敵時間
+	private int					invincibleTime;	// 無敵時間
 
-	private int				enemyType;		// 敵のタイプ
-	private int				number;			// 管理番号
-	private int				enemyMode;		// 敵のモード
-	private int				direction;		// 向いてる方向
-	private float			stateTime;		//
-	private TextureRegion[]	frame;			// アニメーションのコマ
-	private TextureRegion	nowFrame;		// 現在のコマ
-	private Animation		animation;		// アニメーション
-	private boolean			attackFlag;		// 攻撃可能フラグ
-	private boolean 		jump;			// ジャンプフラグ
-	private boolean			chase;			// 追いかけフラグ
-	private boolean			deleteFlag;		// 削除フラグ
-	private Player 			player;			// プレイヤー
+	private int					enemyType;		// 敵のタイプ
+	private int					number;			// 管理番号
+	private int					enemyMode;		// 敵のモード
+	private int					direction;		// 向いてる方向
+	private float				stateTime;		//
+	private TextureRegion[]		frame;			// アニメーションのコマ
+	private TextureRegion		nowFrame;		// 現在のコマ
+	private Animation			animation;		// アニメーション
+	private boolean				attackFlag;		// 攻撃可能フラグ
+	private boolean 			jump;			// ジャンプフラグ
+	private boolean				chase;			// 追いかけフラグ
+	private boolean				deleteFlag;		// 削除フラグ
+	private Player 				player;			// プレイヤー
 	private ArrayList<Weapon>	syuriken;		// 手裏剣
-	private Weapon			blade;			// 刀
-	private int				attackInterval;	// 攻撃間隔		TODO 未実装
+	private Weapon				blade;			// 刀
+	private int					attackInterval;	// 攻撃間隔
 
-	private Vector2			wanderingPosition;	// うろうろ場所用に出現位置を保存
+	private Vector2				wanderingPosition;	// うろうろ場所用に出現位置を保存
 
 	private Random 			rand;			// ランダム
 
@@ -106,16 +106,16 @@ public class Enemy extends CharacterBase {
 		// ランダムでモードを設定してみる
 		rand = new Random();
 		int i = rand.nextInt(10);
-		//if (i == 0)
+		if (i == 0)
 			enemyMode = ACTIVE;
-		//else
-			//enemyMode = NON_ACTIVE;
+		else
+			enemyMode = NON_ACTIVE;
 
 		Create();
 	}
 
 	/**************************************************
-	 * update
+	 * Update()
 	 * 更新処理まとめ
 	 **************************************************/
 	public void Update() {
@@ -130,6 +130,7 @@ public class Enemy extends CharacterBase {
 
 		Action();							// 行動
 
+		// 手裏剣更新
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++) {
 				if (syuriken.get(i).GetUseFlag())
@@ -148,15 +149,44 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* Create
+	* Draw() ObjectBaseのDrawをオーバーライド
+	* スプライトを描画する。
+	**************************************************/
+	@Override
+	public void Draw()
+	{
+		Vector2 pos = body.getPosition();
+		float rot = (float) Math.toDegrees(body.getAngle());
+
+		int count = sprite.size();
+		for (int i = 0; i < count; ++i)
+		{
+			Sprite current = sprite.get(i);
+			// 座標・回転
+			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
+			current.setRotation(rot);
+			// 描画
+			current.draw(GameMain.spriteBatch);
+		}
+
+		// 武器の描画
+		if (syuriken != null) {
+			for (int i = 0; i < syuriken.size(); i++)
+				syuriken.get(i).Draw();
+		}
+	}
+
+	/**************************************************
+	* Create()
 	* body、sensor、sprite、アニメーション作成
 	**************************************************/
 	public void Create() {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 
+		// Body作成
 		BodyDef bd	= new BodyDef();
-		bd.type	= BodyType.DynamicBody;			// 動く物体
+		bd.type	= BodyType.DynamicBody;
 		body = GameMain.world.createBody(bd);
 
 		// fixture生成
@@ -211,7 +241,7 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* Action
+	* Action()
 	* 行動の分岐
 	**************************************************/
 	public void Action() {
@@ -243,12 +273,11 @@ public class Enemy extends CharacterBase {
 				break;
 			}
 			break;
-
 		}
 	}
 
 	/**************************************************
-	 * walk
+	 * walk()
 	 * 指定範囲内をうろうろしているだけ
 	 **************************************************/
 	public void walk() {
@@ -268,7 +297,7 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* chase
+	* chase()
 	* プレイヤーを見つけたら追いかける
 	**************************************************/
 	public void chase() {
@@ -282,8 +311,9 @@ public class Enemy extends CharacterBase {
 		}
 		// 距離が離れたら
 		if (Math.abs(player.body.getPosition().x - position.x) > 30 && chase) {
-			// 追いかけフラグOFF
+			// フラグOFF
 			chase = false;
+			attackFlag = false;
 			// 現在の位置をうろうろ位置に設定
 			wanderingPosition = new Vector2(position);
 		}
@@ -312,9 +342,10 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* attack
+	* attack()
 	* 手裏剣での攻撃と刀での攻撃
 	**************************************************/
+	// TODO 刀での攻撃がまだ…
 	public void attack() {
 		// 配列が空の時
 		if (syuriken == null) {
@@ -329,19 +360,18 @@ public class Enemy extends CharacterBase {
 		}
 
 		// 最大数になったら空に戻す
-		if (syuriken.size() == MAX_SYURIKEN)
+		if (syuriken.size() == MAX_SYURIKEN) {
+			for (int i = 0; i < syuriken.size(); i++) {
+				syuriken.get(i).Release();
+			}
 			syuriken = null;
+		}
 
 		attackInterval = INTERVAL;
-		/*
-		// TODO WeaponManager要調整　刀での攻撃も後で追加
-		if ( WeaponManager.enemyWeaponList.size() == 0 && attackInterval == 0)
-				WeaponManager.CreateWeapon("手裏剣", this, 0);		// 0は手裏剣
-		*/
 	}
 
 	/**************************************************
-	* jump
+	* jump()
 	**************************************************/
 	// TODO 要調整
 	public void jump() {
@@ -365,7 +395,7 @@ public class Enemy extends CharacterBase {
 	/**************************************************
 	 * 当たり判定取得
 	**************************************************/
-	// TODO ジャンプの接地判定と、ダメージくらったらノンアクティブをアクティブに変更
+	// TODO ジャンプの接地判定要検証？
 
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
@@ -389,6 +419,7 @@ public class Enemy extends CharacterBase {
 		if( invincibleTime == 0 ) {
 			invincibleTime = 120;		// 無敵時間付与
 			hp -= obj.GetAttackNum();
+			enemyMode = ACTIVE;			// ノンアクティブをアクティブに
 		}
 		if( hp <= 0 ) {
 			deleteFlag = true;
@@ -403,6 +434,22 @@ public class Enemy extends CharacterBase {
 
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
+
+	/**************************************************
+	* Release　ObjectBaseのReleaseをオーバーライド
+	* 解放処理まとめ
+	**************************************************/
+	@Override
+	public void Release(){
+		if (syuriken != null) {
+			for (int i = 0; i < syuriken.size(); i++)  {
+				syuriken.get(i).Release();
+			}
+		}
+		GameMain.world.destroyBody(body);
+		body = null;
+		sprite = null;
+	}
 
 	/**************************************************
 	* Get

@@ -20,6 +20,7 @@ public class Interface {
 	private static Sprite hyoutan;		// チャクラのひょうたん部分
 	private static Sprite chakra;		// プレイヤーチャクラ
 	private static Sprite map;			// マップ
+	private static Sprite quitPause;	// ポーズ画面から抜ける用
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
@@ -42,9 +43,12 @@ public class Interface {
 		// テクスチャ画像読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/interface.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
+
 		Texture maptexture = new Texture(Gdx.files.internal("data/stage_main.png"));
 		maptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		
+		Texture pausetexture = new Texture(Gdx.files.internal("data/shuriken.png"));
+		pausetexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -89,8 +93,12 @@ public class Interface {
 		TextureRegion maptmpRegion = new TextureRegion(maptexture);
 		map = new Sprite(maptmpRegion);
 		map.setOrigin(scrollRight.getX() , scrollRight.getY());
-		//map.setScale(0.5f);
 		
+		// ポーズ終了
+		TextureRegion pauseRegion = new TextureRegion(pausetexture);
+		quitPause = new Sprite(pauseRegion);
+		quitPause.setOrigin(scrollRight.getX(),scrollRight.getY());
+
 		
 
 		// 最初の設定；
@@ -149,7 +157,9 @@ public class Interface {
 		// チャクラ増える　1フレームで0.01ずつ増加
 		if ( countChakra > percentChakra && countChakra < 0.99 ) {
 			countChakra += 0.01f;
-			chakra.scroll(0, -0.01f);
+			chakra.scroll(0, -0.01f);			System.out.println(scroll.getX());
+			System.out.println(scroll.getY());
+			
 		}
 
 		// チャクラ減る　1フレームで0.01ずつ減少
@@ -160,46 +170,41 @@ public class Interface {
 
 		if (stateTime > 60)
 			stateTime = 0;
-		
+		// ポーズ
 		Map();
 	}
 	
 	public void Map() {
 		
 		if(Gdx.input.isTouched()) {
-			
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
-			
-			if(x > 600 && y < 150) {
+			System.out.print("mouseX:");
+			System.out.println(x);
+			System.out.print("mouseY:");
+			System.out.println(y);
+			if(x > 600 && y < 150)
 				pauseFlag = true;
-				
-			}
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.M)) {
-			// マップを前画面表示
+			// マップを表示
 			// ゲーム進行をストップ
 			pauseFlag = true;
-			System.out.println(pauseFlag);
 		}
-		
 		if(pauseFlag) {
 			map.setScale(0.04f);
 			/* 
-			 * TODO:マップの絵ができたら座標など変更する
+			 * マップの絵ができたら座標など変更する
 			 * (512*512)
 			 * */
-			map.setPosition(scroll.getX(), scroll.getY() - 60);
-			System.out.println(scroll.getX());
-			System.out.println(scroll.getY());
+			map.setPosition(scroll.getX(), scroll.getY() - 70);
+			quitPause.setScale(0.1f);
+			quitPause.setPosition(scroll.getX() + 50 ,scroll.getY() + 5);
 		}
 		else {
 			map.setScale(0.01f);
 		}
-		
-		
-
 	}
 	
 	public boolean GetPauseFlag() {
@@ -217,6 +222,7 @@ public class Interface {
 		hyoutan.draw(GameMain.spriteBatch);
 		map.draw(GameMain.spriteBatch);
 		
-		
+		if(pauseFlag) 
+			quitPause.draw(GameMain.spriteBatch);
 	}
 }

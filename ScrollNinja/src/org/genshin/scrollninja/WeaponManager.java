@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class WeaponManager {
 	// 変数宣言
 	public static ArrayList<Weapon> weaponList 		= new ArrayList<Weapon>();
-	public static ArrayList<Weapon> enemyWeaponList = new ArrayList<Weapon>();
 
 	// コンストラクタ
 	private WeaponManager(){}
@@ -33,18 +32,6 @@ public class WeaponManager {
 		return 1;
 	}
 
-	// 敵の武器
-	public static int CreateWeapon(String Name, Enemy enemy, int type) {
-		if( enemyWeaponList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
-			return -1;		// エラー処理
-		}
-
-		Weapon pWeapon = new Weapon(Name, enemy, type);		// オブジェクトを生成（&初期化）して
-		enemyWeaponList.add(pWeapon);						// リストに追加
-
-		return 1;
-	}
-
 	/**************************************************
 	* DeleteWeapon DeleteEnemyWeapon
 	* 武器の削除
@@ -55,19 +42,6 @@ public class WeaponManager {
 			if( weaponList.get(i).GetName().equals(Name) ) {
 				weaponList.get(i).Release();
 				weaponList.remove(i);		// 引数で渡されたオブジェクトを削除
-				return 1;
-			}
-		}
-		// 見つからなかったらエラーを返す
-		return -1;
-	}
-
-	// エネミー
-	public static int DeleteEnemyWeapon(String Name) {
-		for(int i = 0; i < enemyWeaponList.size(); i ++) {
-			if( enemyWeaponList.get(i).GetName().equals(Name) ) {
-				enemyWeaponList.get(i).Release();
-				enemyWeaponList.remove(i);		// 引数で渡されたオブジェクトを削除
 				return 1;
 			}
 		}
