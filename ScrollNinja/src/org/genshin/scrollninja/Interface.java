@@ -21,6 +21,7 @@ public class Interface {
 	private static Sprite chakra;		// プレイヤーチャクラ
 	private static Sprite map;			// マップ
 	private static Sprite quitPause;	// ポーズ画面から抜ける用
+	private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
@@ -50,6 +51,10 @@ public class Interface {
 		Texture pausetexture = new Texture(Gdx.files.internal("data/shuriken.png"));
 		pausetexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
+		// アイコン(仮)
+		Texture icontexture = new Texture(Gdx.files.internal("data/shuriken.png"));
+		icontexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
+		
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
 		TextureRegion[] frame = new TextureRegion[3];
@@ -96,6 +101,11 @@ public class Interface {
 		TextureRegion pauseRegion = new TextureRegion(pausetexture);
 		quitPause = new Sprite(pauseRegion);
 		quitPause.setOrigin(scrollRight.getX(),scrollRight.getY());
+		
+		TextureRegion iconRegion = new TextureRegion(icontexture);
+		icon = new Sprite(iconRegion);
+		icon.setOrigin(scrollRight.getX(),scrollRight.getY());
+		icon.setScale(0.04f);
 
 		// 最初の設定；
 		percentHP = 1;
@@ -168,6 +178,10 @@ public class Interface {
 			stateTime = 0;
 		// ポーズ
 		Map();
+		
+		// アイコン
+		icon.setPosition((scroll.getX() + 68) + (player.position.x * 0.087f), 
+				(scroll.getY() + 3) + (player.position.y * 0.085f));
 	}
 	
 	public void Map() {
@@ -216,8 +230,12 @@ public class Interface {
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
 		map.draw(GameMain.spriteBatch);
+
 		
 		if(pauseFlag) 
 			quitPause.draw(GameMain.spriteBatch);
+		else {
+			icon.draw(GameMain.spriteBatch);
+		}
 	}
 }
