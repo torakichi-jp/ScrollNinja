@@ -89,7 +89,7 @@ public class Interface {
 		TextureRegion maptmpRegion = new TextureRegion(maptexture);
 		map = new Sprite(maptmpRegion);
 		map.setOrigin(scrollRight.getX() , scrollRight.getY());
-		map.setScale(0.01f);
+		//map.setScale(0.5f);
 		
 		
 
@@ -184,6 +184,21 @@ public class Interface {
 			System.out.println(pauseFlag);
 		}
 		
+		if(pauseFlag) {
+			map.setScale(0.04f);
+			/* 
+			 * TODO:マップの絵ができたら座標など変更する
+			 * (512*512)
+			 * */
+			map.setPosition(scroll.getX(), scroll.getY() - 60);
+			System.out.println(scroll.getX());
+			System.out.println(scroll.getY());
+		}
+		else {
+			map.setScale(0.01f);
+		}
+		
+		
 
 	}
 	
@@ -200,17 +215,7 @@ public class Interface {
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
-		if(pauseFlag) {
-			map.setScale(0.1f);
-			/* 
-			 * TODO:マップの絵ができたら座標など変更する
-			 * */
-			map.setPosition(0,-90);
-		}
-		else {
-			map.setScale(0.01f);
-		}
-			map.draw(GameMain.spriteBatch);
+		map.draw(GameMain.spriteBatch);
 		
 		
 	}
