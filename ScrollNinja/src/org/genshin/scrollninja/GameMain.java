@@ -45,6 +45,7 @@ public class GameMain implements Screen{
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
 	
+	// 仮
 	public int gamestate;
 	public final static int GAME	= 0;
 	public final static int PAUSE	= 1;
@@ -58,9 +59,6 @@ public class GameMain implements Screen{
 		stage				= new Stage();
 		playerInfo			= new Interface();
 		this.stageNum		= stageNum;
-		
-		
-		System.out.println(PauseFlag);
 
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();
@@ -134,17 +132,18 @@ public class GameMain implements Screen{
 		// ポーズしたら全画面マップ表示
 		if(Gdx.input.isKeyPressed(Keys.L)) {
 			PauseFlag = false;
-			
 		}
 		if(Gdx.input.isTouched()) {
 			
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 			
-			if(x < 600) {
+			if(x > 510 && x < 550 && y > 30 && y < 68) {
 				// ポーズボタンがあったらそこに座標を合わせる
+				/*
+				 * 10/19 手裏剣の位置をクリックしたら(仮)
+				 * */
 				PauseFlag = false;
-				
 			}
 		}
 		if(!PauseFlag)
