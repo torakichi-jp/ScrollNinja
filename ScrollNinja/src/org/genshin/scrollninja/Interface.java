@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 //========================================
 //クラス宣言		インターフェース表示を扱うクラス
@@ -127,8 +128,6 @@ public class Interface {
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
 		// 位置調整
 		map.setPosition(scroll.getX() + 60.0f, scroll.getY() + -5.0f);
-		System.out.println("h "   + hp.getX());
-		System.out.println("r "   + scrollRight.getX());
 
 		// HPに変動があれば計算
 		if (calculateHP)
@@ -197,8 +196,6 @@ public class Interface {
 		countHP -= percentHP;
 		calculateHP = false;
 		stopHP = false;
-		System.out.println(countHP);
-		System.out.println(stopHP);
 	}
 
 	public void calculateChakra() {
