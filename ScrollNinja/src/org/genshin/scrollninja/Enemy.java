@@ -196,7 +196,7 @@ public class Enemy extends CharacterBase {
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
-		fd.density		= 10;
+		fd.density		= 0;
 		fd.friction		= 0;
 		fd.restitution	= 0;
 		fd.shape		= poly;
@@ -392,7 +392,7 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	public void AutoEnemy() {
 	}
-	
+
 	/**************************************************
 	 * 点滅処理
 	 **************************************************/

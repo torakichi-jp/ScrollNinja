@@ -214,7 +214,7 @@ public class Player extends CharacterBase {
 		sprite.get(FOOT).setRegion(nowFootFrame);
 
 		int prevState = currentState;
-		System.out.println(hp);
+		//System.out.println(hp);
 
 		if( !groundJudge ) body.applyLinearImpulse(0.0f, FALL_SPEED, position.x, position.y);	// 落下処理
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少S
