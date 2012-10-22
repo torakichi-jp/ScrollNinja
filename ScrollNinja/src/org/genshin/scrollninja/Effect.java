@@ -84,7 +84,6 @@ public class Effect extends ObJectBase {
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
 	public boolean GetUseFlag(){ return useFlag; }
-	public float GetStateTime(){ return stateTime; }
 
 	//************************************************************
 	// Set
@@ -159,8 +158,9 @@ public class Effect extends ObJectBase {
 	/**************************************************
 	 * 更新処理
 	 ***************************************************/
-	public void Update( boolean use ) {
-		if( use ) {
+	public void Update(boolean use) {
+		useFlag = use;
+		if( useFlag ) {
 
 			nowFrame = animation.getKeyFrame(stateTime, true);
 			stateTime ++;
@@ -181,9 +181,9 @@ public class Effect extends ObJectBase {
 								(PlayerManager.GetPlayer(0).GetDirection() * 5),
 									PlayerManager.GetPlayer(0).GetPosition().y, 0);
 
-			if( stateTime % 18 == 0 ) {
-				useFlag = false;
-			}
+//			if( stateTime % 18 == 0 ) {
+//				useFlag = false;
+//			}
 		}
 
 		// 画面外へ
@@ -192,6 +192,28 @@ public class Effect extends ObJectBase {
 			body.setTransform( -100.0f, -100.0f, 0.0f);
 			position = body.getPosition();
 			sprite.get(0).setPosition(position.x - 100, position.y);
+		}
+	}
+	
+	/**
+	 * スプライトを描画する。
+	 */
+	public void Draw()
+	{
+		if( useFlag ) {
+			Vector2 pos = body.getPosition();
+			float rot = (float) Math.toDegrees(body.getAngle());
+	
+			int count = sprite.size();
+			for (int i = 0; i < count; ++i)
+			{
+				Sprite current = sprite.get(i);
+				// 座標・回転
+				current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
+				current.setRotation(rot);
+				// 描画
+				current.draw(GameMain.spriteBatch);
+			}
 		}
 	}
 

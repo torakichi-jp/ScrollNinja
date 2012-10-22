@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 //***** モノステート *****/
 public class StageManager {
-	private static StageBase	currentStage;			// 現在のステージ
+	private static StageBase	currentStage;		// 現在のステージ
 	private static StageBase	nextStage;			// 次のステージ
 
 	// コンストラクタ

@@ -93,10 +93,6 @@ public class Player extends CharacterBase {
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
 
-	// おそらく使わなくなる変数
-	private int				nowAttack;				// 現在の攻撃方法
-
-
 	//************************************************************
 	// Get
 	// ゲッターまとめ

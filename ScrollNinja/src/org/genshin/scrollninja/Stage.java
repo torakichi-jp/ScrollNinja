@@ -70,7 +70,7 @@ public class Stage implements StageBase {
 			StageObjectManager.Draw();
 			PlayerManager.Draw();
 			EnemyManager.Draw();
-//			EffectManager.GetEffect(PlayerManager.GetPlayer(0).GetWeapon().GetMyEffect());
+			EffectManager.Draw();
 			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
 			GameMain.playerInfo.Draw();
