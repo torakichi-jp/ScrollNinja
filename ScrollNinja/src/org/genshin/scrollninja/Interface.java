@@ -123,12 +123,14 @@ public class Interface {
 						   GameMain.camera.position.y  - 12.8f + (ScrollNinja.window.y * 0.5f * 0.1f));
 		hp.setPosition(scroll.getX() - transrateX, scroll.getY());
 		scrollRight.setPosition(scroll.getX() + 42f - transrateX, scroll.getY() + 0.5f);
+		System.out.println(scrollRight.getX());
+		System.out.println(hp.getX());
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
 		// 位置調整
 		map.setPosition(scroll.getX() + 60.0f, scroll.getY() + -5.0f);
-		System.out.println("h "   + hp.getX());
-		System.out.println("r "   + scrollRight.getX());
+//		System.out.println("h "   + hp.getX());
+//		System.out.println("r "   + scrollRight.getX());
 
 		// HPに変動があれば計算
 		if (calculateHP)
@@ -197,8 +199,8 @@ public class Interface {
 		countHP -= percentHP;
 		calculateHP = false;
 		stopHP = false;
-		System.out.println(countHP);
-		System.out.println(stopHP);
+//		System.out.println(countHP);
+//		System.out.println(stopHP);
 	}
 
 	public void calculateChakra() {

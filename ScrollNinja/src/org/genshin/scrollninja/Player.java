@@ -111,7 +111,7 @@ public class Player extends CharacterBase {
 			return sprite.get(FOOT);
 	}
 	public int GetMaxHP() { return MAX_HP;}
-	public int GetHP() { return hp; };
+	public float GetHP() { return hp; };
 	public int GetNowAttack(){ return nowAttack; }
 
 	/**
