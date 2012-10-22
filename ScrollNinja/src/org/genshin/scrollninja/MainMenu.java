@@ -34,24 +34,17 @@ public class MainMenu implements Screen{
 	private Stage  stage1;					// 最初に呼ばれるステージ
 	private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
-	
-	private int random;
+
 	// 画像座標
 	private int spritePositionX;
 	private final float MOVE_SPEED = 0.5f;	// スクロール時の移動速度
 	private boolean scrollFlag;				// スクロールフラグ
-	private boolean selectMenu;				// 選択したメニュー
 
 	private final static int FADE_MENU = -50;		// 画像移動の終わり座標
 
 	// コンストラクタ
 	public MainMenu(Game game) {
 		this.scrollNinja = game;
-		//stage1				= new Stage();
-		//StageManager.StageTrance(stage1);			// 現在のステージの設定
-		BackgroundManager.CreateBackground(0);		// メインメニューの表示はとりあえずステージ０扱いで
-		nextStageNum = 1;
-
 		/*
 		// アスペクト比によってカメラのビューポイント変更
 		switch (ScroolNinja.aspectRatio) {
@@ -69,11 +62,20 @@ public class MainMenu implements Screen{
 			break;
 		}
 		*/
-
 		// カメラ作成
 		camera = new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		// スプライトバッチ作成
 		spriteBatch = new SpriteBatch();
+
+		//stage1				= new Stage();
+		//StageManager.StageTrance(stage1);			// 現在のステージの設定
+		// とりあえずデモプレイステージは０扱いで
+		nextStageNum = 0;
+
+		// TODO セーブファイル読み込みをしてコンティニューする時のステージを設定
+		// StageManager.StageTrance(stage);
+		// nextStageNum = StageManager.GetNowStage();
+		BackgroundManager.CreateBackground(nextStageNum, false);
 
 		// テクスチャ読み込み
 		try {
@@ -86,8 +88,7 @@ public class MainMenu implements Screen{
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		spritePositionX = -105;
-
-		// 位置は後で要調整
+		// TODO 位置は後で要調整
 		// 選択肢コンテニュー
 		TextureRegion region = new TextureRegion(texture, 0, 0, 256, 35);
 		modeContinue = new Sprite(region);
@@ -126,9 +127,6 @@ public class MainMenu implements Screen{
 
 		// 初期化
 		scrollFlag = false;
-
-		selectMenu = false;
-		
 
 		//System.out.println((int)(Math.random()*10));
 		//System.out.println((int)(Math.random()*10));

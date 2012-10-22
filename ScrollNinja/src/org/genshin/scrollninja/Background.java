@@ -47,20 +47,18 @@ public class Background extends ObJectBase {
 	 *  コンストラクタ
 	 */
 	public Background(){}
-	public Background(int num) {
+	public Background(int num, boolean createFlag) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 		playerPos = new Vector2(0.0f, 0.0f);
-		
+
 
 		bgNum = num;
 		switch(num){
 		case 0:
 			LoadTexture();
-			break;
-		case 1:
-			LoadTexture();
-			createBody();
+			if (createFlag)
+				createBody();
 			break;
 		}
 	}
@@ -69,7 +67,7 @@ public class Background extends ObJectBase {
 	 * @Override
 	 * @param i		スプライト番号
 	 * @param flag	とりあえず付けときました＾ｑ＾
-	 * 
+	 *
 	 * 描画処理
 	 ***************************************************/
 	public void Draw(int i, boolean flag) {
@@ -79,7 +77,7 @@ public class Background extends ObJectBase {
 	/**************************************************
 	 * @Override
 	 * @param i		スプライト番号
-	 * 
+	 *
 	 * 描画処理
 	 ***************************************************/
 	public void Draw(int i) {
@@ -156,7 +154,7 @@ public class Background extends ObJectBase {
 	 ***************************************************/
 	public void update() {
 		// プレイヤーの座標を代入
-		playerPos = PlayerManager.GetPlayer("プレイヤー").body.getPosition();
+		playerPos = PlayerManager.GetPlayer(0).body.getPosition();
 
 		// 近景
 		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
@@ -180,29 +178,29 @@ public class Background extends ObJectBase {
 			sprite.get(FAR).setPosition(sprite.get(FAR).getX(),
 									playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
 	}
-	
+
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
-	
+
 	@Override
 	public void collisionNotify(Player obj, Contact contact) {
-		
+
 	}
-	
+
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Item obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(StageObject obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
 

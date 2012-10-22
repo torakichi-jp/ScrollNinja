@@ -112,7 +112,7 @@ public class Interface {
 		
 		TextureRegion iconRegion = new TextureRegion(icontexture);
 		icon = new Sprite(iconRegion);
-		icon.setOrigin(icon.getWidth() * 0.5f,icon.getHeight() * 0.5f);
+		icon.setOrigin(icon.getWidth() * 0.1f,icon.getHeight() * 0.1f);
 		icon.setScale(0.04f);
 
 
@@ -130,6 +130,8 @@ public class Interface {
 	}
 
 	public void update() {
+		// 描画位置セット
+
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
 		
 		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * 0.1f - 6.4f),
@@ -205,15 +207,22 @@ public class Interface {
 		
 		// アイコン
 		/*icon.setPosition(
-				cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f) - icon.getWidth() * 0.5f ,
-				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f) - icon.getHeight() * 0.5f);
+				cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f) - icon.getWidth() * PlayerManager.GetPlayer(0).GetPosition().x * 0.003f ,
+				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f) - icon.getHeight() *  PlayerManager.GetPlayer(0).GetPosition().x * 0.002f);
 		*/
+		
+		// マップ拡縮　0.01
+		icon.setPosition(cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f),
+				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f));
+		//icon.setPosition(PlayerManager.GetPlayer(0).GetPosition().x * 0.5f , PlayerManager.GetPlayer(0).GetPosition().y * 0.5f);
+		
+	
 	}
 
 	public void calculateHP() {
 		countHP = percentHP;
 		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 		// 現在の割合を取得
 		percentHP = (float)player.GetHP() / (float)player.GetMaxHP();
 		// いくつ減らすか計算
@@ -225,7 +234,7 @@ public class Interface {
 	public void calculateChakra() {
 		countChakra = percentChakra;
 		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 		// 現在の割合を取得
 		percentChakra = (float)player.GetChakra() / (float)player.GetMaxChakra();
 		// いくつ減らすか計算
