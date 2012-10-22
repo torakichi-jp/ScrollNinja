@@ -61,7 +61,7 @@ public class Stage implements StageBase {
 			StageObjectManager.Draw();
 			PlayerManager.Draw();
 			EnemyManager.Draw();
-//			EffectManager.GetEffect(PlayerManager.GetPlayer(0).GetWeapon().GetMyEffect());
+			EffectManager.Draw();
 			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
 			GameMain.playerInfo.Draw();
@@ -148,7 +148,6 @@ public class Stage implements StageBase {
 		PlayerManager.CreatePlayer( 0.0f, 0.0f );
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
 		EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
-		EffectManager.CreateEffect(Effect.FIRE_2);
 	}
 
 	@Override

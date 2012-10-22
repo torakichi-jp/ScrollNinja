@@ -16,6 +16,12 @@ public class EffectManager {
 	// コンストラクタ
 	private EffectManager(){}
 	
+	public static void Draw() {
+		for( int i = 0; i < effectList.size(); i ++ ) {
+			effectList.get(i).Draw();
+		}
+	}
+	
 	// エフェクトの生成
 	public static void CreateEffect(int Type) {
 		Effect pEffect = new Effect(Type);	// オブジェクトを生成（&初期化）して

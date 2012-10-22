@@ -9,9 +9,9 @@ public class Main {
 		cfg.title = "ScrollNinja";
 		cfg.useGL20 = false;
 
-		cfg.width = 800;
-		cfg.height = 600;
+		cfg.width = 1280;
+		cfg.height = 720;
 
 		new LwjglApplication(new ScrollNinja(), cfg);
-	}	
+	}
 }

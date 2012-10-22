@@ -2,10 +2,14 @@ package org.genshin.scrollninja;
 
 import com.badlogic.gdx.math.Vector2;
 
+// *メモ*
+// なんか色々違うかもしれません…
+
 public class WeaponBase extends ObJectBase {
 	
 	// 迷ってるもの
 	protected int			level;			// レベル
+	protected int 			stateTime;		// 武器とエフェクトは同期する？のでここに
 	
 	// おそらく必要なもの
 	protected int			attackNum;		// 攻撃力
@@ -27,4 +31,5 @@ public class WeaponBase extends ObJectBase {
 	 */
 	public boolean GetUseFlag() { return use; }
 	public Effect GetMyEffect(){ return myEffect; }
+	public int GetStateTime(){ return stateTime; }
 }

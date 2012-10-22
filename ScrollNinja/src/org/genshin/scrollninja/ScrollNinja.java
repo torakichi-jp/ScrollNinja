@@ -3,6 +3,8 @@ package org.genshin.scrollninja;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.JOptionPane;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -44,15 +46,16 @@ public class ScrollNinja extends Game {
 	public void getWindowSize() {
 		window = new Vector2();
 
-		// フルスクリーンかどうか
-		if (!FULL_SCREEN) {
-			window.x = Gdx.graphics.getWidth();
-			window.y = Gdx.graphics.getHeight();
-		}
-		else {
-			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-			window.x = (float)d.width;
-			window.y = (float)d.height;
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+			
+		// ゲームのサイズ
+		window.x = 1280;
+		window.y = 720;
+			
+		int message = JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "", JOptionPane.YES_NO_OPTION);
+		if(message == JOptionPane.OK_OPTION) {
+			// 自分のPCのウインドウサイズ
+			Gdx.graphics.setDisplayMode((int)d.getWidth(), (int)d.getHeight(), true);
 		}
 	}
 
