@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 //***** モノステート *****/
 public class StageManager {
-	private static StageBase	nowStage;			// 現在のステージ
+	private static StageBase	currentStage;			// 現在のステージ
 	private static StageBase	nextStage;			// 次のステージ
 
 	// コンストラクタ
@@ -23,7 +23,7 @@ public class StageManager {
 	// 現在のステージの更新処理
 	//************************************************************
 	public static void Update() {
-		nowStage.Update();
+		currentStage.Update();
 	}
 	
 	//************************************************************
@@ -31,18 +31,18 @@ public class StageManager {
 	// 現在のステージの描画処理
 	//************************************************************
 	public static void Draw() {
-		nowStage.Draw();
+		currentStage.Draw();
 	}
 
 	//************************************************************
-	// StageTrance
+	// ChangeStage
 	// ステージ遷移
 	//************************************************************
-	public static void StageTrance(StageBase stage) {
-		nowStage = stage;
+	public static void ChangeStage(StageBase stage) {
+		currentStage = stage;
 	}
 	
 	public static StageBase GetNowStage() {
-		return nowStage;
+		return currentStage;
 	}
 }

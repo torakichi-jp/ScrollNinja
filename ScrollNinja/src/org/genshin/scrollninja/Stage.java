@@ -32,12 +32,9 @@ public class Stage implements StageBase {
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update();
 		BackgroundManager.GetBackground(stageNum).update();
+		WeaponManager.Update();
 		PlayerManager.Update();
 		ItemManager.Update();
-
-		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
-			EffectManager.GetEffectForLoop(i).Update();
-		}
 
 		if( EnemyManager.normalEnemyList.size() == 0) {
 			EnemyManager.CreateEnemy(Enemy.NORMAL, 0.0f, 0.0f);
@@ -64,7 +61,7 @@ public class Stage implements StageBase {
 			StageObjectManager.Draw();
 			PlayerManager.Draw();
 			EnemyManager.Draw();
-			EffectManager.GetEffect(PlayerManager.GetPlayer(0).GetNowAttack()).Draw();
+//			EffectManager.GetEffect(PlayerManager.GetPlayer(0).GetWeapon().GetMyEffect());
 			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
 			GameMain.playerInfo.Draw();
@@ -151,6 +148,7 @@ public class Stage implements StageBase {
 		PlayerManager.CreatePlayer( 0.0f, 0.0f );
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
 		EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
+		EffectManager.CreateEffect(Effect.FIRE_2);
 	}
 
 	@Override
