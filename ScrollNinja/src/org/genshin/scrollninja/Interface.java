@@ -107,15 +107,13 @@ public class Interface {
 		// ポーズ終了
 		TextureRegion pauseRegion = new TextureRegion(pausetexture);
 		quitPause = new Sprite(pauseRegion);
-		quitPause.setOrigin(scrollRight.getX(),scrollRight.getY());
+		quitPause.setOrigin(quitPause.getWidth() * 0.5f, quitPause.getHeight() * 0.5f);
+		quitPause.setScale(0.1f);
 		
 		TextureRegion iconRegion = new TextureRegion(icontexture);
 		icon = new Sprite(iconRegion);
-		icon.setOrigin(scrollRight.getX(),scrollRight.getY());
+		icon.setOrigin(icon.getWidth() * 0.5f,icon.getHeight() * 0.5f);
 		icon.setScale(0.04f);
-
-		quitPause.setOrigin(quitPause.getWidth() * 0.5f, quitPause.getHeight() * 0.5f);
-		quitPause.setScale(0.1f);
 
 
 		// 最初の設定；
@@ -133,6 +131,7 @@ public class Interface {
 
 	public void update() {
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
+		
 		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * 0.1f - 6.4f),
 										cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * 0.1f -6.4f));
 		hp.setPosition(cameraPosition.x - 256 - (ScrollNinja.window.x * 0.5f * 0.1f - 25.6f) - transrateX,
@@ -205,8 +204,10 @@ public class Interface {
 		Map();
 		
 		// アイコン
-		icon.setPosition((scroll.getX() + 68) + (player.position.x * 0.087f), 
-				(scroll.getY() + 3) + (player.position.y * 0.085f));
+		/*icon.setPosition(
+				cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f) - icon.getWidth() * 0.5f ,
+				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f) - icon.getHeight() * 0.5f);
+		*/
 	}
 
 	public void calculateHP() {
