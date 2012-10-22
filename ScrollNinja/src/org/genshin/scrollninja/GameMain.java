@@ -53,7 +53,7 @@ public class GameMain implements Screen{
 	// コンストラクタ
 	public GameMain(Game game, int stageNum) {
 		ScrollNinjya		= game;
-		world				= new World(new Vector2(0, -20.0f), true);
+		world				= new World(new Vector2(0, -100.0f), true);
 		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
 		spriteBatch 		= new SpriteBatch();
 		stage				= new Stage();

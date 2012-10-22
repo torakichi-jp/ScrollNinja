@@ -16,13 +16,13 @@ import com.badlogic.gdx.physics.box2d.World;
 // クラス宣言
 //========================================
 public abstract class ObJectBase {
-	protected ArrayList<Sprite> 	sprite;			// スプライト
+	protected ArrayList<Sprite> 	sprite;		// スプライト			TODO 変数名変更する。
 	protected Body 					body;			// 当たり判定用BOX
-	protected ArrayList<Fixture> 	sensor;			// センサー
+	protected ArrayList<Fixture> 	sensor;		// センサー				TODO 変数名変更する。
 
 	/**
 	 * コンストラクタ
-	 * 将来的には引数にWorldを投げて初期化させる？
+	 * TODO 将来的には引数にWorldを投げて初期化させる？
 	 */
 	ObJectBase(){}
 
@@ -69,22 +69,64 @@ public abstract class ObJectBase {
 	 */
 	protected void collisionDispatch(ObJectBase obj, Contact contact)
 	{
-		// TODO いずれ抽象メソッド化する。
+		// FIXME いずれ抽象メソッド化する。
 	}
 
 	/**
-	 * 衝突を通知する。
-	 * @param obj		衝突したオブジェクト
+	 * 背景との衝突を通知する。
+	 * @param obj			衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
 	protected void collisionNotify(Background obj, Contact contact){}
+
+	/**
+	 * プレイヤーとの衝突を通知する。
+	 * @param obj		衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
 	protected void collisionNotify(Player obj, Contact contact){}
+
+	/**
+	 * 敵との衝突を通知する。
+	 * @param obj			衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
 	protected void collisionNotify(Enemy obj, Contact contact){}
+
+	/**
+	 * エフェクトとの衝突を通知する。
+	 * TODO 「エフェクトと衝突する」って捉え方はなんかおかしい気がする
+	 * @param obj			衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
 	protected void collisionNotify(Effect obj, Contact contact){}
+
+	/**
+	 * アイテムとの衝突を通知する。
+	 * @param obj		衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
 	protected void collisionNotify(Item obj, Contact contact){}
+
+	/**
+	 * ステージオブジェクトとの衝突を通知する。
+	 * @param obj			衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
 	protected void collisionNotify(StageObject obj, Contact contact){}
+
+	/**
+	 * 武器との衝突を通知する。
+	 * @param obj			衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
 	protected void collisionNotify(Weapon obj, Contact contact){}
 
+	/**
+	 * スプライト反転フラグを設定する。
+	 * @param x		x方向の反転フラグ
+	 * @param y		y方向の反転フラグ
+	 */
 	protected void flip(boolean x, boolean y)
 	{
 		int count = sprite.size();
