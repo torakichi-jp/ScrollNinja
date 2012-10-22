@@ -52,7 +52,7 @@ public class ScrollNinja extends Game {
 		window.x = 1280;
 		window.y = 720;
 			
-		int message = JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "", JOptionPane.YES_NO_OPTION);
+		int message = JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "test", JOptionPane.YES_NO_OPTION);
 		if(message == JOptionPane.OK_OPTION) {
 			// 自分のPCのウインドウサイズ
 			Gdx.graphics.setDisplayMode((int)d.getWidth(), (int)d.getHeight(), true);
