@@ -42,6 +42,10 @@ public class Interface {
 	private boolean stopHP;
 
 	private boolean pauseFlag;			// ポーズフラグ
+	
+	private final static float ICONPOSITIONX = 0.155f;
+	private final static float ICONPOSITIONY = 0.28f;
+	private final static float ICONSCROLL    = 0.095f;
 
 	// コンストラクタ
 	public Interface() {
@@ -112,7 +116,7 @@ public class Interface {
 		
 		TextureRegion iconRegion = new TextureRegion(icontexture);
 		icon = new Sprite(iconRegion);
-		icon.setOrigin(icon.getWidth() * 0.1f,icon.getHeight() * 0.1f);
+		icon.setOrigin(icon.getWidth() * 0.5f,icon.getHeight() * 0.5f);
 		icon.setScale(0.04f);
 
 
@@ -206,17 +210,14 @@ public class Interface {
 		Map();
 		
 		// アイコン
-		/*icon.setPosition(
-				cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f) - icon.getWidth() * PlayerManager.GetPlayer(0).GetPosition().x * 0.003f ,
-				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f) - icon.getHeight() *  PlayerManager.GetPlayer(0).GetPosition().x * 0.002f);
-		*/
+		//icon.setPosition(PlayerManager.GetPlayer(0).GetPosition().x * 0.6f,PlayerManager.GetPlayer(0).GetPosition().y - 10);
 		
-		// マップ拡縮　0.01
-		icon.setPosition(cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f),
-				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f));
-		//icon.setPosition(PlayerManager.GetPlayer(0).GetPosition().x * 0.5f , PlayerManager.GetPlayer(0).GetPosition().y * 0.5f);
-		
-	
+		if(!pauseFlag) {
+		icon.setPosition( cameraPosition.x - icon.getWidth() * ICONPOSITIONX + PlayerManager.GetPlayer(0).GetPosition().x * ICONSCROLL 
+							+ (ScrollNinja.window.x * 0.5f * 0.02f) - icon.getWidth() * 0.5f * 0.01f,
+							cameraPosition.y - icon.getHeight() * ICONPOSITIONY + PlayerManager.GetPlayer(0).GetPosition().y * ICONSCROLL
+							+ (ScrollNinja.window.y * 0.5f * 0.02f) - icon.getHeight() * 0.5f * 0.01f);
+		}
 	}
 
 	public void calculateHP() {
@@ -259,17 +260,19 @@ public class Interface {
 		}
 
 		if(pauseFlag) {
-			map.setScale(0.05f);
+			map.setScale(0.04f);
 			/*
 			 * マップの絵ができたら座標など変更する
 			 * (512*512)
 			 * */
 			map.setPosition(GameMain.camera.position.x - map.getWidth() * 0.5f,
-					GameMain.camera.position.y - map.getHeight() * 0.5f);
+					GameMain.camera.position.y - map.getHeight() * 0.502f);
 			quitPause.setPosition(GameMain.camera.position.x - quitPause.getWidth() * 0.5f +
 									ScrollNinja.window.x * 0.5f * 0.1f - quitPause.getWidth() * 0.5f * 0.1f,
 					GameMain.camera.position.y - quitPause.getHeight() * 0.5f +
 									ScrollNinja.window.y * 0.5f * 0.1f - quitPause.getHeight() * 0.5f * 0.1f);
+			
+			icon.setPosition(PlayerManager.GetPlayer(0).position.x,PlayerManager.GetPlayer(0).position.y);
 
 			// ゲーム進行をストップ
 			GameMain.gameState = GameMain.GAME_PAUSED;
@@ -291,11 +294,18 @@ public class Interface {
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
 		map.draw(GameMain.spriteBatch);
-
-		if(pauseFlag)
+		
+		
+		if(pauseFlag) {
 			quitPause.draw(GameMain.spriteBatch);
-		else {
+			icon.setScale(0.1f);
 			icon.draw(GameMain.spriteBatch);
 		}
+		else{
+			icon.setScale(0.04f);
+			icon.draw(GameMain.spriteBatch);
+		}
+
+		
 	}
 }
