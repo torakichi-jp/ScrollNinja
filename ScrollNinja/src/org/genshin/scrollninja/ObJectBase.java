@@ -37,12 +37,6 @@ public abstract class ObJectBase {
 	}
 
 	/**
-	 * オブジェクトを更新する。
-	 * @param world	ワールドオブジェクト。多分そのうち消す。
-	 */
-	public void Update(World world){}
-
-	/**
 	 * スプライトを描画する。
 	 */
 	public void Draw()
