@@ -157,7 +157,5 @@ public class GameMain implements Screen{
 
 	@Override
 	public void dispose() {
-		spriteBatch.dispose();
-		this.dispose();
 	}
 }

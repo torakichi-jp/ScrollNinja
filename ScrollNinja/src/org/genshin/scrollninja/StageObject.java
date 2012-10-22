@@ -61,7 +61,7 @@ public class StageObject extends ObJectBase {
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 			sprite.add(new Sprite(tmpRegion));
 			sprite.get(0).setOrigin(0.0f, 0.0f);
-			sprite.get(0).setScale(0.1f);
+			sprite.get(0).setScale(ScrollNinja.scale);
 
 			// 当たり判定読み込み
 			BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/stageObject.json"));
@@ -79,7 +79,7 @@ public class StageObject extends ObJectBase {
 			body = GameMain.world.createBody(bd);
 
 			// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-			loader.attachFixture(body, "gravestone", fd, sprite.get(0).getWidth() * 0.1f);
+			loader.attachFixture(body, "gravestone", fd, sprite.get(0).getWidth() * ScrollNinja.scale);
 			body.setTransform(200, 50, 0);
 
 			break;

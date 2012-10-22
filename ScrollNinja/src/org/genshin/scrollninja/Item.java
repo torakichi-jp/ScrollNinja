@@ -25,16 +25,16 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // 当たり判定が二重になっているとき（地面とプレイヤー同時HITとか）にうまく削除が出来ないので削除フラグ追加
 
 public class Item extends ObJectBase {
-	
+
 	//========================================
 	// 定数宣言
 	// アイテムの種類
 	//========================================
 	public final static int		ONIGIRI		= 0;
 	public final static int		OKANE		= 1;
-	
+
 	private final static float JUMP_POWER	=  20.0f;	// ジャンプ加速度
-	
+
 	// 変数宣言
 	private int 		number;				// アイテム番号
 	private int 		type;				// アイテムの種類
@@ -44,7 +44,7 @@ public class Item extends ObJectBase {
 	private Vector2 	velocity;			// 移動用速度
 	private boolean		deleteFlag;			// 削除フラグ
 	private boolean		groundJudge;
-	
+
 	// コンストラクタ
 	public Item(int Type, int num, float x,  float y) {
 		sprite			= new ArrayList<Sprite>();
@@ -56,11 +56,11 @@ public class Item extends ObJectBase {
 		appear			= true;
 		deleteFlag		= false;
 		survivalTime	= 600;
-		
+
 		Create();
 		sensor.get(0).setUserData(this);
 	}
-	
+
 	//************************************************************
 	// Create
 	// アイテム生成
@@ -73,8 +73,8 @@ public class Item extends ObJectBase {
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 32, 32);
 			sprite.add(new Sprite(tmpRegion));
 			sprite.get(0).setPosition(-sprite.get(0).getWidth() * 0.5f, -sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(0.1f);
-			
+			sprite.get(0).setScale(ScrollNinja.scale);
+
 			BodyDef def	= new BodyDef();
 			def.type	= BodyType.DynamicBody;		// 動く物体
 			body = GameMain.world.createBody(def);
@@ -101,38 +101,38 @@ public class Item extends ObJectBase {
 			break;
 		}
 	}
-	
+
 	//************************************************************
 	// Update
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
-		
+
 		System.out.println(survivalTime);
-		
+
 		survivalTime --;			// 生存時間減少
-		
+
 		if( survivalTime <= 0 ) {
 			deleteFlag = true;
 		}
-		
+
 		if(deleteFlag) {
 			ItemManager.DeleteItem(this);
 			return;
 		}
-		
+
 		position = body.getPosition();
 		body.setTransform(position ,0);
-		
+
 		sprite.get(0).setPosition(position.x - 16, position.y - 16);
 		sprite.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
-		
+
 		Appear();
 		Flashing();
-		
+
 		groundJudge = false;
 	}
-	
+
 	/**
 	 * アイテム出現時の動き
 	 */
@@ -145,7 +145,7 @@ public class Item extends ObJectBase {
 			if( !groundJudge ) {
 				body.setLinearVelocity(velocity);
 				velocity.y -= 0.5f;
-				
+
 				if( velocity.y < -20.0f ) {
 					velocity.y = -20.0f;
 				}
@@ -156,7 +156,7 @@ public class Item extends ObJectBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * 点滅処理
 	 */
@@ -170,7 +170,7 @@ public class Item extends ObJectBase {
 				sprite.get(0).setColor(1, 1, 1, 1);
 			}
 		}
-		
+
 		// まぁ早め
 		else if( survivalTime < 180 ) {
 			if( survivalTime % 30 > 15 ) {
@@ -180,7 +180,7 @@ public class Item extends ObJectBase {
 				sprite.get(0).setColor(1, 1, 1, 1);
 			}
 		}
-		
+
 		// 普通
 		else if( survivalTime < 300 ) {
 			if( survivalTime % 60 > 30 ) {
@@ -191,44 +191,44 @@ public class Item extends ObJectBase {
 			}
 		}
 	}
-	
+
 	//************************************************************
 	// GetEffect
 	// プレイヤーがアイテムを取った時のエフェクト処理
 	//************************************************************
 	public void GetEffect() {
 	}
-	
+
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
-	
+
 	@Override
 	public void collisionNotify(Background obj, Contact contact){
 		groundJudge = true;
 	}
-	
+
 	@Override
 	public void collisionNotify(Player obj, Contact contact){
 		deleteFlag = true;
 	}
-	
+
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Item obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(StageObject obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
-	
+
 	//************************************************************
 	// Get
 	// ゲッターまとめ
@@ -242,5 +242,5 @@ public class Item extends ObJectBase {
 	// セッターまとめ
 	//************************************************************
 	public void SetNum(int num){ number = num; }
-	
+
 }

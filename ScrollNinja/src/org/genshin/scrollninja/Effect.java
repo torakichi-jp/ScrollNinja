@@ -128,7 +128,7 @@ public class Effect extends ObJectBase {
 			// スプライトに反映
 			sprite.add(new Sprite(region));
 			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(0.1f);
+			sprite.get(0).setScale(ScrollNinja.scale);
 
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -169,9 +169,10 @@ public class Effect extends ObJectBase {
 									PlayerManager.GetPlayer(0).GetPosition().y, 0);
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
-			sprite.get(0).setPosition(position.x - 64 - (1 * PlayerManager.GetPlayer(0).GetDirection()),
-								position.y - 64 + 1);
-			sprite.get(0).setScale(-PlayerManager.GetPlayer(0).GetDirection() * 0.1f, 0.1f);
+			sprite.get(0).setPosition
+					(position.x - 64 - (1 * PlayerManager.GetPlayer(0).GetDirection()), position.y - 64 + 1);
+			sprite.get(0).setScale
+					(-PlayerManager.GetPlayer(0).GetDirection() * ScrollNinja.scale, ScrollNinja.scale);
 			sprite.get(0).setRegion(nowFrame);
 
 			animation();
@@ -184,7 +185,6 @@ public class Effect extends ObJectBase {
 //				useFlag = false;
 //			}
 		}
-
 		// 画面外へ
 		else {
 			stateTime = 0;

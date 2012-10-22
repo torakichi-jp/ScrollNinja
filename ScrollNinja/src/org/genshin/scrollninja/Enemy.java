@@ -46,7 +46,7 @@ public class Enemy extends CharacterBase {
 
 	// 手裏剣所持数
 	private final int MAX_SYURIKEN	= 10;
-	private final int INTERVAL		= 60;
+	private final int INTERVAL		= 90;
 
 	// 速度
 	private final float WALK_SPEED	=  15f;		// 通常の歩く速度
@@ -86,11 +86,11 @@ public class Enemy extends CharacterBase {
 		enemyType			= type;
 		number				= num;
 		this.position		= position;
-		direction			= LEFT;
+		direction			= RIGHT;
 		hp					= 100;
 		speed				= 0;
 		invincibleTime		= 0;
-		attackInterval		= 0;
+		attackInterval		= INTERVAL;
 		velocity			= new Vector2(0, 0);
 		wanderingPosition	= new Vector2(position);
 
@@ -219,7 +219,7 @@ public class Enemy extends CharacterBase {
 			// スプライトに反映
 			sprite.add(new Sprite(region));
 			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(0.1f, 0.1f);
+			sprite.get(0).setScale(ScrollNinja.scale);
 
 			// アニメーション
 			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
@@ -284,14 +284,13 @@ public class Enemy extends CharacterBase {
 		if(!chase) {
 			// 右端まで到達
 			if(position.x > wanderingPosition.x + 20) {
-				sprite.get(0).setScale(0.1f, 0.1f);
 				direction = LEFT;
 			}
 			// 左端まで到達
 			if(position.x < wanderingPosition.x - 20) {
-				sprite.get(0).setScale(-0.1f, 0.1f);
 				direction = RIGHT;
 			}
+			sprite.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
 			body.setLinearVelocity(WALK_SPEED * direction, GRAVITY);
 		}
 	}
@@ -321,16 +320,14 @@ public class Enemy extends CharacterBase {
 		if (chase) {
 			// プレイヤーのX座標が敵のX座標より右にあるとき
 			if(player.body.getPosition().x > position.x) {
-				sprite.get(0).setScale(-0.1f, 0.1f);
 				direction = RIGHT;
-				body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
 			}
 			// 左にいる時
 			if(player.body.getPosition().x < position.x) {
-				sprite.get(0).setScale(0.1f, 0.1f);
 				direction = LEFT;
-				body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
 			}
+			sprite.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
+			body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
 		}
 
 		// すぐ近くにプレイヤーがきた時

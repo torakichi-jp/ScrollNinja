@@ -29,12 +29,11 @@ public class PlayerManager {
 
 	/**
 	 * プレイヤー生成
-	 * @param x		初期座標X
-	 * @param y		初期座標Y
+	 * @param position	初期座標
 	 */
 	public static void CreatePlayer(Vector2 position) {
 		// 生成した順に管理番号付与
-		Player pPlayer = new Player(playerList.size() + 1);
+		Player pPlayer = new Player(playerList.size() + 1, position);
 		playerList.add(pPlayer);						// 追加
 	}
 

@@ -12,11 +12,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.WorldManifold;
 
 // 制作メモ
@@ -48,12 +48,12 @@ import com.badlogic.gdx.physics.box2d.WorldManifold;
 //========================================
 public class Player extends CharacterBase {
 	// 定数宣言
-	private static final float RUN_MAX_VEL		= 30.0f;	// 走りの最高速度
-	private static final float DASH_MAX_VEL		= 30.0f;	// ダッシュの最高速度
-	private static final float RUN_ACCEL		= 10.0f;	// 走りの加速度
+	private static final float RUN_MAX_VEL		= 20.0f;	// 走りの最高速度
+	private static final float DASH_MAX_VEL	= 40.0f;	// ダッシュの最高速度
+	private static final float RUN_ACCEL		= 5.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
 	private static final float JUMP_POWER		= 50.0f;	// ジャンプ加速度
-	private static final float FALL_SPEED		= -1.0f;	// 落下加速度
+//	private static final float FALL_SPEED		= -1.0f;	// 落下加速度
 
 	private static final int FOOT	= 0;
 	private static final int BODY	= 1;
@@ -72,9 +72,9 @@ public class Player extends CharacterBase {
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
 	private int				maxChakra;				// チャクラ最大値
-	private int				chakra;					// チャクラ
+	private int				chakra;				// チャクラ
 	private int				count;					// カウント用変数
-	private int				invincibleTime;			// 無敵時間
+	private int				invincibleTime;		// 無敵時間
 	private float			stateTime;
 	private boolean			jump;					// ジャンプフラグ
 	private boolean			groundJudge;			// 地面と当たってますよフラグ
@@ -112,9 +112,10 @@ public class Player extends CharacterBase {
 
 	/**
 	 * コンストラクタ
-	 * @param Name		名前
+	 * @param Number	管理番号
+	 * @param position	初期座標
 	 */
-	public Player(int Number) {
+	public Player(int Number, Vector2 position) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 
@@ -122,13 +123,13 @@ public class Player extends CharacterBase {
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DynamicBody;
 		body = GameMain.world.createBody(bd);
-		body.setBullet(true);					// すり抜けない
-		body.setFixedRotation(true);			// 回転しない
-		body.setTransform(0.0f, 3.0f, 0.0f);	// TODO プレイヤーの初期座標はクラス外から指定するハズ。
+		body.setBullet(true);								// すり抜けない
+		body.setFixedRotation(true);						// 回転しない
+		body.setTransform(position.x, position.y, 0.0f);
 
 		// fixture生成
 		PolygonShape poly = new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f);
+		poly.setAsBox(1.6f, 2.4f, new Vector2(0.0f, 1.6f), 0.0f);
 
 		FixtureDef fd = new FixtureDef();
 		fd.density			= 0.0f;	// 密度
@@ -136,8 +137,19 @@ public class Player extends CharacterBase {
 		fd.restitution	= 0.0f;	// 反発
 		fd.shape			= poly;	// 形状
 
-		sensor.add( body.createFixture(fd) );
+		Fixture bodyFixture = body.createFixture(fd);
+		bodyFixture.setUserData(this);
 		poly.dispose();
+
+		CircleShape circle = new CircleShape();
+		circle.setRadius(1.6f);
+		fd.shape = circle;
+		Fixture footFixture = body.createFixture(fd);
+		footFixture.setUserData(this);
+		circle.dispose();
+
+		sensor.add(footFixture);
+		sensor.add(bodyFixture);
 
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
@@ -171,15 +183,14 @@ public class Player extends CharacterBase {
 		// （※現在は用意されていないので歩きの第１フレームで代用）
 		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
 		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f);
-		footSprite.setScale(0.1f);
-		sprite.add(FOOT, footSprite);
+		footSprite.setScale(ScrollNinja.scale);
 
 		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
 		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f);
-		bodySprite.setScale(0.1f);
-		sprite.add(BODY, bodySprite);
+		bodySprite.setScale(ScrollNinja.scale);
 
-
+		sprite.add(footSprite);
+		sprite.add(bodySprite);
 
 		// 一番最初の表示　現在は歩きで代用
 		nowFrame = walkAnimation.getKeyFrame(0, true);
@@ -207,9 +218,10 @@ public class Player extends CharacterBase {
 		sprite.get(FOOT).setRegion(nowFootFrame);
 
 		int prevState = currentState;
-		//System.out.println(hp);
 
-		if( !groundJudge ) body.applyLinearImpulse(0.0f, FALL_SPEED, position.x, position.y);	// 落下処理
+//		落下処理はworldの重力に任せるべき。加速度が弱いのであれば、それはworldの重力が弱いんだ。
+//		if( !groundJudge ) body.applyLinearImpulse(0.0f, FALL_SPEED, position.x, position.y);	// 落下処理
+
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少S
 		if( count > 0 ) count --;						// アニメーションカウントの減少
 
@@ -225,7 +237,7 @@ public class Player extends CharacterBase {
 		animation();		// アニメーション処理（これ最後で）
 
 		// 画像反転処理
-		if(direction == RIGHT) flip(true, false); else flip(false, false);
+		flip(direction==RIGHT, false);
 //		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 
 		position = body.getPosition();
@@ -259,6 +271,10 @@ public class Player extends CharacterBase {
 				body.applyLinearImpulse(0.0f, JUMP_POWER, position.x, position.y);
 			}
 		}
+		else
+		{
+			nearRotate(0);
+		}
 
 		// ジャンプ中の処理
 		if( jump ) {
@@ -272,6 +288,8 @@ public class Player extends CharacterBase {
 	 * 左右で移動
 	 */
 	private void Move() {
+		// TODO 斜面でも速度が落ちないようにしたい。
+
 		// 速度制限
 		Vector2 vel = body.getLinearVelocity();
 		if( Math.abs(vel.x) > RUN_MAX_VEL ) {
@@ -393,6 +411,10 @@ public class Player extends CharacterBase {
 	 * 地面との当たり判定
 	 */
 	public void collisionNotify(Background obj, Contact contact) {
+		Fixture footFixture = sensor.get(FOOT);
+		if(contact.getFixtureA()!=footFixture && contact.getFixtureB()!=footFixture)
+			return;
+
 		jump = false;
 
 		if( currentState != ATTACK ) {
@@ -402,38 +424,15 @@ public class Player extends CharacterBase {
 
 		groundJudge = true;
 
-		// まだ作ってる途中なんだよ、こっちくんな
-//		return;
-		/*
-		// TODO プレイヤーと地形の衝突処理
+		// 壁走り
 		WorldManifold manifold = contact.getWorldManifold();
-		int count = manifold.getNumberOfContactPoints();
 
-		boolean below = true;
-		for(int i = 0;  i < count;  ++i)
-		{
-			below &= (manifold.getPoints()[i].y < pos.y - 1.5f);
-		}
-		*/
+		Vector2 normal = manifold.getNormal();
+		float normalAngle = normal.angle();
+		float targetAngle = normalAngle - 90;
+
+		nearRotate(targetAngle);
 	}
-
-	/**
-	 * @Override
-	 *
-	 */
-	public void collisionNotify(Player obj, Contact contact){}
-
-	/**
-	 * @Override
-	 * 敵と当たった時の処理
-	 */
-	public void collisionNotify(Enemy obj, Contact contact){}
-
-	/**
-	 * @Override
-	 *
-	 */
-	public void collisionNotify(Effect obj, Contact contact){}
 
 	/**
 	 * @Override
@@ -454,17 +453,41 @@ public class Player extends CharacterBase {
 	}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){}
-
-	@Override
 	public void collisionNotify(Weapon obj, Contact contact){
 		if( invincibleTime == 0 ) {
 			invincibleTime = 120;		// 無敵時間付与
-			hp -= 10;
+			hp -= obj.GetAttackNum();
 			Interface.calculateHP = true;
 		}
 		if( hp <= 0 ) {
+			// TODO ゲームオーバー処理へ
 			hp = 100;
+		}
+	}
+
+
+	private void nearRotate(float degree)
+	{
+		boolean useRadian = false;
+		if(useRadian)
+		{
+			float radian = (float)Math.toRadians(degree);
+
+			radian -= Math.PI*0.5f;
+			radian = (float)( Math.abs(radian) % (Math.PI*2.0f) * Math.signum(radian) );
+			if(Math.abs(radian) > Math.PI)
+				radian = (float)( radian - Math.signum(radian) * Math.PI );
+
+			body.setAngularVelocity(radian*10);
+		}
+		else
+		{
+			degree -= (float)Math.toDegrees(body.getAngle());
+			degree = Math.abs(degree) % 360 * Math.signum(degree);		// -360～360に丸める
+			if(Math.abs(degree) > 180)	degree = degree - Math.signum(degree) * 360;	// -180～180に丸める
+
+			float angularVel = (float)Math.toRadians(degree);
+			body.setAngularVelocity(angularVel*10);
 		}
 	}
 }

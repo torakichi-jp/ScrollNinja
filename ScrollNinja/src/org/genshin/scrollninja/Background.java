@@ -146,7 +146,7 @@ public class Background extends ObJectBase {
 
 		// ボディ作成
 		body = GameMain.world.createBody(bd);
-		loader.attachFixture( body, "bgTest", fd, sprite.get(1).getWidth() * ScrollNinja.scale);
+		loader.attachFixture( body, "bgTest", fd, sprite.get(MAIN).getWidth() * ScrollNinja.scale);
 
 		for(int i = 0; i < body.getFixtureList().size(); i ++) {
 			sensor.add(body.getFixtureList().get(i));
@@ -162,27 +162,27 @@ public class Background extends ObJectBase {
 		playerPos = PlayerManager.GetPlayer(0).body.getPosition();
 
 		// 近景
-		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
-						&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
+		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
+			&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
 			sprite.get(NEAR).setPosition
 						(-sprite.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f, sprite.get(NEAR).getY());
 		// TODO 要調整
 		// 1333は実際の画像のサイズ　20は適当
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
-		if (playerPos.y > -(1333 - ScrollNinja.window.y) * 0.5  * 0.1 && playerPos.y < 20)
+		if (playerPos.y > -(1333 - ScrollNinja.window.y) * 0.5  * ScrollNinja.scale && playerPos.y < 20)
 			sprite.get(NEAR).setPosition
 					(sprite.get(NEAR).getX(), -sprite.get(NEAR).getHeight() * 0.5f -11.05f + playerPos.y);
 
 		// 遠景
-		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
-						&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
+		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
+			&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
 			sprite.get(FAR).setPosition
 				(playerPos.x - (sprite.get(FAR).getWidth() * 0.5f)+ (playerPos.x * -0.05f),
 						sprite.get(FAR).getY());
 		// TODO 要調整
 		// 1333は実際のサイズ
-		if (playerPos.y > -(sprite.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * 0.1
-												&& playerPos.y < (1333 - ScrollNinja.window.y) * 0.5 * 0.1)
+		if (playerPos.y > -(sprite.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale
+								&& playerPos.y < (1333 - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale)
 			sprite.get(FAR).setPosition(sprite.get(FAR).getX(),
 								playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
 	}

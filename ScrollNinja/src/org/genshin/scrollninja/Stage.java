@@ -44,10 +44,9 @@ public class Stage implements StageBase {
 				for (int j = 0; j < StageDataList.list.get(stageNum).enemyNum.get(i); j++) {
 					EnemyManager.CreateEnemy(StageDataList.list.get(stageNum).enemyType.get(i),
 										 StageDataList.list.get(stageNum).enemyPosition.get((i+1)*(j+1)-1));
-			}
+				}
 			}
 		}
-
 
 		updateCamera();
 		GameMain.playerInfo.update();
@@ -63,7 +62,7 @@ public class Stage implements StageBase {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
-		GameMain.spriteBatch.begin();									// 描画開始
+		GameMain.spriteBatch.begin();											// 描画開始
 		{
 			BackgroundManager.GetBackground(stageNum).Draw(0);
 			BackgroundManager.GetBackground(stageNum).Draw(1);
@@ -79,7 +78,6 @@ public class Stage implements StageBase {
 
 		renderer.render(GameMain.world, GameMain.camera.combined);
 		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
-//		player.GetBody().setAwake(true);
 	}
 
 	//************************************************************
@@ -165,7 +163,7 @@ public class Stage implements StageBase {
 										 StageDataList.list.get(stageNum).enemyPosition.get((i+1)*(j+1)-1));
 			}
 		}
-		EffectManager.CreateEffect(Effect.FIRE_2);
+		//EffectManager.CreateEffect(Effect.FIRE_2);
 	}
 
 	@Override

@@ -100,7 +100,7 @@ public class Weapon extends ObJectBase{
 		// スプライト反映
 		sprite.add(new Sprite(region));
 		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-		sprite.get(0).setScale(0.05f);
+		sprite.get(0).setScale(ScrollNinja.scale * 0.5f);
 
 		// Body作成
 		BodyDef def	= new BodyDef();
