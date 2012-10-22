@@ -37,6 +37,14 @@ public class EffectManager {
 		return null;
 	}
 	
+	public static Effect GetEffect(Effect current) {
+		for( int i = 0; i < effectList.size(); i ++ ) {
+			if( effectList.get(i).equals(current) )
+				return effectList.get(i);
+		}
+		return null;
+	}
+	
 	public static Effect GetEffectForLoop(int i) {
 		return effectList.get(i);
 	}

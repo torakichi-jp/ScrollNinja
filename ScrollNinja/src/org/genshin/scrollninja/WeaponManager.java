@@ -34,15 +34,17 @@ public class WeaponManager {
 	 * @param owner			使用者			
 	 * @param type			種類
 	 */
-	public static void CreateWeapon(CharacterBase owner, int type) {
+	public static WeaponBase CreateWeapon(CharacterBase owner, int type) {
 		switch(type) {
 		case KATANA:
 			Katana pKatana = new Katana(owner, katanaList.size() + 1);
 			katanaList.add(pKatana);
-			 break;
+			return pKatana;
 		case SHURIKEN:
 			break;
 		}
+		
+		return null;
 	}
 
 	/**************************************************

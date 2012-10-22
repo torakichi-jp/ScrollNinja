@@ -84,6 +84,7 @@ public class Effect extends ObJectBase {
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
 	public boolean GetUseFlag(){ return useFlag; }
+	public float GetStateTime(){ return stateTime; }
 
 	//************************************************************
 	// Set
@@ -158,8 +159,8 @@ public class Effect extends ObJectBase {
 	/**************************************************
 	 * 更新処理
 	 ***************************************************/
-	public void Update() {
-		if( useFlag ) {
+	public void Update( boolean use ) {
+		if( use ) {
 
 			nowFrame = animation.getKeyFrame(stateTime, true);
 			stateTime ++;

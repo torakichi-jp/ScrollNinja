@@ -60,7 +60,7 @@ public class GameMain implements Screen{
 		playerInfo			= new Interface();
 		this.stageNum		= stageNum;
 
-		StageManager.StageTrance(stage);
+		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
 		BackgroundManager.CreateBackground(stageNum, true);
 

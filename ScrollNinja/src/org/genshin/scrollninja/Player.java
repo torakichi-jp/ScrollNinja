@@ -78,6 +78,7 @@ public class Player extends CharacterBase {
 	private float			stateTime;
 	private boolean			jump;					// ジャンプフラグ
 	private boolean			groundJudge;			// 地面と当たってますよフラグ
+	private WeaponBase		weapon;
 
 	private Animation		standAnimation;			// 立ちアニメーション
 	private Animation		walkAnimation;			// 歩きアニメーション
@@ -110,8 +111,8 @@ public class Player extends CharacterBase {
 			return sprite.get(FOOT);
 	}
 	public int GetMaxHP() { return MAX_HP;}
-	public float GetHP() { return hp; };
-	public int GetNowAttack(){ return nowAttack; }
+	public float GetHP() { return hp; }
+	public WeaponBase GetWeapon(){ return weapon; }
 
 	/**
 	 * コンストラクタ
@@ -193,15 +194,12 @@ public class Player extends CharacterBase {
 		money		 = 0;
 		direction	 = 1;
 		currentState = STAND;
-//		weapon		 = WeaponManager.GetInstace().GetWeapon("");
 		jump		 = false;
 		count		 = 0;
 		invincibleTime = 0;
 		number = Number;
 		sensor.get(0).setUserData(this);
-
-		EffectManager.CreateEffect(Effect.FIRE_2);
-		nowAttack = Effect.FIRE_2;
+		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
 	}
 
 
@@ -320,7 +318,7 @@ public class Player extends CharacterBase {
 	// 攻撃処理。左クリックで攻撃
 	//************************************************************
 	private void Attack() {
-		if(EffectManager.GetEffect(Effect.FIRE_2).GetUseFlag()) {
+		if( weapon.GetUseFlag() ) {
 			currentState = ATTACK;
 		}
 		else if( currentState != WALK/*STAND*/ ){
@@ -330,7 +328,7 @@ public class Player extends CharacterBase {
 		if(Gdx.input.isKeyPressed(Keys.J) && currentState != ATTACK ) {
 			count = 30 + 18;
 			currentState = ATTACK;
-			EffectManager.GetEffect(nowAttack).SetUseFlag(true);
+			weapon.SetUseFlag(true);
 		}
 	}
 
