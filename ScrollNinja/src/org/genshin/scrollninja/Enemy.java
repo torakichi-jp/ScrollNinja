@@ -82,18 +82,17 @@ public class Enemy extends CharacterBase {
 	/**************************************************
 	 * コンストラクタ
 	 **************************************************/
-	Enemy(int type, int num, float x, float y) {
+	Enemy(int type, int num, Vector2 position) {
 		enemyType			= type;
 		number				= num;
-		position.x			= x;
-		position.y			= y;
+		this.position		= position;
 		direction			= LEFT;
 		hp					= 100;
 		speed				= 0;
 		invincibleTime		= 0;
 		attackInterval		= 0;
 		velocity			= new Vector2(0, 0);
-		wanderingPosition	= new Vector2(x, y);
+		wanderingPosition	= new Vector2(position);
 
 		syuriken = null;
 

@@ -21,6 +21,7 @@ public class StageDataList {
 		data.backgroundFileName.add("data/stage/00_main.png");
 		data.backgroundFileName.add("data/stage/00_near.png");
 		data.backgroundBodyFileName = "data/stage/00.json";
+
 		// data.musicFileName.add("data/");
 		// data.goalPosition.set(0, 0);
 		list.add(data);
@@ -30,14 +31,16 @@ public class StageDataList {
 
 		data = null;
 	}
-
 	public class StageData {
 		public Vector2 playerPosition = new Vector2();							// プレイヤーの出現位置
 		public ArrayList<Integer> enemyType = new ArrayList<Integer>();			// 出現する敵の種類
-		public ArrayList<Integer> enemyNum = new ArrayList<Integer>();			// 出現する敵の数
-		public ArrayList<Vector2> enemyPosition = new ArrayList<Vector2>();		// 敵の出現位置
+		public ArrayList<Integer> enemyNum = new ArrayList<Integer>();			// 各種敵の数
+		public ArrayList<Vector2> enemyPosition = new ArrayList<Vector2>();		// 各種敵の出現位置
 		public ArrayList<String> backgroundFileName = new ArrayList<String>();	// 使用する背景のファイル名
 		public String backgroundBodyFileName = "";								// 背景当たり判定ファイル名
+		public ArrayList<Integer> objectType = new ArrayList<Integer>();		// 出現するオブジェクトの種類
+		public ArrayList<Integer> objectNum = new ArrayList<Integer>();			// 各種オブジェクトの数
+		public ArrayList<Vector2> objectPosition = new ArrayList<Vector2>();	// 各種オブジェクトの位置
 		public ArrayList<String> musicFileName = new ArrayList<String>();		// 使用するBGMのファイル名
 		public Vector2 goalPosition = new Vector2();							// ゴールの位置
 		// public final ArrayList<Integer> dropItem = new ArrayList<Integer>();	// 落ちているアイテムの種類

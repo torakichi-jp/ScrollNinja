@@ -48,7 +48,7 @@ public class EnemyManager {
 	 * 同じ種類が既にある場合は最後に追加
 	 * まだその種類がリストにない場合は新規で追加
 	 */
-	public static void CreateEnemy(int Type, float x, float y) {
+	public static void CreateEnemy(int Type, Vector2 position) {
 		// 同じ種類の敵がないか探す
 		for(int i = 0; i < enemyList.size(); i ++ ) {
 			// 同じ種類発見
@@ -57,7 +57,7 @@ public class EnemyManager {
 				switch( Type ) {
 				case Enemy.NORMAL:
 					int j = normalEnemyList.size() + 1;
-					Enemy pEnemy = new Enemy(Type, j, x, y);	// 最後の番号を管理番号に
+					Enemy pEnemy = new Enemy(Type, j, position);	// 最後の番号を管理番号に
 					normalEnemyList.add(pEnemy);				// 追加
 				break;
 				}
@@ -67,7 +67,7 @@ public class EnemyManager {
 			}
 		// なかった
 		enemyList.add(Type);						// この種類の項目を増やす
-		Enemy pEnemy = new Enemy(Type, 1, x, y);	// 最初の一つ目なので管理番号は１
+		Enemy pEnemy = new Enemy(Type, 1, position);	// 最初の一つ目なので管理番号は１
 
 		switch( Type ) {
 		case Enemy.NORMAL:

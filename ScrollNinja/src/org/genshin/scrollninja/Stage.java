@@ -22,6 +22,8 @@ public class Stage implements StageBase {
 		stageNum = num;
 
 		renderer			= new Box2DDebugRenderer();
+
+		// TODO ここで他のデータもStageDataList.list.get(stageNum)から引っ張ってこられるように
 	}
 
 	//************************************************************
@@ -37,8 +39,15 @@ public class Stage implements StageBase {
 		ItemManager.Update();
 
 		if( EnemyManager.normalEnemyList.size() == 0) {
-			EnemyManager.CreateEnemy(Enemy.NORMAL, 0.0f, 0.0f);
+			//EnemyManager.CreateEnemy(Enemy.NORMAL, 0.0f, 0.0f);
+			for (int i = 0; i < StageDataList.list.get(stageNum).enemyType.size(); i++) {
+				for (int j = 0; j < StageDataList.list.get(stageNum).enemyNum.get(i); j++) {
+					EnemyManager.CreateEnemy(StageDataList.list.get(stageNum).enemyType.get(i),
+										 StageDataList.list.get(stageNum).enemyPosition.get((i+1)*(j+1)-1));
+			}
+			}
 		}
+
 
 		updateCamera();
 		GameMain.playerInfo.update();
@@ -85,22 +94,23 @@ public class Stage implements StageBase {
 		// カメラの移動制限
 		if (GameMain.camera.position.x <
 				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
-																		- ScrollNinja.window.x * 0.5f) * 0.1f)
+														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
 				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
-																		- ScrollNinja.window.x * 0.5f) *0.1f;
+														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		if (GameMain.camera.position.x >
 			(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
-																		- ScrollNinja.window.x * 0.5f) * 0.1f)
+														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
 				(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
-																		- ScrollNinja.window.x * 0.5f) * 0.1f;
+														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 
+		// TODO 後で調整
 		// 1333は実際の画像のサイズ
-		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
-			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
-		if (GameMain.camera.position.y > (1333 - ScrollNinja.window.y) * 0.5f * 0.1f)
-			GameMain.camera.position.y = (1333 - ScrollNinja.window.y) * 0.5f * 0.1f;
+		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
+			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
+		if (GameMain.camera.position.y > (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
+			GameMain.camera.position.y = (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
 
 		GameMain.camera.update();
 	}
@@ -145,9 +155,16 @@ public class Stage implements StageBase {
 
 	@Override
 	public void Init() {
-		PlayerManager.CreatePlayer( 0.0f, 0.0f );
+		PlayerManager.CreatePlayer(StageDataList.list.get(stageNum).playerPosition);
+		// TODO 後でステージオブジェクトリスト追加
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
-		EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
+		//EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
+		for (int i = 0; i < StageDataList.list.get(stageNum).enemyType.size(); i++) {
+			for (int j = 0; j < StageDataList.list.get(stageNum).enemyNum.get(i); j++) {
+				EnemyManager.CreateEnemy(StageDataList.list.get(stageNum).enemyType.get(i),
+										 StageDataList.list.get(stageNum).enemyPosition.get((i+1)*(j+1)-1));
+			}
+		}
 		EffectManager.CreateEffect(Effect.FIRE_2);
 	}
 
