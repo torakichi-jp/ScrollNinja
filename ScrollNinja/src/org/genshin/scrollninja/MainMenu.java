@@ -22,13 +22,21 @@ public class MainMenu implements Screen{
 	public static SpriteBatch spriteBatch;
 
 	private Texture texture;				// テクスチャー
+	private Texture worldMaptexture;
 
 	private Sprite modeContinue;			// コンティニュー
 	private Sprite modeNewGame;				// ニューゲーム
 	private Sprite modeLoadGame;			// ロードゲーム
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
-	private Sprite modeExit;				// エグジット
+	private Sprite modeExit;					// エグジット
+	
+	/*
+	 * ワールドマップ
+	 * 仮でメインメニューから飛べるように
+	 * */
+	private Sprite worldMap;					// ワールドマップ(仮)
+	private boolean wmapflag;
 
 
 	private Stage stage;					// 最初に呼ばれるステージ
@@ -126,6 +134,10 @@ public class MainMenu implements Screen{
 		modeExit = new Sprite(region);
 		modeExit.setPosition(spritePositionX, -20);
 		modeExit.setScale(0.1f);
+		
+		// ワールドマップ
+		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
+		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		// 初期化
 		scrollFlag = false;
@@ -160,7 +172,7 @@ public class MainMenu implements Screen{
 
 			// ネットワーク
 			if (x > 530 && x < 770 && y > 210 && y < 245) {
-
+				
 			}
 
 			// オプション
