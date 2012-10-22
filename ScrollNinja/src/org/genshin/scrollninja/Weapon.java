@@ -142,7 +142,7 @@ public class Weapon extends ObJectBase{
 				body.setTransform(current.x + 3 * enemy.GetDirection(), current.y, 0);
 				// 角度を求める
 				// TODO 現在操作中のプレイヤー情報を求められるように変更必要あり
-				Vector2 terget = new Vector2(PlayerManager.GetPlayer("プレイヤー").body.getPosition());
+				Vector2 terget = new Vector2(PlayerManager.GetPlayer(0).body.getPosition());
 				float rad = (float) Math.atan2(terget.y - current.y, terget.x - current.x);
 				// 移動速度を求める
 				Vector2 vel = new Vector2(0, 0);

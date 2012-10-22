@@ -44,11 +44,11 @@ public class GameMain implements Screen{
 	private long			newTime			= System.currentTimeMillis() << 16;
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
-	
+
 	// 仮
-	public int gamestate;
-	public final static int GAME	= 0;
-	public final static int PAUSE	= 1;
+	public static int gameState;
+	public final static int GAME_RUNNING	= 0;	// ゲーム中
+	public final static int GAME_PAUSED		= 1;	// 一時停止中
 
 	// コンストラクタ
 	public GameMain(Game game, int stageNum) {
@@ -63,6 +63,8 @@ public class GameMain implements Screen{
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();
 		BackgroundManager.CreateBackground(stageNum);
+
+		gameState = GAME_RUNNING;
 	}
 
 	//************************************************************
@@ -79,19 +81,19 @@ public class GameMain implements Screen{
 	//************************************************************
 	@Override
 	public void render(float delta) {
-		oldTime = newTime;
+		switch (gameState) {
+		case GAME_RUNNING:
+			oldTime = newTime;
 
-		if(!PauseFlag) {
-		PauseFlag = playerInfo.GetPauseFlag();
-		StageManager.Update();
-		StageManager.Draw();
-		//updateCamera();
+			StageManager.Update();
+			StageManager.Draw();
+
+			FPS();
+			break;
+		case GAME_PAUSED:
+			updatePaused();
+			break;
 		}
-		else {
-			pause();
-		}
-		
-		FPS();
 	}
 
 	//************************************************************
@@ -111,9 +113,34 @@ public class GameMain implements Screen{
 		newTime = System.currentTimeMillis() << 16;
 		error = newTime - oldTime - sleepTime; // 休止時間の誤差
 	}
-	
-	public boolean GetPauseFlag() {
-		return PauseFlag;
+
+	/**
+	 * updatePaused
+	 * マップ表示中は他の描画をしない
+	 */
+	// TODO ぶれるので調整必要
+	public void updatePaused() {
+		// ポーズしたら全画面マップ表示
+
+		// Lキーでポーズ解除（仮
+		if(Gdx.input.isKeyPressed(Keys.L)) {
+			playerInfo.SetPauseFlag(false);
+			gameState = GAME_RUNNING;
+		}
+
+		if(Gdx.input.isTouched()) {
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY();
+
+			if(x > 530 && y < 70) {
+				// ポーズボタンがあったらそこに座標を合わせる
+				/*
+				 * 10/19 手裏剣の位置をクリックしたら(仮)
+				 * */
+				playerInfo.SetPauseFlag(false);
+				gameState = GAME_RUNNING;
+			}
+		}
 	}
 
 	@Override
@@ -123,37 +150,17 @@ public class GameMain implements Screen{
 	public void show() {}
 
 	@Override
-	public void hide() {
-	}
+	public void hide() {}
 
 	@Override
 	public void pause() {
-		
-		// ポーズしたら全画面マップ表示
-		if(Gdx.input.isKeyPressed(Keys.L)) {
-			PauseFlag = false;
-		}
-		if(Gdx.input.isTouched()) {
-			
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
-			
-			if(x > 510 && x < 550 && y > 30 && y < 68) {
-				// ポーズボタンがあったらそこに座標を合わせる
-				/*
-				 * 10/19 手裏剣の位置をクリックしたら(仮)
-				 * */
-				PauseFlag = false;
-			}
-		}
-		if(!PauseFlag)
-			playerInfo.SetPauseFlag(PauseFlag);
+		if (gameState == GAME_RUNNING)
+			gameState = GAME_PAUSED;
 	}
 
 	@Override
 	public void resume() {}
 
 	@Override
-	public void dispose() {
-	}
+	public void dispose() {}
 }

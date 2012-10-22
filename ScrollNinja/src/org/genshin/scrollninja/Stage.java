@@ -48,7 +48,7 @@ public class Stage implements StageBase {
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update();
 		BackgroundManager.GetBackground(stageNum).update();
-		PlayerManager.GetPlayer("プレイヤー").Update();
+		PlayerManager.Update();
 		ItemManager.Update();
 //		WeaponManager.GetWeapon("手裏剣").Update();
 		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
@@ -78,9 +78,9 @@ public class Stage implements StageBase {
 			BackgroundManager.GetBackground(stageNum).Draw(0);
 			BackgroundManager.GetBackground(stageNum).Draw(1);
 			StageObjectManager.Draw();
-			PlayerManager.GetPlayer("プレイヤー").Draw();
+			PlayerManager.Draw();
 			EnemyManager.Draw();
-			EffectManager.GetEffect(PlayerManager.GetPlayer("プレイヤー").GetNowAttack()).Draw();
+			EffectManager.GetEffect(PlayerManager.GetPlayer(0).GetNowAttack()).Draw();
 			ItemManager.Draw();
 			BackgroundManager.GetBackground(stageNum).Draw(2);
 			GameMain.playerInfo.Draw();
@@ -98,8 +98,8 @@ public class Stage implements StageBase {
 	//************************************************************
 	public void updateCamera() {
 		// カメラはプレイヤーに追随
-		GameMain.camera.position.set(PlayerManager.GetPlayer("プレイヤー").body.getPosition().x,
-							PlayerManager.GetPlayer("プレイヤー").body.getPosition().y, 0);
+		GameMain.camera.position.set(PlayerManager.GetPlayer(0).body.getPosition().x,
+							PlayerManager.GetPlayer(0).body.getPosition().y, 0);
 
 		// カメラの移動制限
 		if (GameMain.camera.position.x <
@@ -164,7 +164,7 @@ public class Stage implements StageBase {
 
 	@Override
 	public void Init() {
-		PlayerManager.CreatePlayer("プレイヤー");
+		PlayerManager.CreatePlayer( 0.0f, 0.0f );
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
 		EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
 	}

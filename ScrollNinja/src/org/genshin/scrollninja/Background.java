@@ -156,7 +156,7 @@ public class Background extends ObJectBase {
 	 ***************************************************/
 	public void update() {
 		// プレイヤーの座標を代入
-		playerPos = PlayerManager.GetPlayer("プレイヤー").body.getPosition();
+		playerPos = PlayerManager.GetPlayer(0).body.getPosition();
 
 		// 近景
 		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1

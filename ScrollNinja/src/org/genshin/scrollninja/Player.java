@@ -67,7 +67,7 @@ public class Player extends CharacterBase {
 	private static final int ATTACK			=  4;
 
 	// 変数宣言
-	private String			name;					// 名前
+	private int				number;					// プレイヤー番号
 	private int				charge;					// チャージゲージ
 	private int				direction;				// 向いてる方向
 	private int				currentState;			// 現在の状態
@@ -100,7 +100,6 @@ public class Player extends CharacterBase {
 	// Get
 	// ゲッターまとめ
 	//************************************************************
-	public String GetName(){ return name; }
 	public int GetDirection(){ return direction; }
 	public int GetChakra(){ return chakra; }
 	public int GetMaxChakra(){ return maxChakra; }
@@ -118,7 +117,7 @@ public class Player extends CharacterBase {
 	 * コンストラクタ
 	 * @param Name		名前
 	 */
-	public Player(String Name) {
+	public Player(int Number) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 
@@ -190,7 +189,6 @@ public class Player extends CharacterBase {
 		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
 
 		hp			 = MAX_HP;
-		name		 = Name;
 		charge		 = 0;
 		money		 = 0;
 		direction	 = 1;
@@ -199,6 +197,7 @@ public class Player extends CharacterBase {
 		jump		 = false;
 		count		 = 0;
 		invincibleTime = 0;
+		number = Number;
 		sensor.get(0).setUserData(this);
 
 		EffectManager.CreateEffect(Effect.FIRE_2);
@@ -214,7 +213,7 @@ public class Player extends CharacterBase {
 		sprite.get(FOOT).setRegion(nowFootFrame);
 
 		int prevState = currentState;
-		System.out.println(hp);
+		//System.out.println(hp);
 
 		if( !groundJudge ) body.applyLinearImpulse(0.0f, FALL_SPEED, position.x, position.y);	// 落下処理
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少S

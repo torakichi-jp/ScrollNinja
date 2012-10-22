@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 //========================================
 //クラス宣言		インターフェース表示を扱うクラス
@@ -63,7 +64,7 @@ public class Interface {
 			frame[index++] = tmp[0][i];
 		scrollAnimation = new Animation(5.0f, frame);
 		scroll = new Sprite(scrollAnimation.getKeyFrame(0, false));
-		scroll.setOrigin(scroll.getX() * 0.5f, scroll.getY() * 0.5f);
+		scroll.setOrigin(scroll.getWidth() * 0.5f, scroll.getHeight() * 0.5f);
 		scroll.setScale(0.1f);
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
@@ -71,36 +72,38 @@ public class Interface {
 		// HP部分
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
-		hp.setOrigin(hp.getX() * 0.5f, hp.getY() * 0.5f);
+		hp.setOrigin(hp.getWidth() * 0.5f, hp.getHeight() * 0.5f);
 		hp.setScale(0.1f);
 
 		// 巻物の右端部分
 		tmpRegion = new TextureRegion(texture, 384, 0, 128, 128);
 		scrollRight = new Sprite(tmpRegion);
-		scrollRight.setOrigin(scrollRight.getX() * 0.5f, scrollRight.getY() * 0.5f);
+		scrollRight.setOrigin(scrollRight.getWidth() * 0.5f, scrollRight.getHeight() * 0.5f);
 		scrollRight.setScale(0.1f);
 
 		// ひょうたん
 		tmpRegion = new TextureRegion(texture, 0, 256, 128, 128);
 		hyoutan = new Sprite(tmpRegion);
-		hyoutan.setOrigin(hyoutan.getX() * 0.5f, hyoutan.getY() * 0.5f);
+		hyoutan.setOrigin(hyoutan.getWidth() * 0.5f, hyoutan.getHeight() * 0.5f);
 		hyoutan.setScale(0.1f);
 
 		// チャクラ
 		tmpRegion = new TextureRegion(texture, 128, 256, 128, 128);
 		chakra = new Sprite(tmpRegion);
-		chakra.setOrigin(chakra.getX() * 0.5f, chakra.getY() * 0.5f);
+		chakra.setOrigin(chakra.getWidth() * 0.5f, chakra.getHeight() * 0.5f);
 		chakra.setScale(0.1f);
 
 		// マップ ワールドマップ or ミニマップ
 		TextureRegion maptmpRegion = new TextureRegion(maptexture);
 		map = new Sprite(maptmpRegion);
-		map.setOrigin(scrollRight.getX() , scrollRight.getY());
+		map.setOrigin(map.getWidth() * 0.5f , map.getHeight() * 0.5f);
+		map.setScale(0.01f);
 
 		// ポーズ終了
 		TextureRegion pauseRegion = new TextureRegion(pausetexture);
 		quitPause = new Sprite(pauseRegion);
-		quitPause.setOrigin(scrollRight.getX(),scrollRight.getY());
+		quitPause.setOrigin(quitPause.getWidth() * 0.5f, quitPause.getHeight() * 0.5f);
+		quitPause.setScale(0.1f);
 
 		// 最初の設定；
 		percentHP = 1;
@@ -112,25 +115,29 @@ public class Interface {
 		transrateX = 0;
 		stopHP = true;
 
-		pauseFlag = false;
-
 		stateTime = 0;
 	}
 
 	public void update() {
 		// 描画位置セット
-		scroll.setPosition(GameMain.camera.position.x - (ScrollNinja.window.x * 0.5f * 0.1f),
-						   GameMain.camera.position.y  - 12.8f + (ScrollNinja.window.y * 0.5f * 0.1f));
-		hp.setPosition(scroll.getX() - transrateX, scroll.getY());
-		scrollRight.setPosition(scroll.getX() + 42f - transrateX, scroll.getY() + 0.5f);
-		System.out.println(scrollRight.getX());
-		System.out.println(hp.getX());
+
+		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
+		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * 0.1f - 6.4f),
+										cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * 0.1f -6.4f));
+		hp.setPosition(cameraPosition.x - 256 - (ScrollNinja.window.x * 0.5f * 0.1f - 25.6f) - transrateX,
+										cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * 0.1f -6.4f));
+		scrollRight.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * 0.1f - 6.4f) + 44.5f - transrateX,
+										cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * 0.1f -6.4f));
+		/*
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
+		*/
+
 		// 位置調整
-		map.setPosition(scroll.getX() + 60.0f, scroll.getY() + -5.0f);
-//		System.out.println("h "   + hp.getX());
-//		System.out.println("r "   + scrollRight.getX());
+		map.setPosition(cameraPosition.x - map.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f)
+																			- map.getWidth() * 0.5f * 0.01f,
+						cameraPosition.y - map.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f)
+																			- map.getHeight() * 0.5f * 0.01f);
 
 		// HPに変動があれば計算
 		if (calculateHP)
@@ -143,9 +150,8 @@ public class Interface {
 		// HP回復　1フレームで0.01ずつ増加
 		if ( !stopHP && countHP < 0 ) {
 			countHP += 0.01f;
-			hp.scroll(0.01f, 0);
-			transrateX -= 0.51f;
-			hp.translateX(0.51f);
+			hp.scroll(0.0085f, 0);
+			transrateX -= 0.45f;
 
 			stateTime += 1;
 			scrollAnimation.setPlayMode(Animation.LOOP_REVERSED);
@@ -158,9 +164,8 @@ public class Interface {
 		// HP減る　1フレームで0.01ずつ減少
 		if ( !stopHP && countHP > 0 ) {
 			countHP -= 0.01f;
-			hp.scroll(-0.01f, 0);
-			transrateX += 0.51f;
-			hp.translateX(-0.51f);
+			hp.scroll(-0.0085f, 0);
+			transrateX += 0.45f;
 
 			stateTime += 1;
 			scrollAnimation.setPlayMode(Animation.LOOP);
@@ -185,28 +190,26 @@ public class Interface {
 		if (stateTime > 60)
 			stateTime = 0;
 
-		// ポーズ
+		// マップの表示
 		Map();
 	}
 
 	public void calculateHP() {
 		countHP = percentHP;
 		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 		// 現在の割合を取得
 		percentHP = (float)player.GetHP() / (float)player.GetMaxHP();
 		// いくつ減らすか計算
 		countHP -= percentHP;
 		calculateHP = false;
 		stopHP = false;
-//		System.out.println(countHP);
-//		System.out.println(stopHP);
 	}
 
 	public void calculateChakra() {
 		countChakra = percentChakra;
 		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 		// 現在の割合を取得
 		percentChakra = (float)player.GetChakra() / (float)player.GetMaxChakra();
 		// いくつ減らすか計算
@@ -227,35 +230,38 @@ public class Interface {
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.M)) {
-			// マップを表示
-			// ゲーム進行をストップ
 			pauseFlag = true;
 		}
+
 		if(pauseFlag) {
-			map.setScale(0.04f);
+			map.setScale(0.05f);
 			/*
 			 * マップの絵ができたら座標など変更する
 			 * (512*512)
 			 * */
-			map.setPosition(scroll.getX(), scroll.getY() - 65);
-			quitPause.setScale(0.1f);
-			quitPause.setPosition(scroll.getX() + 50 ,scroll.getY() + 5);
+			map.setPosition(GameMain.camera.position.x - map.getWidth() * 0.5f,
+					GameMain.camera.position.y - map.getHeight() * 0.5f);
+			quitPause.setPosition(GameMain.camera.position.x - quitPause.getWidth() * 0.5f +
+									ScrollNinja.window.x * 0.5f * 0.1f - quitPause.getWidth() * 0.5f * 0.1f,
+					GameMain.camera.position.y - quitPause.getHeight() * 0.5f +
+									ScrollNinja.window.y * 0.5f * 0.1f - quitPause.getHeight() * 0.5f * 0.1f);
+
+			// ゲーム進行をストップ
+			GameMain.gameState = GameMain.GAME_PAUSED;
 		}
 		else {
-			map.setScale(0.009f);
+			// 解除されたらマップサイズ戻す
+			map.setScale(0.01f);
 		}
 	}
 
-	public boolean GetPauseFlag() {
-		return pauseFlag;
-	}
 	public void SetPauseFlag(boolean pauseflag) {
 		pauseFlag = pauseflag;
 	}
 
 	public void Draw() {
-		scrollRight.draw(GameMain.spriteBatch);
 		hp.draw(GameMain.spriteBatch);
+		scrollRight.draw(GameMain.spriteBatch);
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
