@@ -16,7 +16,7 @@ public class StageDataList {
 		data.playerPosition.set(0, 0);
 		data.enemyType.add(0);
 		data.enemyNum.add(1);
-		data.enemyPosition.add(new Vector2(3, 3));
+		data.enemyPosition.add(new Vector2(20, 0));
 		data.backgroundFileName.add("data/stage/00_far.png");
 		data.backgroundFileName.add("data/stage/00_main.png");
 		data.backgroundFileName.add("data/stage/00_near.png");

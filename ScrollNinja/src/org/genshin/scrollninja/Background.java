@@ -34,9 +34,9 @@ public class Background extends ObJectBase {
 	// 定数宣言
 	// spriteの配列
 	//========================================
-	private final static int	FAR				= 0;
-	private final static int	MAIN			= 1;
-	private final static int	NEAR			= 2;
+	public final static int	FAR				= 0;
+	public final static int	MAIN			= 1;
+	public final static int	NEAR			= 2;
 
 	// 変数宣言
 	private float				zIndex;								// Zインデックス
@@ -53,13 +53,11 @@ public class Background extends ObJectBase {
 		playerPos = StageDataList.list.get(num).playerPosition;
 
 		stageNum = num;
-		switch(stageNum){
-		case 0:
-			LoadTexture();
-			if (createFlag)
-				createBody();
-			break;
-		}
+
+		LoadTexture();
+		// MainMenuではcreateしない
+		if (createFlag)
+			createBody();
 	}
 
 	/**************************************************

@@ -30,7 +30,7 @@ public class MainMenu implements Screen{
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;					// エグジット
-	
+
 	/*
 	 * ワールドマップ
 	 * 仮でメインメニューから飛べるように
@@ -53,23 +53,7 @@ public class MainMenu implements Screen{
 	// コンストラクタ
 	public MainMenu(Game game) {
 		this.scrollNinja = game;
-		/*
-		// アスペクト比によってカメラのビューポイント変更
-		switch (ScroolNinja.aspectRatio) {
-		case XGA:	// 4:3
-			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 7.5f * ScrollNinja.scale);
-			break;
-		case HD:	// 16:9
-			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 5.625f * ScrollNinja.scale);
-			break;
-		case SXGA:	// 5:4
-			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 8.0f * ScrollNinja.scale);
-			break;
-		case WUXGA:	// 16:10
-			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 6.25f * ScrollNinja.scale);
-			break;
-		}
-		*/
+
 		// カメラ作成
 		camera = new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
 										ScrollNinja.window.y * ScrollNinja.scale);
@@ -103,38 +87,38 @@ public class MainMenu implements Screen{
 		TextureRegion region = new TextureRegion(texture, 0, 0, 256, 35);
 		modeContinue = new Sprite(region);
 		modeContinue.setPosition(spritePositionX, 0);
-		modeContinue.setScale(0.1f);
+		modeContinue.setScale(ScrollNinja.scale);
 
 		// 選択肢ニューゲーム
 		region = new TextureRegion(texture, 0, 40, 256, 35);
 		modeNewGame = new Sprite(region);
 		modeNewGame.setPosition(spritePositionX, -4);
-		modeNewGame.setScale(0.1f);
+		modeNewGame.setScale(ScrollNinja.scale);
 
 		// 選択肢ロードゲーム
 		region = new TextureRegion(texture, 0, 85, 256, 35);
 		modeLoadGame = new Sprite(region);
 		modeLoadGame.setPosition(spritePositionX, -8);
-		modeLoadGame.setScale(0.1f);
+		modeLoadGame.setScale(ScrollNinja.scale);
 
 		// 選択肢ネットワーク
 		region = new TextureRegion(texture, 0, 128, 256, 35);
 		modeNetwork = new Sprite(region);
 		modeNetwork.setPosition(spritePositionX, -12);
-		modeNetwork.setScale(0.1f);
+		modeNetwork.setScale(ScrollNinja.scale);
 
 		// 選択肢オプション
 		region = new TextureRegion(texture, 0, 176, 256, 35);
 		modeOption = new Sprite(region);
 		modeOption.setPosition(spritePositionX, -16);
-		modeOption.setScale(0.1f);
+		modeOption.setScale(ScrollNinja.scale);
 
 		// 選択肢終了
 		region = new TextureRegion(texture, 0, 218, 256, 35);
 		modeExit = new Sprite(region);
 		modeExit.setPosition(spritePositionX, -20);
-		modeExit.setScale(0.1f);
-		
+		modeExit.setScale(ScrollNinja.scale);
+
 		// ワールドマップ
 		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -172,7 +156,7 @@ public class MainMenu implements Screen{
 
 			// ネットワーク
 			if (x > 530 && x < 770 && y > 210 && y < 245) {
-				
+
 			}
 
 			// オプション
@@ -230,8 +214,8 @@ public class MainMenu implements Screen{
 
 		// 背景描画
 		//（とりあえずメインと遠景）
-		BackgroundManager.GetBackground(0).Draw(0, true);
-		BackgroundManager.GetBackground(0).Draw(1, true);
+		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
+		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
 
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);
@@ -272,7 +256,5 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
-		spriteBatch.dispose();
-		texture.dispose();
 	}
 }

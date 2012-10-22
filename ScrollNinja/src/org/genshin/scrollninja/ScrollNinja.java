@@ -15,10 +15,12 @@ public class ScrollNinja extends Game {
 	public static Vector2 window;
 
 	// 定数　画面解像度
+	/*
 	public static final int XGA = 0;	// 4:3
 	public static final int HD = 1;		// 16:9
 	public static final int SXGA = 2;	// 5:4
 	public static final int WUXGA = 3;	// 16:10
+	*/
 
 	public static int aspectRatio;					// アスペクト比
 	public static boolean FULL_SCREEN = false;		// フルスクリーンかどうか
@@ -34,7 +36,9 @@ public class ScrollNinja extends Game {
 		// ウインドウサイズ取得
 		getWindowSize();
 		// アスペクト比計算
-		calculateAspectRatio();
+		//calculateAspectRatio();
+		// TODO 画面比によってスケーリング変えれる？
+		scale = 0.1f;
 
 		// ステージデータ読み込み
 		StageDataList.create();
@@ -47,11 +51,11 @@ public class ScrollNinja extends Game {
 		window = new Vector2();
 
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-			
+
 		// ゲームのサイズ
 		window.x = 1280;
 		window.y = 720;
-			
+
 		int message = JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "", JOptionPane.YES_NO_OPTION);
 		if(message == JOptionPane.OK_OPTION) {
 			// 自分のPCのウインドウサイズ
@@ -60,6 +64,7 @@ public class ScrollNinja extends Game {
 	}
 
 	// アスペクト比計算
+	/*
 	public void calculateAspectRatio() {
 		// TODO スケールサイズは後で調整
 		if (window.x * 3 == window.y * 4) {
@@ -76,6 +81,7 @@ public class ScrollNinja extends Game {
 			scale = 0.1f;
 		}
 	}
+	*/
 
 	@Override
 	public void dispose() {
