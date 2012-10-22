@@ -20,11 +20,15 @@ public class Interface {
 	private static Sprite hp;			// プレイヤーHP
 	private static Sprite hyoutan;		// チャクラのひょうたん部分
 	private static Sprite chakra;		// プレイヤーチャクラ
-	private static Sprite map;			// マップ
-	private static Sprite quitPause;	// ポーズ画面から抜ける用
-
-	private static Sprite icon;			// 現在地アイコン
+	//private static Sprite map;			// マップ
+	//private static Sprite quitPause;	// ポーズ画面から抜ける用
+	//private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
+
+	private static Sprite returnGame;				// ゲームに戻る
+	private static Sprite title;					// タイトル
+	private static Sprite weaponReinforcement;	// 武器強化
+	private static Sprite load;						// ロード
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
@@ -103,6 +107,7 @@ public class Interface {
 		chakra.setScale(0.1f);
 
 		// マップ ワールドマップ or ミニマップ
+		/*
 		TextureRegion maptmpRegion = new TextureRegion(maptexture);
 		map = new Sprite(maptmpRegion);
 		map.setOrigin(map.getWidth() * 0.5f , map.getHeight() * 0.5f);
@@ -118,7 +123,7 @@ public class Interface {
 		icon = new Sprite(iconRegion);
 		icon.setOrigin(icon.getWidth() * 0.5f,icon.getHeight() * 0.5f);
 		icon.setScale(0.04f);
-
+*/
 
 		// 最初の設定；
 		percentHP = 1;
@@ -150,11 +155,12 @@ public class Interface {
 		*/
 
 		// 位置調整
+		/*
 		map.setPosition(cameraPosition.x - map.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f)
 																			- map.getWidth() * 0.5f * 0.01f,
 						cameraPosition.y - map.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f)
 																			- map.getHeight() * 0.5f * 0.01f);
-
+*/
 		// HPに変動があれば計算
 		if (calculateHP)
 			calculateHP();
@@ -210,14 +216,14 @@ public class Interface {
 		Map();
 		
 		// アイコン
-		//icon.setPosition(PlayerManager.GetPlayer(0).GetPosition().x * 0.6f,PlayerManager.GetPlayer(0).GetPosition().y - 10);
-		
+		/*
 		if(!pauseFlag) {
 		icon.setPosition( cameraPosition.x - icon.getWidth() * ICONPOSITIONX + PlayerManager.GetPlayer(0).GetPosition().x * ICONSCROLL 
 							+ (ScrollNinja.window.x * 0.5f * 0.02f) - icon.getWidth() * 0.5f * 0.01f,
 							cameraPosition.y - icon.getHeight() * ICONPOSITIONY + PlayerManager.GetPlayer(0).GetPosition().y * ICONSCROLL
 							+ (ScrollNinja.window.y * 0.5f * 0.02f) - icon.getHeight() * 0.5f * 0.01f);
-		}
+							
+		}*/
 	}
 
 	public void calculateHP() {
@@ -260,11 +266,12 @@ public class Interface {
 		}
 
 		if(pauseFlag) {
-			map.setScale(0.04f);
+			//map.setScale(0.04f);
 			/*
 			 * マップの絵ができたら座標など変更する
 			 * (512*512)
 			 * */
+			/*
 			map.setPosition(GameMain.camera.position.x - map.getWidth() * 0.5f,
 					GameMain.camera.position.y - map.getHeight() * 0.502f);
 			quitPause.setPosition(GameMain.camera.position.x - quitPause.getWidth() * 0.5f +
@@ -273,13 +280,17 @@ public class Interface {
 									ScrollNinja.window.y * 0.5f * 0.1f - quitPause.getHeight() * 0.5f * 0.1f);
 			
 			icon.setPosition(PlayerManager.GetPlayer(0).position.x,PlayerManager.GetPlayer(0).position.y);
-
+			*/
+			
+			
+			
+			
 			// ゲーム進行をストップ
 			GameMain.gameState = GameMain.GAME_PAUSED;
 		}
 		else {
 			// 解除されたらマップサイズ戻す
-			map.setScale(0.01f);
+			//map.setScale(0.01f);
 		}
 	}
 
@@ -293,17 +304,19 @@ public class Interface {
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
-		map.draw(GameMain.spriteBatch);
+		//map.draw(GameMain.spriteBatch);
 		
 		
 		if(pauseFlag) {
-			quitPause.draw(GameMain.spriteBatch);
+			/*quitPause.draw(GameMain.spriteBatch);
 			icon.setScale(0.1f);
 			icon.draw(GameMain.spriteBatch);
+			*/
 		}
 		else{
-			icon.setScale(0.04f);
-			icon.draw(GameMain.spriteBatch);
+			
+			//icon.setScale(0.04f);
+			//icon.draw(GameMain.spriteBatch);
 		}
 
 		
