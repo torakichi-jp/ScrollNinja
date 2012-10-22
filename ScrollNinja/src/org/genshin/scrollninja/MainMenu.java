@@ -122,19 +122,24 @@ public class MainMenu implements Screen{
 		// ワールドマップ
 		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
+		worldMap = new Sprite(worldRegion);
+		worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
+
 
 		// 初期化
 		scrollFlag = false;
+		wmapflag = false;
 	}
 
 	// 更新
 	public void update(float delta) {
-		
+
 		if(Gdx.input.isKeyPressed(Keys.A)) {
 			ReadFile.read("data/test.rtf");
 		}
-		
-		
+
+
 		// エンターキーでコンティニュー　仮挿入中
 		if (Gdx.input.isKeyPressed(Keys.ENTER))
 				scrollFlag = true;		// スプライトを動かすフラグオン
@@ -162,7 +167,14 @@ public class MainMenu implements Screen{
 
 			// ネットワーク
 			if (x > 530 && x < 770 && y > 210 && y < 245) {
+				wmapflag = true;
+			}
 
+			if(Gdx.input.isKeyPressed(Keys.Y)){
+				wmapflag = true;
+			}
+			if(Gdx.input.isKeyPressed(Keys.U)){
+				wmapflag = false;
 			}
 
 			// オプション
@@ -230,6 +242,10 @@ public class MainMenu implements Screen{
 		modeNetwork.draw(spriteBatch);
 		modeOption.draw(spriteBatch);
 		modeExit.draw(spriteBatch);
+
+		if(wmapflag) {
+			worldMap.draw(spriteBatch);
+		}
 
 		spriteBatch.end();
 	}

@@ -58,7 +58,7 @@ public class Effect extends ObJectBase {
 
 	/**************************************************
 	 * @param type		エフェクトの種類
-	 * 
+	 *
 	 * コンストラクタ
 	 ***************************************************/
 	public Effect(int type ) {
@@ -68,7 +68,7 @@ public class Effect extends ObJectBase {
 		effectTime	= 0;
 		stateTime	= 0;
 		attackNum	= 0;
-		position	= new Vector2(0.0f, 0.0f);
+		position	= new Vector2(-100.0f, -100.0f);
 		useFlag		= false;
 
 		Create();
@@ -77,7 +77,7 @@ public class Effect extends ObJectBase {
 
 	/**************************************************
 	 * @return
-	 * 
+	 *
 	 * ゲッターまとめ
 	 ***************************************************/
 	public int GetType() { return effectType; }
@@ -161,7 +161,6 @@ public class Effect extends ObJectBase {
 	public void Update(boolean use) {
 		useFlag = use;
 		if( useFlag ) {
-
 			nowFrame = animation.getKeyFrame(stateTime, true);
 			stateTime ++;
 
@@ -194,7 +193,7 @@ public class Effect extends ObJectBase {
 			sprite.get(0).setPosition(position.x - 100, position.y);
 		}
 	}
-	
+
 	/**
 	 * スプライトを描画する。
 	 */
@@ -203,7 +202,7 @@ public class Effect extends ObJectBase {
 		if( useFlag ) {
 			Vector2 pos = body.getPosition();
 			float rot = (float) Math.toDegrees(body.getAngle());
-	
+
 			int count = sprite.size();
 			for (int i = 0; i < count; ++i)
 			{
@@ -236,30 +235,30 @@ public class Effect extends ObJectBase {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
-	
+
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}	
-	
+	public void collisionNotify(Background obj, Contact contact){}
+
 	@Override
 	public void collisionNotify(Player obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Item obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(StageObject obj, Contact contact){}
-	
+
 	@Override
 	public void collisionNotify(Weapon obj, Contact contact){}
 }

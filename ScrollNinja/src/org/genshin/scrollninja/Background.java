@@ -50,9 +50,9 @@ public class Background extends ObJectBase {
 	public Background(int num, boolean createFlag) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
-		playerPos = StageDataList.list.get(num).playerPosition;
 
 		stageNum = num;
+		playerPos = StageDataList.list.get(stageNum).playerPosition;
 
 		LoadTexture();
 		// MainMenuではcreateしない
@@ -94,9 +94,10 @@ public class Background extends ObJectBase {
 		sprite.add(new Sprite(tmpRegion));
 		sprite.get(FAR).setPosition(-sprite.get(FAR).getWidth() * 0.5f, -sprite.get(FAR).getHeight() * 0.5f);
 		if(sprite.get(FAR).getWidth() > ScrollNinja.window.x )
-			sprite.get(FAR).setScale(0.11f);
+			sprite.get(FAR).setScale(ScrollNinja.scale + 0.01f);
 		else
-			sprite.get(FAR).setScale(0.1f * (ScrollNinja.window.x / sprite.get(FAR).getWidth()) * 1.05f);
+			sprite.get(FAR).setScale
+							(ScrollNinja.scale * (ScrollNinja.window.x / sprite.get(FAR).getWidth()) * 1.05f);
 
 		// メインステージ
 		texture =
@@ -106,7 +107,7 @@ public class Background extends ObJectBase {
 		sprite.add(new Sprite(tmpRegion));
 		sprite.get(MAIN).setPosition
 							(-sprite.get(MAIN).getWidth() * 0.5f, -sprite.get(MAIN).getHeight() * 0.5f);
-		sprite.get(MAIN).setScale(0.1f);
+		sprite.get(MAIN).setScale(ScrollNinja.scale);
 
 		// 手前
 		texture =
@@ -118,7 +119,7 @@ public class Background extends ObJectBase {
 		// 41.05は((メインテクスチャ1333)-(手前テクスチャ256*scale2倍) ÷　（空白は上下あるから）2) ?
 		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f,
 										-sprite.get(NEAR).getHeight() * 0.5f -41.05f);
-		sprite.get(NEAR).setScale(0.25f, 0.2f);
+		sprite.get(NEAR).setScale(ScrollNinja.scale * 2.5f, ScrollNinja.scale * 2f);
 	}
 
 	/**************************************************
@@ -134,8 +135,8 @@ public class Background extends ObJectBase {
 		bd.type		= BodyType.StaticBody;		// 動かない物体
 		// TODO 要調整
 		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
-		bd.position.set(-sprite.get(1).getWidth() * 0.5f * 0.1f,
-								(-sprite.get(1).getHeight() * 0.5f -357.5f) * 0.1f);
+		bd.position.set(-sprite.get(MAIN).getWidth() * 0.5f * ScrollNinja.scale,
+								(-sprite.get(MAIN).getHeight() * 0.5f -357.5f) * ScrollNinja.scale);
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
@@ -145,7 +146,7 @@ public class Background extends ObJectBase {
 
 		// ボディ作成
 		body = GameMain.world.createBody(bd);
-		loader.attachFixture( body, "bgTest", fd, sprite.get(1).getWidth() * 0.1f);
+		loader.attachFixture( body, "bgTest", fd, sprite.get(1).getWidth() * ScrollNinja.scale);
 
 		for(int i = 0; i < body.getFixtureList().size(); i ++) {
 			sensor.add(body.getFixtureList().get(i));
