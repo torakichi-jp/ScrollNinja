@@ -129,6 +129,12 @@ public class MainMenu implements Screen{
 
 	// 更新
 	public void update(float delta) {
+		
+		if(Gdx.input.isKeyPressed(Keys.A)) {
+			ReadFile.read("data/test.rtf");
+		}
+		
+		
 		// エンターキーでコンティニュー　仮挿入中
 		if (Gdx.input.isKeyPressed(Keys.ENTER))
 				scrollFlag = true;		// スプライトを動かすフラグオン
