@@ -31,8 +31,8 @@ public class MainMenu implements Screen{
 	private Sprite modeExit;				// エグジット
 
 
-	private Stage  stage1;					// 最初に呼ばれるステージ
-	private Stage2 stage2;
+	private Stage  stage;					// 最初に呼ばれるステージ
+	//private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
 
 	// 画像座標
@@ -72,7 +72,8 @@ public class MainMenu implements Screen{
 		// とりあえずデモプレイステージは０扱いで
 		nextStageNum = 0;
 
-		// TODO セーブファイル読み込みをしてコンティニューする時のステージを設定
+		// TODO 読み込んだセーブファイルからコンティニューする時のステージを設定
+		// stage =
 		// StageManager.StageTrance(stage);
 		// nextStageNum = StageManager.GetNowStage();
 		BackgroundManager.CreateBackground(nextStageNum, false);

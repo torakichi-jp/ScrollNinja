@@ -23,6 +23,7 @@ public class Interface {
 	private static Sprite map;			// マップ
 	private static Sprite quitPause;	// ポーズ画面から抜ける用
 
+	private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
@@ -56,6 +57,10 @@ public class Interface {
 		Texture pausetexture = new Texture(Gdx.files.internal("data/shuriken.png"));
 		pausetexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
+		// アイコン(仮)
+		Texture icontexture = new Texture(Gdx.files.internal("data/shuriken.png"));
+		icontexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
+		
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
 		TextureRegion[] frame = new TextureRegion[3];
@@ -104,6 +109,12 @@ public class Interface {
 		quitPause = new Sprite(pauseRegion);
 		quitPause.setOrigin(quitPause.getWidth() * 0.5f, quitPause.getHeight() * 0.5f);
 		quitPause.setScale(0.1f);
+		
+		TextureRegion iconRegion = new TextureRegion(icontexture);
+		icon = new Sprite(iconRegion);
+		icon.setOrigin(icon.getWidth() * 0.5f,icon.getHeight() * 0.5f);
+		icon.setScale(0.04f);
+
 
 		// 最初の設定；
 		percentHP = 1;
@@ -122,6 +133,7 @@ public class Interface {
 		// 描画位置セット
 
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
+		
 		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * 0.1f - 6.4f),
 										cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * 0.1f -6.4f));
 		hp.setPosition(cameraPosition.x - 256 - (ScrollNinja.window.x * 0.5f * 0.1f - 25.6f) - transrateX,
@@ -192,6 +204,12 @@ public class Interface {
 
 		// マップの表示
 		Map();
+		
+		// アイコン
+		/*icon.setPosition(
+				cameraPosition.x - icon.getWidth() * 0.5f + (ScrollNinja.window.x * 0.5f * 0.1f) - icon.getWidth() * 0.5f ,
+				cameraPosition.y - icon.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * 0.1f) - icon.getHeight() * 0.5f);
+		*/
 	}
 
 	public void calculateHP() {
@@ -269,5 +287,8 @@ public class Interface {
 
 		if(pauseFlag)
 			quitPause.draw(GameMain.spriteBatch);
+		else {
+			icon.draw(GameMain.spriteBatch);
+		}
 	}
 }
