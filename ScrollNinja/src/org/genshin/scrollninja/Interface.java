@@ -119,6 +119,8 @@ public class Interface {
 	}
 
 	public void update() {
+		// 描画位置セット
+
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
 		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * 0.1f - 6.4f),
 										cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * 0.1f -6.4f));
@@ -195,7 +197,7 @@ public class Interface {
 	public void calculateHP() {
 		countHP = percentHP;
 		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 		// 現在の割合を取得
 		percentHP = (float)player.GetHP() / (float)player.GetMaxHP();
 		// いくつ減らすか計算
@@ -207,7 +209,7 @@ public class Interface {
 	public void calculateChakra() {
 		countChakra = percentChakra;
 		// プレイヤー情報取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 		// 現在の割合を取得
 		percentChakra = (float)player.GetChakra() / (float)player.GetMaxChakra();
 		// いくつ減らすか計算

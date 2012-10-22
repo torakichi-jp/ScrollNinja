@@ -303,7 +303,7 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	public void chase() {
 		// プレイヤーの位置を取得
-		player = PlayerManager.GetPlayer("プレイヤー");
+		player = PlayerManager.GetPlayer(0);
 
 		// 一定距離まで近づいたら
 		if (Math.abs(player.body.getPosition().x - position.x) < 20) {

@@ -7,31 +7,41 @@ public class PlayerManager {
 	
 	private PlayerManager(){}
 	
-	//************************************************************
-	// CreatePlayer
-	// プレイヤー作ります
-	//************************************************************
-	public static int CreatePlayer(String Name) {
-		if( playerList.contains(Name) ) {		// 既にその名前が作られている場合はエラー
-			return -1;		// エラー処理
+	/**
+	 * 更新
+	 */
+	public static void Update() {
+		for( int i = 0; i < playerList.size(); i ++) {
+			playerList.get(i).Update();
 		}
-		
-		Player pPlayer = new Player(Name);		// オブジェクトを生成（&初期化）して
-		playerList.add(pPlayer);						// リストに追加
-		
-		return 1;
 	}
 	
-	//************************************************************
-	// GetPlayer
-	// 指定した名前のプレイヤーを返す
-	//************************************************************
-	public static Player GetPlayer(String Name){
-		for(int i = 0; i < playerList.size(); i ++) {
-			if( playerList.get(i).GetName().equals(Name) ) {
-				return playerList.get(i);			// 引数で渡されたオブジェクトのポインタを返す
-			}
+	/**
+	 * スプライト描画
+	 */
+	public static void Draw() {
+		for( int i = 0; i < playerList.size(); i ++) {
+			playerList.get(i).Draw();
 		}
-		return null;
+	}
+		
+	/**
+	 * プレイヤー生成
+	 * @param x		初期座標X
+	 * @param y		初期座標Y
+	 */
+	public static void CreatePlayer(float x, float y) {
+		// 生成した順に管理番号付与
+		Player pPlayer = new Player(playerList.size() + 1);
+		playerList.add(pPlayer);						// 追加
+	}
+	
+	/**
+	 * プレイヤー参照
+	 * @param i		管理番号
+	 * @return
+	 */
+	public static Player GetPlayer( int i) {
+		return playerList.get(i);
 	}
 }
