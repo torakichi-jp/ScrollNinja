@@ -20,6 +20,8 @@ public class ScrollNinja extends Game {
 
 	public static int aspectRatio;					// アスペクト比
 	public static boolean FULL_SCREEN = false;		// フルスクリーンかどうか
+	public static float scale;						// カメラ、画像の縮小サイズ
+
 
 	@Override
 	public void create() {
@@ -27,11 +29,13 @@ public class ScrollNinja extends Game {
 			事前に初期設定が必要ならここで
 			セーブデータとか読み込むのも多分ここ
 		*/
-
 		// ウインドウサイズ取得
 		getWindowSize();
 		// アスペクト比計算
 		calculateAspectRatio();
+
+		// ステージデータ読み込み
+		StageDataList.create();
 
 		setScreen(new MainMenu(this));	// メインメニュー読み込み
 	}
@@ -54,14 +58,20 @@ public class ScrollNinja extends Game {
 
 	// アスペクト比計算
 	public void calculateAspectRatio() {
-		if (window.x * 3 == window.y * 4)
+		// TODO スケールサイズは後で調整
+		if (window.x * 3 == window.y * 4) {
 			aspectRatio = XGA;
-		else if (window.x * 9 == window.y * 16)
+			scale = 0.1f;
+		} else if (window.x * 9 == window.y * 16) {
 			aspectRatio = HD;
-		else if (window.x * 5 == window.y * 4)
+			scale = 0.1f;
+		} else if (window.x * 5 == window.y * 4) {
 			aspectRatio = SXGA;
-		else //(window.x * 5 == window.y * 8)
+			scale = 0.1f;
+		} else {//(window.x * 5 == window.y * 8)
 			aspectRatio = WUXGA;
+			scale = 0.1f;
+		}
 	}
 
 	@Override

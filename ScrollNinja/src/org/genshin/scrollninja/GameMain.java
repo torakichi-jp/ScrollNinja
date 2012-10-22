@@ -1,21 +1,13 @@
 package org.genshin.scrollninja;
 
-import aurelienribon.bodyeditor.BodyEditorLoader;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // 制作メモ
 // 10/5 制作開始
@@ -51,14 +43,17 @@ public class GameMain implements Screen{
 	public final static int GAME_PAUSED		= 1;	// 一時停止中
 
 	// コンストラクタ
-	public GameMain(Game game, int stageNum) {
+	public GameMain(Game game, int num) {
 		ScrollNinjya		= game;
 		world				= new World(new Vector2(0, -20.0f), true);
-		camera				= new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
+		// TODO 画面サイズによって数値を変更
+		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
+													 ScrollNinja.window.y * ScrollNinja.scale);
 		spriteBatch 		= new SpriteBatch();
-		stage				= new Stage();
+
+		stageNum			= num;
+		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
-		this.stageNum		= stageNum;
 
 		StageManager.StageTrance(stage);
 		StageManager.GetNowStage().Init();
@@ -107,7 +102,6 @@ public class GameMain implements Screen{
 		try {
 			Thread.sleep(sleepTime >> 16);
 		} catch (InterruptedException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		} // 休止
 		newTime = System.currentTimeMillis() << 16;

@@ -31,7 +31,7 @@ public class MainMenu implements Screen{
 	private Sprite modeExit;				// エグジット
 
 
-	private Stage  stage;					// 最初に呼ばれるステージ
+	private Stage stage;					// 最初に呼ばれるステージ
 	//private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
 
@@ -49,21 +49,22 @@ public class MainMenu implements Screen{
 		// アスペクト比によってカメラのビューポイント変更
 		switch (ScroolNinja.aspectRatio) {
 		case XGA:	// 4:3
-			camera = new OrthographicCamera(10.0f * 0.1f, 7.5f * 0.1f);
+			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 7.5f * ScrollNinja.scale);
 			break;
 		case HD:	// 16:9
-			camera = new OrthographicCamera(10.0f * 0.1f, 5.625f * 0.1f);
+			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 5.625f * ScrollNinja.scale);
 			break;
 		case SXGA:	// 5:4
-			camera = new OrthographicCamera(10.0f * 0.1f, 8.0f * 0.1f);
+			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 8.0f * ScrollNinja.scale);
 			break;
 		case WUXGA:	// 16:10
-			camera = new OrthographicCamera(10.0f * 0.1f, 6.25f * 0.1f);
+			camera = new OrthographicCamera(10.0f * ScrollNinja.scale, 6.25f * ScrollNinja.scale);
 			break;
 		}
 		*/
 		// カメラ作成
-		camera = new OrthographicCamera(ScrollNinja.window.x * 0.1f, ScrollNinja.window.y * 0.1f);
+		camera = new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
+										ScrollNinja.window.y * ScrollNinja.scale);
 		// スプライトバッチ作成
 		spriteBatch = new SpriteBatch();
 
@@ -128,11 +129,6 @@ public class MainMenu implements Screen{
 
 		// 初期化
 		scrollFlag = false;
-
-		//System.out.println((int)(Math.random()*10));
-		//System.out.println((int)(Math.random()*10));
-		//System.out.println((int)(Math.random()*10));
-
 	}
 
 	// 更新
@@ -142,40 +138,40 @@ public class MainMenu implements Screen{
 				scrollFlag = true;		// スプライトを動かすフラグオン
 
 		// クリックされたらゲームステート移行
-		if(Gdx.input.isTouched()) {
+		if (Gdx.input.isTouched()) {
 			// クリック座標によってどにメニューが選択されたか判断
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 
 			// コンティニュー
-			if(x > 530 && x < 770 && y > 105 && y < 140) {
+			if (x > 530 && x < 770 && y > 105 && y < 140) {
 				scrollFlag = true;
 			}
 
 			// ニューゲーム
-			if(x > 530 && x < 770 && y > 140 && y < 175) {
+			if (x > 530 && x < 770 && y > 140 && y < 175) {
 
 			}
 
 			// ロードゲーム
-			if(x > 530 && x < 770 && y > 175 && y < 210) {
+			if (x > 530 && x < 770 && y > 175 && y < 210) {
 
 			}
 
 			// ネットワーク
-			if(x > 530 && x < 770 && y > 210 && y < 245) {
+			if (x > 530 && x < 770 && y > 210 && y < 245) {
 
 			}
 
 			// オプション
-			if(x > 530 && x < 770 && y > 245 && y < 280) {
+			if (x > 530 && x < 770 && y > 245 && y < 280) {
 
 			}
 
 			// 終了
-			if( x > 530 && x < 770 && y > 315 && y < 350 ) {
+			if ( x > 530 && x < 770 && y > 315 && y < 350 ) {
 				int message =
-						JOptionPane.showConfirmDialog(null, "終了しますか？", "Exit", JOptionPane.YES_NO_OPTION);
+					JOptionPane.showConfirmDialog(null, "終了しますか？", "Exit", JOptionPane.YES_NO_OPTION);
 				if(message == JOptionPane.OK_OPTION) {
 					System.exit(0);
 				}
@@ -185,13 +181,14 @@ public class MainMenu implements Screen{
 		// 選択肢をクリックしたら画像移動
 		moveSprite();
 	}
+
 	//---------------------------------------------------
 	// 画像移動
 	// 画面端にいったらステート移行
 	//---------------------------------------------------
 	public void moveSprite() {
 		// クリックされたらメニューの文字が移動
-		if(scrollFlag) {
+		if (scrollFlag) {
 			// 加速して画面外へ
 			spritePositionX += MOVE_SPEED;
 

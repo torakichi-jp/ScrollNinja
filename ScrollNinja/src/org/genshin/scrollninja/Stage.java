@@ -18,25 +18,9 @@ public class Stage implements StageBase {
 	private int						stageNum;
 
 	// コンストラクタ
-	public Stage(){
-		stageNum = 0;
+	public Stage(int num){
+		stageNum = num;
 
-		/*
-		switch (ScroolNinja.aspectRatio) {
-		case XGA:	// 4:3
-			camera = new OrthographicCamera(10.0f * 0.1f, 7.5f * 0.1f);
-			break;
-		case HD:	// 16:9
-			camera = new OrthographicCamera(10.0f * 0.1f, 5.625f * 0.1f);
-			break;
-		case SXGA:	// 5:4
-			camera = new OrthographicCamera(10.0f * 0.1f, 8.0f * 0.1f);
-			break;
-		case WUXGA:	// 16:10
-			camera = new OrthographicCamera(10.0f * 0.1f, 6.25f * 0.1f);
-			break;
-		}
-		*/
 		renderer			= new Box2DDebugRenderer();
 	}
 
@@ -50,7 +34,7 @@ public class Stage implements StageBase {
 		BackgroundManager.GetBackground(stageNum).update();
 		PlayerManager.Update();
 		ItemManager.Update();
-//		WeaponManager.GetWeapon("手裏剣").Update();
+
 		for(int i = 0; i< EffectManager.GetListSize(); i ++) {
 			EffectManager.GetEffectForLoop(i).Update();
 		}

@@ -41,7 +41,7 @@ public class Background extends ObJectBase {
 	// 変数宣言
 	private float				zIndex;								// Zインデックス
 	private Vector2				playerPos;
-	private int					bgNum;
+	private int					stageNum;
 
 	/**
 	 *  コンストラクタ
@@ -50,11 +50,10 @@ public class Background extends ObJectBase {
 	public Background(int num, boolean createFlag) {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
-		playerPos = new Vector2(0.0f, 0.0f);
+		playerPos = StageDataList.list.get(num).playerPosition;
 
-
-		bgNum = num;
-		switch(num){
+		stageNum = num;
+		switch(stageNum){
 		case 0:
 			LoadTexture();
 			if (createFlag)
@@ -90,7 +89,8 @@ public class Background extends ObJectBase {
 	public void LoadTexture() {
 		// 奥から作成
 		// 奥
-		Texture texture = new Texture(Gdx.files.internal("data/stage_far.png"));
+		Texture texture =
+			new Texture(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundFileName.get(FAR)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
@@ -101,18 +101,22 @@ public class Background extends ObJectBase {
 			sprite.get(FAR).setScale(0.1f * (ScrollNinja.window.x / sprite.get(FAR).getWidth()) * 1.05f);
 
 		// メインステージ
-		texture = new Texture(Gdx.files.internal("data/stage_main.png"));
+		texture =
+			new Texture(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundFileName.get(MAIN)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
-		sprite.get(MAIN).setPosition(-sprite.get(MAIN).getWidth() * 0.5f, -sprite.get(MAIN).getHeight() * 0.5f);
+		sprite.get(MAIN).setPosition
+							(-sprite.get(MAIN).getWidth() * 0.5f, -sprite.get(MAIN).getHeight() * 0.5f);
 		sprite.get(MAIN).setScale(0.1f);
 
 		// 手前
-		texture = new Texture(Gdx.files.internal("data/stage_near.png"));
+		texture =
+			new Texture(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundFileName.get(NEAR)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
+		// TODO 要調整
 		// 41.05は((メインテクスチャ1333)-(手前テクスチャ256*scale2倍) ÷　（空白は上下あるから）2) ?
 		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f,
 										-sprite.get(NEAR).getHeight() * 0.5f -41.05f);
@@ -124,11 +128,13 @@ public class Background extends ObJectBase {
 	 ***************************************************/
 	public void createBody() {
 		// 当たり判定作成用ファイル読み込み
-		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/test.json"));
+		BodyEditorLoader loader =
+			new BodyEditorLoader(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundBodyFileName));
 
 		// ボディタイプ設定
 		BodyDef bd	= new BodyDef();
 		bd.type		= BodyType.StaticBody;		// 動かない物体
+		// TODO 要調整
 		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
 		bd.position.set(-sprite.get(1).getWidth() * 0.5f * 0.1f,
 								(-sprite.get(1).getHeight() * 0.5f -357.5f) * 0.1f);
@@ -158,25 +164,28 @@ public class Background extends ObJectBase {
 
 		// 近景
 		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
-							&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
-				sprite.get(NEAR).setPosition
-							(-sprite.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f, sprite.get(NEAR).getY());
+						&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
+			sprite.get(NEAR).setPosition
+						(-sprite.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f, sprite.get(NEAR).getY());
+		// TODO 要調整
 		// 1333は実際の画像のサイズ　20は適当
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
 		if (playerPos.y > -(1333 - ScrollNinja.window.y) * 0.5  * 0.1 && playerPos.y < 20)
 			sprite.get(NEAR).setPosition
-							(sprite.get(NEAR).getX(), -sprite.get(NEAR).getHeight() * 0.5f -11.05f + playerPos.y);
+					(sprite.get(NEAR).getX(), -sprite.get(NEAR).getHeight() * 0.5f -11.05f + playerPos.y);
 
 		// 遠景
 		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1
-							&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
-			sprite.get(FAR).setPosition(playerPos.x - (sprite.get(FAR).getWidth() * 0.5f) + (playerPos.x * -0.05f),
-									sprite.get(FAR).getY());
+						&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * 0.1)
+			sprite.get(FAR).setPosition
+				(playerPos.x - (sprite.get(FAR).getWidth() * 0.5f)+ (playerPos.x * -0.05f),
+						sprite.get(FAR).getY());
+		// TODO 要調整
 		// 1333は実際のサイズ
 		if (playerPos.y > -(sprite.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * 0.1
-													&& playerPos.y < (1333 - ScrollNinja.window.y) * 0.5 * 0.1)
+												&& playerPos.y < (1333 - ScrollNinja.window.y) * 0.5 * 0.1)
 			sprite.get(FAR).setPosition(sprite.get(FAR).getX(),
-									playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
+								playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
 	}
 
 	@Override
@@ -213,7 +222,7 @@ public class Background extends ObJectBase {
 	public Fixture GetSensor(int i) { return sensor.get(i); }*/
 	//public Vector2 GetCamPos() { return cameraPos; }
 	public Background GetBackground(){ return this; }
-	public int GetBackgroundNum(){ return bgNum; }
+	public int GetBackgroundNum(){ return stageNum; }
 
 	//************************************************************
 	// Set
