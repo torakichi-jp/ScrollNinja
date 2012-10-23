@@ -136,7 +136,7 @@ public class MainMenu implements Screen{
 	public void update(float delta) {
 
 		if(Gdx.input.isKeyPressed(Keys.A)) {
-			ReadFile.read("data/test.rtf");
+			ReadFile.read("data/test.txt");
 		}
 
 
