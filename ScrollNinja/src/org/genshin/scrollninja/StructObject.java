@@ -11,6 +11,7 @@ public class StructObject {
 	public float	positionX;		// 座標Ｘ
 	public float	positionY;		// 座標Ｙ
 	public int		priority;		// 優先度（数値が低い方が手前）
+	public boolean	hold;
 	
 	/**
 	 * コンストラクタ
@@ -20,5 +21,6 @@ public class StructObject {
 		positionX = 0.0f;
 		positionY = 0.0f;
 		priority = 0;
+		hold = false;
 	}
 }
