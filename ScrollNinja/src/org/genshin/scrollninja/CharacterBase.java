@@ -12,13 +12,13 @@ import com.badlogic.gdx.physics.box2d.Body;
 //========================================
 public abstract class CharacterBase extends ObJectBase {
 	// 定数宣言
-	protected static int	MAX_HP		=	100;
+	protected int	MAX_HP		=	100;
 
 	// 変数宣言
 	protected int 		hp;						// HP
 
 	// いずれ消す変数
-	protected int 		speed;					// 素早さ
+	protected float		speed;					// 素早さ
 	protected Vector2 	position;				// 座標
 
 	// コンストラクタ
@@ -33,7 +33,7 @@ public abstract class CharacterBase extends ObJectBase {
 	// ゲッターまとめ
 	//************************************************************
 	protected int GetHp() { return hp; }
-	protected int GetSpeed(){ return speed; }
+	protected float GetSpeed(){ return speed; }
 	protected Vector2 GetPosition(){ return position; }
 
 	//************************************************************

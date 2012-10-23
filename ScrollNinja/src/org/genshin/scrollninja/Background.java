@@ -210,7 +210,7 @@ public class Background extends ObJectBase {
 	public void collisionNotify(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Weapon obj, Contact contact){}
+	public void collisionNotify(WeaponBase obj, Contact contact){}
 
 	//************************************************************
 	// Get

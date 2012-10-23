@@ -442,8 +442,8 @@ public class Player extends CharacterBase {
 		switch(obj.GetType()) {
 		case Item.ONIGIRI:
 			hp += 50;
-			if( hp > 100 ) {
-				hp = 100;
+			if( hp > MAX_HP ) {
+				hp = MAX_HP;
 			}
 			Interface.calculateHP = true;
 			break;
@@ -453,15 +453,17 @@ public class Player extends CharacterBase {
 	}
 
 	@Override
-	public void collisionNotify(Weapon obj, Contact contact){
-		if( invincibleTime == 0 ) {
-			invincibleTime = 120;		// 無敵時間付与
-			hp -= obj.GetAttackNum();
-			Interface.calculateHP = true;
-		}
-		if( hp <= 0 ) {
-			// TODO ゲームオーバー処理へ
-			hp = 100;
+	public void collisionNotify(WeaponBase obj, Contact contact){
+		if (obj.GetOwner() != this) {
+			if( invincibleTime == 0 ) {
+				invincibleTime = 120;		// 無敵時間付与
+				hp -= obj.GetAttackNum();
+				Interface.calculateHP = true;
+			}
+			if( hp <= 0 ) {
+				// TODO ゲームオーバー処理へ
+				hp = 100;
+			}
 		}
 	}
 
