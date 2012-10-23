@@ -25,12 +25,12 @@ public class Interface {
 	//private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
 
-	private static Sprite pauseMenu;	// ポーズメニュー
+	//private static Sprite pauseMenu;	// ポーズメニュー
 	private boolean worldmapflag;
 
 	private static Sprite returnGame;				// ゲームに戻る
 	private static Sprite title;					// タイトル
-	private static Sprite weaponReinforcement;	// 武器強化
+	//private static Sprite weaponReinforcement;	// 武器強化
 	private static Sprite load;						// ロード
 
 	private Sprite worldMap;					// ワールドマップ(仮)
@@ -38,7 +38,6 @@ public class Interface {
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
 	private float stateTime;			// アニメーション用
-
 	private Player player;				// プレイヤー情報格納
 	private GameMain gamemain;
 	private float percentHP;			// 現在のHPの割合　1が最大
@@ -50,12 +49,17 @@ public class Interface {
 	private static float transrateX;		// X移動量
 	private boolean stopHP;
 	private boolean stopChakra;
-
 	private boolean pauseFlag;			// ポーズフラグ
 
 	private final static float ICONPOSITIONX = 0.155f;
 	private final static float ICONPOSITIONY = 0.28f;
 	private final static float ICONSCROLL    = 0.095f;
+
+	/*
+	 *icon,map comment out
+	 *worldmap : move character on map and animation while pause screen
+	 * 10/23 if press [o] draw worldmap , press [p] to close worldmap
+	 * */
 
 	// コンストラクタ
 	public Interface() {
@@ -167,17 +171,13 @@ public class Interface {
 		transrateX = 0;
 		stopHP = true;
 		stopChakra = true;
-
 		worldmapflag = false;
-
 		stateTime = 0;
 	}
 
 	public void update() {
 		// 描画位置セット
-
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
-
 		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 6.4f),
 						cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
 		hp.setPosition
@@ -198,7 +198,6 @@ public class Interface {
 				cameraPosition.y - map.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)
 																			- map.getHeight() * 0.5f * 0.01f);
 */
-
 
 		returnGame.setPosition(cameraPosition.x - returnGame.getWidth() * 0.5f
 								+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - returnGame.getWidth() * 0.5f * 0.1f,
@@ -280,6 +279,13 @@ public class Interface {
 		// マップの表示
 		Map();
 
+		if(Gdx.input.isKeyPressed(Keys.O)) {
+			worldmapflag = true;
+		}
+		if(Gdx.input.isKeyPressed(Keys.P)) {
+			worldmapflag = false;
+		}
+
 		// アイコン
 		/*
 		if(!pauseFlag) {
@@ -287,7 +293,6 @@ public class Interface {
 							+ (ScrollNinja.window.x * 0.5f * 0.02f) - icon.getWidth() * 0.5f * 0.01f,
 							cameraPosition.y - icon.getHeight() * ICONPOSITIONY + PlayerManager.GetPlayer(0).GetPosition().y * ICONSCROLL
 							+ (ScrollNinja.window.y * 0.5f * 0.02f) - icon.getHeight() * 0.5f * 0.01f);
-
 		}*/
 	}
 
@@ -328,6 +333,7 @@ public class Interface {
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.M)) {
+
 			pauseFlag = true;
 		}
 
@@ -372,7 +378,6 @@ public class Interface {
 		hyoutan.draw(GameMain.spriteBatch);
 		//map.draw(GameMain.spriteBatch);
 
-
 		if(pauseFlag) {
 			/*quitPause.draw(GameMain.spriteBatch);
 			icon.setScale(ScrollNinja.scale);
@@ -383,10 +388,11 @@ public class Interface {
 			title.draw(GameMain.spriteBatch);
 			load.draw(GameMain.spriteBatch);
 
-			worldMap.draw(GameMain.spriteBatch);
+			if(worldmapflag) {
+				worldMap.draw(GameMain.spriteBatch);
+			}
 		}
 		else{
-
 			//icon.setScale(ScrollNinja.scale * 0.4f);
 			//icon.draw(GameMain.spriteBatch);
 		}

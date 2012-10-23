@@ -32,8 +32,6 @@ public class MainMenu implements Screen{
 	private Sprite modeExit;					// エグジット
 	
 	private boolean wmapflag;
-
-
 	private Stage stage;					// 最初に呼ばれるステージ
 	//private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
@@ -144,29 +142,22 @@ public class MainMenu implements Screen{
 			if (x > 530 && x < 770 && y > 105 && y < 140) {
 				scrollFlag = true;
 			}
-
 			// ニューゲーム
 			if (x > 530 && x < 770 && y > 140 && y < 175) {
 
 			}
-
 			// ロードゲーム
 			if (x > 530 && x < 770 && y > 175 && y < 210) {
 
 			}
-
 			// ネットワーク
 			if (x > 530 && x < 770 && y > 210 && y < 245) {
 				wmapflag = true;
 			}
-
-
-
 			// オプション
 			if (x > 530 && x < 770 && y > 245 && y < 280) {
 
 			}
-
 			// 終了
 			if ( x > 530 && x < 770 && y > 315 && y < 350 ) {
 				int message =
@@ -183,7 +174,6 @@ public class MainMenu implements Screen{
 			wmapflag = false;
 		}
 		
-
 		// 選択肢をクリックしたら画像移動
 		moveSprite();
 	}
@@ -208,8 +198,9 @@ public class MainMenu implements Screen{
 		}
 
 		// メニューの文字が画面外まで移動したらゲームメイン移行
-		if(spritePositionX >= FADE_MENU)
+		if(spritePositionX >= FADE_MENU ) {
 			scrollNinja.setScreen(new GameMain(scrollNinja, nextStageNum));
+		}
 	}
 
 	// 描画関係
@@ -226,7 +217,6 @@ public class MainMenu implements Screen{
 		//（とりあえずメインと遠景）
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
-
 		
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);
@@ -235,8 +225,6 @@ public class MainMenu implements Screen{
 		modeNetwork.draw(spriteBatch);
 		modeOption.draw(spriteBatch);
 		modeExit.draw(spriteBatch);
-
-
 
 		spriteBatch.end();
 	}

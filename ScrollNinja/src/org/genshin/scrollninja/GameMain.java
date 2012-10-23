@@ -23,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.World;
 // シーン（ステージ）を遷移させたい時は、Stage型の変数を宣言してnew(world)して
 // StageManager.StageTrance(変数名)で遷移します。
 // 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
+// 10/23 line135で画像など解放？してタイトル遷移して増殖しないようにスタート
 
 public class GameMain implements Screen{
 	private Game						scrollNinja;
@@ -40,7 +41,6 @@ public class GameMain implements Screen{
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
 
-	private MainMenu menu;
 	private boolean gotomenu;
 
 	// 仮
@@ -57,12 +57,10 @@ public class GameMain implements Screen{
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
 													 ScrollNinja.window.y * ScrollNinja.scale);
 		spriteBatch 		= new SpriteBatch();
-
 		stageNum			= num;
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
-		menu = new MainMenu(game);
-		
+
 		// とりあえず適当に設定してみました
 		world.setGravity(new Vector2( 0.0f, -150.0f ));
 
@@ -71,7 +69,6 @@ public class GameMain implements Screen{
 		BackgroundManager.CreateBackground(stageNum, true);
 
 		gotomenu = false;
-
 		gameState = GAME_RUNNING;
 	}
 
@@ -96,9 +93,9 @@ public class GameMain implements Screen{
 		switch (gameState) {
 		case GAME_RUNNING:
 			oldTime = newTime;
-			
+
 			if(Gdx.input.isKeyPressed(Keys.I)) {
-				ScrollNinjya.setScreen(new StageEditor());
+				scrollNinja.setScreen(new StageEditor());
 				StageEditor.Init();
 			}
 
@@ -156,8 +153,10 @@ public class GameMain implements Screen{
 
 
 		if(Gdx.input.isKeyPressed(Keys.G)) {
-
 			gotomenu = true;
+			//scrollNinja.getScreen().dispose();
+			//scrollNinja.setScreen(new MainMenu(scrollNinja));
+			/*増殖する*/
 		}
 
 		//menu.update(delta);
@@ -169,11 +168,22 @@ public class GameMain implements Screen{
 
 			if(x > 1008 && x < 1167 && y > 65 && y < 102) {
 
+				if(gotomenu) {
+					//menu.update(delta);
+					//menu.draw(delta);
+				}
+			}
+		}
+		if(Gdx.input.isTouched()) {
+			int x = Gdx.input.getX();
+			int y = Gdx.input.getY();
+
+			//フルスクリーン、ウィンドウだと座標が変わるのでマウス座標は×
+			if(x > 1008 && x < 1167 && y > 65 && y < 102) {
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
 			}
 		}
-
 	}
 
 	@Override
