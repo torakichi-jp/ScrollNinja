@@ -129,7 +129,6 @@ public class MainMenu implements Screen{
 			FileOperation.LoadFile("data/test.txt");
 			FileOperation.ExportFile("data/aaa.txt");
 		}
-
 		
 		// エンターキーでコンティニュー　仮挿入中
 		if (Gdx.input.isKeyPressed(Keys.ENTER))

@@ -58,6 +58,9 @@ public class GameMain implements Screen{
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
 		menu = new MainMenu(game);
+		
+		// とりあえず適当に設定してみました
+		world.setGravity(new Vector2( 0.0f, -150.0f ));
 
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
@@ -85,6 +88,11 @@ public class GameMain implements Screen{
 		switch (gameState) {
 		case GAME_RUNNING:
 			oldTime = newTime;
+			
+			if(Gdx.input.isKeyPressed(Keys.I)) {
+				ScrollNinjya.setScreen(new StageEditor());
+				StageEditor.Init();
+			}
 
 			StageManager.Update();
 			StageManager.Draw();
