@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 // クラス宣言
 //========================================
+// FIXME クラス名のJが大文字になってんぞゴルァ
 public abstract class ObJectBase {
 	protected ArrayList<Sprite> 	sprite;		// スプライト			TODO 変数名変更する。
 	protected Body 					body;			// 当たり判定用BOX
