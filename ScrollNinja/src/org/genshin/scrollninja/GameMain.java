@@ -122,19 +122,21 @@ public class GameMain implements Screen{
 			gameState = GAME_RUNNING;
 		}
 
+		//System.out.println(playerInfo.GetReturnGame().getX());
+		
 		if(Gdx.input.isTouched()) {
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 
-			if(x > 530 && y < 70) {
-				// ポーズボタンがあったらそこに座標を合わせる
-				/*
-				 * 10/19 手裏剣の位置をクリックしたら(仮)
-				 * */
+			//if(x > 1008 && x < 1167 && y > 65 && y < 102) {
+				
+				if(playerInfo.GetReturnGame().getX() > x){
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
+				
+				}
 			}
-		}
+		
 	}
 
 	@Override
