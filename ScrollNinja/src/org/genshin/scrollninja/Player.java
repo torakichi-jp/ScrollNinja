@@ -121,11 +121,11 @@ public class Player extends CharacterBase {
 
 		// body生成
 		BodyDef bd = new BodyDef();
-		bd.type = BodyType.DynamicBody;
+		bd.type = BodyType.DynamicBody;		// 移動する
+		bd.position.set(position);			// 座標初期化
+		bd.bullet = true;					// すり抜けない
+		bd.fixedRotation = true;			// 回転しない
 		body = GameMain.world.createBody(bd);
-		body.setBullet(true);								// すり抜けない
-		body.setFixedRotation(true);						// 回転しない
-		body.setTransform(position.x, position.y, 0.0f);
 
 		// fixture生成
 		PolygonShape poly = new PolygonShape();
@@ -168,7 +168,8 @@ public class Player extends CharacterBase {
 		// 下半身・歩き １行目６フレーム
 		frame = new TextureRegion[6];
 		index = 0;
-		for (int i = 0; i < frame.length; i++)
+		for (int i = 0; i < frame.length; i
+				++)
 			frame[index++] = tmp[0][i];
 		footWalkAnimation = new Animation(5.0f, frame);
 
