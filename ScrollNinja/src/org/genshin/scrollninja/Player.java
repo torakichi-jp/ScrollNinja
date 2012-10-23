@@ -2,7 +2,10 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.weapon.Kaginawa;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -17,7 +20,6 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.WorldManifold;
 
 // 制作メモ
 // 10/2 	制作開始
@@ -89,6 +91,8 @@ public class Player extends CharacterBase {
 	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
+	
+	private Kaginawa kaginawa;		// 鍵縄
 
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
@@ -116,9 +120,6 @@ public class Player extends CharacterBase {
 	 * @param position	初期座標
 	 */
 	public Player(int Number, Vector2 position) {
-		sprite = new ArrayList<Sprite>();
-		sensor = new ArrayList<Fixture>();
-
 		// body生成
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DynamicBody;		// 移動する
@@ -208,6 +209,7 @@ public class Player extends CharacterBase {
 		number = Number;
 		sensor.get(0).setUserData(this);
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
+		kaginawa = new Kaginawa(this);
 	}
 
 
@@ -228,9 +230,10 @@ public class Player extends CharacterBase {
 
 		Flashing();			// 点滅処理
 		Move();				// 移動処理
-		Stand();			// 立ち処理
+		Stand();				// 立ち処理
 		Jump();				// ジャンプ処理
-		Attack();			// 攻撃処理
+		Attack();				// 攻撃処理
+		updateKaginawa();		// 鍵縄処理
 
 		if( prevState != currentState ) {
 			stateTime = 0;
@@ -348,9 +351,25 @@ public class Player extends CharacterBase {
 		}
 	}
 
-	// カギ縄
-	private void Kaginawa(){}
+	/**
+	 * 鍵縄の更新処理を実行する。
+	 */
+	private void updateKaginawa()
+	{
+		if( Gdx.input.isButtonPressed(Buttons.RIGHT) )
+		{
+			kaginawa.attack();
+		}
+		kaginawa.Update();
+	}
 
+	@Override
+	public void Draw()
+	{
+		kaginawa.Draw();
+		super.Draw();
+	}
+	
 	//************************************************************
 	// animation
 	// 現在の状態を参照して画像を更新

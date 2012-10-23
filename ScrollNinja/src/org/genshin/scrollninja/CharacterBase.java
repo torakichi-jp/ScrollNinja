@@ -23,6 +23,8 @@ public abstract class CharacterBase extends ObJectBase {
 
 	// コンストラクタ
 	public CharacterBase() {
+		super();
+		
 		hp				= MAX_HP;
 		speed			= 0;
 		position		= new Vector2(0,0);
