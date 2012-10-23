@@ -134,12 +134,13 @@ public class MainMenu implements Screen{
 
 	// 更新
 	public void update(float delta) {
-
-		if(Gdx.input.isKeyPressed(Keys.A)) {
-			ReadFile.read("data/test.txt");
+		
+		if (Gdx.input.isKeyPressed(Keys.A)) {
+			FileOperation.LoadFile("data/test.txt");
+			FileOperation.ExportFile("data/aaa.txt");
 		}
 
-
+		
 		// エンターキーでコンティニュー　仮挿入中
 		if (Gdx.input.isKeyPressed(Keys.ENTER))
 				scrollFlag = true;		// スプライトを動かすフラグオン

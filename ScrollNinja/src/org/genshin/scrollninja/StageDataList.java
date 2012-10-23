@@ -2,8 +2,6 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.EnemyDataList.EnemyData;
-
 import com.badlogic.gdx.math.Vector2;
 
 public class StageDataList {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 // ***** モノステート *****/
 public class EffectManager {	
 	// 変数宣言
-	private static ArrayList<Effect> effectList = new ArrayList<Effect>();;
+	private static ArrayList<Effect> effectList = new ArrayList<Effect>();
 	
 	// コンストラクタ
 	private EffectManager(){}
