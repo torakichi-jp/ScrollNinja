@@ -15,5 +15,10 @@ public class StructObject {
 	/**
 	 * コンストラクタ
 	 */
-	public StructObject(){}
+	public StructObject(){
+		type = 0;
+		positionX = 0.0f;
+		positionY = 0.0f;
+		priority = 0;
+	}
 }
