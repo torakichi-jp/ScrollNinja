@@ -22,7 +22,7 @@ public class MainMenu implements Screen{
 	public static SpriteBatch spriteBatch;
 
 	private Texture texture;				// テクスチャー
-	private Texture worldMaptexture;
+	
 
 	private Sprite modeContinue;			// コンティニュー
 	private Sprite modeNewGame;				// ニューゲーム
@@ -30,12 +30,7 @@ public class MainMenu implements Screen{
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;					// エグジット
-
-	/*
-	 * ワールドマップ
-	 * 仮でメインメニューから飛べるように
-	 * */
-	private Sprite worldMap;					// ワールドマップ(仮)
+	
 	private boolean wmapflag;
 
 
@@ -119,12 +114,7 @@ public class MainMenu implements Screen{
 		modeExit.setPosition(spritePositionX, -20);
 		modeExit.setScale(ScrollNinja.scale);
 
-		// ワールドマップ
-		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
-		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
-		worldMap = new Sprite(worldRegion);
-		worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
+
 
 
 		// 初期化
@@ -170,12 +160,7 @@ public class MainMenu implements Screen{
 				wmapflag = true;
 			}
 
-			if(Gdx.input.isKeyPressed(Keys.Y)){
-				wmapflag = true;
-			}
-			if(Gdx.input.isKeyPressed(Keys.U)){
-				wmapflag = false;
-			}
+
 
 			// オプション
 			if (x > 530 && x < 770 && y > 245 && y < 280) {
@@ -191,6 +176,13 @@ public class MainMenu implements Screen{
 				}
 			}
 		}
+		if(Gdx.input.isKeyPressed(Keys.Y)){
+			wmapflag = true;
+		}
+		if(Gdx.input.isKeyPressed(Keys.U)){
+			wmapflag = false;
+		}
+		
 
 		// 選択肢をクリックしたら画像移動
 		moveSprite();
@@ -235,6 +227,7 @@ public class MainMenu implements Screen{
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
 
+		
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);
 		modeNewGame.draw(spriteBatch);
@@ -243,9 +236,7 @@ public class MainMenu implements Screen{
 		modeOption.draw(spriteBatch);
 		modeExit.draw(spriteBatch);
 
-		if(wmapflag) {
-			worldMap.draw(spriteBatch);
-		}
+
 
 		spriteBatch.end();
 	}
