@@ -2,6 +2,9 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.EnemyDataList.EnemyData;
+import org.genshin.scrollninja.EnemyDataList.EnemyType;
+
 import com.badlogic.gdx.math.Vector2;
 
 public class StageDataList {
@@ -9,13 +12,15 @@ public class StageDataList {
 
 	public StageDataList() {}
 
-	public static void create() {
+	public static void lead() {
 		StageData data = new StageDataList().new StageData();
 
 		// ステージ０設定
 		data.playerPosition.set(0, 0);
 		data.enemyType.add(0);
 		data.enemyNum.add(1);
+		//data.enemyType.add(1);
+		//data.enemyNum.add(1);
 		data.enemyPosition.add(new Vector2(20, 0));
 		data.backgroundFileName.add("data/stage/00_far.png");
 		data.backgroundFileName.add("data/stage/00_main.png");

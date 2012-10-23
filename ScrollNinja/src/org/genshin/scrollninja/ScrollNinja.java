@@ -41,7 +41,7 @@ public class ScrollNinja extends Game {
 		scale = 0.1f;
 
 		// ステージデータ読み込み
-		StageDataList.create();
+		StageDataList.lead();
 
 		setScreen(new MainMenu(this));	// メインメニュー読み込み
 	}
