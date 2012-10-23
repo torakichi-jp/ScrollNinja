@@ -26,11 +26,15 @@ public class Interface {
 	private ArrayList<Sprite> weapon;	// 武器
 
 	private static Sprite pauseMenu;	// ポーズメニュー
+	private boolean worldmapflag;
 
 	private static Sprite returnGame;				// ゲームに戻る
 	private static Sprite title;					// タイトル
 	private static Sprite weaponReinforcement;	// 武器強化
 	private static Sprite load;						// ロード
+
+	private Texture worldMaptexture;
+	private Sprite worldMap;					// ワールドマップ(仮)
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
@@ -125,6 +129,15 @@ public class Interface {
 		load = new Sprite(loadRegion);
 		load.setScale(ScrollNinja.scale);
 
+		// ワールドマップ
+		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
+		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
+		worldMap = new Sprite(worldRegion);
+		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
+		worldMap.setScale(ScrollNinja.scale);
+		// フルスクリーン時
+		//worldMap.setPosition(-505,-540);
 
 		// マップ ワールドマップ or ミニマップ
 		/*
@@ -155,6 +168,8 @@ public class Interface {
 		transrateX = 0;
 		stopHP = true;
 		stopChakra = true;
+
+		worldmapflag = false;
 
 		stateTime = 0;
 	}
@@ -200,6 +215,11 @@ public class Interface {
 				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - load.getWidth() * 0.5f * 0.1f,
 				cameraPosition.y - load.getHeight() * 0.5f
 				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- load.getHeight() * 0.5f * 0.9f);
+
+		worldMap.setPosition(cameraPosition.x - worldMap.getWidth() * 0.5f
+				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
+				cameraPosition.y - worldMap.getHeight() * 0.5f
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.09f);
 
 		// HPに変動があれば計算
 		if (calculateHP)
@@ -343,7 +363,6 @@ public class Interface {
 	public void SetPauseFlag(boolean pauseflag) {
 		pauseFlag = pauseflag;
 	}
-
 	public Sprite GetReturnGame(){return returnGame;}
 
 	public void Draw() {
@@ -364,6 +383,8 @@ public class Interface {
 			returnGame.draw(GameMain.spriteBatch);
 			title.draw(GameMain.spriteBatch);
 			load.draw(GameMain.spriteBatch);
+
+			worldMap.draw(GameMain.spriteBatch);
 		}
 		else{
 

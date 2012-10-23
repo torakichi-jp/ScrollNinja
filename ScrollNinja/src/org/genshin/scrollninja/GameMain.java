@@ -36,6 +36,9 @@ public class GameMain implements Screen{
 	private long			newTime			= System.currentTimeMillis() << 16;
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
+	
+	private MainMenu menu;
+	private boolean gotomenu;
 
 	// 仮
 	public static int gameState;
@@ -54,10 +57,13 @@ public class GameMain implements Screen{
 		stageNum			= num;
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
+		menu = new MainMenu(game);
 
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
 		BackgroundManager.CreateBackground(stageNum, true);
+		
+		gotomenu = false;
 
 		gameState = GAME_RUNNING;
 	}
@@ -86,7 +92,7 @@ public class GameMain implements Screen{
 			FPS();
 			break;
 		case GAME_PAUSED:
-			updatePaused();
+			updatePaused(delta);
 			break;
 		}
 	}
@@ -113,7 +119,7 @@ public class GameMain implements Screen{
 	 * マップ表示中は他の描画をしない
 	 */
 	// TODO ぶれるので調整必要
-	public void updatePaused() {
+	public void updatePaused(float delta) {
 		// ポーズしたら全画面マップ表示
 
 		// Lキーでポーズ解除（仮
@@ -122,20 +128,27 @@ public class GameMain implements Screen{
 			gameState = GAME_RUNNING;
 		}
 
-		//System.out.println(playerInfo.GetReturnGame().getX());
+		//System.out.println(playerInfo.GetRetX());
+		
+		
+		if(Gdx.input.isKeyPressed(Keys.G)) {
+			
+			gotomenu = true;
+		}
+		
+		//menu.update(delta);
+		//menu.draw(delta);
 		
 		if(Gdx.input.isTouched()) {
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 
-			//if(x > 1008 && x < 1167 && y > 65 && y < 102) {
-				
-				if(playerInfo.GetReturnGame().getX() > x){
+			if(x > 1008 && x < 1167 && y > 65 && y < 102) {
+			
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
-				
-				}
 			}
+		}
 		
 	}
 
