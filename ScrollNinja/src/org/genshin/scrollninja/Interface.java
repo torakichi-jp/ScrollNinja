@@ -24,6 +24,8 @@ public class Interface {
 	//private static Sprite quitPause;	// ポーズ画面から抜ける用
 	//private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
+	
+	private static Sprite pauseMenu;	// ポーズメニュー
 
 	private static Sprite returnGame;				// ゲームに戻る
 	private static Sprite title;					// タイトル
@@ -68,6 +70,9 @@ public class Interface {
 		// アイコン(仮)
 		Texture icontexture = new Texture(Gdx.files.internal("data/shuriken.png"));
 		icontexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
+		
+		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/menu.png"));
+		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
 
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -105,6 +110,20 @@ public class Interface {
 		chakra = new Sprite(tmpRegion);
 		chakra.setOrigin(chakra.getWidth() * 0.5f, chakra.getHeight() * 0.5f);
 		chakra.setScale(ScrollNinja.scale);
+		
+		// ポーズメニュー
+		TextureRegion returnGameRegion = new TextureRegion(pauseMenuTexture,0,0,256,35);
+		returnGame = new Sprite(returnGameRegion);
+		returnGame.setScale(ScrollNinja.scale);
+		
+		TextureRegion titleRegion = new TextureRegion(pauseMenuTexture,0,40,256,35);
+		title = new Sprite(titleRegion);
+		title.setScale(ScrollNinja.scale);
+		
+		TextureRegion loadRegion = new TextureRegion(pauseMenuTexture,0,85,256,35);
+		load = new Sprite(loadRegion);
+		load.setScale(ScrollNinja.scale);
+		
 
 		// マップ ワールドマップ or ミニマップ
 		/*
@@ -163,6 +182,23 @@ public class Interface {
 				cameraPosition.y - map.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)
 																			- map.getHeight() * 0.5f * 0.01f);
 */
+		
+
+		returnGame.setPosition(cameraPosition.x - returnGame.getWidth() * 0.5f 
+								+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - returnGame.getWidth() * 0.5f * 0.1f,
+								cameraPosition.y - returnGame.getHeight() * 0.5f 
+								+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- returnGame.getHeight() * 0.5f * 0.5f);
+
+		title.setPosition(cameraPosition.x - title.getWidth() * 0.5f 
+							+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - title.getWidth() * 0.5f * 0.1f,
+							cameraPosition.y - title.getHeight() * 0.5f 
+							+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- title.getHeight() * 0.5f * 0.7f);
+		
+		load.setPosition(cameraPosition.x - load.getWidth() * 0.5f 
+				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - load.getWidth() * 0.5f * 0.1f,
+				cameraPosition.y - load.getHeight() * 0.5f 
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- load.getHeight() * 0.5f * 0.9f);
+		
 		// HPに変動があれば計算
 		if (calculateHP)
 			calculateHP();
@@ -259,8 +295,8 @@ public class Interface {
 			System.out.println(x);
 			System.out.print("mouseY:");
 			System.out.println(y);
-			if(x > 600 && y < 150)
-				pauseFlag = true;
+			//if(x > 600 && y < 150)
+				//pauseFlag = true;
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.M)) {
@@ -285,10 +321,7 @@ public class Interface {
 
 			icon.setPosition(PlayerManager.GetPlayer(0).position.x,PlayerManager.GetPlayer(0).position.y);
 			*/
-
-
-
-
+			
 			// ゲーム進行をストップ
 			GameMain.gameState = GameMain.GAME_PAUSED;
 		}
@@ -302,6 +335,8 @@ public class Interface {
 		pauseFlag = pauseflag;
 	}
 
+	public Sprite GetReturnGame(){return returnGame;}
+	
 	public void Draw() {
 		hp.draw(GameMain.spriteBatch);
 		scrollRight.draw(GameMain.spriteBatch);
@@ -316,6 +351,10 @@ public class Interface {
 			icon.setScale(ScrollNinja.scale);
 			icon.draw(GameMain.spriteBatch);
 			*/
+			
+			returnGame.draw(GameMain.spriteBatch);
+			title.draw(GameMain.spriteBatch);
+			load.draw(GameMain.spriteBatch);
 		}
 		else{
 
