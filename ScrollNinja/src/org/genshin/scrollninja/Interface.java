@@ -33,7 +33,6 @@ public class Interface {
 	private static Sprite weaponReinforcement;	// 武器強化
 	private static Sprite load;						// ロード
 
-	private Texture worldMaptexture;
 	private Sprite worldMap;					// ワールドマップ(仮)
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
@@ -130,7 +129,7 @@ public class Interface {
 		load.setScale(ScrollNinja.scale);
 
 		// ワールドマップ
-		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
+		Texture worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
 		worldMap = new Sprite(worldRegion);

@@ -32,6 +32,9 @@ public class PlayerManager {
 	 * @param position	初期座標
 	 */
 	public static void CreatePlayer(Vector2 position) {
+		if (playerList == null)
+			playerList = new ArrayList<Player>();
+
 		// 生成した順に管理番号付与
 		Player pPlayer = new Player(playerList.size() + 1, position);
 		playerList.add(pPlayer);						// 追加
@@ -44,5 +47,14 @@ public class PlayerManager {
 	 */
 	public static Player GetPlayer( int i) {
 		return playerList.get(i);
+	}
+
+	public static void dispose() {
+		if (playerList != null) {
+			for (int i = 0; i < playerList.size(); i++) {
+				playerList.get(i).Release();
+			}
+		}
+		playerList = null;
 	}
 }

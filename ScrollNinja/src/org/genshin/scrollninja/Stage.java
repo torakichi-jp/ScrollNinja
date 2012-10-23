@@ -170,6 +170,19 @@ public class Stage implements StageBase {
 	public void Release() {
 	}
 
+	public void dispose() {
+		PlayerManager.dispose();
+		EnemyManager.dispose();
+		BackgroundManager.dispose();
+		EffectManager.dispose();
+		ItemManager.dispose();
+		StageObjectManager.dispose();
+		//katana
+		//syuriken
+
+		renderer.dispose();
+	}
+
 	//************************************************************
 	// Set
 	// セッターまとめ

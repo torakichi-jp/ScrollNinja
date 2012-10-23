@@ -49,6 +49,15 @@ public class EnemyManager {
 	 * まだその種類がリストにない場合は新規で追加
 	 */
 	public static void CreateEnemy(int Type, Vector2 position) {
+		if (enemyList == null)
+			enemyList = new ArrayList<Integer>();
+		if (normalEnemyList == null)
+			normalEnemyList = new ArrayList<Enemy>();
+		if (rareEnemyList == null)
+			rareEnemyList = new ArrayList<Enemy>();
+		if (autoEnemyList == null)
+			autoEnemyList = new ArrayList<Enemy>();
+
 		// 同じ種類の敵がないか探す
 		for(int i = 0; i < enemyList.size(); i ++ ) {
 			// 同じ種類発見
@@ -148,5 +157,24 @@ public class EnemyManager {
 				}
 			}
 		}
+	}
+
+	public static void dispose() {
+		enemyList = null;
+		if (normalEnemyList != null)
+			for (int i = 0; i < normalEnemyList.size(); i++) {
+				normalEnemyList.get(i).Release();
+			}
+		normalEnemyList = null;
+		if (rareEnemyList != null)
+			for (int i = 0; i < rareEnemyList.size(); i++) {
+				rareEnemyList.get(i).Release();
+			}
+		rareEnemyList = null;
+		if (autoEnemyList != null)
+			for (int i = 0; i < autoEnemyList.size(); i++) {
+				autoEnemyList.get(i).Release();
+			}
+		autoEnemyList = null;
 	}
 }

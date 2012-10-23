@@ -1,9 +1,12 @@
 package org.genshin.scrollninja;
 
+import java.awt.RenderingHints.Key;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -22,7 +25,7 @@ import com.badlogic.gdx.physics.box2d.World;
 // 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
 
 public class GameMain implements Screen{
-	private Game						ScrollNinjya;
+	private Game						scrollNinja;
 	public static World					world;			// ワールド
 	public static OrthographicCamera	camera;		// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
@@ -36,7 +39,7 @@ public class GameMain implements Screen{
 	private long			newTime			= System.currentTimeMillis() << 16;
 	private long			oldTime;
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
-	
+
 	private MainMenu menu;
 	private boolean gotomenu;
 
@@ -44,10 +47,11 @@ public class GameMain implements Screen{
 	public static int gameState;
 	public final static int GAME_RUNNING	= 0;	// ゲーム中
 	public final static int GAME_PAUSED		= 1;	// 一時停止中
+	public final static int GAME_QUIT		= 2;
 
 	// コンストラクタ
 	public GameMain(Game game, int num) {
-		ScrollNinjya		= game;
+		scrollNinja			= game;
 		world				= new World(new Vector2(0, -20.0f), true);
 		// TODO 画面サイズによって数値を変更
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
@@ -62,7 +66,7 @@ public class GameMain implements Screen{
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
 		BackgroundManager.CreateBackground(stageNum, true);
-		
+
 		gotomenu = false;
 
 		gameState = GAME_RUNNING;
@@ -82,6 +86,10 @@ public class GameMain implements Screen{
 	//************************************************************
 	@Override
 	public void render(float delta) {
+		// TODO
+		if (Gdx.input.isKeyPressed(Keys.T)) {
+			gameState = GAME_QUIT;
+		}
 		switch (gameState) {
 		case GAME_RUNNING:
 			oldTime = newTime;
@@ -93,6 +101,14 @@ public class GameMain implements Screen{
 			break;
 		case GAME_PAUSED:
 			updatePaused(delta);
+			break;
+		case GAME_QUIT:
+			Gdx.gl.glClearColor(1, 1, 1, 1);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+			stage.dispose();
+			scrollNinja.setScreen(new MainMenu(scrollNinja));
+
 			break;
 		}
 	}
@@ -129,27 +145,27 @@ public class GameMain implements Screen{
 		}
 
 		//System.out.println(playerInfo.GetRetX());
-		
-		
+
+
 		if(Gdx.input.isKeyPressed(Keys.G)) {
-			
+
 			gotomenu = true;
 		}
-		
+
 		//menu.update(delta);
 		//menu.draw(delta);
-		
+
 		if(Gdx.input.isTouched()) {
 			int x = Gdx.input.getX();
 			int y = Gdx.input.getY();
 
 			if(x > 1008 && x < 1167 && y > 65 && y < 102) {
-			
+
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -172,5 +188,8 @@ public class GameMain implements Screen{
 
 	@Override
 	public void dispose() {
+		world.dispose();
+		spriteBatch.dispose();
+		stage = null;
 	}
 }

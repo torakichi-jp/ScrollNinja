@@ -19,7 +19,7 @@ public class StageObjectManager {
 	private StageObjectManager() {
 //		stageObjectList = new ArrayList<StageObject>();
 	}
-	
+
 	//************************************************************
 	// Draw
 	// 描画処理まとめ
@@ -37,75 +37,80 @@ public class StageObjectManager {
 	// まだその種類がリストにない場合は新規で追加
 	//************************************************************
 	public static int CreateStageObject(int Type, Vector2 pos) {
-		
+		System.out.println("innnnnnn");
+		if (stageObjectList == null)
+			stageObjectList = new ArrayList<Integer>();
+		if (rockList == null)
+			rockList = new ArrayList<StageObject>();
+
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < stageObjectList.size(); i ++ ) {
 			// 同じ種類発見
 			if( stageObjectList.get(i).equals(Type) ) {
-				
+
 				switch( Type ) {
 				case StageObject.ROCK:
 					int j = rockList.size() + 1;
 					StageObject pStageObject = new StageObject(Type, j, pos);	// 最後の番号を管理番号に
 					rockList.add(pStageObject);									// 追加
 				break;
-				
+
 				case StageObject.HOUSE:
 					break;
 				}
-				
+
 				return 0;
-			}	
+			}
 		}
 		// なかった
 		stageObjectList.add(Type);				// この種類の項目を増やす
 		StageObject pStageObject = new StageObject(Type, 1, pos);	// 最初の一つ目なので管理番号は１
-		
+
 		switch( Type ) {
 		case StageObject.ROCK:
 			rockList.add(pStageObject);			// 追加
 			break;
-			
+
 		case StageObject.HOUSE:
 			break;
 		}
-		
+
 		return 0;
 	}
 	public static int CreateStageObject(int Type, float x, float y) {
-		
+
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < stageObjectList.size(); i ++ ) {
 			// 同じ種類発見
 			if( stageObjectList.get(i).equals(Type) ) {
-				
+
 				switch( Type ) {
 				case StageObject.ROCK:
 					int j = rockList.size() + 1;
 					StageObject pStageObject = new StageObject(Type, j, x, y);	// 最後の番号を管理番号に
 					rockList.add(pStageObject);									// 追加
 				break;
-				
+
 				case StageObject.HOUSE:
 					break;
 				}
-				
+
 				return 0;
-			}	
+			}
 		}
 		// なかった
 		stageObjectList.add(Type);				// この種類の項目を増やす
 		StageObject pStageObject = new StageObject(Type, 1, x, y);	// 最初の一つ目なので管理番号は１
-		
+
 		switch( Type ) {
 		case StageObject.ROCK:
 			rockList.add(pStageObject);			// 追加
 			break;
-			
+
 		case StageObject.HOUSE:
 			break;
 		}
-		
+
 		return 0;
 	}
 
@@ -115,7 +120,7 @@ public class StageObjectManager {
 	//************************************************************
 	public static void DeleteStageObject(int Type, int Num) {
 		for(int i = 0; i < stageObjectList.size(); i ++ ) {
-			
+
 			// 発見
 			if( stageObjectList.get(i).equals(Type) ) {
 				for( int j = 0; j < rockList.size(); j ++ ) {
@@ -124,12 +129,22 @@ public class StageObjectManager {
 						rockList.remove(j);					// 削除！
 					}
 				}
-				
+
 				// 削除に合わせて管理番号変更。とりあえず全部
 				for( int j = 0; j < rockList.size(); j ++ ) {
 					rockList.get(j).SetNum(j + 1);
 				}
 			}
 		}
+	}
+
+	public static void dispose() {
+		stageObjectList = null;
+		if (rockList != null) {
+			for (int i = 0; i < rockList.size(); i++) {
+				rockList.get(i).Release();
+			}
+		}
+		rockList = null;
 	}
 }
