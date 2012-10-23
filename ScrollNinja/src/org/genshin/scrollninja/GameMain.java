@@ -45,7 +45,7 @@ public class GameMain implements Screen{
 	// コンストラクタ
 	public GameMain(Game game, int num) {
 		ScrollNinjya		= game;
-		world				= new World(new Vector2(0, -20.0f), true);
+		world				= new World(new Vector2(0, -100.0f), true);
 		// TODO 画面サイズによって数値を変更
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
 													 ScrollNinja.window.y * ScrollNinja.scale);

@@ -6,6 +6,7 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -33,7 +34,8 @@ public abstract class ObJectBase {
 	public void Release(){
 		GameMain.world.destroyBody(body);
 		body = null;
-		sprite = null;
+		sprite.clear();
+		sensor.clear();
 	}
 
 	/**
@@ -41,6 +43,7 @@ public abstract class ObJectBase {
 	 */
 	public void Draw()
 	{
+		SpriteBatch sb = GameMain.spriteBatch;
 		Vector2 pos = body.getPosition();
 		float rot = (float) Math.toDegrees(body.getAngle());
 
@@ -52,7 +55,7 @@ public abstract class ObJectBase {
 			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
 			current.setRotation(rot);
 			// 描画
-			current.draw(GameMain.spriteBatch);
+			current.draw(sb);
 		}
 	}
 

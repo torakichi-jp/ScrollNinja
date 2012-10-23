@@ -129,7 +129,7 @@ public class Player extends CharacterBase {
 
 		// fixture生成
 		PolygonShape poly = new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f, new Vector2(0.0f, 1.6f), 0.0f);
+		poly.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
 
 		FixtureDef fd = new FixtureDef();
 		fd.density			= 0.0f;	// 密度
@@ -182,11 +182,11 @@ public class Player extends CharacterBase {
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
 		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
-		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f);
+		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f - 8);
 		footSprite.setScale(ScrollNinja.scale);
 
 		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
-		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f);
+		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f - 8);
 		bodySprite.setScale(ScrollNinja.scale);
 
 		sprite.add(footSprite);
@@ -465,9 +465,13 @@ public class Player extends CharacterBase {
 		}
 	}
 
-
+	/**
+	 * 180度以下の範囲で回転する。
+	 * @param degree		回転後の角度
+	 */
 	private void nearRotate(float degree)
 	{
+		float stateTime = 10;
 		boolean useRadian = false;
 		if(useRadian)
 		{
@@ -478,7 +482,7 @@ public class Player extends CharacterBase {
 			if(Math.abs(radian) > Math.PI)
 				radian = (float)( radian - Math.signum(radian) * Math.PI );
 
-			body.setAngularVelocity(radian*10);
+			body.setAngularVelocity(radian*stateTime);
 		}
 		else
 		{
@@ -487,7 +491,7 @@ public class Player extends CharacterBase {
 			if(Math.abs(degree) > 180)	degree = degree - Math.signum(degree) * 360;	// -180～180に丸める
 
 			float angularVel = (float)Math.toRadians(degree);
-			body.setAngularVelocity(angularVel*10);
+			body.setAngularVelocity(angularVel*stateTime);
 		}
 	}
 }
