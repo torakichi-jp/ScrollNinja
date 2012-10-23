@@ -6,6 +6,7 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -15,16 +16,23 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 // クラス宣言
 //========================================
+// FIXME クラス名のJが大文字になってんぞゴルァ
 public abstract class ObJectBase {
-	protected ArrayList<Sprite> 	sprite;		// スプライト			TODO 変数名変更する。
 	protected Body 					body;			// 当たり判定用BOX
+	protected ArrayList<Sprite> 	sprite;		// スプライト			TODO 変数名変更する。
 	protected ArrayList<Fixture> 	sensor;		// センサー				TODO 変数名変更する。
 
 	/**
 	 * コンストラクタ
 	 * TODO 将来的には引数にWorldを投げて初期化させる？
 	 */
-	ObJectBase(){}
+	ObJectBase()
+	{
+		// フィールドの初期化
+		body = null;
+		sprite = new ArrayList<Sprite>();
+		sensor = new ArrayList<Fixture>();
+	}
 
 	//************************************************************
 	// Release
@@ -33,14 +41,21 @@ public abstract class ObJectBase {
 	public void Release(){
 		GameMain.world.destroyBody(body);
 		body = null;
-		sprite = null;
+		sprite.clear();
+		sensor.clear();
 	}
+	
+	/**
+	 * オブジェクトを更新する。
+	 */
+	public void Update() {}
 
 	/**
 	 * スプライトを描画する。
 	 */
 	public void Draw()
 	{
+		SpriteBatch sb = GameMain.spriteBatch;
 		Vector2 pos = body.getPosition();
 		float rot = (float) Math.toDegrees(body.getAngle());
 
@@ -52,7 +67,7 @@ public abstract class ObJectBase {
 			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
 			current.setRotation(rot);
 			// 描画
-			current.draw(GameMain.spriteBatch);
+			current.draw(sb);
 		}
 	}
 
@@ -121,12 +136,21 @@ public abstract class ObJectBase {
 	 * @param x		x方向の反転フラグ
 	 * @param y		y方向の反転フラグ
 	 */
-	protected void flip(boolean x, boolean y)
+	protected final void flip(boolean x, boolean y)
 	{
 		int count = sprite.size();
 		for(int i = 0; i < count;  ++i)
 		{
 			sprite.get(i).flip(x, y);
 		}
+	}
+	
+	/**
+	 * 座標を取得する。
+	 * @return	座標
+	 */
+	public final Vector2 getPosition()
+	{
+		return body.getPosition();
 	}
 }

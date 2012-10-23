@@ -2,7 +2,11 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+// TODO ファイルが見つからないため一時コメントアウトしました
+//import org.genshin.scrollninja.object.weapon.Kaginawa;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -17,7 +21,6 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.WorldManifold;
 
 // 制作メモ
 // 10/2 	制作開始
@@ -90,6 +93,9 @@ public class Player extends CharacterBase {
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
 
+	// TODO ファイルが見つからないため一時コメントアウトしました
+	//private Kaginawa kaginawa;		// 鍵縄
+
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
 
@@ -116,20 +122,17 @@ public class Player extends CharacterBase {
 	 * @param position	初期座標
 	 */
 	public Player(int Number, Vector2 position) {
-		sprite = new ArrayList<Sprite>();
-		sensor = new ArrayList<Fixture>();
-
 		// body生成
 		BodyDef bd = new BodyDef();
-		bd.type = BodyType.DynamicBody;
+		bd.type = BodyType.DynamicBody;		// 移動する
+		bd.position.set(position);			// 座標初期化
+		bd.bullet = true;					// すり抜けない
+		bd.fixedRotation = true;			// 回転しない
 		body = GameMain.world.createBody(bd);
-		body.setBullet(true);								// すり抜けない
-		body.setFixedRotation(true);						// 回転しない
-		body.setTransform(position.x, position.y, 0.0f);
 
 		// fixture生成
 		PolygonShape poly = new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f, new Vector2(0.0f, 1.6f), 0.0f);
+		poly.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
 
 		FixtureDef fd = new FixtureDef();
 		fd.density			= 0.0f;	// 密度
@@ -142,7 +145,7 @@ public class Player extends CharacterBase {
 		poly.dispose();
 
 		CircleShape circle = new CircleShape();
-		circle.setRadius(1.6f);
+		circle.setRadius(1.5f);
 		fd.shape = circle;
 		Fixture footFixture = body.createFixture(fd);
 		footFixture.setUserData(this);
@@ -168,7 +171,8 @@ public class Player extends CharacterBase {
 		// 下半身・歩き １行目６フレーム
 		frame = new TextureRegion[6];
 		index = 0;
-		for (int i = 0; i < frame.length; i++)
+		for (int i = 0; i < frame.length; i
+				++)
 			frame[index++] = tmp[0][i];
 		footWalkAnimation = new Animation(5.0f, frame);
 
@@ -182,11 +186,11 @@ public class Player extends CharacterBase {
 		// スプライトに反映 最初は立ちの第１フレーム
 		// （※現在は用意されていないので歩きの第１フレームで代用）
 		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
-		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f);
+		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f - 8);
 		footSprite.setScale(ScrollNinja.scale);
 
 		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
-		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f);
+		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f - 8);
 		bodySprite.setScale(ScrollNinja.scale);
 
 		sprite.add(footSprite);
@@ -205,8 +209,10 @@ public class Player extends CharacterBase {
 		count		 = 0;
 		invincibleTime = 0;
 		number = Number;
-		sensor.get(0).setUserData(this);
+		//sensor.get(0).setUserData(this);
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
+		// TODO ファイルが見つからないため一時コメントアウトしました
+		//kaginawa = new Kaginawa(this);
 	}
 
 
@@ -227,9 +233,10 @@ public class Player extends CharacterBase {
 
 		Flashing();			// 点滅処理
 		Move();				// 移動処理
-		Stand();			// 立ち処理
+		Stand();				// 立ち処理
 		Jump();				// ジャンプ処理
-		Attack();			// 攻撃処理
+		Attack();				// 攻撃処理
+		updateKaginawa();		// 鍵縄処理
 
 		if( prevState != currentState ) {
 			stateTime = 0;
@@ -289,6 +296,7 @@ public class Player extends CharacterBase {
 	 */
 	private void Move() {
 		// TODO 斜面でも速度が落ちないようにしたい。
+		// TODO 壁走り、天井走りを継続させるため、地面に着いている時は地面への吸着力を発生させる？
 
 		// 速度制限
 		Vector2 vel = body.getLinearVelocity();
@@ -346,8 +354,28 @@ public class Player extends CharacterBase {
 		}
 	}
 
-	// カギ縄
-	private void Kaginawa(){}
+	/**
+	 * 鍵縄の更新処理を実行する。
+	 */
+	private void updateKaginawa()
+	{
+		// TODO ファイルが見つからないため一時コメントアウトしました
+		/*
+		if( Gdx.input.isButtonPressed(Buttons.RIGHT) )
+		{
+			kaginawa.attack();
+		}
+		kaginawa.Update();
+		*/
+	}
+
+	@Override
+	public void Draw()
+	{
+		// TODO ファイルが見つからないため一時コメントアウトしました
+		//kaginawa.Draw();
+		super.Draw();
+	}
 
 	//************************************************************
 	// animation
@@ -425,13 +453,7 @@ public class Player extends CharacterBase {
 		groundJudge = true;
 
 		// 壁走り
-		WorldManifold manifold = contact.getWorldManifold();
-
-		Vector2 normal = manifold.getNormal();
-		float normalAngle = normal.angle();
-		float targetAngle = normalAngle - 90;
-
-		nearRotate(targetAngle);
+		nearRotate( (float)Math.toRadians(contact.getWorldManifold().getNormal().angle()-90) );
 	}
 
 	/**
@@ -467,29 +489,19 @@ public class Player extends CharacterBase {
 		}
 	}
 
-
-	private void nearRotate(float degree)
+	/**
+	 * 180度以下の範囲で回転する。
+	 * @param degree		回転後の角度
+	 */
+	private void nearRotate(float radian)
 	{
-		boolean useRadian = false;
-		if(useRadian)
-		{
-			float radian = (float)Math.toRadians(degree);
+		float stateTime = 10;		// 引数から指定する仕様に変更するかも知れない
 
-			radian -= Math.PI*0.5f;
-			radian = (float)( Math.abs(radian) % (Math.PI*2.0f) * Math.signum(radian) );
-			if(Math.abs(radian) > Math.PI)
-				radian = (float)( radian - Math.signum(radian) * Math.PI );
+		radian -= body.getAngle();
+		radian = (float)( Math.abs(radian) % (Math.PI*2.0f) * Math.signum(radian) );
+		if(Math.abs(radian) > Math.PI)
+			radian = (float)( radian - Math.signum(radian) * Math.PI );
 
-			body.setAngularVelocity(radian*10);
-		}
-		else
-		{
-			degree -= (float)Math.toDegrees(body.getAngle());
-			degree = Math.abs(degree) % 360 * Math.signum(degree);		// -360～360に丸める
-			if(Math.abs(degree) > 180)	degree = degree - Math.signum(degree) * 360;	// -180～180に丸める
-
-			float angularVel = (float)Math.toRadians(degree);
-			body.setAngularVelocity(angularVel*10);
-		}
+		body.setAngularVelocity(radian*stateTime);
 	}
 }

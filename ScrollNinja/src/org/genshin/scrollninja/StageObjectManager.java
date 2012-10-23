@@ -37,7 +37,6 @@ public class StageObjectManager {
 	// まだその種類がリストにない場合は新規で追加
 	//************************************************************
 	public static int CreateStageObject(int Type, Vector2 pos) {
-		System.out.println("innnnnnn");
 		if (stageObjectList == null)
 			stageObjectList = new ArrayList<Integer>();
 		if (rockList == null)
@@ -78,6 +77,10 @@ public class StageObjectManager {
 		return 0;
 	}
 	public static int CreateStageObject(int Type, float x, float y) {
+		if (stageObjectList == null)
+			stageObjectList = new ArrayList<Integer>();
+		if (rockList == null)
+			rockList = new ArrayList<StageObject>();
 
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < stageObjectList.size(); i ++ ) {

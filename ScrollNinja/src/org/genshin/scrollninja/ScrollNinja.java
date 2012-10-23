@@ -7,8 +7,6 @@ import javax.swing.JOptionPane;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 public class ScrollNinja extends Game {
@@ -43,7 +41,9 @@ public class ScrollNinja extends Game {
 		// ステージデータ読み込み
 		StageDataList.lead();
 
-		setScreen(new MainMenu(this));	// メインメニュー読み込み
+		// TODO リリース時にはメニュー画面から開始する。
+		//setScreen(new MainMenu(this));	// メインメニュー読み込み
+		setScreen(new GameMain(this, 0));	// ゲームメイン読み込み
 	}
 
 	// ウインドウサイズ取得
@@ -55,8 +55,9 @@ public class ScrollNinja extends Game {
 		// ゲームのサイズ
 		window.x = 1280;
 		window.y = 720;
-
-		int message = JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "test", JOptionPane.YES_NO_OPTION);
+		
+		// TODO リリース時にはフルスクリーンか選ばせる。もしくはオプションか何かで設定したモードで起動する。
+		int message = JOptionPane.NO_OPTION;//JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "test", JOptionPane.YES_NO_OPTION);
 		if(message == JOptionPane.OK_OPTION) {
 			// 自分のPCのウインドウサイズ
 			Gdx.graphics.setDisplayMode((int)d.getWidth(), (int)d.getHeight(), true);

@@ -18,7 +18,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // TODO エネミー用しか作っていない
 public class Syuriken extends WeaponBase {
 	private final int SYURIKEN_SPEED = 30;
-	private final int MAX_SYURIKEN = 10;
 	private final int EXIST_TIME = 240;
 	private int timeCount;
 
@@ -31,7 +30,7 @@ public class Syuriken extends WeaponBase {
 	 * @param i		管理番号
 	 */
 	public Syuriken(Player player, int i) {
-		owner		= player;					// 使用者
+		owner		= (CharacterBase)player;	// 使用者
 		this.player	= player;
 		this.enemy 	= null;
 		number		= i;						// 管理番号
@@ -92,7 +91,7 @@ public class Syuriken extends WeaponBase {
 		fd.shape		= poly;
 
 		sensor.add(body.createFixture(fd));	// センサーに追加
-		sensor.get(0).setUserData((WeaponBase)this);	// 当たり判定用にUserDataセット
+		sensor.get(0).setUserData(this);	// 当たり判定用にUserDataセット
 		sensor.get(0).setSensor(true);		// 他の当たり判定に影響しない
 		body.setBullet(true);				// すり抜け防止
 		body.setFixedRotation(true);		// シミュレーションでの自動回転をしない
@@ -151,7 +150,9 @@ public class Syuriken extends WeaponBase {
 	public void collisionNotify(Background obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void collisionNotify(Player obj, Contact contact){
+		use = false;
+	}
 
 	@Override
 	public void collisionNotify(Enemy obj, Contact contact){}

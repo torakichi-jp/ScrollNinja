@@ -51,11 +51,13 @@ public class WeaponManager {
 	}
 
 	public static void dispose() {
+		/*
 		if (katanaList != null) {
 			for (int i = 0; i < katanaList.size(); i++) {
 				katanaList.get(i).Release();
 			}
 		}
+		*/
 		katanaList = null;
 	}
 }

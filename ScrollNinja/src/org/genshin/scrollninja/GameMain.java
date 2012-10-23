@@ -47,12 +47,13 @@ public class GameMain implements Screen{
 	public static int gameState;
 	public final static int GAME_RUNNING	= 0;	// ゲーム中
 	public final static int GAME_PAUSED		= 1;	// 一時停止中
-	public final static int GAME_QUIT		= 2;
+	public final static int GO_TO_MENU		= 9;	// メニュー画面へ
 
 	// コンストラクタ
 	public GameMain(Game game, int num) {
-		scrollNinja			= game;
-		world				= new World(new Vector2(0, -20.0f), true);
+		scrollNinja		= game;
+		world				= new World(new Vector2(0, -100.0f), true);
+
 		// TODO 画面サイズによって数値を変更
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
 													 ScrollNinja.window.y * ScrollNinja.scale);
@@ -86,14 +87,11 @@ public class GameMain implements Screen{
 	//************************************************************
 	@Override
 	public void render(float delta) {
-		// TODO
-		if (Gdx.input.isKeyPressed(Keys.T)) {
-			gameState = GAME_QUIT;
-		}
 		switch (gameState) {
 		case GAME_RUNNING:
 			oldTime = newTime;
 
+			// TODO
 			if(Gdx.input.isKeyPressed(Keys.I)) {
 				scrollNinja.setScreen(new StageEditor());
 				StageEditor.Init();
@@ -107,13 +105,9 @@ public class GameMain implements Screen{
 		case GAME_PAUSED:
 			updatePaused(delta);
 			break;
-		case GAME_QUIT:
-			Gdx.gl.glClearColor(1, 1, 1, 1);
-			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+		case GO_TO_MENU:
 			stage.dispose();
 			scrollNinja.setScreen(new MainMenu(scrollNinja));
-
 			break;
 		}
 	}
@@ -153,7 +147,7 @@ public class GameMain implements Screen{
 
 
 		if(Gdx.input.isKeyPressed(Keys.G)) {
-			gotomenu = true;
+			gameState = GO_TO_MENU;
 			//scrollNinja.getScreen().dispose();
 			//scrollNinja.setScreen(new MainMenu(scrollNinja));
 			/*増殖する*/
