@@ -142,7 +142,7 @@ public class Player extends CharacterBase {
 		poly.dispose();
 
 		CircleShape circle = new CircleShape();
-		circle.setRadius(1.6f);
+		circle.setRadius(1.5f);
 		fd.shape = circle;
 		Fixture footFixture = body.createFixture(fd);
 		footFixture.setUserData(this);
@@ -289,6 +289,7 @@ public class Player extends CharacterBase {
 	 */
 	private void Move() {
 		// TODO 斜面でも速度が落ちないようにしたい。
+		// TODO 壁走り、天井走りを継続させるため、地面に着いている時は地面への吸着力を発生させる？
 
 		// 速度制限
 		Vector2 vel = body.getLinearVelocity();
@@ -425,13 +426,7 @@ public class Player extends CharacterBase {
 		groundJudge = true;
 
 		// 壁走り
-		WorldManifold manifold = contact.getWorldManifold();
-
-		Vector2 normal = manifold.getNormal();
-		float normalAngle = normal.angle();
-		float targetAngle = normalAngle - 90;
-
-		nearRotate(targetAngle);
+		nearRotate( (float)Math.toRadians(contact.getWorldManifold().getNormal().angle()-90) );
 	}
 
 	/**
@@ -469,29 +464,15 @@ public class Player extends CharacterBase {
 	 * 180度以下の範囲で回転する。
 	 * @param degree		回転後の角度
 	 */
-	private void nearRotate(float degree)
+	private void nearRotate(float radian)
 	{
-		float stateTime = 10;
-		boolean useRadian = false;
-		if(useRadian)
-		{
-			float radian = (float)Math.toRadians(degree);
+		float stateTime = 10;		// 引数から指定する仕様に変更するかも知れない
+		
+		radian -= body.getAngle();
+		radian = (float)( Math.abs(radian) % (Math.PI*2.0f) * Math.signum(radian) );
+		if(Math.abs(radian) > Math.PI)
+			radian = (float)( radian - Math.signum(radian) * Math.PI );
 
-			radian -= Math.PI*0.5f;
-			radian = (float)( Math.abs(radian) % (Math.PI*2.0f) * Math.signum(radian) );
-			if(Math.abs(radian) > Math.PI)
-				radian = (float)( radian - Math.signum(radian) * Math.PI );
-
-			body.setAngularVelocity(radian*stateTime);
-		}
-		else
-		{
-			degree -= (float)Math.toDegrees(body.getAngle());
-			degree = Math.abs(degree) % 360 * Math.signum(degree);		// -360～360に丸める
-			if(Math.abs(degree) > 180)	degree = degree - Math.signum(degree) * 360;	// -180～180に丸める
-
-			float angularVel = (float)Math.toRadians(degree);
-			body.setAngularVelocity(angularVel*stateTime);
-		}
+		body.setAngularVelocity(radian*stateTime);
 	}
 }
