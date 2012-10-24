@@ -118,10 +118,9 @@ public class GameMain implements Screen{
 				InitPause();
 				break;
 			case PAUSE_UPDATE:
-				spriteBatch.begin();
+				
 				updatePaused(delta);
 				DrawPause();
-				spriteBatch.end();
 				//break;
 			}
 			break;
@@ -162,7 +161,7 @@ public class GameMain implements Screen{
 			playerInfo.SetPauseFlag(false);
 			gameState = GAME_RUNNING;
 		}
-
+		
 		if(Gdx.input.isKeyPressed(Keys.G)) {
 			gameState = GO_TO_MENU;
 		}
@@ -179,11 +178,11 @@ public class GameMain implements Screen{
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
 			}			
-			// (仮)コンティニューをクリックしたら
+			// 
 			if(x > 450 && x < 647 && y < 242 && y > 215) {
 
 			}		
-			// (仮)コンティニューをクリックしたら
+			// 
 			if(x > 450 && x < 656 && y < 208 && y > 183) {
 
 			}
@@ -195,11 +194,11 @@ public class GameMain implements Screen{
 			drawflag = false;
 		}
 		
-		worldMap.setPosition(camera.position.x - worldMap.getWidth() * 0.5f
+			worldMap.setPosition(camera.position.x - worldMap.getWidth() * 0.5f
 				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
 				camera.position.y - worldMap.getHeight() * 0.5f
 				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
-		
+			
 		System.out.println(drawflag);
 	}
 	
@@ -218,12 +217,13 @@ public class GameMain implements Screen{
 	
 	// ポーズ中描画
 	public void DrawPause() {
+		
+		spriteBatch.begin();
 		if(drawflag) {
-			worldMap.draw(spriteBatch);
+			//worldMap.draw(spriteBatch);
 		}
-		else {
-			
-		}
+		spriteBatch.end();
+
 	}
 
 	@Override
