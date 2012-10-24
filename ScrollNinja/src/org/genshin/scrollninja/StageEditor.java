@@ -14,7 +14,7 @@ public class StageEditor implements Screen {
 	// 定数
 	private static final int MAX_STAGE			= 1;
 	private static final int MAX_PLAYER			= 1;
-	private static final int MAX_ENEMY			= 10;
+	private static final int MAX_ENEMY			= 1;
 	private static final int MAX_STAGEOBJECT	= 10;
 	
 	// 変数
@@ -48,6 +48,11 @@ public class StageEditor implements Screen {
 	private void Update() {
 //		ChangeStage();
 		Move();
+		Mouse.Update();
+		Mouse();
+		
+		System.out.println("マウス:" + Mouse.GetPosition());
+		System.out.println("て　き:" + EnemyManager.normalEnemyList.get(0).GetPosition());
 	}
 	
 	/**
@@ -78,8 +83,15 @@ public class StageEditor implements Screen {
 	 * マウス処理
 	 */
 	private void Mouse() {
-		if (Gdx.input.isTouched()) {
-			
+		if(Mouse.LeftClick()) {
+			for( int i = 0; i < EnemyManager.normalEnemyList.size(); i++ ) {
+				if( EnemyManager.normalEnemyList.get(i).GetPosition().x - 6.4 < Mouse.GetPosition().x * 0.1 &&
+					EnemyManager.normalEnemyList.get(i).GetPosition().x + 6.4 > Mouse.GetPosition().x * 0.1&&
+					EnemyManager.normalEnemyList.get(i).GetPosition().y - 6.4 < Mouse.GetPosition().y * 0.1&&
+					EnemyManager.normalEnemyList.get(i).GetPosition().y + 6.4 > Mouse.GetPosition().y * 0.1) {
+					EnemyManager.normalEnemyList.get(i).SetPosition((float)(Mouse.GetPosition().x* 0.1),(float)(Mouse.GetPosition().y* 0.1));
+				}
+			}
 		}
 	}
 	

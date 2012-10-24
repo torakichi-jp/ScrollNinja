@@ -2,8 +2,7 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
-// TODO ファイルが見つからないため一時コメントアウトしました
-//import org.genshin.scrollninja.object.weapon.Kaginawa;
+import org.genshin.scrollninja.object.weapon.Kaginawa;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -93,8 +92,7 @@ public class Player extends CharacterBase {
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
 
-	// TODO ファイルが見つからないため一時コメントアウトしました
-	//private Kaginawa kaginawa;		// 鍵縄
+	private Kaginawa kaginawa;		// 鍵縄
 
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
@@ -211,8 +209,7 @@ public class Player extends CharacterBase {
 		number = Number;
 		//sensor.get(0).setUserData(this);
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
-		// TODO ファイルが見つからないため一時コメントアウトしました
-		//kaginawa = new Kaginawa(this);
+		kaginawa = new Kaginawa(this);
 	}
 
 
@@ -359,21 +356,17 @@ public class Player extends CharacterBase {
 	 */
 	private void updateKaginawa()
 	{
-		// TODO ファイルが見つからないため一時コメントアウトしました
-		/*
 		if( Gdx.input.isButtonPressed(Buttons.RIGHT) )
 		{
 			kaginawa.attack();
 		}
 		kaginawa.Update();
-		*/
 	}
 
 	@Override
 	public void Draw()
 	{
-		// TODO ファイルが見つからないため一時コメントアウトしました
-		//kaginawa.Draw();
+		kaginawa.Draw();
 		super.Draw();
 	}
 
