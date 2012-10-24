@@ -143,41 +143,46 @@ public class GameMain implements Screen{
 			gameState = GAME_RUNNING;
 		}
 
-		//System.out.println(playerInfo.GetRetX());
-
-
 		if(Gdx.input.isKeyPressed(Keys.G)) {
 			gameState = GO_TO_MENU;
 			//scrollNinja.getScreen().dispose();
 			//scrollNinja.setScreen(new MainMenu(scrollNinja));
 			/*増殖する*/
 		}
-
-		//menu.update(delta);
-		//menu.draw(delta);
-
+		
 		if(Gdx.input.isTouched()) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
+			
+			/* 	マウス取得 ウィンドウの中心が原点 */
+			float x = Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f;
+			float y = Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
+			//x += GameMain.camera.position.x;
+			//y += GameMain.camera.position.y;
+			System.out.println(x);
+			System.out.println(y);
+			
+			// (仮)コンティニューをクリックしたら
+			if(x > 395 && x < 550 && y < 240 && y > 210) {
+				playerInfo.SetPauseFlag(false);
+				gameState = GAME_RUNNING;
+			}			
+			// (仮)コンティニューをクリックしたら
+			if(x > 400 && x < 575 && y < 200 && y > 175) {
 
-			if(x > 1008 && x < 1167 && y > 65 && y < 102) {
+			}		
+			// (仮)コンティニューをクリックしたら
+			if(x > 400 && x < 585 && y < 170 && y > 142) {
 
-				if(gotomenu) {
-					//menu.update(delta);
-					//menu.draw(delta);
-				}
 			}
-		}
-		if(Gdx.input.isTouched()) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
+			
 
+		}
 			//フルスクリーン、ウィンドウだと座標が変わるのでマウス座標は×
-			if(x > 1008 && x < 1167 && y > 65 && y < 102) {
+			if(Gdx.input.isKeyPressed(Keys.T)) {
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
 			}
-		}
+			//}
+		
 	}
 	
 

@@ -322,14 +322,14 @@ public class Interface {
 
 	public void Map() {
 		if(Gdx.input.isTouched()) {
-			int x = Gdx.input.getX();
-			int y = Gdx.input.getY();
-			System.out.print("mouseX:");
+			float x = Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f;
+			float y = Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
+			x += GameMain.camera.position.x;
+			y += GameMain.camera.position.y;
+			System.out.print("moX");
 			System.out.println(x);
-			System.out.print("mouseY:");
+			System.out.print("moY");
 			System.out.println(y);
-			//if(x > 600 && y < 150)
-				//pauseFlag = true;
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.M)) {
