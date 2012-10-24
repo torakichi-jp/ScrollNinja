@@ -34,7 +34,7 @@ public class WeaponManager {
 	 * @param owner			使用者
 	 * @param type			種類
 	 */
-	public static WeaponBase CreateWeapon(CharacterBase owner, int type, int lv) {
+	public static WeaponBase CreateWeapon(CharacterBase owner, int type) {
 		if (katanaList == null)
 			katanaList = new ArrayList<Katana>();
 

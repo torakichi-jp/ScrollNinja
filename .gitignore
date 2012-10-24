@@ -2,6 +2,7 @@
 *.orig
 *.DS_Store
 *.log
+doc/
 ScrollNinja/bin/com/gdx.gwt.xml
 ScrollNinja-html/.gwt/.gwt-log
 ScrollNinja-android/bin/resources.ap_
