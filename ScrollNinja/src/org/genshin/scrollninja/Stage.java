@@ -4,6 +4,8 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.StageDataList.StageData;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -15,13 +17,15 @@ public class Stage implements StageBase {
 	private ArrayList<Enemy>		popEnemys;		//
 	private ArrayList<Weapon>		popWeapons;
 
-	private int						stageNum;
+	private int						stageNum;		// ステージナンバー
+	private StageData	 			stageData;		// ステージのデータ
 
 	// コンストラクタ
 	public Stage(int num){
 		stageNum = num;
+		stageData = StageDataList.lead(stageNum);
 
-		renderer			= new Box2DDebugRenderer();
+		renderer = new Box2DDebugRenderer();
 
 		// TODO ここで他のデータもStageDataList.list.get(stageNum)から引っ張ってこられるように
 	}
@@ -40,10 +44,10 @@ public class Stage implements StageBase {
 
 		if( EnemyManager.normalEnemyList.size() == 0) {
 			//EnemyManager.CreateEnemy(Enemy.NORMAL, 0.0f, 0.0f);
-			for (int i = 0; i < StageDataList.list.get(stageNum).enemyType.size(); i++) {
-				for (int j = 0; j < StageDataList.list.get(stageNum).enemyNum.get(i); j++) {
-					EnemyManager.CreateEnemy(StageDataList.list.get(stageNum).enemyType.get(i),
-										 StageDataList.list.get(stageNum).enemyPosition.get((i+1)*(j+1)-1));
+			for (int i = 0; i < stageData.enemyType.size(); i++) {
+				for (int j = 0; j < stageData.enemyNum.get(i); j++) {
+					EnemyManager.CreateEnemy(stageData.enemyType.get(i),
+										 stageData.enemyPosition.get((i+1)*(j+1)-1));
 				}
 			}
 		}
@@ -153,14 +157,14 @@ public class Stage implements StageBase {
 
 	@Override
 	public void Init() {
-		PlayerManager.CreatePlayer(StageDataList.list.get(stageNum).playerPosition);
+		PlayerManager.CreatePlayer(stageData.playerPosition);
 		// TODO 後でステージオブジェクトリスト追加
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
 		//EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
-		for (int i = 0; i < StageDataList.list.get(stageNum).enemyType.size(); i++) {
-			for (int j = 0; j < StageDataList.list.get(stageNum).enemyNum.get(i); j++) {
-				EnemyManager.CreateEnemy(StageDataList.list.get(stageNum).enemyType.get(i),
-										 StageDataList.list.get(stageNum).enemyPosition.get((i+1)*(j+1)-1));
+		for (int i = 0; i < stageData.enemyType.size(); i++) {
+			for (int j = 0; j < stageData.enemyNum.get(i); j++) {
+				EnemyManager.CreateEnemy(stageData.enemyType.get(i),
+										 stageData.enemyPosition.get((i+1)*(j+1)-1));
 			}
 		}
 		//EffectManager.CreateEffect(Effect.FIRE_2);

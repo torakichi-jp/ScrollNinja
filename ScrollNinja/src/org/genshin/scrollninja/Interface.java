@@ -33,7 +33,7 @@ public class Interface {
 	//private static Sprite weaponReinforcement;	// 武器強化
 	private static Sprite load;						// ロード
 
-	private Sprite worldMap;					// ワールドマップ(仮)
+	//private Sprite worldMap;					// ワールドマップ(仮)
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
@@ -132,13 +132,13 @@ public class Interface {
 		load = new Sprite(loadRegion);
 		load.setScale(ScrollNinja.scale);
 
-		// ワールドマップ
+		/*// ワールドマップ
 		Texture worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
 		worldMap = new Sprite(worldRegion);
 		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
-		worldMap.setScale(ScrollNinja.scale * 1.5f);
+		worldMap.setScale(ScrollNinja.scale * 1.5f);*/
 		// フルスクリーン時
 		//worldMap.setPosition(-505,-540);
 
@@ -214,11 +214,11 @@ public class Interface {
 				cameraPosition.y - load.getHeight() * 0.5f
 				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- load.getHeight() * 0.5f * 0.9f);
 
-		worldMap.setPosition(cameraPosition.x - worldMap.getWidth() * 0.5f
+		/*worldMap.setPosition(cameraPosition.x - worldMap.getWidth() * 0.5f
 				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
 				cameraPosition.y - worldMap.getHeight() * 0.5f
 				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
-
+*/
 		// HPに変動があれば計算
 		if (calculateHP)
 			calculateHP();
@@ -279,12 +279,6 @@ public class Interface {
 		// マップの表示
 		Map();
 
-		if(Gdx.input.isKeyPressed(Keys.O)) {
-			worldmapflag = true;
-		}
-		if(Gdx.input.isKeyPressed(Keys.P)) {
-			worldmapflag = false;
-		}
 
 		// アイコン
 		/*
@@ -324,8 +318,6 @@ public class Interface {
 		if(Gdx.input.isTouched()) {
 			float x = Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f;
 			float y = Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
-			x += GameMain.camera.position.x;
-			y += GameMain.camera.position.y;
 			System.out.print("moX");
 			System.out.println(x);
 			System.out.print("moY");
@@ -380,7 +372,7 @@ public class Interface {
 		//map.draw(GameMain.spriteBatch);
 
 		if(worldmapflag) {
-			worldMap.draw(GameMain.spriteBatch);
+			//worldMap.draw(GameMain.spriteBatch);
 		}
 		
 		if(pauseFlag) {

@@ -5,6 +5,8 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.StageDataList.StageData;
+
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
@@ -39,20 +41,26 @@ public class Background extends ObJectBase {
 	public final static int	NEAR			= 2;
 
 	// 変数宣言
-	private float				zIndex;								// Zインデックス
-	private Vector2				playerPos;
-	private int					stageNum;
+	private float			zIndex;								// Zインデックス
+	private Vector2			playerPos;
+
+	private int				stageNum;
+	private StageData 		stageData;
+
 
 	/**
 	 *  コンストラクタ
 	 */
 	public Background(){}
 	public Background(int num, boolean createFlag) {
+		stageNum = num;
+		stageData = StageDataList.lead(stageNum);
+
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 
 		stageNum = num;
-		playerPos = StageDataList.list.get(stageNum).playerPosition;
+		playerPos = stageData.playerPosition;
 
 		LoadTexture();
 		// MainMenuではcreateしない
@@ -88,11 +96,13 @@ public class Background extends ObJectBase {
 		// 奥から作成
 		// 奥
 		Texture texture =
-			new Texture(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundFileName.get(FAR)));
+			new Texture(Gdx.files.internal(stageData.backgroundFileName.get(FAR)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
-		sprite.get(FAR).setPosition(-sprite.get(FAR).getWidth() * 0.5f, -sprite.get(FAR).getHeight() * 0.5f);
+		sprite.get(FAR).setPosition(-sprite.get(FAR).getWidth() * 0.5f,
+									-sprite.get(FAR).getHeight() * 0.5f);
+		// TODO 遠景のスケールはとりあえずの数値
 		if(sprite.get(FAR).getWidth() > ScrollNinja.window.x )
 			sprite.get(FAR).setScale(ScrollNinja.scale + 0.01f);
 		else
@@ -101,24 +111,26 @@ public class Background extends ObJectBase {
 
 		// メインステージ
 		texture =
-			new Texture(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundFileName.get(MAIN)));
+			new Texture(Gdx.files.internal(stageData.backgroundFileName.get(MAIN)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
-		sprite.get(MAIN).setPosition
-							(-sprite.get(MAIN).getWidth() * 0.5f, -sprite.get(MAIN).getHeight() * 0.5f);
+		sprite.get(MAIN).setPosition(-sprite.get(MAIN).getWidth() * 0.5f,
+									 -sprite.get(MAIN).getHeight() * 0.5f);
 		sprite.get(MAIN).setScale(ScrollNinja.scale);
 
 		// 手前
 		texture =
-			new Texture(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundFileName.get(NEAR)));
+			new Texture(Gdx.files.internal(stageData.backgroundFileName.get(NEAR)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
 		// TODO 要調整
 		// 41.05は((メインテクスチャ1333)-(手前テクスチャ256*scale2倍) ÷　（空白は上下あるから）2) ?
+		float tmp = (stageData.backgroundSize.get(MAIN).x - sprite.get(NEAR).getWidth() * 2) * 0.5f * 0.1f;
 		sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f,
-										-sprite.get(NEAR).getHeight() * 0.5f -41.05f);
+									 -sprite.get(NEAR).getHeight() * 0.5f - tmp);
+		// TODO 近景のスケールはとりあえずの数値
 		sprite.get(NEAR).setScale(ScrollNinja.scale * 2.5f, ScrollNinja.scale * 2f);
 	}
 
@@ -128,15 +140,16 @@ public class Background extends ObJectBase {
 	public void createBody() {
 		// 当たり判定作成用ファイル読み込み
 		BodyEditorLoader loader =
-			new BodyEditorLoader(Gdx.files.internal(StageDataList.list.get(stageNum).backgroundBodyFileName));
+			new BodyEditorLoader(Gdx.files.internal(stageData.backgroundBodyFileName));
 
 		// ボディタイプ設定
 		BodyDef bd	= new BodyDef();
 		bd.type		= BodyType.StaticBody;		// 動かない物体
 		// TODO 要調整
 		// -357.5は（2048-1333）÷２　（画像サイズ-実際に描かれているサイズ）=空白　空白は上下にあるので÷２
+		float tmp = (sprite.get(MAIN).getHeight() - stageData.backgroundSize.get(MAIN).y) * 0.5f;
 		bd.position.set(-sprite.get(MAIN).getWidth() * 0.5f * ScrollNinja.scale,
-								(-sprite.get(MAIN).getHeight() * 0.5f -357.5f) * ScrollNinja.scale);
+					   (-sprite.get(MAIN).getHeight() * 0.5f - tmp) * ScrollNinja.scale);
 
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
@@ -146,7 +159,8 @@ public class Background extends ObJectBase {
 
 		// ボディ作成
 		body = GameMain.world.createBody(bd);
-		loader.attachFixture( body, "bgTest", fd, sprite.get(MAIN).getWidth() * ScrollNinja.scale);
+		loader.attachFixture( body, stageData.backgroundBodyName, fd,
+								sprite.get(MAIN).getWidth() * ScrollNinja.scale);
 
 		for(int i = 0; i < body.getFixtureList().size(); i ++) {
 			sensor.add(body.getFixtureList().get(i));
@@ -164,27 +178,33 @@ public class Background extends ObJectBase {
 		// 近景
 		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
 			&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
-			sprite.get(NEAR).setPosition
-						(-sprite.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f, sprite.get(NEAR).getY());
+			sprite.get(NEAR).setPosition(-sprite.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f,
+										 sprite.get(NEAR).getY());
 		// TODO 要調整
 		// 1333は実際の画像のサイズ　20は適当
 		// 11.05はLoadTexture時の41.05-画面サイズ600÷2 ?
-		if (playerPos.y > -(1333 - ScrollNinja.window.y) * 0.5  * ScrollNinja.scale && playerPos.y < 20)
-			sprite.get(NEAR).setPosition
-					(sprite.get(NEAR).getX(), -sprite.get(NEAR).getHeight() * 0.5f -11.05f + playerPos.y);
+		float tmp = (stageData.backgroundSize.get(MAIN).y - sprite.get(NEAR).getHeight() * 2) * 0.5f * 0.1f
+					 - (600 * 0.5f * 0.1f);
+		if (playerPos.y >
+			-(stageData.backgroundSize.get(MAIN).y - ScrollNinja.window.y) * 0.5  * ScrollNinja.scale
+			  && playerPos.y < 20)
+			sprite.get(NEAR).setPosition(sprite.get(NEAR).getX(),
+										 -sprite.get(NEAR).getHeight() * 0.5f - tmp + playerPos.y);
 
 		// 遠景
 		if (playerPos.x > -(sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
 			&& playerPos.x < (sprite.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
 			sprite.get(FAR).setPosition
 				(playerPos.x - (sprite.get(FAR).getWidth() * 0.5f)+ (playerPos.x * -0.05f),
-						sprite.get(FAR).getY());
+				 sprite.get(FAR).getY());
 		// TODO 要調整
 		// 1333は実際のサイズ
 		if (playerPos.y > -(sprite.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale
-								&& playerPos.y < (1333 - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale)
+			&& playerPos.y <
+					(stageData.backgroundSize.get(MAIN).y - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale)
 			sprite.get(FAR).setPosition(sprite.get(FAR).getX(),
-								playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
+										playerPos.y - (sprite.get(FAR).getHeight() * 0.5f) +
+																					(playerPos.y * -0.15f));
 	}
 
 	@Override

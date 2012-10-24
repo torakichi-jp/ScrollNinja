@@ -8,7 +8,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -42,17 +46,24 @@ public class GameMain implements Screen{
 	private long			sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
 
 	private boolean gotomenu;
+	private Sprite worldMap;
+	private static boolean drawflag;
 
 	// 仮
 	public static int gameState;
 	public final static int GAME_RUNNING	= 0;	// ゲーム中
 	public final static int GAME_PAUSED		= 1;	// 一時停止中
 	public final static int GO_TO_MENU		= 9;	// メニュー画面へ
+	
+	public static int pauseState;
+	public final static int PAUSE_INIT = 0;
+	public final static int PAUSE_UPDATE    = 1;
 
 	// コンストラクタ
 	public GameMain(Game game, int num) {
 		scrollNinja		= game;
-		world				= new World(new Vector2(0, -100.0f), true);
+		// TODO 重力は調整必要あり
+		world				= new World(new Vector2(0, -150.0f), true);
 
 		// TODO 画面サイズによって数値を変更
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
@@ -62,15 +73,14 @@ public class GameMain implements Screen{
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
 
-		// とりあえず適当に設定してみました
-		world.setGravity(new Vector2( 0.0f, -150.0f ));
-
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
 		BackgroundManager.CreateBackground(stageNum, true);
 
 		gotomenu = false;
+		drawflag = false;
 		gameState = GAME_RUNNING;
+		pauseState = PAUSE_INIT;
 	}
 
 	//************************************************************
@@ -91,7 +101,7 @@ public class GameMain implements Screen{
 		case GAME_RUNNING:
 			oldTime = newTime;
 
-			// TODO
+			//TODO
 			if(Gdx.input.isKeyPressed(Keys.I)) {
 				scrollNinja.setScreen(new StageEditor());
 				StageEditor.Init();
@@ -103,7 +113,17 @@ public class GameMain implements Screen{
 			FPS();
 			break;
 		case GAME_PAUSED:
-			updatePaused(delta);
+			switch(pauseState) {
+			case PAUSE_INIT:
+				InitPause();
+				break;
+			case PAUSE_UPDATE:
+				spriteBatch.begin();
+				updatePaused(delta);
+				DrawPause();
+				spriteBatch.end();
+				//break;
+			}
 			break;
 		case GO_TO_MENU:
 			stage.dispose();
@@ -145,46 +165,66 @@ public class GameMain implements Screen{
 
 		if(Gdx.input.isKeyPressed(Keys.G)) {
 			gameState = GO_TO_MENU;
-			//scrollNinja.getScreen().dispose();
-			//scrollNinja.setScreen(new MainMenu(scrollNinja));
-			/*増殖する*/
 		}
 		
 		if(Gdx.input.isTouched()) {
-			
 			/* 	マウス取得 ウィンドウの中心が原点 */
 			float x = Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f;
 			float y = Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
-			//x += GameMain.camera.position.x;
-			//y += GameMain.camera.position.y;
-			System.out.println(x);
-			System.out.println(y);
+			System.out.println("mouseX:"+ x);
+			System.out.println("mouseY:"+ y);
 			
 			// (仮)コンティニューをクリックしたら
-			if(x > 395 && x < 550 && y < 240 && y > 210) {
+			if(x > 445 && x < 620 && y < 282 && y > 255) {
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
 			}			
 			// (仮)コンティニューをクリックしたら
-			if(x > 400 && x < 575 && y < 200 && y > 175) {
+			if(x > 450 && x < 647 && y < 242 && y > 215) {
 
 			}		
 			// (仮)コンティニューをクリックしたら
-			if(x > 400 && x < 585 && y < 170 && y > 142) {
+			if(x > 450 && x < 656 && y < 208 && y > 183) {
 
 			}
-			
-
 		}
-			//フルスクリーン、ウィンドウだと座標が変わるのでマウス座標は×
-			if(Gdx.input.isKeyPressed(Keys.T)) {
-				playerInfo.SetPauseFlag(false);
-				gameState = GAME_RUNNING;
-			}
-			//}
+		if(Gdx.input.isKeyPressed(Keys.V)) {
+			drawflag = true;
+		}
+		if(Gdx.input.isKeyPressed(Keys.B)) {
+			drawflag = false;
+		}
 		
+		worldMap.setPosition(camera.position.x - worldMap.getWidth() * 0.5f
+				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
+				camera.position.y - worldMap.getHeight() * 0.5f
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
+		
+		System.out.println(drawflag);
 	}
 	
+	// ポーズ初期化
+	public void InitPause() {
+		// ワールドマップ
+		Texture worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
+		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
+		worldMap = new Sprite(worldRegion);
+		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
+		worldMap.setScale(ScrollNinja.scale * 1.5f);
+		
+		pauseState = PAUSE_UPDATE;
+	}
+	
+	// ポーズ中描画
+	public void DrawPause() {
+		if(drawflag) {
+			worldMap.draw(spriteBatch);
+		}
+		else {
+			
+		}
+	}
 
 	@Override
 	public void resize(int width, int height) {}
