@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class StageEditor implements Screen {
-	
 	// 定数
 	private static final int MAX_STAGE			= 1;
 	private static final int MAX_PLAYER			= 1;			// 全部種類です
@@ -52,13 +51,20 @@ public class StageEditor implements Screen {
 //		ChangeStage();
 		Move();
 		Mouse.Update();
-		Mouse();
-		
+
 		// キャラクター
-		for( int i = 0; i < EnemyManager.normalEnemyList.size(); i ++ ) {
-			EnemyManager.normalEnemyList.get(i).Edit();
+		StructObjectManager.Update();
+		
+		if( Gdx.input.isKeyPressed(Keys.A)) {
+			if( StructObjectManager.GetListSize() == 0 )
+				StructObjectManager.CreateStructObject(StructObject.NORMAL_ENEMY);
 		}
 		
+		if( Gdx.input.isKeyPressed(Keys.B)) {
+			if( StructObjectManager.GetListSize() == 0 )
+				StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
+		}
+			
 //		System.out.println("マウスX:" + (Mouse.GetPosition().x * 0.1 - 64.0 ));
 //		System.out.println("マウスY:" + (Mouse.GetPosition().y * 0.1 - 36.0 ));
 //		System.out.println("て　き :" + EnemyManager.normalEnemyList.get(0).GetPosition());
@@ -79,10 +85,12 @@ public class StageEditor implements Screen {
 		{
 			BackgroundManager.GetBackground(0).Draw(Background.FAR);
 			BackgroundManager.GetBackground(0).Draw(Background.MAIN);
+			
+			StructObjectManager.Draw();
 
-			PlayerManager.Draw();
-			EnemyManager.Draw();
-			StageObjectManager.Draw();
+//			PlayerManager.Draw();
+//			EnemyManager.Draw();
+//			StageObjectManager.Draw();
 			
 		}
 		GameMain.spriteBatch.end();										// 描画終了
@@ -93,7 +101,7 @@ public class StageEditor implements Screen {
 	/**
 	 * マウス処理
 	 */
-	private void Mouse() {
+/*	private void Mouse() {
 		if(Mouse.LeftClick()) {
 			for( int i = 0; i < EnemyManager.normalEnemyList.size(); i++ ) {
 				if( EnemyManager.normalEnemyList.get(i).GetPosition().x - 1.6 < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
@@ -104,7 +112,7 @@ public class StageEditor implements Screen {
 				}
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * カメラ移動

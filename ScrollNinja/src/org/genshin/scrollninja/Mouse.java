@@ -1,11 +1,16 @@
 package org.genshin.scrollninja;
 
+import java.awt.Frame;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.event.EventListenerList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
@@ -87,7 +92,6 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO 自動生成されたメソッド・スタブ
-		
 	}
 
 	@Override
