@@ -138,7 +138,7 @@ public class Interface {
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
 		worldMap = new Sprite(worldRegion);
 		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
-		worldMap.setScale(ScrollNinja.scale);
+		worldMap.setScale(ScrollNinja.scale * 1.5f);
 		// フルスクリーン時
 		//worldMap.setPosition(-505,-540);
 
@@ -217,7 +217,7 @@ public class Interface {
 		worldMap.setPosition(cameraPosition.x - worldMap.getWidth() * 0.5f
 				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
 				cameraPosition.y - worldMap.getHeight() * 0.5f
-				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.09f);
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
 
 		// HPに変動があれば計算
 		if (calculateHP)
@@ -369,7 +369,8 @@ public class Interface {
 		pauseFlag = pauseflag;
 	}
 	public Sprite GetReturnGame(){return returnGame;}
-
+	
+	
 	public void Draw() {
 		hp.draw(GameMain.spriteBatch);
 		scrollRight.draw(GameMain.spriteBatch);
@@ -378,6 +379,10 @@ public class Interface {
 		hyoutan.draw(GameMain.spriteBatch);
 		//map.draw(GameMain.spriteBatch);
 
+		if(worldmapflag) {
+			worldMap.draw(GameMain.spriteBatch);
+		}
+		
 		if(pauseFlag) {
 			/*quitPause.draw(GameMain.spriteBatch);
 			icon.setScale(ScrollNinja.scale);
@@ -388,9 +393,7 @@ public class Interface {
 			title.draw(GameMain.spriteBatch);
 			load.draw(GameMain.spriteBatch);
 
-			if(worldmapflag) {
-				worldMap.draw(GameMain.spriteBatch);
-			}
+
 		}
 		else{
 			//icon.setScale(ScrollNinja.scale * 0.4f);
