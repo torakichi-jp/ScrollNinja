@@ -21,16 +21,13 @@ public class MainMenu implements Screen{
 	private OrthographicCamera camera;
 	public static SpriteBatch spriteBatch;
 
-	private Texture texture;				// テクスチャー
-	
-
 	private Sprite modeContinue;			// コンティニュー
 	private Sprite modeNewGame;				// ニューゲーム
 	private Sprite modeLoadGame;			// ロードゲーム
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
-	private Sprite modeExit;					// エグジット
-	
+	private Sprite modeExit;				// エグジット
+
 	private boolean wmapflag;
 	private Stage stage;					// 最初に呼ばれるステージ
 	//private Stage2 stage2;
@@ -65,13 +62,7 @@ public class MainMenu implements Screen{
 		BackgroundManager.CreateBackground(nextStageNum, false);
 
 		// テクスチャ読み込み
-		try {
-			texture = new Texture(Gdx.files.internal("data/menu.png"));
-		} catch (NullPointerException e) {
-			System.out.println("ファイルがありません");
-		} catch (GdxRuntimeException e) {
-			System.out.println("テクスチャサイズは２の乗数にしてください");
-		}
+		Texture texture = new Texture(Gdx.files.internal("data/menu.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		spritePositionX = -105;
@@ -112,9 +103,6 @@ public class MainMenu implements Screen{
 		modeExit.setPosition(spritePositionX, -20);
 		modeExit.setScale(ScrollNinja.scale);
 
-
-
-
 		// 初期化
 		scrollFlag = false;
 		wmapflag = false;
@@ -122,12 +110,12 @@ public class MainMenu implements Screen{
 
 	// 更新
 	public void update(float delta) {
-		
+
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 			FileOperation.LoadFile("data/test.txt");
 			FileOperation.ExportFile("data/aaa.txt");
 		}
-		
+
 		// エンターキーでコンティニュー　仮挿入中
 		if (Gdx.input.isKeyPressed(Keys.ENTER))
 				scrollFlag = true;		// スプライトを動かすフラグオン
@@ -173,7 +161,7 @@ public class MainMenu implements Screen{
 		if(Gdx.input.isKeyPressed(Keys.U)){
 			wmapflag = false;
 		}
-		
+
 		// 選択肢をクリックしたら画像移動
 		moveSprite();
 	}
@@ -217,7 +205,7 @@ public class MainMenu implements Screen{
 		//（とりあえずメインと遠景）
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
-		
+
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);
 		modeNewGame.draw(spriteBatch);
@@ -257,5 +245,6 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
+		spriteBatch.dispose();
 	}
 }

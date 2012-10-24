@@ -52,7 +52,8 @@ public class GameMain implements Screen{
 	// コンストラクタ
 	public GameMain(Game game, int num) {
 		scrollNinja		= game;
-		world				= new World(new Vector2(0, -100.0f), true);
+		// TODO 重力は調整必要あり
+		world				= new World(new Vector2(0, -150.0f), true);
 
 		// TODO 画面サイズによって数値を変更
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
@@ -61,9 +62,6 @@ public class GameMain implements Screen{
 		stageNum			= num;
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
-
-		// とりあえず適当に設定してみました
-		world.setGravity(new Vector2( 0.0f, -150.0f ));
 
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
@@ -179,7 +177,7 @@ public class GameMain implements Screen{
 			}
 		}
 	}
-	
+
 
 	@Override
 	public void resize(int width, int height) {}

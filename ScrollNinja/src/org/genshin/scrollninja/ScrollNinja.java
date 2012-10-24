@@ -38,9 +38,6 @@ public class ScrollNinja extends Game {
 		// TODO 画面比によってスケーリング変えれる？
 		scale = 0.1f;
 
-		// ステージデータ読み込み
-		StageDataList.lead();
-
 		// TODO リリース時にはメニュー画面から開始する。
 		//setScreen(new MainMenu(this));	// メインメニュー読み込み
 		setScreen(new GameMain(this, 0));	// ゲームメイン読み込み
@@ -55,9 +52,10 @@ public class ScrollNinja extends Game {
 		// ゲームのサイズ
 		window.x = 1280;
 		window.y = 720;
-		
+
 		// TODO リリース時にはフルスクリーンか選ばせる。もしくはオプションか何かで設定したモードで起動する。
-		int message = JOptionPane.NO_OPTION;//JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "test", JOptionPane.YES_NO_OPTION);
+		int message = JOptionPane.NO_OPTION;
+		//JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "test", JOptionPane.YES_NO_OPTION);
 		if(message == JOptionPane.OK_OPTION) {
 			// 自分のPCのウインドウサイズ
 			Gdx.graphics.setDisplayMode((int)d.getWidth(), (int)d.getHeight(), true);
