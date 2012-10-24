@@ -34,7 +34,7 @@ public class WeaponManager {
 	 * @param owner			使用者
 	 * @param type			種類
 	 */
-	public static WeaponBase CreateWeapon(CharacterBase owner, int type) {
+	public static WeaponBase CreateWeapon(CharacterBase owner, int type, int lv) {
 		if (katanaList == null)
 			katanaList = new ArrayList<Katana>();
 
@@ -51,13 +51,6 @@ public class WeaponManager {
 	}
 
 	public static void dispose() {
-		/*
-		if (katanaList != null) {
-			for (int i = 0; i < katanaList.size(); i++) {
-				katanaList.get(i).Release();
-			}
-		}
-		*/
 		katanaList = null;
 	}
 }

@@ -72,7 +72,7 @@ public class Enemy extends CharacterBase {
 	private boolean				deleteFlag;		// 削除フラグ
 	private Player 				player;			// プレイヤー
 	private ArrayList<Syuriken> syuriken;		// 手裏剣
-	private WeaponBase			katana;			// 刀
+	private WeaponBase			weapon;			// 刀
 	private int					attackInterval;	// 攻撃間隔
 
 	private Vector2				wanderingPosition;	// うろうろ場所用に出現位置を保存
@@ -98,11 +98,11 @@ public class Enemy extends CharacterBase {
 		wanderingPosition	= new Vector2(position);
 
 		syuriken = null;
-		katana = null;
+		weapon = null;
 		// TODO とりあえず
 		switch (data.haveWeapon.get(0)) {
 			case 1:
-				katana = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
+				//weapon = new Katana(this, 0);
 				break;
 		}
 
@@ -212,6 +212,10 @@ public class Enemy extends CharacterBase {
 			}
 		}
 
+		//
+		if (weapon != null)
+			weapon.Update();
+
 		// アニメーション更新
 		nowFrame = animation.getKeyFrame(stateTime, true);
 		stateTime ++;
@@ -266,7 +270,10 @@ public class Enemy extends CharacterBase {
 			chase();
 			if (attackFlag) {
 				if (attackInterval == 0)
-					attack();
+					if (weapon != null)
+						attackKatana();
+					else
+						attackSyuriken();
 				else
 					attackInterval -= 1;
 			}
@@ -345,11 +352,19 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* attack()
-	* 手裏剣での攻撃と刀での攻撃
+	* attackKatana()
+	* 手裏剣での攻撃
 	**************************************************/
-	// TODO 刀での攻撃がまだ…
-	public void attack() {
+	public void attackKatana() {
+		weapon.SetUseFlag(true);
+
+		attackInterval = INTERVAL;
+	}
+	/**************************************************
+	* attackSyuriken()
+	* 手裏剣での攻撃
+	**************************************************/
+	public void attackSyuriken() {
 		if (syuriken == null) {
 			syuriken = new ArrayList<Syuriken>(MAX_SYURIKEN);
 			syuriken.add(new Syuriken(this, 0));

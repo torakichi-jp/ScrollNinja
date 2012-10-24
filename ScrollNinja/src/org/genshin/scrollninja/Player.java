@@ -208,7 +208,7 @@ public class Player extends CharacterBase {
 		invincibleTime = 0;
 		number = Number;
 		//sensor.get(0).setUserData(this);
-		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
+		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA, 2);
 		kaginawa = new Kaginawa(this);
 	}
 

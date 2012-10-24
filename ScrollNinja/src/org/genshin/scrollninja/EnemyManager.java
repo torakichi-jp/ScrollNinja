@@ -31,6 +31,9 @@ public class EnemyManager {
 		for(int i = 0; i < normalEnemyList.size(); i ++) {
 			normalEnemyList.get(i).Update();
 		}
+		for(int i = 0; i < rareEnemyList.size(); i ++) {
+			rareEnemyList.get(i).Update();
+		}
 	}
 
 	/**
@@ -39,6 +42,9 @@ public class EnemyManager {
 	public static void Draw() {
 		for(int i = 0; i < normalEnemyList.size(); i ++) {
 			normalEnemyList.get(i).Draw();
+		}
+		for(int i = 0; i < rareEnemyList.size(); i ++) {
+			rareEnemyList.get(i).Draw();
 		}
 	}
 
@@ -150,6 +156,17 @@ public class EnemyManager {
 					}
 					break;
 				case Enemy.RARE:
+					for( int j = 0; j < rareEnemyList.size(); j ++ ) {
+						if( rareEnemyList.get(j).GetNum() == enemy.GetNum() ) {
+							rareEnemyList.get(j).Release();
+							rareEnemyList.remove(j);					// 削除！
+						}
+					}
+
+					// 削除に合わせて管理番号変更。とりあえず全部
+					for( int j = 0; j < rareEnemyList.size(); j ++ ) {
+						rareEnemyList.get(j).SetNum(j + 1);
+					}
 					break;
 				case Enemy.AUTO:
 					break;

@@ -1,11 +1,6 @@
 package org.genshin.scrollninja;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Fixture;
-
 
 public class Katana extends WeaponBase {
 
@@ -16,16 +11,29 @@ public class Katana extends WeaponBase {
 	public Katana(CharacterBase chara, int i) {
 		owner		= chara;					// 使用者
 		number		= i;						// 管理番号
-		level		= 2;						// レベル
+		level		= 2;						// レベル TODO
 		attackNum	= (level * 10);				// 攻撃力（てきとー）
 		position 	= new Vector2(0.0f, 0.0f);
 		use			= false;
 
-		//EffectManager.CreateEffect(Effect.FIRE_1);
-		EffectManager.CreateEffect(Effect.FIRE_2);
-//		EffectManager.CreateEffect(Effect.FIRE_3);
-//		sprite		= new ArrayList<Sprite>();
-//		sensor		= new ArrayList<Fixture>();
+		// TODO エフェクトをエネミーにも使えるようにすべきかそのまま別のクラスを作るか…
+		/*
+		if (owner.getClass().equals(Player.class))
+			EffectManager.CreateEffect(Effect.FIRE_1);
+		else
+			EffectManager.CreateEnemyEffect(Effect.FIRE_1);
+			*/
+		switch (level) {
+		case 1:
+			EffectManager.CreateEffect(Effect.FIRE_1);
+			break;
+		case 2:
+			EffectManager.CreateEffect(Effect.FIRE_2);
+			break;
+		case 3:
+			EffectManager.CreateEffect(Effect.FIRE_3);
+			break;
+		}
 	}
 
 	/**

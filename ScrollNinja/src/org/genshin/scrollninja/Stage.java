@@ -78,6 +78,7 @@ public class Stage implements StageBase {
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 
+		// TODO リリース前にこの処理をクリア直後に持ってくる
 		renderer.render(GameMain.world, GameMain.camera.combined);
 		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
 	}
