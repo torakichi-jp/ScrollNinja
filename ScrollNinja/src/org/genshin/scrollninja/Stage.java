@@ -170,6 +170,24 @@ public class Stage implements StageBase {
 	public void Release() {
 	}
 
+	/**************************************************
+	 * dispose()
+	 * 解放処理
+	 * 他の画面の移動する場合は行わなければ描画がおかしくなる
+	 * TODO 検証不足につき他で不具合が出るかも…
+	 **************************************************/
+	public void dispose() {
+		EffectManager.dispose();
+		WeaponManager.dispose();
+		PlayerManager.dispose();
+		EnemyManager.dispose();
+		BackgroundManager.dispose();
+		ItemManager.dispose();
+		StageObjectManager.dispose();
+
+		renderer.dispose();
+	}
+
 	//************************************************************
 	// Set
 	// セッターまとめ

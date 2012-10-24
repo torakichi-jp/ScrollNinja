@@ -13,7 +13,7 @@ public class WeaponManager {
 	// 定数宣言
 	public static final int KATANA		= 0;
 	public static final int SHURIKEN	= 1;
-	
+
 	// 変数宣言
 	public static ArrayList<Katana> katanaList		= new ArrayList<Katana>();
 //	public static ArrayList<>
@@ -22,19 +22,22 @@ public class WeaponManager {
 	 * コンストラクタ
 	 */
 	private WeaponManager(){}
-	
+
 	public static void Update() {
 		for( int i = 0; i < katanaList.size(); i ++ ) {
 			katanaList.get(i).Update();
 		}
 	}
-	
+
 	/**
 	 * 武器生成
-	 * @param owner			使用者			
+	 * @param owner			使用者
 	 * @param type			種類
 	 */
 	public static WeaponBase CreateWeapon(CharacterBase owner, int type) {
+		if (katanaList == null)
+			katanaList = new ArrayList<Katana>();
+
 		switch(type) {
 		case KATANA:
 			Katana pKatana = new Katana(owner, katanaList.size() + 1);
@@ -43,7 +46,18 @@ public class WeaponManager {
 		case SHURIKEN:
 			break;
 		}
-		
+
 		return null;
+	}
+
+	public static void dispose() {
+		/*
+		if (katanaList != null) {
+			for (int i = 0; i < katanaList.size(); i++) {
+				katanaList.get(i).Release();
+			}
+		}
+		*/
+		katanaList = null;
 	}
 }

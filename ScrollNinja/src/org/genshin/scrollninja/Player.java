@@ -2,7 +2,8 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.weapon.Kaginawa;
+// TODO ファイルが見つからないため一時コメントアウトしました
+//import org.genshin.scrollninja.object.weapon.Kaginawa;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -91,8 +92,9 @@ public class Player extends CharacterBase {
 	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
-	
-	private Kaginawa kaginawa;		// 鍵縄
+
+	// TODO ファイルが見つからないため一時コメントアウトしました
+	//private Kaginawa kaginawa;		// 鍵縄
 
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
@@ -207,9 +209,10 @@ public class Player extends CharacterBase {
 		count		 = 0;
 		invincibleTime = 0;
 		number = Number;
-		sensor.get(0).setUserData(this);
+		//sensor.get(0).setUserData(this);
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
-		kaginawa = new Kaginawa(this);
+		// TODO ファイルが見つからないため一時コメントアウトしました
+		//kaginawa = new Kaginawa(this);
 	}
 
 
@@ -356,20 +359,24 @@ public class Player extends CharacterBase {
 	 */
 	private void updateKaginawa()
 	{
+		// TODO ファイルが見つからないため一時コメントアウトしました
+		/*
 		if( Gdx.input.isButtonPressed(Buttons.RIGHT) )
 		{
 			kaginawa.attack();
 		}
 		kaginawa.Update();
+		*/
 	}
 
 	@Override
 	public void Draw()
 	{
-		kaginawa.Draw();
+		// TODO ファイルが見つからないため一時コメントアウトしました
+		//kaginawa.Draw();
 		super.Draw();
 	}
-	
+
 	//************************************************************
 	// animation
 	// 現在の状態を参照して画像を更新
@@ -457,8 +464,8 @@ public class Player extends CharacterBase {
 		switch(obj.GetType()) {
 		case Item.ONIGIRI:
 			hp += 50;
-			if( hp > 100 ) {
-				hp = 100;
+			if( hp > MAX_HP ) {
+				hp = MAX_HP;
 			}
 			Interface.calculateHP = true;
 			break;
@@ -468,15 +475,17 @@ public class Player extends CharacterBase {
 	}
 
 	@Override
-	public void collisionNotify(Weapon obj, Contact contact){
-		if( invincibleTime == 0 ) {
-			invincibleTime = 120;		// 無敵時間付与
-			hp -= obj.GetAttackNum();
-			Interface.calculateHP = true;
-		}
-		if( hp <= 0 ) {
-			// TODO ゲームオーバー処理へ
-			hp = 100;
+	public void collisionNotify(WeaponBase obj, Contact contact){
+		if (obj.GetOwner() != this) {
+			if( invincibleTime == 0 ) {
+				invincibleTime = 120;		// 無敵時間付与
+				hp -= obj.GetAttackNum();
+				Interface.calculateHP = true;
+			}
+			if( hp <= 0 ) {
+				// TODO ゲームオーバー処理へ
+				hp = 100;
+			}
 		}
 	}
 
@@ -487,7 +496,7 @@ public class Player extends CharacterBase {
 	private void nearRotate(float radian)
 	{
 		float stateTime = 10;		// 引数から指定する仕様に変更するかも知れない
-		
+
 		radian -= body.getAngle();
 		radian = (float)( Math.abs(radian) % (Math.PI*2.0f) * Math.signum(radian) );
 		if(Math.abs(radian) > Math.PI)

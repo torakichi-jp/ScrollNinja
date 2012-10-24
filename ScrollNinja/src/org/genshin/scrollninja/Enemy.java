@@ -3,6 +3,8 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.genshin.scrollninja.EnemyDataList.EnemyData;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -32,10 +34,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Enemy extends CharacterBase {
 	// 定数宣言
-	// 敵のモード
-	private final int NON_ACTIVE	= 100;	// 攻撃が当たるまでうろうろしてるだけ
-	private final int ACTIVE		= 101;	// 近づいたら攻撃してくる
 	// 敵のタイプ
+	// TODO 不要になるかも
 	public final static int NORMAL		= 0;	// ノーマル
 	public final static int RARE		= 1;	// レア
 	public final static int AUTO		= 2;	// AI
@@ -58,7 +58,7 @@ public class Enemy extends CharacterBase {
 	// 変数宣言
 	private int					invincibleTime;	// 無敵時間
 
-	private int					enemyType;		// 敵のタイプ
+	private int					enemyID;		// 敵のタイプ
 	private int					number;			// 管理番号
 	private int					enemyMode;		// 敵のモード
 	private int					direction;		// 向いてる方向
@@ -71,7 +71,8 @@ public class Enemy extends CharacterBase {
 	private boolean				chase;			// 追いかけフラグ
 	private boolean				deleteFlag;		// 削除フラグ
 	private Player 				player;			// プレイヤー
-	private ArrayList<Weapon>	syuriken;		// 手裏剣
+	//private ArrayList<Weapon>	syuriken;		// 手裏剣
+	private ArrayList<Syuriken> syuriken;		//
 	private Weapon				blade;			// 刀
 	private int					attackInterval;	// 攻撃間隔
 
@@ -82,13 +83,16 @@ public class Enemy extends CharacterBase {
 	/**************************************************
 	 * コンストラクタ
 	 **************************************************/
-	Enemy(int type, int num, Vector2 position) {
-		enemyType			= type;
+	Enemy(int id, int num, Vector2 position) {
+		enemyID				= id;
 		number				= num;
 		this.position		= position;
 		direction			= RIGHT;
-		hp					= 100;
-		speed				= 0;
+
+		EnemyData data = EnemyDataList.lead(id);
+		MAX_HP				= data.maxHp;
+		hp					= data.maxHp;
+		speed				= data.speed;
 		invincibleTime		= 0;
 		attackInterval		= INTERVAL;
 		velocity			= new Vector2(0, 0);
@@ -101,16 +105,75 @@ public class Enemy extends CharacterBase {
 		chase				= false;
 		deleteFlag			= false;
 
-		// TODO 色々いじり中
-		// ランダムでモードを設定してみる
-		rand = new Random();
-		int i = rand.nextInt(10);
-		if (i == 0)
-			enemyMode = ACTIVE;
-		else
-			enemyMode = NON_ACTIVE;
+		enemyMode = data.enemyMode;
 
 		Create();
+	}
+
+	/**************************************************
+	* Create()
+	* body、sensor、sprite、アニメーション作成
+	**************************************************/
+	public void Create() {
+		sprite = new ArrayList<Sprite>();
+		sensor = new ArrayList<Fixture>();
+
+		// Body作成
+		BodyDef bd	= new BodyDef();
+		bd.type	= BodyType.DynamicBody;
+		body = GameMain.world.createBody(bd);
+
+		// fixture生成
+		PolygonShape poly		= new PolygonShape();
+		poly.setAsBox(1.6f, 2.4f);
+
+		// ボディ設定
+		FixtureDef fd	= new FixtureDef();
+		fd.density		= 0;
+		fd.friction		= 0;
+		fd.restitution	= 0;
+		fd.shape		= poly;
+
+		sensor.add(body.createFixture(fd));		// センサーに追加
+		sensor.get(0).setUserData(this);		// 当たり判定要にUserDataセット
+		body.setTransform(position, 0);			// 最初の位置
+		body.setBullet(true);					// すり抜けない
+		body.setFixedRotation(true);			// 回転しない
+
+		poly.dispose();
+
+		// エネミータイプによってテクスチャ変更
+		//switch(enemyType) {
+		//case NORMAL:
+			// TODO
+			// テクスチャの読み込み
+			EnemyData data = EnemyDataList.lead(enemyID);
+			Texture texture = new Texture(Gdx.files.internal(data.enemyFileName));
+			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
+
+			// スプライトに反映
+			sprite.add(new Sprite(region));
+			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
+			sprite.get(0).setScale(ScrollNinja.scale);
+
+			// アニメーション
+			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
+			frame = new TextureRegion[4];
+			int index = 0;
+			for (int i = 1; i < 2; i++) {
+				for (int j = 0; j < 4; j++) {
+					if(index < 4)
+						frame[index++] = tmp[i][j];
+				}
+			}
+			animation = new Animation(20.0f, frame);
+
+			//break;
+
+		//case RARE:
+			//break;
+		//}
 	}
 
 	/**************************************************
@@ -177,76 +240,12 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* Create()
-	* body、sensor、sprite、アニメーション作成
-	**************************************************/
-	public void Create() {
-		sprite = new ArrayList<Sprite>();
-		sensor = new ArrayList<Fixture>();
-
-		// Body作成
-		BodyDef bd	= new BodyDef();
-		bd.type	= BodyType.DynamicBody;
-		body = GameMain.world.createBody(bd);
-
-		// fixture生成
-		PolygonShape poly		= new PolygonShape();
-		poly.setAsBox(1.6f, 2.4f);
-
-		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 0;
-		fd.friction		= 0;
-		fd.restitution	= 0;
-		fd.shape		= poly;
-
-		sensor.add(body.createFixture(fd));		// センサーに追加
-		sensor.get(0).setUserData(this);		// 当たり判定要にUserDataセット
-		body.setTransform(position, 0);			// 最初の位置
-		body.setBullet(true);					// すり抜けない
-		body.setFixedRotation(true);			// 回転しない
-
-		poly.dispose();
-
-		// エネミータイプによってテクスチャ変更
-		switch(enemyType) {
-		case NORMAL:
-			// テクスチャの読み込み
-			Texture texture = new Texture(Gdx.files.internal("data/enemy.png"));
-			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
-
-			// スプライトに反映
-			sprite.add(new Sprite(region));
-			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(ScrollNinja.scale);
-
-			// アニメーション
-			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
-			frame = new TextureRegion[4];
-			int index = 0;
-			for (int i = 1; i < 2; i++) {
-				for (int j = 0; j < 4; j++) {
-					if(index < 4)
-						frame[index++] = tmp[i][j];
-				}
-			}
-			animation = new Animation(20.0f, frame);
-
-			break;
-
-		case RARE:
-			break;
-		}
-	}
-
-	/**************************************************
 	* Action()
 	* 行動の分岐
 	**************************************************/
 	public void Action() {
 		switch(enemyMode) {
-		case NON_ACTIVE :
+		case EnemyDataList.NON_ACTIVE :
 			walk();
 			/*
 			int i = rand.nextInt(10);
@@ -255,7 +254,7 @@ public class Enemy extends CharacterBase {
 				jump();
 			*/
 			break;
-		case ACTIVE :
+		case EnemyDataList.ACTIVE :
 			walk();
 			chase();
 			if (attackFlag) {
@@ -344,6 +343,25 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	// TODO 刀での攻撃がまだ…
 	public void attack() {
+		if (syuriken == null) {
+			syuriken = new ArrayList<Syuriken>(MAX_SYURIKEN);
+			syuriken.add(new Syuriken(this, 0));
+			syuriken.get(0).SetUseFlag(true);
+		}
+		// 空じゃないかつ最大数以下より
+		else if (syuriken != null && syuriken.size() < MAX_SYURIKEN) {
+			syuriken.add(new Syuriken(this, syuriken.size() - 1));
+			syuriken.get(syuriken.size() - 1).SetUseFlag(true);
+		}
+
+		// 最大数になったら空に戻す
+		if (syuriken.size() == MAX_SYURIKEN) {
+			for (int i = 0; i < syuriken.size(); i++) {
+				syuriken.get(i).Release();
+			}
+			syuriken = null;
+		}
+		/*
 		// 配列が空の時
 		if (syuriken == null) {
 			syuriken = new ArrayList<Weapon>(MAX_SYURIKEN);
@@ -362,7 +380,7 @@ public class Enemy extends CharacterBase {
 				syuriken.get(i).Release();
 			}
 			syuriken = null;
-		}
+		}*/
 
 		attackInterval = INTERVAL;
 	}
@@ -435,7 +453,7 @@ public class Enemy extends CharacterBase {
 		if( invincibleTime == 0 ) {
 			invincibleTime = 120;		// 無敵時間付与
 			hp -= obj.GetAttackNum();
-			enemyMode = ACTIVE;			// ノンアクティブをアクティブに
+			enemyMode = EnemyDataList.ACTIVE;	// ノンアクティブをアクティブに
 		}
 		if( hp <= 0 ) {
 			deleteFlag = true;
@@ -449,7 +467,7 @@ public class Enemy extends CharacterBase {
 	public void collisionNotify(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Weapon obj, Contact contact){}
+	public void collisionNotify(WeaponBase obj, Contact contact){}
 
 	/**************************************************
 	* Release　ObjectBaseのReleaseをオーバーライド
@@ -472,7 +490,7 @@ public class Enemy extends CharacterBase {
 	* ゲッターまとめ
 	**************************************************/
 	public Enemy GetEnemy() { return this; }
-	public int GetType(){ return enemyType; }
+	public int GetType(){ return enemyID; }
 	public int GetNum(){ return number; }
 	public int GetDirection() { return direction; }
 

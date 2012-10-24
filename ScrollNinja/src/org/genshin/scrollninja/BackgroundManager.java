@@ -13,6 +13,9 @@ public class BackgroundManager {
 	// 生成
 	//************************************************************
 	public static void CreateBackground(int num, boolean createFlag) {
+		if (BackgroundList == null)
+			BackgroundList		= new ArrayList<Background>();
+
 		Background pBackground = new Background(num, createFlag);		// オブジェクトを生成（&初期化）して
 		BackgroundList.add(pBackground);					// リストに追加
 	}
@@ -29,5 +32,19 @@ public class BackgroundManager {
 		}
 
 		return null;
+	}
+
+	public static void dispose() {
+		if (BackgroundList != null) {
+			for (int i = 0; i < BackgroundList.size(); i++) {
+				// TODO なぜ３番目にBodyが入ってるんだろう？
+				if (i == 2) {
+					BackgroundList.get(i).Release();
+				} else {
+					BackgroundList.get(i).sprite = null;
+				}
+			}
+		}
+		BackgroundList = null;
 	}
 }

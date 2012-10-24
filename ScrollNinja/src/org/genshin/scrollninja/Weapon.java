@@ -214,10 +214,12 @@ public class Weapon extends ObJectBase{
 	* collisionDispatch
 	* 当たり判定
 	**************************************************/
-	@Override
+	//@Override
+	/*
 	public void collisionDispatch(ObJectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
+	*/
 
 	@Override
 	public void collisionNotify(Background obj, Contact contact){}
@@ -243,7 +245,7 @@ public class Weapon extends ObJectBase{
 	public void collisionNotify(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Weapon obj, Contact contact){}
+	public void collisionNotify(WeaponBase obj, Contact contact){}
 
 	/**************************************************
 	* Get

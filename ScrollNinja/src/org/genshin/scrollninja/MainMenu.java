@@ -22,7 +22,7 @@ public class MainMenu implements Screen{
 	public static SpriteBatch spriteBatch;
 
 	private Texture texture;				// テクスチャー
-	private Texture worldMaptexture;
+	
 
 	private Sprite modeContinue;			// コンティニュー
 	private Sprite modeNewGame;				// ニューゲーム
@@ -30,15 +30,8 @@ public class MainMenu implements Screen{
 	private Sprite modeNetwork;				// ネットワーク
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;					// エグジット
-
-	/*
-	 * ワールドマップ
-	 * 仮でメインメニューから飛べるように
-	 * */
-	private Sprite worldMap;					// ワールドマップ(仮)
+	
 	private boolean wmapflag;
-
-
 	private Stage stage;					// 最初に呼ばれるステージ
 	//private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
@@ -119,12 +112,7 @@ public class MainMenu implements Screen{
 		modeExit.setPosition(spritePositionX, -20);
 		modeExit.setScale(ScrollNinja.scale);
 
-		// ワールドマップ
-		worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
-		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
-		worldMap = new Sprite(worldRegion);
-		worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
+
 
 
 		// 初期化
@@ -134,12 +122,12 @@ public class MainMenu implements Screen{
 
 	// 更新
 	public void update(float delta) {
-
-		if(Gdx.input.isKeyPressed(Keys.A)) {
-			ReadFile.read("data/test.rtf");
+		
+		if (Gdx.input.isKeyPressed(Keys.A)) {
+			FileOperation.LoadFile("data/test.txt");
+			FileOperation.ExportFile("data/aaa.txt");
 		}
-
-
+		
 		// エンターキーでコンティニュー　仮挿入中
 		if (Gdx.input.isKeyPressed(Keys.ENTER))
 				scrollFlag = true;		// スプライトを動かすフラグオン
@@ -154,34 +142,22 @@ public class MainMenu implements Screen{
 			if (x > 530 && x < 770 && y > 105 && y < 140) {
 				scrollFlag = true;
 			}
-
 			// ニューゲーム
 			if (x > 530 && x < 770 && y > 140 && y < 175) {
 
 			}
-
 			// ロードゲーム
 			if (x > 530 && x < 770 && y > 175 && y < 210) {
 
 			}
-
 			// ネットワーク
 			if (x > 530 && x < 770 && y > 210 && y < 245) {
 				wmapflag = true;
 			}
-
-			if(Gdx.input.isKeyPressed(Keys.Y)){
-				wmapflag = true;
-			}
-			if(Gdx.input.isKeyPressed(Keys.U)){
-				wmapflag = false;
-			}
-
 			// オプション
 			if (x > 530 && x < 770 && y > 245 && y < 280) {
 
 			}
-
 			// 終了
 			if ( x > 530 && x < 770 && y > 315 && y < 350 ) {
 				int message =
@@ -191,7 +167,13 @@ public class MainMenu implements Screen{
 				}
 			}
 		}
-
+		if(Gdx.input.isKeyPressed(Keys.Y)){
+			wmapflag = true;
+		}
+		if(Gdx.input.isKeyPressed(Keys.U)){
+			wmapflag = false;
+		}
+		
 		// 選択肢をクリックしたら画像移動
 		moveSprite();
 	}
@@ -216,8 +198,9 @@ public class MainMenu implements Screen{
 		}
 
 		// メニューの文字が画面外まで移動したらゲームメイン移行
-		if(spritePositionX >= FADE_MENU)
+		if(spritePositionX >= FADE_MENU ) {
 			scrollNinja.setScreen(new GameMain(scrollNinja, nextStageNum));
+		}
 	}
 
 	// 描画関係
@@ -234,7 +217,7 @@ public class MainMenu implements Screen{
 		//（とりあえずメインと遠景）
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
 		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
-
+		
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);
 		modeNewGame.draw(spriteBatch);
@@ -242,10 +225,6 @@ public class MainMenu implements Screen{
 		modeNetwork.draw(spriteBatch);
 		modeOption.draw(spriteBatch);
 		modeExit.draw(spriteBatch);
-
-		if(wmapflag) {
-			worldMap.draw(spriteBatch);
-		}
 
 		spriteBatch.end();
 	}

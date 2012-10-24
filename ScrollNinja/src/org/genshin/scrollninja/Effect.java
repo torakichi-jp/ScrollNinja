@@ -162,7 +162,7 @@ public class Effect extends ObJectBase {
 		useFlag = use;
 		if( useFlag ) {
 			nowFrame = animation.getKeyFrame(stateTime, true);
-			stateTime ++;
+			stateTime++;
 
 			body.setTransform(PlayerManager.GetPlayer(0).GetPosition().x +
 								(PlayerManager.GetPlayer(0).GetDirection() * 5),
@@ -260,5 +260,5 @@ public class Effect extends ObJectBase {
 	public void collisionNotify(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Weapon obj, Contact contact){}
+	public void collisionNotify(WeaponBase obj, Contact contact){}
 }

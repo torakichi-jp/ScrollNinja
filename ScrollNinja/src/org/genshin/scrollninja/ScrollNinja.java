@@ -39,7 +39,7 @@ public class ScrollNinja extends Game {
 		scale = 0.1f;
 
 		// ステージデータ読み込み
-		StageDataList.create();
+		StageDataList.lead();
 
 		// TODO リリース時にはメニュー画面から開始する。
 		//setScreen(new MainMenu(this));	// メインメニュー読み込み

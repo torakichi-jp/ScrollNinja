@@ -129,7 +129,7 @@ public abstract class ObJectBase {
 	 * @param obj			衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
-	protected void collisionNotify(Weapon obj, Contact contact){}
+	protected void collisionNotify(WeaponBase obj, Contact contact){}
 
 	/**
 	 * スプライト反転フラグを設定する。
