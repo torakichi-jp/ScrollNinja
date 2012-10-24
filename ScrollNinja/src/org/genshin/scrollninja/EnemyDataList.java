@@ -2,10 +2,11 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
-
+/**
+ *
+ */
 public class EnemyDataList {
 	// TODO 敵種類とりあえず適当
-	//public static enum EnemyType { DEMO01, DEMO02;}
 
 	public final static int NON_ACTIVE = 0;
 	public final static int ACTIVE = 1;
@@ -52,5 +53,7 @@ public class EnemyDataList {
 		public float speed;													// 速度（基準から掛けて使う）
 		public int enemyMode;												// アクティブかノンアクティブか
 		public ArrayList<Integer> haveWeapon = new ArrayList<Integer>();	// 所持武器
+		// TODO
+		// 落とすアイテムのIDと落とす確率も必要か
 	}
 }

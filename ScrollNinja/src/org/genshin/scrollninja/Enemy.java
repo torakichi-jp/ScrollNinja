@@ -71,9 +71,8 @@ public class Enemy extends CharacterBase {
 	private boolean				chase;			// 追いかけフラグ
 	private boolean				deleteFlag;		// 削除フラグ
 	private Player 				player;			// プレイヤー
-	//private ArrayList<Weapon>	syuriken;		// 手裏剣
-	private ArrayList<Syuriken> syuriken;		//
-	private Weapon				blade;			// 刀
+	private ArrayList<Syuriken> syuriken;		// 手裏剣
+	private WeaponBase			katana;			// 刀
 	private int					attackInterval;	// 攻撃間隔
 
 	private Vector2				wanderingPosition;	// うろうろ場所用に出現位置を保存
@@ -99,6 +98,13 @@ public class Enemy extends CharacterBase {
 		wanderingPosition	= new Vector2(position);
 
 		syuriken = null;
+		katana = null;
+		// TODO とりあえず
+		switch (data.haveWeapon.get(0)) {
+			case 1:
+				katana = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
+				break;
+		}
 
 		jump				= false;
 		attackFlag			= false;
@@ -145,7 +151,7 @@ public class Enemy extends CharacterBase {
 		// エネミータイプによってテクスチャ変更
 		//switch(enemyType) {
 		//case NORMAL:
-			// TODO
+			// TODO エネミーによってアニメーション枚数が変わってくるなら変更必要あり
 			// テクスチャの読み込み
 			EnemyData data = EnemyDataList.lead(enemyID);
 			Texture texture = new Texture(Gdx.files.internal(data.enemyFileName));
@@ -182,6 +188,7 @@ public class Enemy extends CharacterBase {
 	 **************************************************/
 	public void Update() {
 		if( deleteFlag ) {
+			// TODO 落とす種類の選択と確率も必要か
 			ItemManager.CreateItem(Item.ONIGIRI, position.x, position.y);
 			EnemyManager.Deleteenemy(this);
 			return;
@@ -361,26 +368,6 @@ public class Enemy extends CharacterBase {
 			}
 			syuriken = null;
 		}
-		/*
-		// 配列が空の時
-		if (syuriken == null) {
-			syuriken = new ArrayList<Weapon>(MAX_SYURIKEN);
-			syuriken.add(new Weapon("手裏剣", this, 0));		// 0は手裏剣
-			syuriken.get(0).SetUseFlag(true);
-		}
-		// 空じゃないかつ最大数以下より
-		else if (syuriken != null && syuriken.size() < MAX_SYURIKEN) {
-			syuriken.add(new Weapon("手裏剣", this, 0));		// 0は手裏剣
-			syuriken.get(syuriken.size() - 1).SetUseFlag(true);
-		}
-
-		// 最大数になったら空に戻す
-		if (syuriken.size() == MAX_SYURIKEN) {
-			for (int i = 0; i < syuriken.size(); i++) {
-				syuriken.get(i).Release();
-			}
-			syuriken = null;
-		}*/
 
 		attackInterval = INTERVAL;
 	}
@@ -425,7 +412,7 @@ public class Enemy extends CharacterBase {
 			}
 		}
 	}
-	
+
 	/**************************************************
 	 * エディタ用
 	 **************************************************/
@@ -492,7 +479,8 @@ public class Enemy extends CharacterBase {
 		}
 		GameMain.world.destroyBody(body);
 		body = null;
-		sprite = null;
+		sprite.clear();
+		sensor.clear();
 	}
 
 	/**************************************************

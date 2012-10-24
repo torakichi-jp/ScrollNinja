@@ -26,8 +26,6 @@ public class Stage implements StageBase {
 		stageData = StageDataList.lead(stageNum);
 
 		renderer = new Box2DDebugRenderer();
-
-		// TODO ここで他のデータもStageDataList.list.get(stageNum)から引っ張ってこられるように
 	}
 
 	//************************************************************
@@ -91,7 +89,7 @@ public class Stage implements StageBase {
 	public void updateCamera() {
 		// カメラはプレイヤーに追随
 		GameMain.camera.position.set(PlayerManager.GetPlayer(0).body.getPosition().x,
-							PlayerManager.GetPlayer(0).body.getPosition().y, 0);
+									 PlayerManager.GetPlayer(0).body.getPosition().y, 0);
 
 		// カメラの移動制限
 		if (GameMain.camera.position.x <
@@ -101,18 +99,20 @@ public class Stage implements StageBase {
 				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		if (GameMain.camera.position.x >
-			(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
+				(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
 				(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 
-		// TODO 後で調整
-		// 1333は実際の画像のサイズ
-		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
-			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
-		if (GameMain.camera.position.y > (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
-			GameMain.camera.position.y = (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
+		if (GameMain.camera.position.y < -(stageData.backgroundSize.get(Background.MAIN).y
+												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
+			GameMain.camera.position.y = -(stageData.backgroundSize.get(Background.MAIN).y
+												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale + 1;
+		if (GameMain.camera.position.y > (stageData.backgroundSize.get(Background.MAIN).y
+												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
+			GameMain.camera.position.y = (stageData.backgroundSize.get(Background.MAIN).y
+												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale - 1;
 
 		GameMain.camera.update();
 	}
@@ -167,7 +167,6 @@ public class Stage implements StageBase {
 										 stageData.enemyPosition.get((i+1)*(j+1)-1));
 			}
 		}
-		//EffectManager.CreateEffect(Effect.FIRE_2);
 	}
 
 	@Override

@@ -97,20 +97,26 @@ public class Effect extends ObJectBase {
 	 * エフェクト生成
 	 ***************************************************/
 	public void Create() {
+		BodyDef def;
+		PolygonShape poly;
+		FixtureDef fd;
+		Texture texture;
+		TextureRegion region;
+		TextureRegion[][] tmp;
+		int index;
+
 		switch(effectType) {
 		case FIRE_1:
-			break;
-		case FIRE_2:
-			BodyDef def	= new BodyDef();
+			def	= new BodyDef();
 			def.type	= BodyType.DynamicBody;		// 動く物体
 			body		= GameMain.world.createBody(def);
 
 			// 当たり判定の作成
-			PolygonShape poly		= new PolygonShape();
-			poly.setAsBox(2.4f, 1.6f);
+			poly		= new PolygonShape();
+			poly.setAsBox(2f, 1.2f);
 
 			// ボディ設定
-			FixtureDef fd	= new FixtureDef();
+			fd	= new FixtureDef();
 			fd.density		= 50;
 			fd.friction		= 0;
 			fd.restitution	= 0;
@@ -121,9 +127,9 @@ public class Effect extends ObJectBase {
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み
-			Texture texture = new Texture(Gdx.files.internal("data/effect_fire.png"));
+			texture = new Texture(Gdx.files.internal("data/effect_fire.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			TextureRegion region = new TextureRegion(texture, 0, 0, 128, 128);
+			region = new TextureRegion(texture, 0, 0, 128, 128);
 
 			// スプライトに反映
 			sprite.add(new Sprite(region));
@@ -131,9 +137,50 @@ public class Effect extends ObJectBase {
 			sprite.get(0).setScale(ScrollNinja.scale);
 
 			// アニメーション
-			TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
+			tmp = TextureRegion.split(texture, 128, 128);
+			frame = new TextureRegion[5];
+			index = 0;
+			for (int i = 0; i < 5; i++) {
+				frame[index++] = tmp[0][i];
+			}
+
+			animation = new Animation(3.000f, frame);
+			attackNum = 50.0f;
+			break;
+		case FIRE_2:
+			def	= new BodyDef();
+			def.type	= BodyType.DynamicBody;		// 動く物体
+			body		= GameMain.world.createBody(def);
+
+			// 当たり判定の作成
+			poly		= new PolygonShape();
+			poly.setAsBox(2.4f, 1.6f);
+
+			// ボディ設定
+			fd	= new FixtureDef();
+			fd.density		= 50;
+			fd.friction		= 0;
+			fd.restitution	= 0;
+			fd.shape		= poly;
+
+			sensor.add(body.createFixture(poly, 0));
+			sensor.get(0).setSensor(true);
+			body.setBullet(true);			// すり抜け防止
+
+			// テクスチャの読み込み
+			texture = new Texture(Gdx.files.internal("data/effect_fire.png"));
+			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			region = new TextureRegion(texture, 0, 0, 128, 128);
+
+			// スプライトに反映
+			sprite.add(new Sprite(region));
+			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
+			sprite.get(0).setScale(ScrollNinja.scale);
+
+			// アニメーション
+			tmp = TextureRegion.split(texture, 128, 128);
 			frame = new TextureRegion[6];
-			int index = 0;
+			index = 0;
 			for (int i = 1; i < 2; i++) {
 				for (int j = 0; j < 6; j++) {
 					if(index < 6)

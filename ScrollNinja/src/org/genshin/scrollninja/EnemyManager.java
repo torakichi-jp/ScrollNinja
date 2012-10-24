@@ -3,11 +3,9 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
-import java.awt.dnd.Autoscroll;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 //========================================
 // クラス宣言
@@ -18,6 +16,7 @@ public class EnemyManager {
 	private static ArrayList<Integer>	enemyList		= new ArrayList<Integer>();		// 敵リスト
 
 	// デバッグのために公開にしてあります
+	// TODO ノーマル、レア、オートでわける必要はないかも。敵の種類が一番多いステージに合わせてリストを作成？
 	public static ArrayList<Enemy>		normalEnemyList	= new ArrayList<Enemy>();
 	public static ArrayList<Enemy>		rareEnemyList	= new ArrayList<Enemy>();
 	public static ArrayList<Enemy>		autoEnemyList	= new ArrayList<Enemy>();
@@ -72,8 +71,8 @@ public class EnemyManager {
 				}
 
 				return;
-				}
 			}
+		}
 		// なかった
 		enemyList.add(Type);						// この種類の項目を増やす
 		Enemy pEnemy = new Enemy(Type, 1, position);	// 最初の一つ目なので管理番号は１
@@ -161,20 +160,23 @@ public class EnemyManager {
 
 	public static void dispose() {
 		enemyList = null;
-		if (normalEnemyList != null)
+		if (normalEnemyList != null) {
 			for (int i = 0; i < normalEnemyList.size(); i++) {
 				normalEnemyList.get(i).Release();
 			}
+		}
 		normalEnemyList = null;
-		if (rareEnemyList != null)
+		if (rareEnemyList != null) {
 			for (int i = 0; i < rareEnemyList.size(); i++) {
 				rareEnemyList.get(i).Release();
 			}
+		}
 		rareEnemyList = null;
-		if (autoEnemyList != null)
+		if (autoEnemyList != null) {
 			for (int i = 0; i < autoEnemyList.size(); i++) {
 				autoEnemyList.get(i).Release();
 			}
+		}
 		autoEnemyList = null;
 	}
 }

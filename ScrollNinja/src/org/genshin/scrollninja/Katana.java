@@ -21,7 +21,7 @@ public class Katana extends WeaponBase {
 		position 	= new Vector2(0.0f, 0.0f);
 		use			= false;
 
-//		EffectManager.CreateEffect(Effect.FIRE_1);
+		EffectManager.CreateEffect(Effect.FIRE_1);
 		EffectManager.CreateEffect(Effect.FIRE_2);
 //		EffectManager.CreateEffect(Effect.FIRE_3);
 //		sprite		= new ArrayList<Sprite>();
