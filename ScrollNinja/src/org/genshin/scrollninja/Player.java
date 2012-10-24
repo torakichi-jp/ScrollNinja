@@ -1,9 +1,8 @@
 package org.genshin.scrollninja;
 
-import java.util.ArrayList;
-
-// TODO ファイルが見つからないため一時コメントアウトしました
-//import org.genshin.scrollninja.object.weapon.Kaginawa;
+import org.genshin.scrollninja.object.player.IPlayerController;
+import org.genshin.scrollninja.object.player.PlayerController;
+import org.genshin.scrollninja.object.weapon.Kaginawa;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
@@ -49,6 +48,13 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 //========================================
 // クラス宣言
 //========================================
+/**
+ * プレイヤークラス
+ * @author 
+ * @author kou
+ * @since 1.0
+ * @version 1.0
+ */
 public class Player extends CharacterBase {
 	// 定数宣言
 	private static final float RUN_MAX_VEL		= 20.0f;	// 走りの最高速度
@@ -56,7 +62,7 @@ public class Player extends CharacterBase {
 	private static final float RUN_ACCEL		= 5.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
 	private static final float JUMP_POWER		= 50.0f;	// ジャンプ加速度
-//	private static final float FALL_SPEED		= -1.0f;	// 落下加速度
+	private static final int JUMP_MAX			= 2;		// 連続でジャンプできる回数
 
 	private static final int FOOT	= 0;
 	private static final int BODY	= 1;
@@ -64,24 +70,26 @@ public class Player extends CharacterBase {
 	private static final int RIGHT			=  1;
 	private static final int LEFT			= -1;
 	private static final int STAND			=  0;
-	private static final int WALK			=  1;
+	private static final int RUN				=  1;
 	private static final int DASH			=  2;
 	private static final int JUMP			=  3;
 	private static final int ATTACK			=  4;
 
 	// 変数宣言
-	private int				number;					// プレイヤー番号
-	private int				charge;					// チャージゲージ
-	private int				direction;				// 向いてる方向
-	private int				currentState;			// 現在の状態
-	private int				maxChakra;				// チャクラ最大値
-	private int				chakra;				// チャクラ
-	private int				count;					// カウント用変数
-	private int				invincibleTime;		// 無敵時間
-	private float			stateTime;
-	private boolean			jump;					// ジャンプフラグ
-	private boolean			groundJudge;			// 地面と当たってますよフラグ
-	private WeaponBase		weapon;
+	private int					number;					// プレイヤー番号
+	private int					charge;					// チャージゲージ
+	private int					direction;				// 向いてる方向
+	private int					currentState;			// 現在の状態
+	private int					maxChakra;				// チャクラ最大値
+	private int					chakra;				// チャクラ
+	private int					count;					// カウント用変数
+	private int					invincibleTime;		// 無敵時間
+	private float				stateTime;
+	private boolean				jump;					// ジャンプフラグ
+	private boolean				groundJudge;			// 地面と当たってますよフラグ
+	private WeaponBase			weapon;
+	private Kaginawa				kaginawa;		// 鉤縄
+	private IPlayerController	controller;		// プレイヤーの操作状態インタフェース 
 
 	private Animation		standAnimation;			// 立ちアニメーション
 	private Animation		walkAnimation;			// 歩きアニメーション
@@ -92,9 +100,6 @@ public class Player extends CharacterBase {
 	private TextureRegion[]	frame;					// アニメーションのコマ
 	private TextureRegion	nowFrame;				// 現在のコマ
 	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
-
-	// TODO ファイルが見つからないため一時コメントアウトしました
-	//private Kaginawa kaginawa;		// 鍵縄
 
 	// おそらく別のクラスに吐き出す変数
 	private int				money;					// お金
@@ -211,8 +216,8 @@ public class Player extends CharacterBase {
 		number = Number;
 		//sensor.get(0).setUserData(this);
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
-		// TODO ファイルが見つからないため一時コメントアウトしました
-		//kaginawa = new Kaginawa(this);
+		kaginawa = new Kaginawa(this);
+		controller = new PlayerController();
 	}
 
 
@@ -220,14 +225,13 @@ public class Player extends CharacterBase {
 	 * 更新処理
 	 */
 	public void Update() {
+		// 操作状態を更新
+		controller.update();
+		
 		sprite.get(BODY).setRegion(nowFrame);
 		sprite.get(FOOT).setRegion(nowFootFrame);
 
 		int prevState = currentState;
-
-//		落下処理はworldの重力に任せるべき。加速度が弱いのであれば、それはworldの重力が弱いんだ。
-//		if( !groundJudge ) body.applyLinearImpulse(0.0f, FALL_SPEED, position.x, position.y);	// 落下処理
-
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少S
 		if( count > 0 ) count --;						// アニメーションカウントの減少
 
@@ -236,7 +240,7 @@ public class Player extends CharacterBase {
 		Stand();				// 立ち処理
 		Jump();				// ジャンプ処理
 		Attack();				// 攻撃処理
-		updateKaginawa();		// 鍵縄処理
+		updateKaginawa();		// 鉤縄処理
 
 		if( prevState != currentState ) {
 			stateTime = 0;
@@ -245,7 +249,6 @@ public class Player extends CharacterBase {
 
 		// 画像反転処理
 		flip(direction==RIGHT, false);
-//		System.out.printf("Velocity: %7.2f, %7.2f\n", velocity.x, velocity.y);
 
 		position = body.getPosition();
 
@@ -269,9 +272,9 @@ public class Player extends CharacterBase {
 	private void Jump() {
 
 		// 地面に接触しているならジャンプ可能
-		if( /*GetGroundJudge(world)!jump*/ groundJudge ) {
+		if( groundJudge ) {
 			// 上押したらジャンプ！
-			if (Gdx.input.isKeyPressed(Keys.W)) {
+			if (controller.jump()) {
 				jump = true;
 				currentState = JUMP;
 				body.setLinearVelocity(body.getLinearVelocity().x, 0.0f);
@@ -294,36 +297,31 @@ public class Player extends CharacterBase {
 	 * 移動処理
 	 * 左右で移動
 	 */
-	private void Move() {
-		// TODO 斜面でも速度が落ちないようにしたい。
-		// TODO 壁走り、天井走りを継続させるため、地面に着いている時は地面への吸着力を発生させる？
+	private void Move()
+	{
+		if(controller.dash())
+			move(DASH_ACCEL, DASH_MAX_VEL, DASH);
+		else
+			move(RUN_ACCEL, RUN_MAX_VEL, RUN);
+	}
+	
+	private void move(float accel, float maxVel, int state)
+	{
+		// TODO 壁走り、天井走りを継続させるため、地面に足が着いている時は地面への吸着力を発生させる？
 
 		// 速度制限
+		// FIXME 現状だと水平方向にしか制限が働かないため、なんとかする。
 		Vector2 vel = body.getLinearVelocity();
-		if( Math.abs(vel.x) > RUN_MAX_VEL ) {
-			body.setLinearVelocity(Math.signum(vel.x)*RUN_MAX_VEL, vel.y);
+		if( Math.abs(vel.x) > maxVel ) {
+			body.setLinearVelocity(Math.signum(vel.x)*maxVel, vel.y);
 		}
-
-		// 右が押された
-		if (Gdx.input.isKeyPressed(Keys.D)) {
-			direction = RIGHT;				// プレイヤーの向きを変更。
-			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
-
-			if( groundJudge ) {
-				currentState = WALK;
-			}
-		}
-		// 左が押された
-		if (Gdx.input.isKeyPressed(Keys.A)) {
-			direction = LEFT;
-			body.applyLinearImpulse(RUN_ACCEL*direction, 0.0f, position.x, position.y);
-
-			if( groundJudge ) {
-				currentState = WALK;
-			}
-		}
-		// 移動キーが押されていない時は少しずつ減速
-		if (!Gdx.input.isKeyPressed(Keys.D) && !Gdx.input.isKeyPressed(Keys.A)) {
+		
+		// 移動処理
+		// FIXME 斜面でずり落ちないようにする。摩擦いじる？
+		float moveLevel = controller.moveLevel();
+		
+		if(moveLevel == 0.0f)
+		{
 			if( groundJudge ) {
 				Vector2 velocity = body.getLinearVelocity();
 				velocity.x *= 0.8;
@@ -331,6 +329,17 @@ public class Player extends CharacterBase {
 					velocity.x = 0;
 				}
 				body.setLinearVelocity(velocity);
+			}
+		}
+		else
+		{
+			direction = moveLevel>0.0f ? RIGHT : LEFT;
+			float sin = (float) Math.sin(body.getAngle());
+			float cos = (float) Math.cos(body.getAngle());
+			body.applyLinearImpulse(accel*direction*cos, accel*direction*sin, position.x, position.y);
+			
+			if( groundJudge ) {
+				currentState = state;
 			}
 		}
 	}
@@ -343,11 +352,11 @@ public class Player extends CharacterBase {
 		if( weapon.GetUseFlag() ) {
 			currentState = ATTACK;
 		}
-		else if( currentState != WALK/*STAND*/ ){
+		else if( currentState != RUN/*STAND*/ ){
 			currentState = JUMP;
 		}
 
-		if(Gdx.input.isKeyPressed(Keys.J) && currentState != ATTACK ) {
+		if(controller.attack() && currentState != ATTACK ) {
 			count = 30 + 18;
 			currentState = ATTACK;
 			weapon.SetUseFlag(true);
@@ -355,25 +364,21 @@ public class Player extends CharacterBase {
 	}
 
 	/**
-	 * 鍵縄の更新処理を実行する。
+	 * 鉤縄の更新処理を実行する。
 	 */
 	private void updateKaginawa()
 	{
-		// TODO ファイルが見つからないため一時コメントアウトしました
-		/*
-		if( Gdx.input.isButtonPressed(Buttons.RIGHT) )
+		if( controller.kaginawaThrow() )
 		{
 			kaginawa.attack();
 		}
 		kaginawa.Update();
-		*/
 	}
 
 	@Override
 	public void Draw()
 	{
-		// TODO ファイルが見つからないため一時コメントアウトしました
-		//kaginawa.Draw();
+		kaginawa.Draw();
 		super.Draw();
 	}
 
@@ -385,7 +390,7 @@ public class Player extends CharacterBase {
 		switch(currentState) {
 		case STAND:		// 立ち
 			break;
-		case WALK:		// 歩き
+		case RUN:		// 歩き
 			if( count == 0 ) {
 				nowFrame = walkAnimation.getKeyFrame(stateTime, true);
 			}
@@ -439,15 +444,17 @@ public class Player extends CharacterBase {
 	 * 地面との当たり判定
 	 */
 	public void collisionNotify(Background obj, Contact contact) {
+		// 衝突したのが足でなければそのままでOK
 		Fixture footFixture = sensor.get(FOOT);
 		if(contact.getFixtureA()!=footFixture && contact.getFixtureB()!=footFixture)
 			return;
-
+		
+		// 足が地面に着いたらジャンプできるよ！
 		jump = false;
-
+		
 		if( currentState != ATTACK ) {
 			//currentState = STAND;
-			currentState = WALK;
+			currentState = RUN;
 		}
 
 		groundJudge = true;
@@ -491,7 +498,7 @@ public class Player extends CharacterBase {
 
 	/**
 	 * 180度以下の範囲で回転する。
-	 * @param degree		回転後の角度
+	 * @param radian		回転後の角度
 	 */
 	private void nearRotate(float radian)
 	{

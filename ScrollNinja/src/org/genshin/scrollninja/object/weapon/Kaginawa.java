@@ -25,24 +25,33 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
- * 鍵縄クラス
+ * 鉤縄クラス
  * @author kou
+ * @since 1.0
+ * @version 1.0
  */
 public class Kaginawa extends WeaponBase
 {
-	private static final float VEL = 30.0f;		// 鍵縄の飛ぶ速度
+	/** 鉤縄の飛ぶ速度({@value}) */
+	private static final float VEL = 30.0f;
 	
+	/** 衝突関連の定数 */
 	private static final class COLLISION
 	{
-		private static final float RADIUS = 1.0f;	// 衝突オブジェクトの半径
+		/** 衝突オブジェクトの半径({@value}) */
+		private static final float RADIUS = 1.0f;
 	}
 	
+	/** スプライト関連の定数 */
 	private static final class SPRITE
 	{
+		/** テクスチャのパス({@value}) */
 		private static final String PATH = "data/shuriken.png";
 	}
 	
-	private Vector2 direction = new Vector2();		// 向き
+	/** 鉤縄の飛ぶ方向 */
+	private Vector2 direction;
+	
 	
 	/**
 	 * コンストラクタ
@@ -86,6 +95,7 @@ public class Kaginawa extends WeaponBase
 		
 		// フィールド初期化
 		this.owner = owner;
+		direction = new Vector2();
 	}
 	
 	/**
@@ -96,7 +106,7 @@ public class Kaginawa extends WeaponBase
 		body.setTransform(owner.getPosition(), 0);
 		body.setActive(true);
 		
-		// FIXME 鍵縄の向き設定（仮）
+		// FIXME 鉤縄の向き設定（仮）
 		Vector2 mousePos = new Vector2(
 			Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f,
 			Gdx.graphics.getHeight()*0.5f - Gdx.input.getY() 
@@ -117,7 +127,7 @@ public class Kaginawa extends WeaponBase
 	@Override
 	public void Update()
 	{
-		// TODO 鍵縄の飛ぶ処理とか。
+		// TODO 鉤縄の飛ぶ処理とか。
 	}
 	
 	@Override
@@ -130,13 +140,14 @@ public class Kaginawa extends WeaponBase
 	@Override
 	protected void collisionDispatch(ObJectBase obj, Contact contact)
 	{
+		// TODO collisionNotifyはpublic化する。（別パッケージなのでprotected呼べない）
 		//obj.collisionNotify(this, contact);
 	}
 
 	@Override
 	protected void collisionNotify(Background obj, Contact contact)
 	{
-		// TODO 鍵縄の衝突処理とか。
+		// TODO 鉤縄の衝突処理とか。
 		body.setLinearVelocity(0.0f, 0.0f);
 	}
 
