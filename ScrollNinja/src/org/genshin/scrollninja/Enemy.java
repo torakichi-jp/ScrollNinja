@@ -425,6 +425,16 @@ public class Enemy extends CharacterBase {
 			}
 		}
 	}
+	
+	/**************************************************
+	 * エディタ用
+	 **************************************************/
+	public void Edit() {
+		body.setTransform(position,0);
+		for( int i = 0; i < sprite.size(); i ++ ) {
+			sprite.get(i).setPosition(position.x, position.y);
+		}
+	}
 
 	/**************************************************
 	 * 当たり判定取得

@@ -91,7 +91,7 @@ public class GameMain implements Screen{
 		case GAME_RUNNING:
 			oldTime = newTime;
 
-			// TODO
+			//TODO
 			if(Gdx.input.isKeyPressed(Keys.I)) {
 				scrollNinja.setScreen(new StageEditor());
 				StageEditor.Init();
