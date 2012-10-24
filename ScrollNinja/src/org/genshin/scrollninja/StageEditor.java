@@ -13,13 +13,13 @@ public class StageEditor implements Screen {
 	
 	// 定数
 	private static final int MAX_STAGE			= 1;
-	private static final int MAX_PLAYER			= 1;
+	private static final int MAX_PLAYER			= 1;			// 全部種類です
 	private static final int MAX_ENEMY			= 1;
-	private static final int MAX_STAGEOBJECT	= 10;
+	private static final int MAX_STAGEOBJECT	= 1;
 	
 	// 変数
 	private static int 			stageNum;
-	private static Vector2		position = new Vector2( 0.0f, 0.0f);
+	private static Vector2		position = new Vector2( -64.0f, -32.0f);
 	private Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
 	public static Mouse mouse = new Mouse();
 	
@@ -38,10 +38,10 @@ public class StageEditor implements Screen {
 //			PlayerManager.CreatePlayer(new Vector2(0.0f, 0.0f));
 		}
 		for( int i = 0; i < MAX_ENEMY; i ++ ) {
-			EnemyManager.CreateEnemy(Enemy.NORMAL, new Vector2(0.0f, 0.0f));
+			EnemyManager.CreateEnemy(i, new Vector2(i * 30.0f, 0.0f));
 		}
 		for( int i = 0; i < MAX_STAGEOBJECT; i ++ ) {
-			StageObjectManager.CreateStageObject(StageObject.ROCK, new Vector2(0.0f, 0.0f));
+			StageObjectManager.CreateStageObject(i, new Vector2(0.0f, 0.0f));
 		}
 	}
 	
@@ -112,13 +112,13 @@ public class StageEditor implements Screen {
 	private void Move() {
 		GameMain.camera.position.set(position.x, position.y, 0);
 
-		if (GameMain.camera.position.x < -(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
+		if (GameMain.camera.position.x < -(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
 			GameMain.camera.position.x = -(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.LEFT) ) {
 			position.x --;
 		}
-		if (GameMain.camera.position.x > (BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5 - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
+		if (GameMain.camera.position.x > (BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
 			GameMain.camera.position.x = (BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.RIGHT) ) {

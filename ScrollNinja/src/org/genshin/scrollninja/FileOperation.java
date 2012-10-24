@@ -11,7 +11,6 @@ import java.io.StreamTokenizer;
 import java.util.ArrayList;
 
 public class FileOperation {
-	public static ArrayList<StructObject> objectList		= new ArrayList<StructObject>();
 	
 	/**
 	 * コンストラクタ
@@ -62,13 +61,7 @@ public class FileOperation {
         					break;
         				case 4:
         					priority = (int)st.nval;
-                    		StructObject pStructObject = new StructObject();
-                    		pStructObject.type = type;
-                    		pStructObject.positionX = positionX;
-                    		pStructObject.positionY = positionY;
-                    		pStructObject.priority = priority;
-                    		
-                    		objectList.add(pStructObject);
+                    		StructObjectManager.CreateStructObject(type, positionX, positionY, priority);
         					break;
             			default:
             				break;
@@ -92,14 +85,14 @@ public class FileOperation {
 		try {
 			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			
-			for( int i = 0; i < objectList.size(); i ++ ) {
-				pw.print(objectList.get(i).type);
+			for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
+				pw.print(StructObjectManager.GetStructObject(i).type);
 				pw.print('/');
-				pw.print((int)objectList.get(i).positionX);
+				pw.print((int)StructObjectManager.GetStructObject(i).positionX);
 				pw.print('/');
-				pw.print((int)objectList.get(i).positionY);
+				pw.print((int)StructObjectManager.GetStructObject(i).positionY);
 				pw.print('/');
-				pw.println(objectList.get(i).priority);
+				pw.println(StructObjectManager.GetStructObject(i).priority);
 			}
 			pw.close();
 		} catch (IOException e) {
