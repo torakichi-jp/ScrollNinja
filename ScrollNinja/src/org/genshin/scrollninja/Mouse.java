@@ -5,8 +5,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
+//TODO		MouseListenerもMouseMotionListenerも使ってません
+//			うまくいかないのでとりあえず代用作っときます
 public class Mouse implements MouseListener, MouseMotionListener {
 	
 	private static boolean rightClick;
@@ -19,6 +23,23 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	public Mouse(){
 		rightClick = false;
 		leftClick = false;
+	}
+	
+	/**
+	 * 更新処理
+	 * 早めにやる
+	 */
+	public static void Update() {
+		leftClick = false;
+		rightClick = false;
+		
+		// マウス座標の取得
+		position.x = Gdx.input.getX();
+		position.y = Gdx.input.getY();
+		
+		// クリック判定
+		if( Gdx.input.isButtonPressed(Buttons.LEFT)) { leftClick = true; }
+		if( Gdx.input.isButtonPressed(Buttons.RIGHT)) { rightClick = true; }
 	}
 	
 	/**
@@ -78,7 +99,6 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		// TODO 自動生成されたメソッド・スタブ
-		System.out.println(arg0.getPoint());
 	}
 
 }
