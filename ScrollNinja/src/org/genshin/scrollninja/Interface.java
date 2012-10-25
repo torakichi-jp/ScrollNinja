@@ -25,9 +25,6 @@ public class Interface {
 	//private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
 
-	//private static Sprite pauseMenu;	// ポーズメニュー
-	private boolean worldmapflag;
-
 	private static Sprite returnGame;				// ゲームに戻る
 	private static Sprite title;					// タイトル
 	//private static Sprite weaponReinforcement;	// 武器強化
@@ -59,6 +56,7 @@ public class Interface {
 	 *icon,map comment out
 	 *worldmap : move character on map and animation while pause screen
 	 * 10/23 if press [o] draw worldmap , press [p] to close worldmap
+	 * 10/25 worldmap removed to pause
 	 * */
 
 	// コンストラクタ
@@ -79,8 +77,6 @@ public class Interface {
 		Texture icontexture = new Texture(Gdx.files.internal("data/shuriken.png"));
 		icontexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
 
-		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/menu.png"));
-		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
 
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -119,35 +115,7 @@ public class Interface {
 		chakra.setOrigin(chakra.getWidth() * 0.5f, chakra.getHeight() * 0.5f);
 		chakra.setScale(ScrollNinja.scale);
 
-		// ポーズメニュー
-		TextureRegion returnGameRegion = new TextureRegion(pauseMenuTexture,0,0,256,35);
-		returnGame = new Sprite(returnGameRegion);
-		returnGame.setScale(ScrollNinja.scale);
-
-		TextureRegion titleRegion = new TextureRegion(pauseMenuTexture,0,40,256,35);
-		title = new Sprite(titleRegion);
-		title.setScale(ScrollNinja.scale);
-
-		TextureRegion loadRegion = new TextureRegion(pauseMenuTexture,0,85,256,35);
-		load = new Sprite(loadRegion);
-		load.setScale(ScrollNinja.scale);
-
-		// ワールドマップ
-		Texture worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
-		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
-		worldMap = new Sprite(worldRegion);
-		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
-		worldMap.setScale(ScrollNinja.scale * 1.5f);
-		// フルスクリーン時
-		//worldMap.setPosition(-505,-540);
-
-		// マップ ワールドマップ or ミニマップ
-		/*
-		TextureRegion maptmpRegion = new TextureRegion(maptexture);
-		map = new Sprite(maptmpRegion);
-		map.setOrigin(map.getWidth() * 0.5f , map.getHeight() * 0.5f);
-		map.setScale(ScrollNinja.scale * 0.1f);
+/*
 
 		// ポーズ終了
 		TextureRegion pauseRegion = new TextureRegion(pausetexture);
@@ -171,7 +139,6 @@ public class Interface {
 		transrateX = 0;
 		stopHP = true;
 		stopChakra = true;
-		worldmapflag = false;
 		stateTime = 0;
 	}
 
@@ -190,35 +157,7 @@ public class Interface {
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
 		*/
-
-		// 位置調整
-		/*
-		map.setPosition(cameraPosition.x - map.getWidth() * 0.5f +
-						(ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - map.getWidth() * 0.5f * 0.01f,
-				cameraPosition.y - map.getHeight() * 0.5f + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)
-																			- map.getHeight() * 0.5f * 0.01f);
-*/
-
-		returnGame.setPosition(cameraPosition.x - returnGame.getWidth() * 0.5f
-								+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - returnGame.getWidth() * 0.5f * 0.1f,
-								cameraPosition.y - returnGame.getHeight() * 0.5f
-								+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- returnGame.getHeight() * 0.5f * 0.5f);
-
-		title.setPosition(cameraPosition.x - title.getWidth() * 0.5f
-							+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - title.getWidth() * 0.5f * 0.1f,
-							cameraPosition.y - title.getHeight() * 0.5f
-							+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- title.getHeight() * 0.5f * 0.7f);
-
-		load.setPosition(cameraPosition.x - load.getWidth() * 0.5f
-				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - load.getWidth() * 0.5f * 0.1f,
-				cameraPosition.y - load.getHeight() * 0.5f
-				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- load.getHeight() * 0.5f * 0.9f);
-
-		worldMap.setPosition(cameraPosition.x - worldMap.getWidth() * 0.5f
-				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
-				cameraPosition.y - worldMap.getHeight() * 0.5f
-				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
-
+		
 		// HPに変動があれば計算
 		if (calculateHP)
 			calculateHP();
@@ -278,15 +217,7 @@ public class Interface {
 
 		// マップの表示
 		Map();
-
-		if(Gdx.input.isKeyPressed(Keys.O)) {
-			worldmapflag = true;
-		}
-		if(Gdx.input.isKeyPressed(Keys.P)) {
-			worldmapflag = false;
-		}
-
-
+		
 		// アイコン
 		/*
 		if(!pauseFlag) {
@@ -371,19 +302,11 @@ public class Interface {
 	
 	
 	public void Draw() {
-		if(worldmapflag) {
-			//worldMap.draw(GameMain.spriteBatch);
-		}
-		
 		hp.draw(GameMain.spriteBatch);
 		scrollRight.draw(GameMain.spriteBatch);
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
-		//map.draw(GameMain.spriteBatch);
-
-
-		
 		if(pauseFlag) {
 			/*quitPause.draw(GameMain.spriteBatch);
 			icon.setScale(ScrollNinja.scale);

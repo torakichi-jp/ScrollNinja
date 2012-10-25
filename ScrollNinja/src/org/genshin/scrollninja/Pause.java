@@ -2,7 +2,6 @@ package org.genshin.scrollninja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -15,26 +14,25 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * */
 // ポーズ中の処理クラス
 public class Pause {
-
-	private static Interface playerInfo;
-	private Sprite worldMap;
+	//private static Interface playerInfo;
 	private static boolean drawflag;
 	private Sprite returnGame;
 	private Sprite title;
 	private Sprite load;
 	private Sprite pausemenu;
-	private GameMain gamemain;
+	private Sprite worldMap;
 	
+	private boolean gotoMain;
+	private boolean gotoTitleMenu;
+	private Player player;
 	
 	// コンストラクタ
 	public Pause() {
-		
 		// ワールドマップ
 		Texture worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
 		worldMap = new Sprite(worldRegion);
-		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
 		worldMap.setScale(ScrollNinja.scale * 1.5f);
 		
 		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
@@ -60,10 +58,13 @@ public class Pause {
 		load = new Sprite(loadRegion);
 		load.setScale(ScrollNinja.scale);
 		
+		gotoMain = false;
+		gotoTitleMenu = false;
 	}
 	
 	// アップデート
 	public void update() {
+		spriteUpdate();
 		clickedUpdate();
 		pressedUpdate();
 	}
@@ -72,6 +73,16 @@ public class Pause {
 	public void draw() {
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		GameMain.spriteBatch.begin();
+		pausemenu.draw(GameMain.spriteBatch);
+		if(drawflag)
+			worldMap.draw(GameMain.spriteBatch);
+		
+		returnGame.draw(GameMain.spriteBatch);
+		title.draw(GameMain.spriteBatch);
+		load.draw(GameMain.spriteBatch);
+		GameMain.spriteBatch.end();
+		
 	}
 	
 	// スプライトアップデート
@@ -79,7 +90,7 @@ public class Pause {
 		worldMap.setPosition(GameMain.camera.position.x - worldMap.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.12f,
 				GameMain.camera.position.y - worldMap.getHeight()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.12f);
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.16f);
 		
 		pausemenu.setPosition(GameMain.camera.position.x - pausemenu.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - pausemenu.getWidth()*0.5f*0.12f,
@@ -100,8 +111,6 @@ public class Pause {
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - load.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - load.getHeight()*0.5f
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- load.getHeight()*0.5f*0.9f);
-		
-
 	}
 	
 	// クリック時の処理
@@ -114,10 +123,10 @@ public class Pause {
 			System.out.println("mousePY:"+mousePositionY);
 			
 			// ポーズメニュー中の文字をクリックしたら
+			// コンティニュー
 			if(mousePositionX > 445 && mousePositionX < 620 &&
 				mousePositionY < 282 && mousePositionY > 255) {
-				playerInfo.SetPauseFlag(false);
-				//gameState = GAME_RUNNING;
+				gotoMain = true;
 			}
 			// 
 			if(mousePositionX > 450 && mousePositionX < 647 &&
@@ -135,11 +144,10 @@ public class Pause {
 	// キーボード押したときの処理
 	public void pressedUpdate() {
 		if(Gdx.input.isKeyPressed(Keys.L)) {
-			playerInfo.SetPauseFlag(false);
-			//gameState = GAME_RUNNNING;
+			gotoMain = true;
 		}
 		if(Gdx.input.isKeyPressed(Keys.G)) {
-			//gameState = GO_TO_MENU;
+			gotoTitleMenu = true;
 		}
 		if(Gdx.input.isKeyPressed(Keys.V)) {
 			drawflag = true;
@@ -148,5 +156,14 @@ public class Pause {
 			drawflag = false;
 		}
 	}
+	
+	public void playerAnimation() {
+	}
+	
+	public boolean GetgotoMainFlag(){return gotoMain;}
+	public void SetgotoMainFlag(boolean flag){gotoMain = flag;}
+	public boolean GetgotoTitleFlag(){return gotoTitleMenu;}
+	public void SetgotoTitleFlag(boolean flag){gotoTitleMenu = flag;}
+	
 
 }
