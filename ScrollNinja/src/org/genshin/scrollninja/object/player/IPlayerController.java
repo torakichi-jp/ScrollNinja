@@ -4,10 +4,11 @@
 package org.genshin.scrollninja.object.player;
 
 /**
- * プレイヤーの操作状態インタフェース
- * @author kou
- * @since 1.0
- * @version 1.0
+ * プレイヤーコントローラーのインタフェース。<br>
+ * プレイヤーと入力状態とを仲介する。
+ * @author	kou
+ * @since		1.0
+ * @version	1.0
  */
 public interface IPlayerController
 {
@@ -45,4 +46,16 @@ public interface IPlayerController
 	 * @return	鉤縄を投げる操作がある場合はtrue
 	 */
 	boolean kaginawaThrow();
+	
+	/**
+	 * 鉤縄にぶら下がる操作の状態を取得する。
+	 * @return	鉤縄にぶら下がる操作がある場合はtrue
+	 */
+	boolean kaginawaHang();
+	
+	/**
+	 * 鉤縄を離す操作の状態を取得する。
+	 * @return	鉤縄を離す操作がある場合はtrue
+	 */
+	boolean kaginawaRelease();	
 }
