@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -45,7 +46,7 @@ public class StructObject {
 	 								 */
 	public float	positionX;		// 保存用座標Ｘ
 	public float	positionY;		// 保存用座標Ｙ
-	public int		priority;		// 優先度（数値が低い方が手前）
+	public int		priority;		// 優先度（数値が低い方が奥）
 	
 	/**
 	 * エディタで使うもの
@@ -66,7 +67,7 @@ public class StructObject {
 		type = Type;
 		positionX = 0.0f;
 		positionY = 0.0f;
-		priority = 1;
+		priority = 0;
 		hold = false;
 		
 		// スプライト読み込み
@@ -91,14 +92,23 @@ public class StructObject {
 	}
 	
 	/**
+	 * ホールド情報取得
+	 */
+	public boolean GetHold() { return hold; }
+	/**
+	 * 優先度取得　
+	 */
+	public int GetPriority(){ return priority; }
+	
+	/**
 	 * 更新
 	 */
-	public void Update() {
-		
+	public void Update(int p) {
 		position = body.getPosition();					// 現在位置の更新
 		
-		Hold();
-		Move();
+		Hold(p);		// ホールド判定
+		Priority();		// 優先度の設定
+		Move();			// 動く
 	}
 	
 	/**
@@ -149,12 +159,23 @@ public class StructObject {
 	/**
 	 * ホールド設定
 	 */
-	public void Hold() {
+	public void Hold(int p) {
 		// 左クリックでオブジェクトを掴む
 		if( Mouse.LeftClick() ) {
-			if( position.x - size.x < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) && position.x + size.x > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
-				position.y - size.y < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) && position.y + size.y > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
-				hold = true;
+			if( p >= priority ) {
+				if( position.x - size.x < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) && position.x + size.x > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
+					position.y - size.y < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) && position.y + size.y > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
+					
+					for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
+						if( StructObjectManager.GetStructObject(i).GetHold() ) {
+							return;
+						}
+					}
+					hold = true;
+				}
+				else {
+					hold = false;
+				}
 			}
 			else {
 				hold = false;
@@ -164,6 +185,44 @@ public class StructObject {
 		// とりあえず右クリックで解放
 		if( Mouse.RightClick() ) {
 			hold = false;
+		}
+	}
+
+	/**
+	 * 優先度の設定
+	 */
+	public void Priority() {
+		if( hold ) {
+			if( Gdx.input.isKeyPressed(Keys.NUM_0)) {
+				priority = 0;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_1)) {
+				priority = 1;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_2)) {
+				priority = 2;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_3)) {
+				priority = 3;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_4)) {
+				priority = 4;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_5)) {
+				priority = 5;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_6)) {
+				priority = 6;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_7)) {
+				priority = 7;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_8)) {
+				priority = 8;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_9)) {
+				priority = 9;
+			}
 		}
 	}
 	
@@ -180,6 +239,7 @@ public class StructObject {
 			break;
 		}
 	}
+
 	/**
 	 * ステージオブジェクト生成
 	 */

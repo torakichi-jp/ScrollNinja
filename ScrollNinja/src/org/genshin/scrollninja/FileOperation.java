@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 
 public class FileOperation extends WindowAdapter {
 	
-	public static void start() {
+	public static void Save() {
 		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.SAVE);
 		f_dialog.setVisible(true);
 		
@@ -25,9 +25,18 @@ public class FileOperation extends WindowAdapter {
 			String path = new String();
 			path = f_dialog.getDirectory() + f_dialog.getFile();
 			System.out.println(path);
-			ExportFile(f_dialog.getFile());
+			ExportFile(path);
 //		}
 //		f_dialog.dispose();
+	}
+	
+	public static void Load() {
+		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.LOAD);
+		f_dialog.setVisible(true);
+		
+		String path = new String();
+		path = f_dialog.getDirectory() + f_dialog.getFile();
+		LoadFile(path);
 	}
 	
 
