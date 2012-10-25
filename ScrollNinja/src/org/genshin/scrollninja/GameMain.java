@@ -27,7 +27,6 @@ import com.badlogic.gdx.physics.box2d.World;
 // シーン（ステージ）を遷移させたい時は、Stage型の変数を宣言してnew(world)して
 // StageManager.StageTrance(変数名)で遷移します。
 // 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
-// 10/23 line135で画像など解放？してタイトル遷移して増殖しないようにスタート
 
 public class GameMain implements Screen{
 	private Game						scrollNinja;
@@ -35,6 +34,7 @@ public class GameMain implements Screen{
 	public static OrthographicCamera	camera;		// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
 	public static Interface 				playerInfo;	// インターフェース
+	public static Pause					pause;
 	public boolean				PauseFlag;
 	private Stage 			stage;						// ステージ
 	private int				stageNum;					// ステージナンバー
@@ -48,6 +48,10 @@ public class GameMain implements Screen{
 	private boolean gotomenu;
 	private Sprite worldMap;
 	private static boolean drawflag;
+	private Sprite returnGame;
+	private Sprite title;
+	private Sprite load;
+	private Sprite pausemenu;
 
 	// 仮
 	public static int gameState;
@@ -72,6 +76,7 @@ public class GameMain implements Screen{
 		stageNum			= num;
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
+		//pause 				= new Pause();
 
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
@@ -100,28 +105,27 @@ public class GameMain implements Screen{
 		switch (gameState) {
 		case GAME_RUNNING:
 			oldTime = newTime;
-
 			//TODO
 			if(Gdx.input.isKeyPressed(Keys.I)) {
 				scrollNinja.setScreen(new StageEditor());
 				StageEditor.Init();
 			}
-
 			StageManager.Update();
 			StageManager.Draw();
-
 			FPS();
 			break;
 		case GAME_PAUSED:
 			switch(pauseState) {
 			case PAUSE_INIT:
-				InitPause();
+				InitPause(); // コンストラクタへ
 				break;
 			case PAUSE_UPDATE:
+				//pause.update();	// 未
+				//pause.draw();		// 未
 				
-				updatePaused(delta);
+				updatePaused();
 				DrawPause();
-				//break;
+				break;
 			}
 			break;
 		case GO_TO_MENU:
@@ -153,7 +157,7 @@ public class GameMain implements Screen{
 	 * マップ表示中は他の描画をしない
 	 */
 	// TODO ぶれるので調整必要
-	public void updatePaused(float delta) {
+	public void updatePaused() {
 		// ポーズしたら全画面マップ表示
 
 		// Lキーでポーズ解除（仮
@@ -194,12 +198,31 @@ public class GameMain implements Screen{
 			drawflag = false;
 		}
 		
-			worldMap.setPosition(camera.position.x - worldMap.getWidth() * 0.5f
-				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
-				camera.position.y - worldMap.getHeight() * 0.5f
-				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
+		worldMap.setPosition(camera.position.x - worldMap.getWidth() * 0.5f
+			+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
+			camera.position.y - worldMap.getHeight() * 0.5f
+			+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale) - worldMap.getHeight() * 0.5f * 0.12f);
+		
+		pausemenu.setPosition(camera.position.x - pausemenu.getWidth() * 0.5f
+				+ (ScrollNinja.window.x * 0.5f  * ScrollNinja.scale) - pausemenu.getWidth() * 0.5f * 0.12f,
+				camera.position.y - pausemenu.getHeight() * 0.5f
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale) - pausemenu.getHeight() * 0.5f * 0.115f);
+		
+		returnGame.setPosition(camera.position.x - returnGame.getWidth() * 0.5f
+				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - returnGame.getWidth() * 0.5f * 0.1f,
+				camera.position.y - returnGame.getHeight() * 0.5f
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- returnGame.getHeight() * 0.5f * 0.5f);
+
+		title.setPosition(camera.position.x - title.getWidth() * 0.5f
+							+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - title.getWidth() * 0.5f * 0.1f,
+							camera.position.y - title.getHeight() * 0.5f
+							+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- title.getHeight() * 0.5f * 0.7f);
 			
-		System.out.println(drawflag);
+		load.setPosition(camera.position.x - load.getWidth() * 0.5f
+				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - load.getWidth() * 0.5f * 0.1f,
+				camera.position.y - load.getHeight() * 0.5f
+				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- load.getHeight() * 0.5f * 0.9f);
+		
 	}
 	
 	// ポーズ初期化
@@ -212,16 +235,48 @@ public class GameMain implements Screen{
 		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
 		worldMap.setScale(ScrollNinja.scale * 1.5f);
 		
+		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
+		pausemenubackTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion pauseRegion = new TextureRegion(pausemenubackTexture);
+		pausemenu = new Sprite(pauseRegion);
+		pausemenu.setScale(ScrollNinja.scale * 1.5f);
+		
+
+		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/menu.png"));
+		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
+		
+		// ポーズメニュー
+		TextureRegion returnGameRegion = new TextureRegion(pauseMenuTexture,0,0,256,35);
+		returnGame = new Sprite(returnGameRegion);
+		returnGame.setScale(ScrollNinja.scale);
+
+		TextureRegion titleRegion = new TextureRegion(pauseMenuTexture,0,40,256,35);
+		title = new Sprite(titleRegion);
+		title.setScale(ScrollNinja.scale);
+
+		TextureRegion loadRegion = new TextureRegion(pauseMenuTexture,0,85,256,35);
+		load = new Sprite(loadRegion);
+		load.setScale(ScrollNinja.scale);
+		
 		pauseState = PAUSE_UPDATE;
 	}
 	
 	// ポーズ中描画
 	public void DrawPause() {
+		// クリア
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		spriteBatch.begin();
+		pausemenu.draw(spriteBatch);
 		if(drawflag) {
-			//worldMap.draw(spriteBatch);
+			worldMap.draw(spriteBatch);
 		}
+		
+		returnGame.draw(spriteBatch);
+		title.draw(spriteBatch);
+		load.draw(spriteBatch);
+
 		spriteBatch.end();
 
 	}
