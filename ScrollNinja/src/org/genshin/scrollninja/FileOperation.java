@@ -1,5 +1,8 @@
 package org.genshin.scrollninja;
 
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,7 +13,25 @@ import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
 
-public class FileOperation {
+import javax.swing.JFrame;
+
+public class FileOperation extends WindowAdapter {
+	
+	public static void start() {
+		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.SAVE);
+		f_dialog.setVisible(true);
+		
+//		if( f_dialog.SAVE) {
+			String path = new String();
+			path = f_dialog.getDirectory() + f_dialog.getFile();
+			System.out.println(path);
+			ExportFile(f_dialog.getFile());
+//		}
+//		f_dialog.dispose();
+	}
+	
+
+	
 	
 	/**
 	 * コンストラクタ
@@ -25,6 +46,8 @@ public class FileOperation {
         int i = 1;
         int type = 0, priority = 0;
         float positionX = 0,positionY = 0;
+        
+        StructObjectManager.DeleteStructObject();
 		
         try {
         	FileReader fr		= new FileReader(filePath);		// FileReaderオブジェクトの作成
@@ -88,9 +111,9 @@ public class FileOperation {
 			for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
 				pw.print(StructObjectManager.GetStructObject(i).type);
 				pw.print('/');
-				pw.print((int)StructObjectManager.GetStructObject(i).positionX);
+				pw.print((int)StructObjectManager.GetStructObject(i).position.x);
 				pw.print('/');
-				pw.print((int)StructObjectManager.GetStructObject(i).positionY);
+				pw.print((int)StructObjectManager.GetStructObject(i).position.y);
 				pw.print('/');
 				pw.println(StructObjectManager.GetStructObject(i).priority);
 			}

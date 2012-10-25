@@ -1,8 +1,10 @@
 package org.genshin.scrollninja;
 
+import java.awt.Frame;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -65,9 +67,17 @@ public class StageEditor implements Screen {
 				StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
 		}
 
+		if( Gdx.input.isKeyPressed(Keys.S)) {
+			FileOperation.start();
+		}
+
+		if( Gdx.input.isKeyPressed(Keys.L)) {
+			FileOperation.LoadFile("abc.txt");
+		}
+
 //		System.out.println("マウスX:" + (Mouse.GetPosition().x * 0.1 - 64.0 ));
 //		System.out.println("マウスY:" + (Mouse.GetPosition().y * 0.1 - 36.0 ));
-//		System.out.println("て　き :" + EnemyManager.normalEnemyList.get(0).GetPosition());
+//		System.out.println("て　き :" + EnemyManager.enemyList.get(0).GetPosition());
 //		System.out.println("カメラX:" + GameMain.camera.position.x);
 //		System.out.println("カメラY:" + GameMain.camera.position.y);
 	}
@@ -83,8 +93,8 @@ public class StageEditor implements Screen {
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
 		GameMain.spriteBatch.begin();									// 描画開始
 		{
-			//BackgroundManager.GetBackground(0).Draw(Background.FAR);
-			//BackgroundManager.GetBackground(0).Draw(Background.MAIN);
+			BackgroundManager.backgroundList.Draw(Background.FAR);
+			BackgroundManager.backgroundList.Draw(Background.MAIN);
 
 			StructObjectManager.Draw();
 
@@ -104,11 +114,11 @@ public class StageEditor implements Screen {
 /*	private void Mouse() {
 		if(Mouse.LeftClick()) {
 			for( int i = 0; i < EnemyManager.normalEnemyList.size(); i++ ) {
-				if( EnemyManager.normalEnemyList.get(i).GetPosition().x - 1.6 < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
-					EnemyManager.normalEnemyList.get(i).GetPosition().x + 1.6 > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
-					EnemyManager.normalEnemyList.get(i).GetPosition().y - 2.4 < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) &&
-					EnemyManager.normalEnemyList.get(i).GetPosition().y + 2.4 > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
-					EnemyManager.normalEnemyList.get(i).SetPosition((float)((Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x)),(float)((GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )));
+				if( EnemyManager.enemyList.get(i).GetPosition().x - 1.6 < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
+					EnemyManager.enemyList.get(i).GetPosition().x + 1.6 > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
+					EnemyManager.enemyList.get(i).GetPosition().y - 2.4 < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) &&
+					EnemyManager.enemyList.get(i).GetPosition().y + 2.4 > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
+					EnemyManager.enemyList.get(i).SetPosition((float)((Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x)),(float)((GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )));
 				}
 			}
 		}
@@ -119,19 +129,19 @@ public class StageEditor implements Screen {
 	 */
 	private void Move() {
 		GameMain.camera.position.set(position.x, position.y, 0);
-/*
-		if (GameMain.camera.position.x < -(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
-			GameMain.camera.position.x = -(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
+
+		if (GameMain.camera.position.x < -(BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
+			GameMain.camera.position.x = -(BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.LEFT) ) {
 			position.x --;
 		}
-		if (GameMain.camera.position.x > (BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
-			GameMain.camera.position.x = (BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
+		if (GameMain.camera.position.x > (BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
+			GameMain.camera.position.x = (BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.RIGHT) ) {
 			position.x ++;
-		}*/
+		}
 
 		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale) {
 			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
