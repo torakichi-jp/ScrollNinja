@@ -42,6 +42,13 @@ public class StructObjectManager {
 		objectList.add(pStructObject);
 	}
 	
+	public static void DeleteStructObject() {
+		for( int i = 0; i < objectList.size(); i ++ ) {
+			objectList.get(i).Release();
+			objectList.remove(i);
+		}
+	}
+	
 	/**
 	 * リストサイズを返す
 	 * @return

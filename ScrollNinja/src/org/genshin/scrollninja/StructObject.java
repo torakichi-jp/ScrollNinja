@@ -43,13 +43,14 @@ public class StructObject {
 	 								 * １００〜９９９		敵
 	 								 * １０００〜			ステージオブジェクト
 	 								 */
-	public float	positionX;		// 座標Ｘ
-	public float	positionY;		// 座標Ｙ
+	public float	positionX;		// 保存用座標Ｘ
+	public float	positionY;		// 保存用座標Ｙ
 	public int		priority;		// 優先度（数値が低い方が手前）
 	
 	/**
 	 * エディタで使うもの
 	 */
+	public Vector2	position;		// 表示用座標
 	public boolean	hold;
 	public Vector2 size;
 	public ArrayList<Sprite> sprite;
@@ -60,6 +61,7 @@ public class StructObject {
 	 */
 	public StructObject(int Type) {
 		sprite = new ArrayList<Sprite>();
+		position = new Vector2(0.0f, 0.0f);
 		size = new Vector2(0.0f, 0.0f);
 		type = Type;
 		positionX = 0.0f;
@@ -76,6 +78,7 @@ public class StructObject {
 	 */
 	public StructObject(int Type, float x, float y, int p) {
 		sprite = new ArrayList<Sprite>();
+		position = new Vector2(0.0f, 0.0f);
 		size = new Vector2(0.0f, 0.0f);
 		type = Type;
 		positionX = x;
@@ -92,8 +95,7 @@ public class StructObject {
 	 */
 	public void Update() {
 		
-		positionX = body.getPosition().x;					// 現在位置の更新
-		positionY = body.getPosition().y;
+		position = body.getPosition();					// 現在位置の更新
 		
 		Hold();
 		Move();
@@ -120,15 +122,26 @@ public class StructObject {
 	}
 	
 	/**
+	 * 解放処理
+	 */
+	public void Release() {		
+		GameMain.world.destroyBody(body);
+		body = null;
+		sprite.clear();
+	}
+	
+	/**
 	 * 動かす
 	 */
 	public void Move() {
 		if( hold ) {
-			positionX = (float)((Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x));
-			positionY = (float)((GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ));
-			body.setTransform(positionX,positionY,0);
+			positionX = (float)( Mouse.GetPosition().x * 0.1 - 64.0 );
+			positionY = (float)( Mouse.GetPosition().y * 0.1 - 36.0 );
+			position.x = (float)((Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x));
+			position.y = (float)((GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ));
+			body.setTransform(position.x,position.y,0);
 			for( int i = 0; i < sprite.size(); i ++ ) {
-				sprite.get(i).setPosition(positionX, positionY);
+				sprite.get(i).setPosition(position.x, position.y);
 			}
 		}
 	}
@@ -139,8 +152,8 @@ public class StructObject {
 	public void Hold() {
 		// 左クリックでオブジェクトを掴む
 		if( Mouse.LeftClick() ) {
-			if( positionX - size.x < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) && positionX + size.x > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
-				positionY - size.y < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) && positionY + size.y > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
+			if( position.x - size.x < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) && position.x + size.x > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
+				position.y - size.y < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) && position.y + size.y > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
 				hold = true;
 			}
 			else {

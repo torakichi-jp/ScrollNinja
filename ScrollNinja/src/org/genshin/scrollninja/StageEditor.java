@@ -1,8 +1,10 @@
 package org.genshin.scrollninja;
 
+import java.awt.Frame;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -64,7 +66,16 @@ public class StageEditor implements Screen {
 			if( StructObjectManager.GetListSize() == 0 )
 				StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
 		}
-			
+		
+		if( Gdx.input.isKeyPressed(Keys.S)) {
+			FileOperation.start();
+		//	FileOperation.ExportFile("abc.txt");
+		}
+		
+		if( Gdx.input.isKeyPressed(Keys.L)) {
+			FileOperation.LoadFile("abc.txt");
+		}
+		
 //		System.out.println("マウスX:" + (Mouse.GetPosition().x * 0.1 - 64.0 ));
 //		System.out.println("マウスY:" + (Mouse.GetPosition().y * 0.1 - 36.0 ));
 //		System.out.println("て　き :" + EnemyManager.normalEnemyList.get(0).GetPosition());
