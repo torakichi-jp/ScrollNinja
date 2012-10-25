@@ -2,6 +2,7 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -27,7 +28,8 @@ public class Syuriken extends WeaponBase {
 
 	/**
 	 * コンストラクタ
-	 * @param i		管理番号
+	 * @param player	使用プレイヤー
+	 * @param i			管理番号
 	 */
 	public Syuriken(Player player, int i) {
 		owner		= (CharacterBase)player;	// 使用者
@@ -42,6 +44,11 @@ public class Syuriken extends WeaponBase {
 		Create(this.player, this.enemy);
 	}
 
+	/**
+	 * コンストラクタ
+	 * @param enemy		使用エネミー
+	 * @param i			管理番号
+	 */
 	public Syuriken(Enemy enemy, int i) {
 		owner		= (CharacterBase)enemy;		// 使用者
 		this.player	= null;

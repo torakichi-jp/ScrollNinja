@@ -5,6 +5,7 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+
 //========================================
 // クラス宣言
 //========================================
@@ -16,13 +17,19 @@ public class EffectManager {
 	// コンストラクタ
 	private EffectManager(){}
 
+	/**
+	 * 描画
+	 */
 	public static void Draw() {
 		for( int i = 0; i < effectList.size(); i ++ ) {
 			effectList.get(i).Draw();
 		}
 	}
 
-	// エフェクトの生成
+	/**
+	 * 作成
+	 * @param Type	種類
+	 */
 	public static void CreateEffect(int Type) {
 		if (effectList == null)
 			effectList = new ArrayList<Effect>();
@@ -31,12 +38,19 @@ public class EffectManager {
 		effectList.add(pEffect);					// リストに追加
 	}
 
-	// エフェクトの削除
+	/**
+	 * 削除
+	 * @param Type	種類
+	 */
 	public static void DeleteEffect(int Type) {
 		effectList.remove(effectList.indexOf(Type));		// 引数で渡されたオブジェクトを削除
 	}
 
-	// 参照
+	/**
+	 * 参照
+	 * @param Type		種類
+	 * @return エフェクト
+	 */
 	public static Effect GetEffect(int Type) {
 		for(int i = 0; i < effectList.size(); i ++) {
 			if( effectList.get(i).GetType() == Type ) {
@@ -46,6 +60,11 @@ public class EffectManager {
 		return null;
 	}
 
+	/**
+	 * 参照
+	 * @param current	現在のエフェクト
+	 * @return エフェクト
+	 */
 	public static Effect GetEffect(Effect current) {
 		for( int i = 0; i < effectList.size(); i ++ ) {
 			if( effectList.get(i).equals(current) )
@@ -54,20 +73,32 @@ public class EffectManager {
 		return null;
 	}
 
+	/**
+	 * 参照
+	 * @param i
+	 * @return エフェクト
+	 */
 	public static Effect GetEffectForLoop(int i) {
 		return effectList.get(i);
 	}
 
+	/**
+	 * サイズ参照
+	 * @return エフェクトリストサイズ
+	 */
 	public static int GetListSize() {
 		return effectList.size();
 	}
 
+	/**
+	 * 解放処理
+	 */
 	public static void dispose() {
 		if (effectList != null) {
 			for (int i = 0; i < effectList.size(); i++) {
 				effectList.get(i).Release();
 			}
 		}
-		effectList = null;
+		effectList = new ArrayList<Effect>();
 	}
 }

@@ -3,18 +3,15 @@ package org.genshin.scrollninja;
 //========================================
 // インポート
 //========================================
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 
 //========================================
 // クラス宣言
 //========================================
 public abstract class CharacterBase extends ObJectBase {
-	// 定数宣言
-	protected int	MAX_HP		=	100;
-
 	// 変数宣言
+	// TODO MAXHPは増加するからプレイヤーデータ（レベル）読み込みで変更させないと
+	protected int	MAX_HP		=	100;
 	protected int 		hp;						// HP
 
 	// いずれ消す変数
@@ -24,7 +21,7 @@ public abstract class CharacterBase extends ObJectBase {
 	// コンストラクタ
 	public CharacterBase() {
 		super();
-		
+
 		hp				= MAX_HP;
 		speed			= 0;
 		position		= new Vector2(0,0);

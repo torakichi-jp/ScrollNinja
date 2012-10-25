@@ -4,6 +4,7 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // アイテム番号はマネージャで自動に割り振る
 // 当たり判定が二重になっているとき（地面とプレイヤー同時HITとか）にうまく削除が出来ないので削除フラグ追加
 
+// TODO これも別ファイルでデータリスト作って読み込めるようにするべきか
 public class Item extends ObJectBase {
 
 	//========================================

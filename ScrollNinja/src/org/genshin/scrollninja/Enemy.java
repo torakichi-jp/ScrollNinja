@@ -34,12 +34,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Enemy extends CharacterBase {
 	// 定数宣言
-	// 敵のタイプ
-	// TODO 不要になるかも
-	public final static int NORMAL		= 0;	// ノーマル
-	public final static int RARE		= 1;	// レア
-	public final static int AUTO		= 2;	// AI
-
 	// 方向
 	private final int RIGHT			=  1;
 	private final int LEFT			= -1;
@@ -81,6 +75,9 @@ public class Enemy extends CharacterBase {
 
 	/**************************************************
 	 * コンストラクタ
+	 * @param id		エネミーID
+	 * @param num		管理番号
+	 * @param position	出現位置
 	 **************************************************/
 	Enemy(int id, int num, Vector2 position) {
 		enemyID				= id;
@@ -88,6 +85,7 @@ public class Enemy extends CharacterBase {
 		this.position		= position;
 		direction			= RIGHT;
 
+		// データ取得 TODO 別ファイルから取得できるようにしたい…
 		EnemyData data = EnemyDataList.lead(id);
 		MAX_HP				= data.maxHp;
 		hp					= data.maxHp;
@@ -130,6 +128,7 @@ public class Enemy extends CharacterBase {
 		body = GameMain.world.createBody(bd);
 
 		// fixture生成
+		// TODO この数値も変数にするべき？
 		PolygonShape poly		= new PolygonShape();
 		poly.setAsBox(1.6f, 2.4f);
 
@@ -148,38 +147,33 @@ public class Enemy extends CharacterBase {
 
 		poly.dispose();
 
-		// エネミータイプによってテクスチャ変更
-		//switch(enemyType) {
-		//case NORMAL:
-			// TODO エネミーによってアニメーション枚数が変わってくるなら変更必要あり
-			// テクスチャの読み込み
-			EnemyData data = EnemyDataList.lead(enemyID);
-			Texture texture = new Texture(Gdx.files.internal(data.enemyFileName));
-			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
+		// TODO ↓ここスッキリさせたい
 
-			// スプライトに反映
-			sprite.add(new Sprite(region));
-			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(ScrollNinja.scale);
+		// データ読み込み
+		EnemyData data = EnemyDataList.lead(enemyID);
 
-			// アニメーション
-			TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
-			frame = new TextureRegion[4];
-			int index = 0;
-			for (int i = 1; i < 2; i++) {
-				for (int j = 0; j < 4; j++) {
-					if(index < 4)
-						frame[index++] = tmp[i][j];
-				}
+		// テクスチャの読み込み
+		Texture texture = new Texture(Gdx.files.internal(data.enemyFileName));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);		// TODO 変数のほうがよい？
+
+		// スプライトに反映
+		sprite.add(new Sprite(region));
+		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
+		sprite.get(0).setScale(ScrollNinja.scale);
+
+		// アニメーション
+		// TODO 敵によってアニメーション枚数変わってくるだろうからどうにかうまい具合に…
+		TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
+		frame = new TextureRegion[4];
+		int index = 0;
+		for (int i = 1; i < 2; i++) {
+			for (int j = 0; j < 4; j++) {
+				if(index < 4)
+					frame[index++] = tmp[i][j];
 			}
-			animation = new Animation(20.0f, frame);
-
-			//break;
-
-		//case RARE:
-			//break;
-		//}
+		}
+		animation = new Animation(20.0f, frame);
 	}
 
 	/**************************************************
@@ -190,7 +184,7 @@ public class Enemy extends CharacterBase {
 		if( deleteFlag ) {
 			// TODO 落とす種類の選択と確率も必要か
 			ItemManager.CreateItem(Item.ONIGIRI, position.x, position.y);
-			EnemyManager.Deleteenemy(this);
+			EnemyManager.DeleteEnemy(number);
 			return;
 		}
 
@@ -212,7 +206,7 @@ public class Enemy extends CharacterBase {
 			}
 		}
 
-		//
+		// 武器更新
 		if (weapon != null)
 			weapon.Update();
 
@@ -243,11 +237,15 @@ public class Enemy extends CharacterBase {
 			current.draw(GameMain.spriteBatch);
 		}
 
-		// 武器の描画
+		// 手裏剣の描画
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++)
 				syuriken.get(i).Draw();
 		}
+
+		// 武器の描画
+		if (weapon != null)
+			weapon.Draw();
 	}
 
 	/**************************************************
@@ -270,6 +268,7 @@ public class Enemy extends CharacterBase {
 			chase();
 			if (attackFlag) {
 				if (attackInterval == 0)
+					// TODO 刀と手裏剣両方使う敵の場合は…
 					if (weapon != null)
 						attackKatana();
 					else
@@ -278,6 +277,7 @@ public class Enemy extends CharacterBase {
 					attackInterval -= 1;
 			}
 			break;
+			/*
 		case AUTO :
 			// 範囲内にプレイヤーがいるかを検知し
 			// 範囲内にプレイヤーがいると襲撃 or 定点攻撃
@@ -286,6 +286,7 @@ public class Enemy extends CharacterBase {
 				break;
 			}
 			break;
+			*/
 		}
 	}
 
@@ -313,6 +314,7 @@ public class Enemy extends CharacterBase {
 	* プレイヤーを見つけたら追いかける
 	**************************************************/
 	public void chase() {
+		// TODO 要調整
 		// プレイヤーの位置を取得
 		player = PlayerManager.GetPlayer(0);
 
@@ -353,7 +355,7 @@ public class Enemy extends CharacterBase {
 
 	/**************************************************
 	* attackKatana()
-	* 手裏剣での攻撃
+	* 刀での攻撃
 	**************************************************/
 	public void attackKatana() {
 		weapon.SetUseFlag(true);
@@ -388,7 +390,8 @@ public class Enemy extends CharacterBase {
 	}
 
 	/**************************************************
-	* jump()
+	* jump
+	* ジャンプ処理
 	**************************************************/
 	// TODO 要調整
 	public void jump() {

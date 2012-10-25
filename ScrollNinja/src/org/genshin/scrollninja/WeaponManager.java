@@ -35,9 +35,6 @@ public class WeaponManager {
 	 * @param type			種類
 	 */
 	public static WeaponBase CreateWeapon(CharacterBase owner, int type) {
-		if (katanaList == null)
-			katanaList = new ArrayList<Katana>();
-
 		switch(type) {
 		case KATANA:
 			Katana pKatana = new Katana(owner, katanaList.size() + 1);
@@ -51,6 +48,6 @@ public class WeaponManager {
 	}
 
 	public static void dispose() {
-		katanaList = null;
+		katanaList = new ArrayList<Katana>();
 	}
 }

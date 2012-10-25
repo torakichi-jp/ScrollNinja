@@ -5,6 +5,7 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
+// TODO マップエディターで作成したのち、座標などを読み出せるように
 //========================================
 // クラス宣言
 //========================================
@@ -60,7 +62,8 @@ public class StageObject extends ObJectBase {
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 			sprite.add(new Sprite(tmpRegion));
-			sprite.get(0).setOrigin(0.0f, 0.0f);
+			sprite.get(0).setOrigin(0, -128);	// 128-128 128-256
+												// TODO 当たり判定を作った時の位置を計算する必要が…?
 			sprite.get(0).setScale(ScrollNinja.scale);
 
 			// 当たり判定読み込み
@@ -69,6 +72,8 @@ public class StageObject extends ObJectBase {
 			// Bodyのタイプを設定 Staticは動かない物体
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType.StaticBody;
+			// TODO テスト
+			bd.position.set(-25.6f + 20, -25.6f -35);
 
 			// Bodyの設定を設定
 			FixtureDef fd	= new FixtureDef();
@@ -77,10 +82,12 @@ public class StageObject extends ObJectBase {
 			fd.restitution	= 0;				// 反発係数
 
 			body = GameMain.world.createBody(bd);
+			// TODO テスト中でいれているだけ
+			body.setTransform(body.getPosition(), (float)Math.toRadians(-30));
+			sprite.get(0).setPosition(body.getPosition().x, body.getPosition().y);
 
 			// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-			loader.attachFixture(body, "gravestone", fd, sprite.get(0).getWidth() * ScrollNinja.scale);
-			body.setTransform(200, 50, 0);
+			loader.attachFixture(body, "gravestone", fd, texture.getWidth() * ScrollNinja.scale);
 
 			break;
 

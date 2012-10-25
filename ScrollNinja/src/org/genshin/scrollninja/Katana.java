@@ -1,5 +1,6 @@
 package org.genshin.scrollninja;
 
+
 import com.badlogic.gdx.math.Vector2;
 
 public class Katana extends WeaponBase {

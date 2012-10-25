@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 
+// TODO playerListの中で、今操作中のプレイヤーは何番目？
 public class PlayerManager {
 	private static ArrayList<Player> playerList = new ArrayList<Player>();
 
@@ -43,18 +44,21 @@ public class PlayerManager {
 	/**
 	 * プレイヤー参照
 	 * @param i		管理番号
-	 * @return
+	 * @return		プレイヤー
 	 */
 	public static Player GetPlayer( int i) {
 		return playerList.get(i);
 	}
 
+	/**
+	 * 解放処理
+	 */
 	public static void dispose() {
 		if (playerList != null) {
 			for (int i = 0; i < playerList.size(); i++) {
 				playerList.get(i).Release();
 			}
 		}
-		playerList = null;
+		playerList = new ArrayList<Player>();
 	}
 }

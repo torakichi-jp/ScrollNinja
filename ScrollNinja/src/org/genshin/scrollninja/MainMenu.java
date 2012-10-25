@@ -28,8 +28,8 @@ public class MainMenu implements Screen{
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;				// エグジット
 
-	private boolean wmapflag;
-	private Stage stage;					// 最初に呼ばれるステージ
+	//private boolean wmapflag;
+	//private Stage stage;					// 最初に呼ばれるステージ
 	//private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
 
@@ -105,7 +105,7 @@ public class MainMenu implements Screen{
 
 		// 初期化
 		scrollFlag = false;
-		wmapflag = false;
+
 	}
 
 	// 更新
@@ -140,7 +140,6 @@ public class MainMenu implements Screen{
 			}
 			// ネットワーク
 			if (x > 530 && x < 770 && y > 210 && y < 245) {
-				wmapflag = true;
 			}
 			// オプション
 			if (x > 530 && x < 770 && y > 245 && y < 280) {
@@ -154,12 +153,6 @@ public class MainMenu implements Screen{
 					System.exit(0);
 				}
 			}
-		}
-		if(Gdx.input.isKeyPressed(Keys.Y)){
-			wmapflag = true;
-		}
-		if(Gdx.input.isKeyPressed(Keys.U)){
-			wmapflag = false;
 		}
 
 		// 選択肢をクリックしたら画像移動
@@ -202,9 +195,9 @@ public class MainMenu implements Screen{
 		spriteBatch.begin();
 
 		// 背景描画
-		//（とりあえずメインと遠景）
-		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
-		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
+		// TODO とりあえずメインと遠景
+		BackgroundManager.backgroundList.Draw(Background.FAR, true);
+		BackgroundManager.backgroundList.Draw(Background.MAIN, true);
 
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);
