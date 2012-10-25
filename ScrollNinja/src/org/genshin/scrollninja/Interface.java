@@ -371,6 +371,10 @@ public class Interface {
 	
 	
 	public void Draw() {
+		if(worldmapflag) {
+			//worldMap.draw(GameMain.spriteBatch);
+		}
+		
 		hp.draw(GameMain.spriteBatch);
 		scrollRight.draw(GameMain.spriteBatch);
 		scroll.draw(GameMain.spriteBatch);
@@ -378,9 +382,7 @@ public class Interface {
 		hyoutan.draw(GameMain.spriteBatch);
 		//map.draw(GameMain.spriteBatch);
 
-		if(worldmapflag) {
-			worldMap.draw(GameMain.spriteBatch);
-		}
+
 		
 		if(pauseFlag) {
 			/*quitPause.draw(GameMain.spriteBatch);
@@ -388,9 +390,9 @@ public class Interface {
 			icon.draw(GameMain.spriteBatch);
 			*/
 
-			returnGame.draw(GameMain.spriteBatch);
-			title.draw(GameMain.spriteBatch);
-			load.draw(GameMain.spriteBatch);
+			//returnGame.draw(GameMain.spriteBatch);
+			//title.draw(GameMain.spriteBatch);
+			//load.draw(GameMain.spriteBatch);
 
 
 		}
