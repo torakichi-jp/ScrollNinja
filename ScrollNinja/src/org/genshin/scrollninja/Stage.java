@@ -85,6 +85,11 @@ public class Stage implements StageBase {
 		// TODO リリース前にこの処理をクリア直後に持ってくる
 		renderer.render(GameMain.world, GameMain.camera.combined);
 		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
+
+		/**
+		 * ↑rendererの処理を前に持っていくと位置がずれることがあるので
+		 * 微調整が必要な場合は一度確認した方がよさそうです。
+		 */
 	}
 
 	//************************************************************

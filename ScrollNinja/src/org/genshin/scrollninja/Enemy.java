@@ -63,6 +63,7 @@ public class Enemy extends CharacterBase {
 	private boolean				attackFlag;		// 攻撃可能フラグ
 	private boolean 			jump;			// ジャンプフラグ
 	private boolean				chase;			// 追いかけフラグ
+	private boolean					reverse;		// 方向反転フラグ
 	private boolean				deleteFlag;		// 削除フラグ
 	private Player 				player;			// プレイヤー
 	private ArrayList<Syuriken> syuriken;		// 手裏剣
@@ -107,6 +108,7 @@ public class Enemy extends CharacterBase {
 		jump				= false;
 		attackFlag			= false;
 		chase				= false;
+		reverse				= false;
 		deleteFlag			= false;
 
 		enemyMode = data.enemyMode;
@@ -297,13 +299,18 @@ public class Enemy extends CharacterBase {
 	public void walk() {
 		if(!chase) {
 			// 右端まで到達
-			if(position.x > wanderingPosition.x + 20) {
+			if (position.x > wanderingPosition.x + 20) {
 				direction = LEFT;
 			}
 			// 左端まで到達
-			if(position.x < wanderingPosition.x - 20) {
+			if (position.x < wanderingPosition.x - 20) {
 				direction = RIGHT;
 			}
+			// オブジェクトにぶつかる
+			if (reverse) {
+				direction *= -1;
+			}
+			reverse = false;
 			sprite.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
 			body.setLinearVelocity(WALK_SPEED * direction, GRAVITY);
 		}
@@ -450,7 +457,11 @@ public class Enemy extends CharacterBase {
 	public void collisionNotify(Player obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){}
+	public void collisionNotify(Enemy obj, Contact contact){
+		reverse = true;
+		// 少しふっとぶ
+		body.setTransform(body.getPosition().x - 0.5f * direction, body.getPosition().y , body.getAngle());
+	}
 
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){
@@ -469,7 +480,10 @@ public class Enemy extends CharacterBase {
 	public void collisionNotify(Item obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){}
+	public void collisionNotify(StageObject obj, Contact contact){
+		// オブジェクトと当たったら反転
+		reverse = true;
+	}
 
 	@Override
 	public void collisionNotify(WeaponBase obj, Contact contact){}

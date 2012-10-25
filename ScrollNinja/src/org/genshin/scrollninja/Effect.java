@@ -211,8 +211,8 @@ public class Effect extends ObJectBase {
 			stateTime++;
 
 			body.setTransform(PlayerManager.GetPlayer(0).GetPosition().x +
-								(PlayerManager.GetPlayer(0).GetDirection() * 5),
-									PlayerManager.GetPlayer(0).GetPosition().y, 0);
+								(PlayerManager.GetPlayer(0).GetDirection() * 2.5f),
+									PlayerManager.GetPlayer(0).GetPosition().y + 4, 0);
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
 			sprite.get(0).setPosition
@@ -222,10 +222,10 @@ public class Effect extends ObJectBase {
 			sprite.get(0).setRegion(nowFrame);
 
 			animation();
-
+/*
 			body.setTransform(PlayerManager.GetPlayer(0).GetPosition().x +
 								(PlayerManager.GetPlayer(0).GetDirection() * 5),
-									PlayerManager.GetPlayer(0).GetPosition().y, 0);
+									PlayerManager.GetPlayer(0).GetPosition().y, 0);*/
 
 //			if( stateTime % 18 == 0 ) {
 //				useFlag = false;

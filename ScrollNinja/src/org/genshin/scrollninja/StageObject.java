@@ -62,8 +62,9 @@ public class StageObject extends ObJectBase {
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 			sprite.add(new Sprite(tmpRegion));
-			sprite.get(0).setOrigin(0, -128);	// 128-128 128-256
-												// TODO 当たり判定を作った時の位置を計算する必要が…?
+			// TODO テクスチャとボディの位置関係がおかしい…
+			sprite.get(0).setOrigin(0, 0);
+			//sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
 			sprite.get(0).setScale(ScrollNinja.scale);
 
 			// 当たり判定読み込み
@@ -72,8 +73,6 @@ public class StageObject extends ObJectBase {
 			// Bodyのタイプを設定 Staticは動かない物体
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType.StaticBody;
-			// TODO テスト
-			bd.position.set(-25.6f + 20, -25.6f -35);
 
 			// Bodyの設定を設定
 			FixtureDef fd	= new FixtureDef();
@@ -82,12 +81,18 @@ public class StageObject extends ObJectBase {
 			fd.restitution	= 0;				// 反発係数
 
 			body = GameMain.world.createBody(bd);
-			// TODO テスト中でいれているだけ
-			body.setTransform(body.getPosition(), (float)Math.toRadians(-30));
-			sprite.get(0).setPosition(body.getPosition().x, body.getPosition().y);
+			// body.setTransform(0, 0, 0);
 
 			// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
 			loader.attachFixture(body, "gravestone", fd, texture.getWidth() * ScrollNinja.scale);
+
+			for(int i = 0; i < body.getFixtureList().size(); i ++) {
+				sensor.add(body.getFixtureList().get(i));
+				sensor.get(i).setUserData(this);
+			}
+
+			// TODO テスト中でいれているだけ
+			body.setTransform(0, -58, (float)Math.toRadians(20));
 
 			break;
 
