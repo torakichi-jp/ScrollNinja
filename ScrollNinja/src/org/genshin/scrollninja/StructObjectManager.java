@@ -13,9 +13,9 @@ public class StructObjectManager {
 	/**
 	 * 更新
 	 */
-	public static void Update() {
+	public static void Update( int priority) {
 		for( int i = 0; i < objectList.size(); i ++ ) {
-			objectList.get(i).Update();
+			objectList.get(i).Update(priority);
 		}
 	}
 	
@@ -29,6 +29,13 @@ public class StructObjectManager {
 	}
 	
 	/**
+	 * 描画
+	 */
+	public static void Draw(int i) {
+		objectList.get(i).Draw();
+	}
+	
+	/**
 	 * 生成
 	 * @param type			種類
 	 */
@@ -37,11 +44,21 @@ public class StructObjectManager {
 		objectList.add(pStructObject);
 	}
 	
+	/**
+	 * 生成
+	 * @param type			種類
+	 * @param x				X座標
+	 * @param y				Y座標
+	 * @param priority		優先度
+	 */
 	public static void CreateStructObject( int type, float x, float y, int priority ) {
 		StructObject pStructObject = new StructObject(type, x, y, priority);
 		objectList.add(pStructObject);
 	}
 	
+	/**
+	 * 削除
+	 */
 	public static void DeleteStructObject() {
 		for( int i = 0; i < objectList.size(); i ++ ) {
 			objectList.get(i).Release();

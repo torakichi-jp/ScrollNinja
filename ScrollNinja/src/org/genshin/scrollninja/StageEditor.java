@@ -20,9 +20,11 @@ public class StageEditor implements Screen {
 	
 	// 変数
 	private static int 			stageNum;
+	private static int			priority;
 	private static Vector2		position = new Vector2( -64.0f, -32.0f);
 	private Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
-	public static Mouse mouse = new Mouse();
+	private static boolean		load;
+	private static boolean		save;
 	
 	/**
 	 * 初期化
@@ -39,11 +41,15 @@ public class StageEditor implements Screen {
 //			PlayerManager.CreatePlayer(new Vector2(0.0f, 0.0f));
 		}
 		for( int i = 0; i < MAX_ENEMY; i ++ ) {
-			EnemyManager.CreateEnemy(i, new Vector2(i * 30.0f, 0.0f));
+//			EnemyManager.CreateEnemy(i, new Vector2(i * 30.0f, 0.0f));
 		}
 		for( int i = 0; i < MAX_STAGEOBJECT; i ++ ) {
-			StageObjectManager.CreateStageObject(i, new Vector2(0.0f, 0.0f));
+//			StageObjectManager.CreateStageObject(i, new Vector2(0.0f, 0.0f));
 		}
+		
+		save = false;
+		load = false;
+		priority = 9;
 	}
 	
 	/**
@@ -53,9 +59,10 @@ public class StageEditor implements Screen {
 //		ChangeStage();
 		Move();
 		Mouse.Update();
+		Priority();
 
 		// キャラクター
-		StructObjectManager.Update();
+		StructObjectManager.Update(priority);
 		
 		if( Gdx.input.isKeyPressed(Keys.A)) {
 			if( StructObjectManager.GetListSize() == 0 )
@@ -63,16 +70,18 @@ public class StageEditor implements Screen {
 		}
 		
 		if( Gdx.input.isKeyPressed(Keys.B)) {
-			if( StructObjectManager.GetListSize() == 0 )
+			if( StructObjectManager.GetListSize() < 3 )
 				StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
 		}
 		
-		if( Gdx.input.isKeyPressed(Keys.S)) {
-			FileOperation.start();
+		if( !save && Gdx.input.isKeyPressed(Keys.S)) {
+			FileOperation.Save();
+			save = true;
 		}
 		
-		if( Gdx.input.isKeyPressed(Keys.L)) {
-			FileOperation.LoadFile("abc.txt");
+		if( !load &&Gdx.input.isKeyPressed(Keys.L)) {
+			FileOperation.Load();
+			load = true;
 		}
 		
 //		System.out.println("マウスX:" + (Mouse.GetPosition().x * 0.1 - 64.0 ));
@@ -96,33 +105,20 @@ public class StageEditor implements Screen {
 			BackgroundManager.GetBackground(0).Draw(Background.FAR);
 			BackgroundManager.GetBackground(0).Draw(Background.MAIN);
 			
-			StructObjectManager.Draw();
-
-//			PlayerManager.Draw();
-//			EnemyManager.Draw();
-//			StageObjectManager.Draw();
+			for( int j = 0; j <= priority; j ++ ) {
+				for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
+					if( StructObjectManager.GetStructObject(i).GetPriority() == j ) {
+						StructObjectManager.GetStructObject(i).Draw();
+					}	
+				}
+			}
+			
 			
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 		renderer.render(GameMain.world, GameMain.camera.combined);
 		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
 	}
-	
-	/**
-	 * マウス処理
-	 */
-/*	private void Mouse() {
-		if(Mouse.LeftClick()) {
-			for( int i = 0; i < EnemyManager.normalEnemyList.size(); i++ ) {
-				if( EnemyManager.normalEnemyList.get(i).GetPosition().x - 1.6 < (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
-					EnemyManager.normalEnemyList.get(i).GetPosition().x + 1.6 > (Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x) &&
-					EnemyManager.normalEnemyList.get(i).GetPosition().y - 2.4 < (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 ) &&
-					EnemyManager.normalEnemyList.get(i).GetPosition().y + 2.4 > (GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )) {
-					EnemyManager.normalEnemyList.get(i).SetPosition((float)((Mouse.GetPosition().x * 0.1 - 64.0 ) + (GameMain.camera.position.x)),(float)((GameMain.camera.position.y) - (Mouse.GetPosition().y * 0.1 - 36.0 )));
-				}
-			}
-		}
-	}*/
 	
 	/**
 	 * カメラ移動
@@ -173,6 +169,53 @@ public class StageEditor implements Screen {
 		
 		if( Gdx.input.isKeyPressed(3)) {
 			stageNum = 3;
+		}
+	}
+	
+	/**
+	 * 優先度の変更
+	 */
+	private void Priority() {
+		boolean hold = false;
+		
+		for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
+			hold = StructObjectManager.GetStructObject(i).GetHold();
+			if( hold ) {
+				return;
+			}
+		}
+		
+		if( !hold ) {
+			if( Gdx.input.isKeyPressed(Keys.NUM_0)) {
+				priority = 0;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_1)) {
+				priority = 1;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_2)) {
+				priority = 2;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_3)) {
+				priority = 3;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_4)) {
+				priority = 4;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_5)) {
+				priority = 5;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_6)) {
+				priority = 6;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_7)) {
+				priority = 7;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_8)) {
+				priority = 8;
+			}
+			if( Gdx.input.isKeyPressed(Keys.NUM_9)) {
+				priority = 9;
+			}
 		}
 	}
 	
