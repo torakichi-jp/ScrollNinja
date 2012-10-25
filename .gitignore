@@ -3,8 +3,5 @@
 *.DS_Store
 *.log
 doc/
-ScrollNinja/bin/com/gdx.gwt.xml
+bin/
 ScrollNinja-html/.gwt/.gwt-log
-ScrollNinja-android/bin/resources.ap_
-ScrollNinja-android/bin/classes.dex
-ScrollNinja-android/bin/ScrollNinja-android.apk

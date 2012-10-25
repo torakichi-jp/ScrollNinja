@@ -7,7 +7,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/ScrollNinja"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/ScrollNinja/libs/gdx.jar" sourcepath="/ScrollNinja/libs/gdx-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="/ScrollNinja/libs/bodyeditor-loader-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="/ScrollNinja/libs/bodyeditor-loader.jar"/>
+	<classpathentry exported="true" kind="lib" path="/ScrollNinja/libs/bodyeditor-loader.jar" sourcepath="/ScrollNinja/libs/bodyeditor-loader-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

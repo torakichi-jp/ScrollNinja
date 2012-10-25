@@ -1,14 +1,10 @@
 package org.genshin.scrollninja;
 
-import java.util.ArrayList;
-
+import org.genshin.scrollninja.object.player.DefaultPlayerController;
 import org.genshin.scrollninja.object.player.IPlayerController;
-import org.genshin.scrollninja.object.player.PlayerController;
 import org.genshin.scrollninja.object.weapon.Kaginawa;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -53,9 +49,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 /**
  * プレイヤークラス
  * @author
- * @author kou
- * @since 1.0
- * @version 1.0
+ * @author	kou
+ * @since		1.0
+ * @version	1.0
  */
 public class Player extends CharacterBase {
 	// 定数宣言
@@ -216,10 +212,9 @@ public class Player extends CharacterBase {
 		count		 = 0;
 		invincibleTime = 0;
 		number = Number;
-		//sensor.get(0).setUserData(this);
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
-		kaginawa = new Kaginawa(this);
-		controller = new PlayerController();
+		kaginawa = new Kaginawa(body);
+		controller = new DefaultPlayerController();
 	}
 
 
