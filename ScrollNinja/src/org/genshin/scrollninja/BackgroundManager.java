@@ -1,46 +1,40 @@
 package org.genshin.scrollninja;
 
-import java.util.ArrayList;
-
-// TODO ステージ毎にCreateして、ArrayListとして保持しておく必要はない？
+// TODO ArrayListとして保持しておく必要はない？　というか無駄になるからステージ毎にCreateして１つのみにした方がよさげ？
+// 一度書き換えてみる。古いデータは保存中
+// マネージャクラスも不要になるかも
 public class BackgroundManager {
-	private static ArrayList<Background> BackgroundList		= new ArrayList<Background>();
+	public static Background backgroundList = null;
 
 	// コンストラクタ
 	private BackgroundManager(){}
 
-	//************************************************************
-	// CreateBackground
-	// 生成
-	//************************************************************
+	/**************************************************
+	 * CreateBackground
+	 * @param num		ステージ番号
+	 * @param flag		bodyを作成するかどうか
+	 * 作成
+	 ***************************************************/
 	public static void CreateBackground(int num, boolean createFlag) {
-		if (BackgroundList == null)
-			BackgroundList		= new ArrayList<Background>();
-
-		Background pBackground = new Background(num, createFlag);		// オブジェクトを生成（&初期化）して
-		BackgroundList.add(pBackground);								// リストに追加
+		backgroundList = new Background(num, createFlag);
 	}
 
-	//************************************************************
-	// GetBackground
-	// 参照
-	//************************************************************
-	public static Background GetBackground(int num){
-		for(int i = 0; i < BackgroundList.size(); i ++) {
-			if( BackgroundList.get(i).GetBackgroundNum() == num) {
-				return BackgroundList.get(i);
-			}
-		}
-
-		return null;
+	/**************************************************
+	 * GetBackground
+	 * @param num		ステージ番号
+	 * 参照
+	 ***************************************************/
+	public static Background GetBackground(){
+		return backgroundList;
 	}
 
+	/**************************************************
+	 * dispose
+	 * 解放処理
+	 ***************************************************/
 	public static void dispose() {
-		if (BackgroundList != null) {
-			for (int i = 0; i < BackgroundList.size(); i++) {
-				BackgroundList.get(i).Release();
-			}
-		}
-		BackgroundList = null;
+		if (backgroundList != null)
+			backgroundList.Release();
+		backgroundList = null;
 	}
 }

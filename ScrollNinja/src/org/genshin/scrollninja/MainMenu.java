@@ -202,9 +202,9 @@ public class MainMenu implements Screen{
 		spriteBatch.begin();
 
 		// 背景描画
-		//（とりあえずメインと遠景）
-		BackgroundManager.GetBackground(nextStageNum).Draw(Background.FAR, true);
-		BackgroundManager.GetBackground(nextStageNum).Draw(Background.MAIN, true);
+		// TODO とりあえずメインと遠景
+		BackgroundManager.backgroundList.Draw(Background.FAR, true);
+		BackgroundManager.backgroundList.Draw(Background.MAIN, true);
 
 		// メニュー選択肢描画
 		modeContinue.draw(spriteBatch);

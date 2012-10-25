@@ -3,7 +3,9 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 /**
- *
+ * エネミーのデータ
+ * TODO 将来的には別ファイルにして読み込みたい
+ * エネミーのIDと所持武器IDはどういった扱いにしようか
  */
 public class EnemyDataList {
 	// TODO 敵種類とりあえず適当
@@ -11,10 +13,13 @@ public class EnemyDataList {
 	public final static int NON_ACTIVE = 0;
 	public final static int ACTIVE = 1;
 
-	public final static ArrayList<EnemyData> list = new ArrayList<EnemyData>();
-
 	public EnemyDataList() {}
 
+	/**
+	 * データ読み込み
+	 * @param id	読み込みたいエネミーのID
+	 * @return		EnemyData
+	 */
 	public static EnemyData lead(int id) {
 		EnemyData data = new EnemyDataList().new EnemyData();
 
@@ -25,19 +30,15 @@ public class EnemyDataList {
 			data.speed = 1;
 			data.enemyMode = NON_ACTIVE;
 			data.haveWeapon.add(0);			// TODO とりあえず手裏剣は０
-
-			//list.add(data);
 		}
+
 		// 敵２設定
 		if (id == 1) {
-			//data = new EnemyDataList().new EnemyData();
 			data.enemyFileName = "data/enemy.png";
 			data.maxHp = 150;
 			data.speed = 1;
 			data.enemyMode = ACTIVE;
 			data.haveWeapon.add(1);			// TODO とりあえず刀は１
-
-			//list.add(data);
 		}
 
 		// 敵３設定
@@ -53,7 +54,6 @@ public class EnemyDataList {
 		public float speed;													// 速度（基準から掛けて使う）
 		public int enemyMode;												// アクティブかノンアクティブか
 		public ArrayList<Integer> haveWeapon = new ArrayList<Integer>();	// 所持武器
-		// TODO
-		// 落とすアイテムのIDと落とす確率も必要か
+		// TODO 落とすアイテムのIDと落とす確率も必要か
 	}
 }

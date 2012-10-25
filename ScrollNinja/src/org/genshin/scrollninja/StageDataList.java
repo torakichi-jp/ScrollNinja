@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 
-// TODO txtファイルあたりから読み込めるようにしたい
+// TODO 別ファイルから読み込めるようにしたい
 public class StageDataList {
 	public StageDataList() {}
 
@@ -38,6 +38,7 @@ public class StageDataList {
 
 		return data;
 	}
+
 	public class StageData {
 		public Vector2 playerPosition = new Vector2();							// プレイヤーの出現位置
 		public ArrayList<Integer> enemyType = new ArrayList<Integer>();			// 出現する敵の種類

@@ -43,18 +43,21 @@ public class PlayerManager {
 	/**
 	 * プレイヤー参照
 	 * @param i		管理番号
-	 * @return
+	 * @return		プレイヤー
 	 */
 	public static Player GetPlayer( int i) {
 		return playerList.get(i);
 	}
 
+	/**
+	 * 解放処理
+	 */
 	public static void dispose() {
 		if (playerList != null) {
 			for (int i = 0; i < playerList.size(); i++) {
 				playerList.get(i).Release();
 			}
 		}
-		playerList = null;
+		playerList = new ArrayList<Player>();
 	}
 }

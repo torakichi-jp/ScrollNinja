@@ -54,12 +54,16 @@ public class GameMain implements Screen{
 	public final static int GAME_RUNNING	= 0;	// ゲーム中
 	public final static int GAME_PAUSED		= 1;	// 一時停止中
 	public final static int GO_TO_MENU		= 9;	// メニュー画面へ
-	
+
 	public static int pauseState;
 	public final static int PAUSE_INIT = 0;
 	public final static int PAUSE_UPDATE    = 1;
 
-	// コンストラクタ
+	/**
+	 * コンストラクタ
+	 * @param game	ScrollNinja
+	 * @param num	ステージナンバー
+	 */
 	public GameMain(Game game, int num) {
 		scrollNinja		= game;
 		// TODO 重力は調整必要あり
@@ -118,7 +122,7 @@ public class GameMain implements Screen{
 				InitPause();
 				break;
 			case PAUSE_UPDATE:
-				
+
 				updatePaused(delta);
 				DrawPause();
 				//break;
@@ -161,28 +165,28 @@ public class GameMain implements Screen{
 			playerInfo.SetPauseFlag(false);
 			gameState = GAME_RUNNING;
 		}
-		
+
 		if(Gdx.input.isKeyPressed(Keys.G)) {
 			gameState = GO_TO_MENU;
 		}
-		
+
 		if(Gdx.input.isTouched()) {
 			/* 	マウス取得 ウィンドウの中心が原点 */
 			float x = Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f;
 			float y = Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
 			System.out.println("mouseX:"+ x);
 			System.out.println("mouseY:"+ y);
-			
+
 			// (仮)コンティニューをクリックしたら
 			if(x > 445 && x < 620 && y < 282 && y > 255) {
 				playerInfo.SetPauseFlag(false);
 				gameState = GAME_RUNNING;
-			}			
-			// 
+			}
+			//
 			if(x > 450 && x < 647 && y < 242 && y > 215) {
 
-			}		
-			// 
+			}
+			//
 			if(x > 450 && x < 656 && y < 208 && y > 183) {
 
 			}
@@ -193,15 +197,15 @@ public class GameMain implements Screen{
 		if(Gdx.input.isKeyPressed(Keys.B)) {
 			drawflag = false;
 		}
-		
+
 			worldMap.setPosition(camera.position.x - worldMap.getWidth() * 0.5f
 				+ (ScrollNinja.window.x * 0.5f * ScrollNinja.scale) - worldMap.getWidth() * 0.5f * 0.12f,
 				camera.position.y - worldMap.getHeight() * 0.5f
 				+ (ScrollNinja.window.y * 0.5f * ScrollNinja.scale)- worldMap.getHeight() * 0.5f * 0.12f);
-			
+
 		System.out.println(drawflag);
 	}
-	
+
 	// ポーズ初期化
 	public void InitPause() {
 		// ワールドマップ
@@ -211,13 +215,13 @@ public class GameMain implements Screen{
 		worldMap = new Sprite(worldRegion);
 		//worldMap.setOrigin(worldMap.getWidth() * 0.5f,worldMap.getHeight() * 0.5f);
 		worldMap.setScale(ScrollNinja.scale * 1.5f);
-		
+
 		pauseState = PAUSE_UPDATE;
 	}
-	
+
 	// ポーズ中描画
 	public void DrawPause() {
-		
+
 		spriteBatch.begin();
 		if(drawflag) {
 			//worldMap.draw(spriteBatch);

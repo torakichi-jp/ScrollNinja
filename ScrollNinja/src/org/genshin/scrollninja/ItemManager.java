@@ -44,11 +44,6 @@ public class ItemManager {
 	 * まだその種類がリストにない場合は新規で追加
 	 */
 	public static void CreateItem(int Type, float x, float y) {
-		if (itemList == null)
-			itemList		= new ArrayList<Integer>();
-		if (onigiriList == null)
-			onigiriList		= new ArrayList<Item>();
-
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < itemList.size(); i ++ ) {
 			// 同じ種類発見
@@ -127,13 +122,16 @@ public class ItemManager {
 		}
 	}
 
+	/**
+	 * 解放処理
+	 */
 	public static void dispose() {
-		itemList = null;
+		itemList = new ArrayList<Integer>();;
 		if (onigiriList != null) {
 			for (int i = 0; i < onigiriList.size(); i++) {
 				onigiriList.get(i).Release();
 			}
 		}
-		onigiriList = null;
+		onigiriList = new ArrayList<Item>();
 	}
 }

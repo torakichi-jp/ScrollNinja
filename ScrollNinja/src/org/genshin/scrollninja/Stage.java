@@ -35,17 +35,21 @@ public class Stage implements StageBase {
 	public void Update() {
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update();
-		BackgroundManager.GetBackground(stageNum).update();
+		BackgroundManager.backgroundList.update();
 		WeaponManager.Update();
 		PlayerManager.Update();
 		ItemManager.Update();
 
-		if( EnemyManager.normalEnemyList.size() == 0) {
-			//EnemyManager.CreateEnemy(Enemy.NORMAL, 0.0f, 0.0f);
+		// TODO 今だけリポップ
+		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null)
+			EnemyManager.dispose();
+
+		// TODO 今だけリポップ
+		if( EnemyManager.enemyList.size() == 0) {
 			for (int i = 0; i < stageData.enemyType.size(); i++) {
 				for (int j = 0; j < stageData.enemyNum.get(i); j++) {
 					EnemyManager.CreateEnemy(stageData.enemyType.get(i),
-										 stageData.enemyPosition.get((i+1)*(j+1)-1));
+										 	 stageData.enemyPosition.get((i+1)*(j+1)-1));
 				}
 			}
 		}
@@ -66,14 +70,14 @@ public class Stage implements StageBase {
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
 		GameMain.spriteBatch.begin();											// 描画開始
 		{
-			BackgroundManager.GetBackground(stageNum).Draw(0);
-			BackgroundManager.GetBackground(stageNum).Draw(1);
+			BackgroundManager.backgroundList.Draw(0);
+			BackgroundManager.backgroundList.Draw(1);
 			StageObjectManager.Draw();
 			PlayerManager.Draw();
 			EnemyManager.Draw();
 			EffectManager.Draw();
 			ItemManager.Draw();
-			BackgroundManager.GetBackground(stageNum).Draw(2);
+			BackgroundManager.backgroundList.Draw(2);
 			GameMain.playerInfo.Draw();
 		}
 		GameMain.spriteBatch.end();										// 描画終了
@@ -94,16 +98,16 @@ public class Stage implements StageBase {
 
 		// カメラの移動制限
 		if (GameMain.camera.position.x <
-				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
+				-(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
-				-(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
+				-(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5f
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		if (GameMain.camera.position.x >
-				(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5
+				(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
-				(BackgroundManager.GetBackground(stageNum).sprite.get(1).getWidth() * 0.5f
+				(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5f
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 
 		if (GameMain.camera.position.y < -(stageData.backgroundSize.get(Background.MAIN).y
@@ -161,7 +165,6 @@ public class Stage implements StageBase {
 		PlayerManager.CreatePlayer(stageData.playerPosition);
 		// TODO 後でステージオブジェクトリスト追加
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
-		//EnemyManager.CreateEnemy(Enemy.NORMAL, 20.0f, 30.0f);
 		for (int i = 0; i < stageData.enemyType.size(); i++) {
 			for (int j = 0; j < stageData.enemyNum.get(i); j++) {
 				EnemyManager.CreateEnemy(stageData.enemyType.get(i),

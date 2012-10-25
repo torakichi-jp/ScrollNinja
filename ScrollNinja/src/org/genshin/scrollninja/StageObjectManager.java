@@ -37,11 +37,6 @@ public class StageObjectManager {
 	// まだその種類がリストにない場合は新規で追加
 	//************************************************************
 	public static int CreateStageObject(int Type, Vector2 pos) {
-		if (stageObjectList == null)
-			stageObjectList = new ArrayList<Integer>();
-		if (rockList == null)
-			rockList = new ArrayList<StageObject>();
-
 		// 同じ種類のアイテムがないか探す
 		for(int i = 0; i < stageObjectList.size(); i ++ ) {
 			// 同じ種類発見
@@ -141,13 +136,16 @@ public class StageObjectManager {
 		}
 	}
 
+	/**
+	 * 解放処理
+	 */
 	public static void dispose() {
-		stageObjectList = null;
+		stageObjectList = new ArrayList<Integer>();
 		if (rockList != null) {
 			for (int i = 0; i < rockList.size(); i++) {
 				rockList.get(i).Release();
 			}
 		}
-		rockList = null;
+		rockList = new ArrayList<StageObject>();
 	}
 }

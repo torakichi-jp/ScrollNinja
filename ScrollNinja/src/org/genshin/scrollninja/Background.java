@@ -25,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 // このクラスは、背景を読み込んで表示するところ。
 // ステージの当たり判定もこのクラスが持っています。
 // その他の敵の出現位置などの細かな情報はステージクラスが持っています
+// ↑StageDataListにまとめました
 
 // 10/9 背景移動追加、カメラ座標のゲッター追加
 
@@ -41,26 +42,26 @@ public class Background extends ObJectBase {
 	public final static int	NEAR			= 2;
 
 	// 変数宣言
-	private float			zIndex;								// Zインデックス
-	private Vector2			playerPos;
+	private Vector2			playerPos;		// プレイヤーの位置
 
-	private int				stageNum;
-	private StageData 		stageData;
+	private int				stageNum;		// ステージ番号
+	private StageData 		stageData;		// ステージのデータ
 
+	public Background(){}
 
 	/**
 	 *  コンストラクタ
+	 *  @param num			ステージ番号
+	 *  @param createFlag	bodyを作成するかどうか
 	 */
-	public Background(){}
 	public Background(int num, boolean createFlag) {
 		stageNum = num;
 		stageData = StageDataList.lead(stageNum);
 
+		playerPos = stageData.playerPosition;
+
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
-
-		stageNum = num;
-		playerPos = stageData.playerPosition;
 
 		LoadTexture();
 		// MainMenuではcreateしない
@@ -71,7 +72,7 @@ public class Background extends ObJectBase {
 	/**************************************************
 	 * @Override
 	 * @param i		スプライト番号
-	 * @param flag	とりあえず付けときました＾ｑ＾
+	 * @param flag	MainMenuで描画するにはこれが必要
 	 *
 	 * 描画処理
 	 ***************************************************/
@@ -109,8 +110,7 @@ public class Background extends ObJectBase {
 			sprite.get(FAR).setScale(ScrollNinja.scale * (ScrollNinja.window.x / sprite.get(FAR).getWidth()) * 1.05f);
 
 		// メインステージ
-		texture =
-			new Texture(Gdx.files.internal(stageData.backgroundFileName.get(MAIN)));
+		texture = new Texture(Gdx.files.internal(stageData.backgroundFileName.get(MAIN)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
@@ -119,8 +119,7 @@ public class Background extends ObJectBase {
 		sprite.get(MAIN).setScale(ScrollNinja.scale);
 
 		// 近景
-		texture =
-			new Texture(Gdx.files.internal(stageData.backgroundFileName.get(NEAR)));
+		texture = new Texture(Gdx.files.internal(stageData.backgroundFileName.get(NEAR)));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
 		sprite.add(new Sprite(tmpRegion));
