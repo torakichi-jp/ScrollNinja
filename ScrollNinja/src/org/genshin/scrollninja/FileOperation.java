@@ -20,10 +20,14 @@ public class FileOperation extends WindowAdapter {
 	public static void start() {
 		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.SAVE);
 		f_dialog.setVisible(true);
-		if( f_dialog.getMode() == FileDialog.SAVE ) {
+		
+//		if( f_dialog.SAVE) {
+			String path = new String();
+			path = f_dialog.getDirectory() + f_dialog.getFile();
+			System.out.println(path);
 			ExportFile(f_dialog.getFile());
-		}
-		f_dialog.dispose();
+//		}
+//		f_dialog.dispose();
 	}
 	
 

@@ -69,7 +69,6 @@ public class StageEditor implements Screen {
 		
 		if( Gdx.input.isKeyPressed(Keys.S)) {
 			FileOperation.start();
-		//	FileOperation.ExportFile("abc.txt");
 		}
 		
 		if( Gdx.input.isKeyPressed(Keys.L)) {
