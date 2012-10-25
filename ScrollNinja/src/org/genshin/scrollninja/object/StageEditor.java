@@ -1,5 +1,14 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
+
+import org.genshin.scrollninja.BackgroundManager;
+import org.genshin.scrollninja.EnemyManager;
+import org.genshin.scrollninja.FileOperation;
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.Mouse;
+import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.StructObject;
+import org.genshin.scrollninja.StructObjectManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;

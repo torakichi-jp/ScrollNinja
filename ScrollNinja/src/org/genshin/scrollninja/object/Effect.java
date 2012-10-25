@@ -2,12 +2,16 @@
 //	Effect.java
 //******************************
 
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
+
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.PlayerManager;
+import org.genshin.scrollninja.ScrollNinja;
 
 
 import com.badlogic.gdx.Gdx;
@@ -112,7 +116,7 @@ public class Effect extends ObJectBase {
 
 			// 当たり判定の作成
 			poly		= new PolygonShape();
-			poly.setAsBox(2f, 1.2f);
+			poly.setAsBox(1.7f, 2.2f);
 
 			// ボディ設定
 			fd	= new FixtureDef();
@@ -153,7 +157,7 @@ public class Effect extends ObJectBase {
 
 			// 当たり判定の作成
 			poly		= new PolygonShape();
-			poly.setAsBox(2.4f, 1.6f);
+			poly.setAsBox(2.2f, 3f);
 
 			// ボディ設定
 			fd	= new FixtureDef();

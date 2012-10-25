@@ -1,8 +1,9 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
+
 import com.badlogic.gdx.math.Vector2;
 
 //========================================

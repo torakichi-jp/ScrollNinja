@@ -1,9 +1,11 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
+
+import org.genshin.scrollninja.GameMain;
 
 
 import com.badlogic.gdx.graphics.g2d.Sprite;

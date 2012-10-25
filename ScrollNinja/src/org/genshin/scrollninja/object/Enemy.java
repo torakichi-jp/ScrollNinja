@@ -1,9 +1,14 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.genshin.scrollninja.EnemyDataList.EnemyData;
+import org.genshin.scrollninja.EnemyManager;
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.ItemManager;
+import org.genshin.scrollninja.PlayerManager;
+import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.EnemyDataList.EnemyData;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -80,7 +85,7 @@ public class Enemy extends CharacterBase {
 	 * @param num		管理番号
 	 * @param position	出現位置
 	 **************************************************/
-	Enemy(int id, int num, Vector2 position) {
+	public Enemy(int id, int num, Vector2 position) {
 		enemyID				= id;
 		number				= num;
 		this.position		= position;
@@ -306,7 +311,7 @@ public class Enemy extends CharacterBase {
 			if (position.x < wanderingPosition.x - 20) {
 				direction = RIGHT;
 			}
-			// オブジェクトにぶつかる
+			// オブジェクトにぶつかる TODO 動きが怪しい時があるので要調整もしくは敵キャラ出現位置に注意
 			if (reverse) {
 				direction *= -1;
 			}
@@ -321,7 +326,7 @@ public class Enemy extends CharacterBase {
 	* プレイヤーを見つけたら追いかける
 	**************************************************/
 	public void chase() {
-		// TODO 要調整
+		// TODO 数値は固定？
 		// プレイヤーの位置を取得
 		player = PlayerManager.GetPlayer(0);
 

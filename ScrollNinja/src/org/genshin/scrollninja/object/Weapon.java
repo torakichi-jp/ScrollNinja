@@ -2,9 +2,13 @@
 //	Weapon.java
 //******************************
 
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
+
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.PlayerManager;
+import org.genshin.scrollninja.ScrollNinja;
 
 
 import com.badlogic.gdx.Gdx;

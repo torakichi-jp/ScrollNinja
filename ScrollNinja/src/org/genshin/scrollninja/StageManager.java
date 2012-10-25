@@ -5,6 +5,9 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.StageBase;
+
+
 import com.badlogic.gdx.physics.box2d.World;
 
 //========================================

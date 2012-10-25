@@ -1,9 +1,12 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
+
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.ScrollNinja;
 
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
@@ -34,7 +37,7 @@ public class StageObject extends ObJectBase {
 	private Vector2		position;		// 座標
 
 	// コンストラクタ
-	StageObject(int Type, int num, Vector2 pos) {
+	public StageObject(int Type, int num, Vector2 pos) {
 		sprite		= new ArrayList<Sprite>();
 		sensor		= new ArrayList<Fixture>();
 
@@ -44,7 +47,7 @@ public class StageObject extends ObJectBase {
 
 		Create();
 	}
-	StageObject(int Type, int num, float x, float y) {
+	public StageObject(int Type, int num, float x, float y) {
 		sprite		= new ArrayList<Sprite>();
 		sensor		= new ArrayList<Fixture>();
 

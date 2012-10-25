@@ -1,4 +1,4 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 

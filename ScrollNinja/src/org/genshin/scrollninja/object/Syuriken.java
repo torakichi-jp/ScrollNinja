@@ -1,6 +1,10 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
+
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.PlayerManager;
+import org.genshin.scrollninja.ScrollNinja;
 
 
 import com.badlogic.gdx.Gdx;
@@ -17,61 +21,40 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // TODO エネミー用しか作っていない
+// weaponパッケージに移動しようとしたらプレイヤー情報取得に詰まった…
 public class Syuriken extends WeaponBase {
 	private final int SYURIKEN_SPEED = 30;
 	private final int EXIST_TIME = 240;
 	private int timeCount;
 
 	private float rotate = 0;
-	private Player player;
-	private Enemy enemy;
 
 	/**
 	 * コンストラクタ
-	 * @param player	使用プレイヤー
+	 * @param owner		使用者
 	 * @param i			管理番号
 	 */
-	public Syuriken(Player player, int i) {
-		owner		= (CharacterBase)player;	// 使用者
-		this.player	= player;
-		this.enemy 	= null;
+	public Syuriken(CharacterBase owner, int i) {
+		this.owner	= owner;					// 使用者
 		number		= i;						// 管理番号
 		level		= 2;						// レベル
 		attackNum	= (level * 5);				// 攻撃力 TODO （てきとー）
-		position 	= new Vector2(0.0f, 0.0f);
+		position 	= new Vector2(0, 0);
 		use			= true;
 
-		Create(this.player, this.enemy);
-	}
-
-	/**
-	 * コンストラクタ
-	 * @param enemy		使用エネミー
-	 * @param i			管理番号
-	 */
-	public Syuriken(Enemy enemy, int i) {
-		owner		= (CharacterBase)enemy;		// 使用者
-		this.player	= null;
-		this.enemy	= enemy;					//
-		number		= i;						// 管理番号
-		level		= 2;						// レベル
-		attackNum	= (level * 5);				// 攻撃力 TODO （てきとー）
-		position 	= new Vector2(0.0f, 0.0f);
-		use			= true;
-
-		Create(this.player, this.enemy);
+		Create();
 	}
 
 	/**************************************************
 	* create
 	* 武器生成
 	**************************************************/
-	public void Create(Player player, Enemy enemy) {
+	public void Create() {
 		sprite = new ArrayList<Sprite>();
 		sensor = new ArrayList<Fixture>();
 
 		// テクスチャー読み込み
-		// 手裏剣テクスチャの位置はとりあえずなので後で要調整
+		// TODO 手裏剣テクスチャの位置はとりあえずなので後で要調整
 		Texture	texture = new Texture(Gdx.files.internal("data/enemy.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 448, 64, 64);
@@ -93,7 +76,7 @@ public class Syuriken extends WeaponBase {
 		// ボディ設定
 		FixtureDef fd	= new FixtureDef();
 		fd.density		= 0;
-		fd.friction		= 0.0f;
+		fd.friction		= 0;
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
@@ -105,21 +88,22 @@ public class Syuriken extends WeaponBase {
 		body.setGravityScale(0);			// 重力の影響を受けない
 
 		// プレイヤーの武器の設定
-		if (player != null) {
+		// TODO プレイヤーの場合はターゲットはマウスクリック座標？
+		if (owner.getClass().equals(Player.class)) {
 
 		}
 
 		// エネミーの武器の設定
-		if (enemy != null) {
+		if (owner.getClass().equals(Enemy.class)) {
 			timeCount = EXIST_TIME;				// 240で消える
 
 			// 出現位置
-			Vector2 current = new Vector2(enemy.body.getPosition());
-			body.setTransform(current.x + 3 * enemy.GetDirection(), current.y, 0);
+			position = new Vector2(owner.getPosition());
+			body.setTransform(position.x, position.y, 0);
 			// 角度を求める
 			// TODO 現在操作中のプレイヤー情報を求められるように変更必要あり
 			Vector2 terget = new Vector2(PlayerManager.GetPlayer(0).body.getPosition());
-			float rad = (float) Math.atan2(terget.y - current.y, terget.x - current.x);
+			float rad = (float) Math.atan2(terget.y - position.y, terget.x - position.x);
 			// 移動速度を求める
 			Vector2 vel = new Vector2(0, 0);
 			vel.x = (float) (Math.cos(rad) * SYURIKEN_SPEED);

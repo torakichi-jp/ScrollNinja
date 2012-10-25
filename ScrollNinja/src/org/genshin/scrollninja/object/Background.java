@@ -1,11 +1,15 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.StageDataList.StageData;
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.MainMenu;
+import org.genshin.scrollninja.PlayerManager;
+import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.StageDataList.StageData;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 

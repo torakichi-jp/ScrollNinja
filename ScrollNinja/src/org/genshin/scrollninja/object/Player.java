@@ -1,5 +1,9 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.Interface;
+import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.WeaponManager;
 import org.genshin.scrollninja.object.player.DefaultPlayerController;
 import org.genshin.scrollninja.object.player.IPlayerController;
 import org.genshin.scrollninja.object.weapon.Kaginawa;

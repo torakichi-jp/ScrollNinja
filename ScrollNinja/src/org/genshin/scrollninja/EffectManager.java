@@ -5,6 +5,8 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.Effect;
+
 
 //========================================
 // クラス宣言

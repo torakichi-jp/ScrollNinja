@@ -5,6 +5,11 @@ package org.genshin.scrollninja;
 //========================================
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.CharacterBase;
+import org.genshin.scrollninja.object.WeaponBase;
+import org.genshin.scrollninja.object.weapon.Katana;
+
+
 //========================================
 // クラス宣言
 //========================================

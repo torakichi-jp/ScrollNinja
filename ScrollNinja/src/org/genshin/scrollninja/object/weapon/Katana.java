@@ -1,5 +1,10 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object.weapon;
 
+
+import org.genshin.scrollninja.EffectManager;
+import org.genshin.scrollninja.object.CharacterBase;
+import org.genshin.scrollninja.object.Effect;
+import org.genshin.scrollninja.object.WeaponBase;
 
 import com.badlogic.gdx.math.Vector2;
 

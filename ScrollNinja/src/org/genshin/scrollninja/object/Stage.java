@@ -1,10 +1,19 @@
 
 
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.StageDataList.StageData;
+import org.genshin.scrollninja.BackgroundManager;
+import org.genshin.scrollninja.EffectManager;
+import org.genshin.scrollninja.EnemyManager;
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.ItemManager;
+import org.genshin.scrollninja.PlayerManager;
+import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.StageObjectManager;
+import org.genshin.scrollninja.WeaponManager;
+import org.genshin.scrollninja.object.StageDataList.StageData;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;

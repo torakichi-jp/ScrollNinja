@@ -3,11 +3,11 @@
  */
 package org.genshin.scrollninja.object.weapon;
 
-import org.genshin.scrollninja.Background;
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ObJectBase;
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.WeaponBase;
+import org.genshin.scrollninja.object.Background;
+import org.genshin.scrollninja.object.ObJectBase;
+import org.genshin.scrollninja.object.WeaponBase;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

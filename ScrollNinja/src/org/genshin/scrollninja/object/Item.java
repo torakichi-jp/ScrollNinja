@@ -1,8 +1,12 @@
 
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.ItemManager;
+import org.genshin.scrollninja.ScrollNinja;
 
 
 import com.badlogic.gdx.Gdx;

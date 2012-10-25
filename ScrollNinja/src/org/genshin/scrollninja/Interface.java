@@ -2,6 +2,8 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.Player;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;

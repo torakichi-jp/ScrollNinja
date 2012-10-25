@@ -2,6 +2,9 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.Item;
+
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
