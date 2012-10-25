@@ -1,15 +1,13 @@
 package org.genshin.scrollninja;
 
-import java.awt.Frame;
-import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StageEditor implements Screen {
 	// 定数
@@ -21,11 +19,9 @@ public class StageEditor implements Screen {
 	// 変数
 	private static int 			stageNum;
 	private static int			priority;
+	private static int			count[] = new int[10];			// トリガー取得の為のカウント用変数
 	private static Vector2		position = new Vector2( -64.0f, -32.0f);
-	private Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
-
-	private static boolean		load;
-	private static boolean		save;
+	private static Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
 
 	/**
 	 * 初期化
@@ -48,9 +44,11 @@ public class StageEditor implements Screen {
 //			StageObjectManager.CreateStageObject(i, new Vector2(0.0f, 0.0f));
 		}
 
-		save = false;
-		load = false;
 		priority = 9;
+		
+		for(int i = 0; i < 10; i++ ) {
+			count[i] = 0;
+		}
 	}
 
 	/**
@@ -65,25 +63,53 @@ public class StageEditor implements Screen {
 		// キャラクター
 		StructObjectManager.Update(priority);
 
-		if( Gdx.input.isKeyPressed(Keys.A)) {
-			if( StructObjectManager.GetListSize() == 0 )
-				StructObjectManager.CreateStructObject(StructObject.NORMAL_ENEMY);
-		}
-
+		//TODO		トリガー実装はよ
 		if( Gdx.input.isKeyPressed(Keys.B)) {
-			if( StructObjectManager.GetListSize() < 3 )
-				StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
+			count[0] ++;
+		}
+		else {
+			count[0] = 0;
 		}
 
-		if( !save && Gdx.input.isKeyPressed(Keys.S)) {
+		if( Gdx.input.isKeyPressed(Keys.K)) {
+			count[1] ++;
+		}
+		else {
+			count[1] = 0;
+		}
+		
+		if( Gdx.input.isKeyPressed(Keys.L)) {
+			count[2] ++;
+		}
+		else {
+			count[2] = 0;
+		}
+		
+		if( Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
+			count[3] ++;
+		}
+		else {
+			count[3] = 0;
+		}
+		
+		if( count[0] == 1 ) {
+			StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
+		}
+		if( count[1] == 1 ) {
 			FileOperation.Save();
-			save = true;
 		}
-
-		if( !load &&Gdx.input.isKeyPressed(Keys.L)) {
+		if( count[2] == 1 ) {
 			FileOperation.Load();
-			load = true;
 		}
+		if( count[3] == 1 ) {
+			for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
+				if( StructObjectManager.GetStructObject(i).GetHold() ) {
+					StructObjectManager.DeleteStructObject(i);
+				}
+			}
+		}
+		
+		System.out.println(count[0]);
 
 //		System.out.println("マウスX:" + (Mouse.GetPosition().x * 0.1 - 64.0 ));
 //		System.out.println("マウスY:" + (Mouse.GetPosition().y * 0.1 - 36.0 ));
@@ -122,7 +148,6 @@ public class StageEditor implements Screen {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * マウス処理
 	 */
 /*	private void Mouse() {
@@ -139,8 +164,6 @@ public class StageEditor implements Screen {
 	}*/
 
 	/**
-=======
->>>>>>> umemura/master
 	 * カメラ移動
 	 */
 	private void Move() {
@@ -149,26 +172,26 @@ public class StageEditor implements Screen {
 		if (GameMain.camera.position.x < -(BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
 			GameMain.camera.position.x = -(BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
-		else if( Gdx.input.isKeyPressed(Keys.LEFT) ) {
+		else if( Gdx.input.isKeyPressed(Keys.A) ) {
 			position.x --;
 		}
 		if (GameMain.camera.position.x > (BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
 			GameMain.camera.position.x = (BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
-		else if( Gdx.input.isKeyPressed(Keys.RIGHT) ) {
+		else if( Gdx.input.isKeyPressed(Keys.D) ) {
 			position.x ++;
 		}
 
 		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale) {
 			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
 		}
-		else if( Gdx.input.isKeyPressed(Keys.DOWN) ) {
+		else if( Gdx.input.isKeyPressed(Keys.S) ) {
 			position.y --;
 		}
 		if (GameMain.camera.position.y > (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale) {
 			GameMain.camera.position.y = (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
 		}
-		else if( Gdx.input.isKeyPressed(Keys.UP) ) {
+		else if( Gdx.input.isKeyPressed(Keys.W) ) {
 			position.y ++;
 		}
 
@@ -179,15 +202,15 @@ public class StageEditor implements Screen {
 	 * ステージ遷移
 	 */
 	private void ChangeStage() {
-		if( Gdx.input.isKeyPressed(1)) {
+		if( Gdx.input.isKeyPressed(Keys.NUM_1)) {
 			stageNum = 1;
 		}
 
-		if( Gdx.input.isKeyPressed(2)) {
+		if( Gdx.input.isKeyPressed(Keys.NUM_2)) {
 			stageNum = 2;
 		}
 
-		if( Gdx.input.isKeyPressed(3)) {
+		if( Gdx.input.isKeyPressed(Keys.NUM_3)) {
 			stageNum = 3;
 		}
 	}

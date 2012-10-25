@@ -60,10 +60,18 @@ public class StructObjectManager {
 	 * 削除
 	 */
 	public static void DeleteStructObject() {
-		for( int i = 0; i < objectList.size(); i ++ ) {
-			objectList.get(i).Release();
-			objectList.remove(i);
+		for( int i = objectList.size(); i > 0; i -- ) {
+			objectList.get(i - 1).Release();
+			objectList.remove(i - 1);
 		}
+	}
+	
+	/**
+	 * 削除
+	 */
+	public static void DeleteStructObject( int i ) {
+		objectList.get(i).Release();
+		objectList.remove(i);
 	}
 	
 	/**

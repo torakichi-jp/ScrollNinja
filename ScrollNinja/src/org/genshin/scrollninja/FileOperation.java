@@ -2,7 +2,6 @@ package org.genshin.scrollninja;
 
 import java.awt.FileDialog;
 import java.awt.Frame;
-import java.awt.event.WindowAdapter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,11 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
-import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
-public class FileOperation extends WindowAdapter {
+public class FileOperation {
 	
 	public static void Save() {
 		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.SAVE);
