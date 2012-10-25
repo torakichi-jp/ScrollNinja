@@ -1,31 +1,52 @@
 package org.genshin.scrollninja;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 /*
  * 10/25 ゲームメインのポーズ処理をこっちで
- * 
+ * 10/25 キャラクターアニメーション + マップ移動
  * */
 // ポーズ中の処理クラス
 public class Pause {
-	//private static Interface playerInfo;
-	private static boolean drawflag;
-	private Sprite returnGame;
-	private Sprite title;
-	private Sprite load;
-	private Sprite pausemenu;
-	private Sprite worldMap;
+	private static boolean drawflag;		// (仮)ワールドマップ表示フラグ
+	private Sprite returnGame;				// (仮)コンティニュー文字
+	private Sprite title;					// (仮)タイトル文字
+	private Sprite load;						// (仮)ロード
+	private Sprite pausemenu;				// ポーズメニュー
+	private Sprite worldMap;					// ワールドマップ
 	
-	private boolean gotoMain;
-	private boolean gotoTitleMenu;
-	private Player player;
+	private boolean gotoMain;				// メイン移行フラグ
+	private boolean gotoTitleMenu;			// タイトル移行フラグ
 	
+	/* アニメーション用
+	private Animation		walkAnimation;			// 歩きアニメーション
+	private TextureRegion[]	frame;					// アニメーションのコマ
+	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
+	private TextureRegion	nowFrame;				// 現在のコマ
+	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
+	private int					count;					// カウント用変数
+	private float				stateTime;
+	private ArrayList<Sprite> 	sprite;
+	
+	private Sprite footSprite;
+	private Sprite bodySprite;
+	private Body body;
+	private Vector2 position;
+	*/
 	// コンストラクタ
 	public Pause() {
 		// ワールドマップ
@@ -35,29 +56,28 @@ public class Pause {
 		worldMap = new Sprite(worldRegion);
 		worldMap.setScale(ScrollNinja.scale * 1.5f);
 		
+		// ポーズ画面中の背景
 		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
 		pausemenubackTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion pauseRegion = new TextureRegion(pausemenubackTexture);
 		pausemenu = new Sprite(pauseRegion);
 		pausemenu.setScale(ScrollNinja.scale * 1.5f);
 		
-
+		// ポーズメニュー
 		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/menu.png"));
 		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
-		
-		// ポーズメニュー
 		TextureRegion returnGameRegion = new TextureRegion(pauseMenuTexture,0,0,256,35);
 		returnGame = new Sprite(returnGameRegion);
 		returnGame.setScale(ScrollNinja.scale);
-
 		TextureRegion titleRegion = new TextureRegion(pauseMenuTexture,0,40,256,35);
 		title = new Sprite(titleRegion);
 		title.setScale(ScrollNinja.scale);
-
 		TextureRegion loadRegion = new TextureRegion(pauseMenuTexture,0,85,256,35);
 		load = new Sprite(loadRegion);
 		load.setScale(ScrollNinja.scale);
 		
+		// アニメーション
+			
 		gotoMain = false;
 		gotoTitleMenu = false;
 	}
@@ -67,6 +87,7 @@ public class Pause {
 		spriteUpdate();
 		clickedUpdate();
 		pressedUpdate();
+		playerAnimation();
 	}
 	
 	// 描画
@@ -77,12 +98,10 @@ public class Pause {
 		pausemenu.draw(GameMain.spriteBatch);
 		if(drawflag)
 			worldMap.draw(GameMain.spriteBatch);
-		
 		returnGame.draw(GameMain.spriteBatch);
 		title.draw(GameMain.spriteBatch);
 		load.draw(GameMain.spriteBatch);
 		GameMain.spriteBatch.end();
-		
 	}
 	
 	// スプライトアップデート
@@ -132,7 +151,7 @@ public class Pause {
 			if(mousePositionX > 450 && mousePositionX < 647 &&
 				mousePositionY < 242 && mousePositionY > 215) {
 
-			}		
+			}
 			// 
 			if(mousePositionX > 450 && mousePositionX < 656 &&
 				mousePositionY < 208 && mousePositionY > 183) {
@@ -157,13 +176,13 @@ public class Pause {
 		}
 	}
 	
+	// プレイヤーアニメーション
 	public void playerAnimation() {
 	}
 	
+	// ゲッター セッター
 	public boolean GetgotoMainFlag(){return gotoMain;}
 	public void SetgotoMainFlag(boolean flag){gotoMain = flag;}
 	public boolean GetgotoTitleFlag(){return gotoTitleMenu;}
 	public void SetgotoTitleFlag(boolean flag){gotoTitleMenu = flag;}
-	
-
 }

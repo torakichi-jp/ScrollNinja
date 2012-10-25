@@ -1,7 +1,6 @@
 package org.genshin.scrollninja;
 
 import java.awt.RenderingHints.Key;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
