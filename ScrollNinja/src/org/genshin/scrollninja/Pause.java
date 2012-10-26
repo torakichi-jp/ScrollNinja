@@ -187,6 +187,7 @@ public class Pause {
 				mousePositionY < 208 && mousePositionY > 183) {
 
 			}
+			
 		}
 	}
 	
@@ -219,6 +220,7 @@ public class Pause {
 		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
 		stateTime++;
 		
+		// クリックでキャラクター移動
 		foot.setPosition(0,-50);
 		body.setPosition(0,-50);
 	}
