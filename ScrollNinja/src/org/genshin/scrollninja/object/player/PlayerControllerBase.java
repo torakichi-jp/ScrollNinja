@@ -63,7 +63,7 @@ public abstract class PlayerControllerBase implements IPlayerController
 	@Override
 	public boolean jump()
 	{
-		return inputHelpers[ACTION.JUMP.ordinal()].trg();
+		return inputHelpers[ACTION.JUMP.ordinal()].prs();
 	}
 
 	@Override

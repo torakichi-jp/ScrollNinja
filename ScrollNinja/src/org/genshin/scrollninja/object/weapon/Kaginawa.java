@@ -21,7 +21,10 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 /**
  * 鉤縄クラス
@@ -67,10 +70,13 @@ public class Kaginawa extends WeaponBase
 	private static final float SHRINK_VEL = THROW_VEL*2.0f;
 	
 	/** 鉤縄の長さ({@value}) */
-	private static final float LEN_MAX = THROW_VEL*2.0f;
+	private static final float LEN_MAX = THROW_VEL*1.0f;
 	
 	/** 鉤縄の持ち主 */
 	private Body owner;
+	
+	/** 鉤縄と持ち主を繋ぐロープ */
+	private RopeJoint ropeJoint;
 	
 	/** 鉤縄の状態 */
 	private STATE state;
@@ -98,6 +104,15 @@ public class Kaginawa extends WeaponBase
 		bd.bullet = true;					// すり抜けない
 		bd.gravityScale = 0.0f;				// 重力の影響を受けない
 		body = world.createBody(bd);
+		
+		// ロープジョイント生成
+		RopeJointDef rjd = new RopeJointDef();
+		rjd.bodyA = owner;
+		rjd.bodyB = body;
+		rjd.maxLength = LEN_MAX;
+		Joint joint = world.createJoint(rjd);
+		assert joint instanceof RopeJoint : "ジョイントの生成に失敗してるよ。";
+		ropeJoint = (RopeJoint)joint;
 		
 		// 衝突オブジェクト生成
 		CircleShape cs = new CircleShape();
@@ -261,8 +276,8 @@ public class Kaginawa extends WeaponBase
 		@Override
 		public void invoke(Kaginawa kaginawa)
 		{
-			if((kaginawa.len+=THROW_VEL/60) > LEN_MAX)
-			kaginawa.release();
+//			if((kaginawa.len+=THROW_VEL/60) > LEN_MAX)
+//			kaginawa.release();
 		}
 	}
 
