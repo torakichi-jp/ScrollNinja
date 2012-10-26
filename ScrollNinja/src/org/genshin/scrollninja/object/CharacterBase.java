@@ -18,6 +18,7 @@ public abstract class CharacterBase extends ObJectBase {
 	// いずれ消す変数
 	protected float		speed;					// 素早さ
 	protected Vector2 	position;				// 座標
+	protected int		direction;				// 向き
 
 	// コンストラクタ
 	public CharacterBase() {

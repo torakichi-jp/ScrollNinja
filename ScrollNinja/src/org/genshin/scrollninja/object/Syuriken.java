@@ -37,8 +37,8 @@ public class Syuriken extends WeaponBase {
 	public Syuriken(CharacterBase owner, int i) {
 		this.owner	= owner;					// 使用者
 		number		= i;						// 管理番号
-		level		= 2;						// レベル
-		attackNum	= (level * 5);				// 攻撃力 TODO （てきとー）
+		level		= 2;						// レベル		TODO 外からひっぱってこないと
+		attackNum	= (level * 5);				// 攻撃力 	TODO （てきとー）
 		position 	= new Vector2(0, 0);
 		use			= true;
 

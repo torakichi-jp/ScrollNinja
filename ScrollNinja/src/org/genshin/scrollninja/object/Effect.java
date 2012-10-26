@@ -48,6 +48,7 @@ public class Effect extends ObJectBase {
 	public final static int WIND_3		= 8;
 
 	//変数宣言
+	private CharacterBase	owner;			// 使用者
 	private int				effectType;		// エフェクトの種類
 	private int 			effectTime;		// 効果時間
 	private float 			attackNum;		// 攻撃力
@@ -63,7 +64,8 @@ public class Effect extends ObJectBase {
 	 *
 	 * コンストラクタ
 	 ***************************************************/
-	public Effect(int type ) {
+	public Effect(int type, CharacterBase owner) {
+		this.owner	= owner;
 		sprite		= new ArrayList<Sprite>();
 		sensor		= new ArrayList<Fixture>();
 		effectType	= type;
@@ -86,6 +88,7 @@ public class Effect extends ObJectBase {
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
 	public boolean GetUseFlag(){ return useFlag; }
+	public CharacterBase GetOwner() { return owner; }
 
 	//************************************************************
 	// Set
@@ -148,7 +151,7 @@ public class Effect extends ObJectBase {
 			}
 
 			animation = new Animation(3.000f, frame);
-			attackNum = 50.0f;
+			attackNum = 20.0f;		// TODO 武器の攻撃力にしないと…
 			break;
 		case FIRE_2:
 			def	= new BodyDef();
@@ -192,7 +195,7 @@ public class Effect extends ObJectBase {
 			}
 
 			animation = new Animation(3.000f, frame);
-			attackNum = 50.0f;
+			attackNum = 50.0f;		// TODO 武器の攻撃力にしないと…
 			break;
 		case FIRE_3:
 			break;
@@ -214,15 +217,13 @@ public class Effect extends ObJectBase {
 			nowFrame = animation.getKeyFrame(stateTime, true);
 			stateTime++;
 
-			body.setTransform(PlayerManager.GetPlayer(0).GetPosition().x +
-								(PlayerManager.GetPlayer(0).GetDirection() * 2.5f),
-									PlayerManager.GetPlayer(0).GetPosition().y + 4, 0);
+			body.setTransform(owner.position.x +
+								owner.direction * 3f,
+									owner.position.y + 4, 0);
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
-			sprite.get(0).setPosition
-					(position.x - 64 - (1 * PlayerManager.GetPlayer(0).GetDirection()), position.y - 64 + 1);
-			sprite.get(0).setScale
-					(-PlayerManager.GetPlayer(0).GetDirection() * ScrollNinja.scale, ScrollNinja.scale);
+			sprite.get(0).setPosition(position.x - 64 - (1 * owner.direction), position.y - 64 + 1);
+			sprite.get(0).setScale(-owner.direction * ScrollNinja.scale, ScrollNinja.scale);
 			sprite.get(0).setRegion(nowFrame);
 
 			animation();

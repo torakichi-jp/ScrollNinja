@@ -9,6 +9,7 @@ import org.genshin.scrollninja.ItemManager;
 import org.genshin.scrollninja.PlayerManager;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.EnemyDataList.EnemyData;
+import org.genshin.scrollninja.object.weapon.Katana;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -60,7 +61,6 @@ public class Enemy extends CharacterBase {
 	private int					enemyID;		// 敵のタイプ
 	private int					number;			// 管理番号
 	private int					enemyMode;		// 敵のモード
-	private int					direction;		// 向いてる方向
 	private float				stateTime;		//
 	private TextureRegion[]		frame;			// アニメーションのコマ
 	private TextureRegion		nowFrame;		// 現在のコマ
@@ -68,7 +68,7 @@ public class Enemy extends CharacterBase {
 	private boolean				attackFlag;		// 攻撃可能フラグ
 	private boolean 			jump;			// ジャンプフラグ
 	private boolean				chase;			// 追いかけフラグ
-	private boolean					reverse;		// 方向反転フラグ
+	private boolean				reverse;		// 方向反転フラグ
 	private boolean				deleteFlag;		// 削除フラグ
 	private Player 				player;			// プレイヤー
 	private ArrayList<Syuriken> syuriken;		// 手裏剣
@@ -106,7 +106,7 @@ public class Enemy extends CharacterBase {
 		// TODO とりあえず
 		switch (data.haveWeapon.get(0)) {
 			case 1:
-				//weapon = new Katana(this, 0);
+				weapon = new Katana(this, 0, 1);		// TODO レベルも読み込むべきか
 				break;
 		}
 
@@ -251,8 +251,8 @@ public class Enemy extends CharacterBase {
 		}
 
 		// 武器の描画
-		if (weapon != null)
-			weapon.Draw();
+		//if (weapon != null)
+			//weapon.Draw();
 	}
 
 	/**************************************************
@@ -276,7 +276,7 @@ public class Enemy extends CharacterBase {
 			if (attackFlag) {
 				if (attackInterval == 0)
 					// TODO 刀と手裏剣両方使う敵の場合は…
-					if (weapon != null)
+					if (weapon != null && weapon.getClass().equals(Katana.class))
 						attackKatana();
 					else
 						attackSyuriken();
@@ -470,14 +470,16 @@ public class Enemy extends CharacterBase {
 
 	@Override
 	public void collisionNotify(Effect obj, Contact contact){
-		// 無敵じゃない時はダメージ
-		if( invincibleTime == 0 ) {
-			invincibleTime = 120;		// 無敵時間付与
-			hp -= obj.GetAttackNum();
-			enemyMode = EnemyDataList.ACTIVE;	// ノンアクティブをアクティブに
-		}
-		if( hp <= 0 ) {
-			deleteFlag = true;
+		if (obj.GetOwner().getClass().equals(Player.class)) {
+			// 無敵じゃない時はダメージ
+			if( invincibleTime == 0 ) {
+				invincibleTime = 120;		// 無敵時間付与
+				hp -= obj.GetAttackNum();
+				enemyMode = EnemyDataList.ACTIVE;	// ノンアクティブをアクティブに
+			}
+			if( hp <= 0 ) {
+				deleteFlag = true;
+			}
 		}
 	}
 

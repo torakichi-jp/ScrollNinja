@@ -38,11 +38,12 @@ public class WeaponManager {
 	 * 武器生成
 	 * @param owner			使用者
 	 * @param type			種類
+	 * @param lv			武器レベル
 	 */
-	public static WeaponBase CreateWeapon(CharacterBase owner, int type) {
+	public static WeaponBase CreateWeapon(CharacterBase owner, int type, int lv) {
 		switch(type) {
 		case KATANA:
-			Katana pKatana = new Katana(owner, katanaList.size() + 1);
+			Katana pKatana = new Katana(owner, katanaList.size() + 1, lv);
 			katanaList.add(pKatana);
 			return pKatana;
 		case SHURIKEN:

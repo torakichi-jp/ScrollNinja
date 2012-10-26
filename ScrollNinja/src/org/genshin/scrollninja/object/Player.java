@@ -80,7 +80,6 @@ public class Player extends CharacterBase {
 	// 変数宣言
 	private int					number;					// プレイヤー番号
 	private int					charge;					// チャージゲージ
-	private int					direction;				// 向いてる方向
 	private int					currentState;			// 現在の状態
 	private int					maxChakra;				// チャクラ最大値
 	private int					chakra;				// チャクラ
@@ -216,7 +215,7 @@ public class Player extends CharacterBase {
 		count		 = 0;
 		invincibleTime = 0;
 		number = Number;
-		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA);
+		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA, 2);	// TODO 今だけレベル２
 		kaginawa = new Kaginawa(body);
 		controller = new DefaultPlayerController();
 	}
@@ -484,6 +483,20 @@ public class Player extends CharacterBase {
 
 	@Override
 	public void collisionNotify(WeaponBase obj, Contact contact){
+		if (obj.GetOwner() != this) {
+			if( invincibleTime == 0 ) {
+				invincibleTime = 120;		// 無敵時間付与
+				hp -= obj.GetAttackNum();
+				Interface.calculateHP = true;
+			}
+			if( hp <= 0 ) {
+				// TODO ゲームオーバー処理へ
+				hp = 100;
+			}
+		}
+	}
+	@Override
+	public void collisionNotify(Effect obj, Contact contact){
 		if (obj.GetOwner() != this) {
 			if( invincibleTime == 0 ) {
 				invincibleTime = 120;		// 無敵時間付与
