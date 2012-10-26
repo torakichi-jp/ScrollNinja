@@ -435,7 +435,7 @@ public class Player extends CharacterBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 

@@ -136,7 +136,7 @@ public class Syuriken extends WeaponBase {
 	 * 当たり判定
 	 */
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 

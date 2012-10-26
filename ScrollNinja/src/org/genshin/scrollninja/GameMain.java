@@ -28,22 +28,22 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class GameMain implements Screen{
 	private Game						scrollNinja;
-	private Stage 			stage;						// ステージ
+	private Stage 						stage;			// ステージ
 	public static World					world;			// ワールド
-	public static OrthographicCamera	camera;		// カメラ
+	public static OrthographicCamera	camera;			// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
-	public static Interface 				playerInfo;	// インターフェース
+	public static Interface 			playerInfo;		// インターフェース
 	public static Pause					pause;			// ポーズ
 
 	private int							stageNum;		// ステージナンバー
-	private int							fps 			= 60;
-	private long 							error 			= 0;
-	private long							idealSleep		= (1000 << 16) / fps;
-	private long							newTime		= System.currentTimeMillis() << 16;
-	private long							oldTime;
-	private long							sleepTime		= idealSleep - (newTime - oldTime) - error; // 休止できる時間
+	private int							fps 		= 60;
+	private long 						error 		= 0;
+	private long						idealSleep	= (1000 << 16) / fps;
+	private long						newTime		= System.currentTimeMillis() << 16;
+	private long						oldTime;
+	private long						sleepTime	= idealSleep - (newTime - oldTime) - error; // 休止できる時間
 
-	// 仮
+	// ゲームの状態
 	public static int gameState;
 	public final static int GAME_RUNNING	= 0;	// ゲーム中
 	public final static int GAME_PAUSED		= 1;	// 一時停止中
@@ -66,7 +66,6 @@ public class GameMain implements Screen{
 		stageNum			= num;
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
-		pause 				= new Pause();
 
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
@@ -90,21 +89,32 @@ public class GameMain implements Screen{
 	@Override
 	public void render(float delta) {
 		switch (gameState) {
+		// ゲーム中
 		case GAME_RUNNING:
 			oldTime = newTime;
-			//TODO
+
+			// TODO リリーズ時には削除orコメントアウト
 			if(Gdx.input.isKeyPressed(Keys.I)) {
 				scrollNinja.setScreen(new StageEditor());
 				StageEditor.Init();
 			}
+
+			// 一時停止
+			if(Gdx.input.isKeyPressed(Keys.M)) {
+				pause = new Pause();
+				gameState = GAME_PAUSED;
+			}
+
 			StageManager.Update();
 			StageManager.Draw();
 			FPS();
 			break;
+		// ゲーム一時停止
 		case GAME_PAUSED:
 			updatePause();
 			DrawPause();
 			break;
+		// メインメニューへ戻る
 		case GO_TO_MENU:
 			stage.dispose();
 			scrollNinja.setScreen(new MainMenu(scrollNinja));
@@ -129,13 +139,15 @@ public class GameMain implements Screen{
 		error = newTime - oldTime - sleepTime; // 休止時間の誤差
 	}
 
-	//アップデートポーズ
+	/**
+	 * updatePause
+	 * ゲーム一時停止中の更新
+	 */
 	public void updatePause() {
 		pause.update();
 
 		if(pause.GetgotoMainFlag()) {
 			pause.SetgotoMainFlag(false);
-			playerInfo.SetPauseFlag(false);
 			gameState = GAME_RUNNING;
 		}
 
@@ -145,7 +157,10 @@ public class GameMain implements Screen{
 		}
 	}
 
-	// ポーズ中描画
+	/**
+	 * DrawPause
+	 * ゲーム一時停止中の描画
+	 */
 	public void DrawPause() {
 		pause.draw();
 	}

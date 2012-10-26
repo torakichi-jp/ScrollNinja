@@ -50,8 +50,10 @@ public class Stage implements StageBase {
 		ItemManager.Update();
 
 		// TODO 今だけリポップ
-		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null)
+		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
+			EffectManager.enemyEffectList = new ArrayList<Effect>();
 			EnemyManager.dispose();
+		}
 
 		// TODO 今だけリポップ
 		if( EnemyManager.enemyList.size() == 0) {

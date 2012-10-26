@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 import org.genshin.scrollninja.object.Item;
 
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-
+// TODO おにぎり以外のアイテムはどうしようか
 public class ItemManager {
 
 	private static ArrayList<Integer>	itemList		= new ArrayList<Integer>();	// アイテムリスト

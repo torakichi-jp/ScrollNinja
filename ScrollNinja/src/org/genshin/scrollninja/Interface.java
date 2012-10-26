@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.genshin.scrollninja.object.Player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+// TODO チャクラと武器表示がまだ…
 //========================================
 //クラス宣言		インターフェース表示を扱うクラス
 //========================================
@@ -22,23 +22,13 @@ public class Interface {
 	private static Sprite hp;			// プレイヤーHP
 	private static Sprite hyoutan;		// チャクラのひょうたん部分
 	private static Sprite chakra;		// プレイヤーチャクラ
-	//private static Sprite map;			// マップ
-	//private static Sprite quitPause;	// ポーズ画面から抜ける用
-	//private static Sprite icon;			// 現在地アイコン
 	private ArrayList<Sprite> weapon;	// 武器
-
-	private static Sprite returnGame;				// ゲームに戻る
-	private static Sprite title;					// タイトル
-	//private static Sprite weaponReinforcement;	// 武器強化
-	private static Sprite load;						// ロード
-
-	private Sprite worldMap;					// ワールドマップ(仮)
 
 	private Animation scrollAnimation;	// 巻物のアニメーション
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
 	private float stateTime;			// アニメーション用
+
 	private Player player;				// プレイヤー情報格納
-	private GameMain gamemain;
 	private float percentHP;			// 現在のHPの割合　1が最大
 	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
 	private float percentChakra;		// 現在のチャクラの割合　1が最大
@@ -48,37 +38,16 @@ public class Interface {
 	private static float transrateX;		// X移動量
 	private boolean stopHP;
 	private boolean stopChakra;
-	private boolean pauseFlag;			// ポーズフラグ
 
-	private final static float ICONPOSITIONX = 0.155f;
-	private final static float ICONPOSITIONY = 0.28f;
-	private final static float ICONSCROLL    = 0.095f;
-
-	/*
-	 *icon,map comment out
-	 *worldmap : move character on map and animation while pause screen
-	 * 10/23 if press [o] draw worldmap , press [p] to close worldmap
-	 * 10/25 worldmap removed to pause
-	 * */
-
-	// コンストラクタ
+	/**
+	 * コンストラクタ
+	 */
 	public Interface() {
 		weapon = new ArrayList<Sprite>();
 
 		// テクスチャ画像読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/interface.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		Texture maptexture = new Texture(Gdx.files.internal("data/stage_main.png"));
-		maptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		Texture pausetexture = new Texture(Gdx.files.internal("data/shuriken.png"));
-		pausetexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		// アイコン(仮)
-		Texture icontexture = new Texture(Gdx.files.internal("data/shuriken.png"));
-		icontexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
-
 
 		// 巻物アニメーション
 		TextureRegion[][] tmp = TextureRegion.split(texture, 128, 128);
@@ -117,20 +86,6 @@ public class Interface {
 		chakra.setOrigin(chakra.getWidth() * 0.5f, chakra.getHeight() * 0.5f);
 		chakra.setScale(ScrollNinja.scale);
 
-/*
-
-		// ポーズ終了
-		TextureRegion pauseRegion = new TextureRegion(pausetexture);
-		quitPause = new Sprite(pauseRegion);
-		quitPause.setOrigin(quitPause.getWidth() * 0.5f, quitPause.getHeight() * 0.5f);
-		quitPause.setScale(ScrollNinja.scale);
-
-		TextureRegion iconRegion = new TextureRegion(icontexture);
-		icon = new Sprite(iconRegion);
-		icon.setOrigin(icon.getWidth() * 0.5f,icon.getHeight() * 0.5f);
-		icon.setScale(ScrollNinja.scale * 0.4f);
-*/
-
 		// 最初の設定；
 		percentHP = 1;
 		countHP = percentHP;
@@ -144,22 +99,26 @@ public class Interface {
 		stateTime = 0;
 	}
 
+	/**
+	 * update
+	 * 更新
+	 */
 	public void update() {
 		// 描画位置セット
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
 		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 6.4f),
-						cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
+						   cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
 		hp.setPosition
 			(cameraPosition.x - 256 - (ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 25.6f) - transrateX,
-			cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
+			 cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
 		scrollRight.setPosition(cameraPosition.x - 64 -
 							(ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 6.4f) + 44.5f - transrateX,
-							cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
+							 cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
 		/*
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());
 		*/
-		
+
 		// HPに変動があれば計算
 		if (calculateHP)
 			calculateHP();
@@ -216,20 +175,12 @@ public class Interface {
 
 		if (stateTime > 60)
 			stateTime = 0;
-
-		// マップの表示
-		Map();
-		
-		// アイコン
-		/*
-		if(!pauseFlag) {
-		icon.setPosition( cameraPosition.x - icon.getWidth() * ICONPOSITIONX + PlayerManager.GetPlayer(0).GetPosition().x * ICONSCROLL
-							+ (ScrollNinja.window.x * 0.5f * 0.02f) - icon.getWidth() * 0.5f * 0.01f,
-							cameraPosition.y - icon.getHeight() * ICONPOSITIONY + PlayerManager.GetPlayer(0).GetPosition().y * ICONSCROLL
-							+ (ScrollNinja.window.y * 0.5f * 0.02f) - icon.getHeight() * 0.5f * 0.01f);
-		}*/
 	}
 
+	/**
+	 * calculateHP
+	 * HP表示用計算
+	 */
 	public void calculateHP() {
 		countHP = percentHP;
 		// プレイヤー情報取得
@@ -242,6 +193,10 @@ public class Interface {
 		stopHP = false;
 	}
 
+	/**
+	 * calculateChakra
+	 * チャクラ表示用計算
+	 */
 	public void calculateChakra() {
 		countChakra = percentChakra;
 		// プレイヤー情報取得
@@ -254,76 +209,15 @@ public class Interface {
 		stopChakra = false;
 	}
 
-	public void Map() {
-		if(Gdx.input.isTouched()) {
-			float x = Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f;
-			float y = Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
-			System.out.print("moX");
-			System.out.println(x);
-			System.out.print("moY");
-			System.out.println(y);
-		}
-
-		if(Gdx.input.isKeyPressed(Keys.M)) {
-
-			pauseFlag = true;
-		}
-
-		if(pauseFlag) {
-			//map.setScale(0.04f);
-			/*
-			 * マップの絵ができたら座標など変更する
-			 * (512*512)
-			 * */
-			/*
-			map.setPosition(GameMain.camera.position.x - map.getWidth() * 0.5f,
-					GameMain.camera.position.y - map.getHeight() * 0.502f);
-			quitPause.setPosition(GameMain.camera.position.x - quitPause.getWidth() * 0.5f +
-									ScrollNinja.window.x * 0.5f * ScrollNinja.scale
-									 - quitPause.getWidth() * 0.5f * ScrollNinja.scale,
-					GameMain.camera.position.y - quitPause.getHeight() * 0.5f +
-									ScrollNinja.window.y * 0.5f * ScrollNinja.scale
-									 - quitPause.getHeight() * 0.5f * ScrollNinja.scale);
-
-			icon.setPosition(PlayerManager.GetPlayer(0).position.x,PlayerManager.GetPlayer(0).position.y);
-			*/
-
-			// ゲーム進行をストップ
-			GameMain.gameState = GameMain.GAME_PAUSED;
-		}
-		else {
-			// 解除されたらマップサイズ戻す
-			//map.setScale(ScrollNinja.scale * 0.1f);
-		}
-	}
-
-	public void SetPauseFlag(boolean pauseflag) {
-		pauseFlag = pauseflag;
-	}
-	public Sprite GetReturnGame(){return returnGame;}
-	
-	
+	/**
+	 * Draw
+	 * 描画
+	 */
 	public void Draw() {
 		hp.draw(GameMain.spriteBatch);
 		scrollRight.draw(GameMain.spriteBatch);
 		scroll.draw(GameMain.spriteBatch);
 		chakra.draw(GameMain.spriteBatch);
 		hyoutan.draw(GameMain.spriteBatch);
-		if(pauseFlag) {
-			/*quitPause.draw(GameMain.spriteBatch);
-			icon.setScale(ScrollNinja.scale);
-			icon.draw(GameMain.spriteBatch);
-			*/
-
-			//returnGame.draw(GameMain.spriteBatch);
-			//title.draw(GameMain.spriteBatch);
-			//load.draw(GameMain.spriteBatch);
-
-
-		}
-		else{
-			//icon.setScale(ScrollNinja.scale * 0.4f);
-			//icon.draw(GameMain.spriteBatch);
-		}
 	}
 }

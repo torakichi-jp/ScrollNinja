@@ -28,10 +28,10 @@ public class Pause {
 	private Sprite load;						// (仮)ロード
 	private Sprite pausemenu;				// ポーズメニュー
 	private Sprite worldMap;					// ワールドマップ
-	
+
 	private boolean gotoMain;				// メイン移行フラグ
 	private boolean gotoTitleMenu;			// タイトル移行フラグ
-	
+
 	private Sprite foot;
 	private Sprite body;
 	private Animation walk;
@@ -43,8 +43,8 @@ public class Pause {
 	private float stateTime;
 	private ArrayList<Sprite> sprite;
 	private Vector2 AnimationPosition;
-	
-	
+
+
 	// コンストラクタ
 	public Pause() {
 		// ワールドマップ
@@ -53,14 +53,14 @@ public class Pause {
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
 		worldMap = new Sprite(worldRegion);
 		worldMap.setScale(ScrollNinja.scale * 1.5f);
-		
+
 		// ポーズ画面中の背景
 		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
 		pausemenubackTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion pauseRegion = new TextureRegion(pausemenubackTexture);
 		pausemenu = new Sprite(pauseRegion);
 		pausemenu.setScale(ScrollNinja.scale * 1.5f);
-		
+
 		// ポーズメニュー
 		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/menu.png"));
 		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
@@ -73,7 +73,7 @@ public class Pause {
 		TextureRegion loadRegion = new TextureRegion(pauseMenuTexture,0,85,256,35);
 		load = new Sprite(loadRegion);
 		load.setScale(ScrollNinja.scale);
-		
+
 		// アニメーション
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
 		texture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
@@ -83,31 +83,32 @@ public class Pause {
 		for(int i = 0 ; i < frame.length;i++)
 			frame[index++] = tmp[1][i];
 		walk = new Animation(5.0f,frame);
-		
+
 		frame = new TextureRegion[6];
 		index = 0;
 		for(int i = 0 ; i < frame.length;i++)
 			frame[index++] = tmp[0][i];
 		footwalk = new Animation(5.0f,frame);
-		
+
 		foot = new Sprite(footwalk.getKeyFrame(0,true));
 		foot.setOrigin(foot.getWidth()*0.5f,foot.getHeight()*0.5f-8);
 		body = new Sprite(walk.getKeyFrame(0,true));
 		body.setOrigin(body.getWidth()*0.5f,body.getHeight()*0.5f-8);
 		foot.setScale(ScrollNinja.scale);
 		body.setScale(ScrollNinja.scale);
-		
+
 		sprite = new ArrayList<Sprite>();
 		sprite.add(foot);
 		sprite.add(body);
-		
+
 		nowFrame = walk.getKeyFrame(0,true);
 		nowFootFrame = footwalk.getKeyFrame(0,true);
-		
+
 		gotoMain = false;
 		gotoTitleMenu = false;
+		drawflag = false;
 	}
-	
+
 	// アップデート
 	public void update() {
 		spriteUpdate();
@@ -115,37 +116,37 @@ public class Pause {
 		pressedUpdate();
 		playerAnimation();
 	}
-	
+
 	// 描画
 	public void draw() {
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		GameMain.spriteBatch.begin();
 		pausemenu.draw(GameMain.spriteBatch);
-		if(drawflag)
+		if(drawflag) {
 			worldMap.draw(GameMain.spriteBatch);
+			foot.draw(GameMain.spriteBatch);
+			body.draw(GameMain.spriteBatch);
+		}
 		returnGame.draw(GameMain.spriteBatch);
 		title.draw(GameMain.spriteBatch);
 		load.draw(GameMain.spriteBatch);
-		
-		foot.draw(GameMain.spriteBatch);
-		body.draw(GameMain.spriteBatch);
-		
+
 		GameMain.spriteBatch.end();
 	}
-	
+
 	// スプライトアップデート
 	public void spriteUpdate() {
 		worldMap.setPosition(GameMain.camera.position.x - worldMap.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.12f,
 				GameMain.camera.position.y - worldMap.getHeight()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.16f);
-		
+
 		pausemenu.setPosition(GameMain.camera.position.x - pausemenu.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - pausemenu.getWidth()*0.5f*0.12f,
 				GameMain.camera.position.y - pausemenu.getHeight()*0.5f
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - pausemenu.getHeight()*0.5f*0.115f);
-		
+
 		returnGame.setPosition(GameMain.camera.position.x - returnGame.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - returnGame.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - returnGame.getHeight()*0.5f
@@ -155,13 +156,13 @@ public class Pause {
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - title.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - title.getHeight()*0.5f
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- title.getHeight()*0.5f*0.7f);
-			
+
 		load.setPosition(GameMain.camera.position.x - load.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - load.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - load.getHeight()*0.5f
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- load.getHeight()*0.5f*0.9f);
 	}
-	
+
 	// クリック時の処理
 	public void clickedUpdate() {
 		if(Gdx.input.isTouched()) {
@@ -170,27 +171,27 @@ public class Pause {
 			float mousePositionY =  Gdx.graphics.getHeight()*0.5f - Gdx.input.getY();
 			System.out.println("mousePX:"+mousePositionX);
 			System.out.println("mousePY:"+mousePositionY);
-			
+
 			// ポーズメニュー中の文字をクリックしたら
 			// コンティニュー
 			if(mousePositionX > 445 && mousePositionX < 620 &&
 				mousePositionY < 282 && mousePositionY > 255) {
 				gotoMain = true;
 			}
-			// 
+			//
 			if(mousePositionX > 450 && mousePositionX < 647 &&
 				mousePositionY < 242 && mousePositionY > 215) {
 
 			}
-			// 
+			//
 			if(mousePositionX > 450 && mousePositionX < 656 &&
 				mousePositionY < 208 && mousePositionY > 183) {
 
 			}
-			
+
 		}
 	}
-	
+
 	// キーボード押したときの処理
 	public void pressedUpdate() {
 		if(Gdx.input.isKeyPressed(Keys.L)) {
@@ -206,25 +207,25 @@ public class Pause {
 			drawflag = false;
 		}
 	}
-	
+
 	// プレイヤーアニメーション
 	public void playerAnimation() {
 		sprite.get(0).setRegion(nowFrame);
 		sprite.get(1).setRegion(nowFootFrame);
-		
+
 		if(countFrame > 0)
 			countFrame--;
-		
+
 		if(countFrame == 0)
 			nowFrame = walk.getKeyFrame(stateTime,true);
 		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
 		stateTime++;
-		
+
 		// クリックでキャラクター移動
 		foot.setPosition(0,-50);
 		body.setPosition(0,-50);
 	}
-	
+
 	// ゲッター セッター
 	public boolean GetgotoMainFlag(){return gotoMain;}
 	public void SetgotoMainFlag(boolean flag){gotoMain = flag;}

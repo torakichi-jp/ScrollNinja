@@ -10,9 +10,7 @@ package org.genshin.scrollninja.object;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.PlayerManager;
 import org.genshin.scrollninja.ScrollNinja;
-
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,7 +29,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 //========================================
 // クラス宣言
 //========================================
-public class Effect extends ObJectBase {
+public class Effect extends ObjectBase {
 
 	//========================================
 	// 定数宣言
@@ -227,14 +225,6 @@ public class Effect extends ObJectBase {
 			sprite.get(0).setRegion(nowFrame);
 
 			animation();
-/*
-			body.setTransform(PlayerManager.GetPlayer(0).GetPosition().x +
-								(PlayerManager.GetPlayer(0).GetDirection() * 5),
-									PlayerManager.GetPlayer(0).GetPosition().y, 0);*/
-
-//			if( stateTime % 18 == 0 ) {
-//				useFlag = false;
-//			}
 		}
 		// 画面外へ
 		else {
@@ -288,7 +278,7 @@ public class Effect extends ObJectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 

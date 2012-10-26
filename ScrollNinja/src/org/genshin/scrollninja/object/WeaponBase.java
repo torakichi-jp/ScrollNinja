@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 // *メモ*
 // なんか色々違うかもしれません…
 
-public class WeaponBase extends ObJectBase {
+public class WeaponBase extends ObjectBase {
 
 	// 迷ってるもの
 	protected int			level;			// レベル

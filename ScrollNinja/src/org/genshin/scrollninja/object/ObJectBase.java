@@ -19,8 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
 //========================================
 // クラス宣言
 //========================================
-// FIXME クラス名のJが大文字になってんぞゴルァ
-public abstract class ObJectBase {
+public abstract class ObjectBase {
 	protected Body 					body;			// 当たり判定用BOX
 	protected ArrayList<Sprite> 	sprite;		// スプライト			TODO 変数名変更する。
 	protected ArrayList<Fixture> 	sensor;		// センサー				TODO 変数名変更する。
@@ -29,7 +28,7 @@ public abstract class ObJectBase {
 	 * コンストラクタ
 	 * TODO 将来的には引数にWorldを投げて初期化させる？
 	 */
-	ObJectBase()
+	ObjectBase()
 	{
 		// フィールドの初期化
 		body = null;
@@ -47,7 +46,7 @@ public abstract class ObJectBase {
 		sprite.clear();
 		sensor.clear();
 	}
-	
+
 	/**
 	 * オブジェクトを更新する。
 	 */
@@ -79,7 +78,7 @@ public abstract class ObJectBase {
 	 * @param obj			衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
-	protected void collisionDispatch(ObJectBase obj, Contact contact)
+	protected void collisionDispatch(ObjectBase obj, Contact contact)
 	{
 		// FIXME いずれ抽象メソッド化する。
 	}
@@ -147,7 +146,7 @@ public abstract class ObJectBase {
 			sprite.get(i).flip(x, y);
 		}
 	}
-	
+
 	/**
 	 * 座標を取得する。
 	 * @return	座標

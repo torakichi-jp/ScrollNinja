@@ -9,7 +9,6 @@ import org.genshin.scrollninja.object.CharacterBase;
 import org.genshin.scrollninja.object.WeaponBase;
 import org.genshin.scrollninja.object.weapon.Katana;
 
-
 //========================================
 // クラス宣言
 //========================================
@@ -53,6 +52,9 @@ public class WeaponManager {
 		return null;
 	}
 
+	/**
+	 * 解放処理
+	 */
 	public static void dispose() {
 		katanaList = new ArrayList<Katana>();
 	}

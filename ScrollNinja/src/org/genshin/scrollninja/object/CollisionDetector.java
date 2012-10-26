@@ -23,8 +23,8 @@ public class CollisionDetector {
 			Contact contact = contactList.get(i);
 
 			if( contact.isTouching() ) {
-				ObJectBase a = (ObJectBase)contact.getFixtureA().getUserData();
-				ObJectBase b = (ObJectBase)contact.getFixtureB().getUserData();
+				ObjectBase a = (ObjectBase)contact.getFixtureA().getUserData();
+				ObjectBase b = (ObjectBase)contact.getFixtureB().getUserData();
 				if( a != null && b != null ) {		//TODO バグ起こさない為に一応
 					a.collisionDispatch(b, contact);
 					b.collisionDispatch(a, contact);

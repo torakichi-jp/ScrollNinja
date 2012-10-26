@@ -3,13 +3,9 @@ package org.genshin.scrollninja;
 //========================================
 //インポート
 //========================================
-import java.util.ArrayList;
-
 import org.genshin.scrollninja.object.StageBase;
 
-
-import com.badlogic.gdx.physics.box2d.World;
-
+// TODO 今はステージクラスのやりとりしているけど、ステージナンバーだけでもよさげな気が
 //========================================
 // クラス宣言
 //========================================
@@ -28,7 +24,7 @@ public class StageManager {
 	public static void Update() {
 		currentStage.Update();
 	}
-	
+
 	//************************************************************
 	// Draw
 	// 現在のステージの描画処理
@@ -44,7 +40,7 @@ public class StageManager {
 	public static void ChangeStage(StageBase stage) {
 		currentStage = stage;
 	}
-	
+
 	public static StageBase GetNowStage() {
 		return currentStage;
 	}

@@ -30,7 +30,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // 当たり判定が二重になっているとき（地面とプレイヤー同時HITとか）にうまく削除が出来ないので削除フラグ追加
 
 // TODO これも別ファイルでデータリスト作って読み込めるようにするべきか
-public class Item extends ObJectBase {
+public class Item extends ObjectBase {
 
 	//========================================
 	// 定数宣言
@@ -206,7 +206,7 @@ public class Item extends ObJectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 

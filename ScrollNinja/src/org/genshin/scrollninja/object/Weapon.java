@@ -26,7 +26,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // TODO WeaponBaseに移行して不要になる？
 
-public class Weapon extends ObJectBase{
+public class Weapon extends ObjectBase{
 	// 定数
 	// 武器の種類 TODO 増えるごとに追加する必要が…
 	private final int SYURIKEN			= 0;	// 手裏剣

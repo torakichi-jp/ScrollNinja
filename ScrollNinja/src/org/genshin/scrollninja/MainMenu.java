@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class MainMenu implements Screen{
 	private Game scrollNinja;
@@ -30,9 +29,6 @@ public class MainMenu implements Screen{
 	private Sprite modeOption;				// オプション
 	private Sprite modeExit;				// エグジット
 
-	//private boolean wmapflag;
-	//private Stage stage;					// 最初に呼ばれるステージ
-	//private Stage2 stage2;
 	private int    nextStageNum;			// 次の画面で表示されるステージのナンバー
 
 	// 画像座標
@@ -52,11 +48,7 @@ public class MainMenu implements Screen{
 		// スプライトバッチ作成
 		spriteBatch = new SpriteBatch();
 
-		//stage1				= new Stage();
-		//StageManager.StageTrance(stage1);			// 現在のステージの設定
-		// とりあえずデモプレイステージは０扱いで
 		nextStageNum = 0;
-
 		// TODO 読み込んだセーブファイルからコンティニューする時のステージを設定
 		// stage =
 		// StageManager.StageTrance(stage);
@@ -107,7 +99,6 @@ public class MainMenu implements Screen{
 
 		// 初期化
 		scrollFlag = false;
-
 	}
 
 	// 更新
@@ -197,7 +188,6 @@ public class MainMenu implements Screen{
 		spriteBatch.begin();
 
 		// 背景描画
-		// TODO とりあえずメインと遠景
 		BackgroundManager.backgroundList.Draw(Background.FAR, true);
 		BackgroundManager.backgroundList.Draw(Background.MAIN, true);
 

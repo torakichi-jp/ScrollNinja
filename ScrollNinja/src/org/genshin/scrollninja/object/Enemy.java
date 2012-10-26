@@ -104,6 +104,7 @@ public class Enemy extends CharacterBase {
 		syuriken = null;
 		weapon = null;
 		// TODO とりあえず
+		// 敵の刀のエフェクトはプレイヤーの炎レベル１を流用しているので後でなんとかしないと
 		switch (data.haveWeapon.get(0)) {
 			case 1:
 				weapon = new Katana(this, 0, 1);		// TODO レベルも読み込むべきか
@@ -249,10 +250,6 @@ public class Enemy extends CharacterBase {
 			for (int i = 0; i < syuriken.size(); i++)
 				syuriken.get(i).Draw();
 		}
-
-		// 武器の描画
-		//if (weapon != null)
-			//weapon.Draw();
 	}
 
 	/**************************************************
@@ -448,7 +445,7 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	// TODO ジャンプの接地判定要検証？
 
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 
@@ -501,6 +498,8 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	@Override
 	public void Release(){
+		if (weapon != null)
+			weapon = null;
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++)  {
 				syuriken.get(i).Release();

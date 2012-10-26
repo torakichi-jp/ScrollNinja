@@ -36,7 +36,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 //========================================
 // クラス宣言
 //========================================
-public class Background extends ObJectBase {
+public class Background extends ObjectBase {
 	//========================================
 	// 定数宣言
 	// spriteの配列
@@ -201,7 +201,7 @@ public class Background extends ObJectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 

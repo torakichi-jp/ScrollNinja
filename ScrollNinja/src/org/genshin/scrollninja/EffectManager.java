@@ -18,7 +18,8 @@ public class EffectManager {
 	// 変数宣言
 	private static ArrayList<Effect> effectList			= new ArrayList<Effect>();
 	// TODO とりあえず。他にいい方法があればそっちで…
-	private static ArrayList<Effect> enemyEffectList	= new ArrayList<Effect>();
+	// 今だけパブリック。
+	public static ArrayList<Effect> enemyEffectList	= new ArrayList<Effect>();
 
 	// コンストラクタ
 	private EffectManager(){}

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
 
-
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
@@ -17,7 +16,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -28,7 +26,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 //========================================
 // クラス宣言
 //========================================
-public class StageObject extends ObJectBase {
+public class StageObject extends ObjectBase {
 	public static final int ROCK			= 0;
 	public static final int HOUSE			= 1;
 
@@ -105,7 +103,7 @@ public class StageObject extends ObJectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObJectBase obj, Contact contact) {
+	public void collisionDispatch(ObjectBase obj, Contact contact) {
 		obj.collisionNotify(this, contact);
 	}
 
