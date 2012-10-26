@@ -2,17 +2,29 @@ package org.genshin.scrollninja;
 
 import java.awt.FileDialog;
 import java.awt.Frame;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 
+import javax.imageio.ImageIO;
+
 public class FileOperation {
+		
+	/**
+	 * コンストラクタ
+	 */
+	private FileOperation(){}
 	
+	/**
+	 * 保存
+	 */
 	public static void Save() {
 		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.SAVE);
 		f_dialog.setVisible(true);
@@ -26,6 +38,9 @@ public class FileOperation {
 //		f_dialog.dispose();
 	}
 	
+	/**
+	 * ロード
+	 */
 	public static void Load() {
 		FileDialog f_dialog = new FileDialog(new Frame() , "FileDialog" ,FileDialog.LOAD);
 		f_dialog.setVisible(true);
@@ -35,13 +50,21 @@ public class FileOperation {
 		LoadFile(path);
 	}
 	
-
-	
-	
 	/**
-	 * コンストラクタ
+	 * 画像読み込み
 	 */
-	private FileOperation(){}
+	public static BufferedImage LoadImage(String filePath) {
+		try {
+			FileInputStream in = new FileInputStream(filePath);
+			BufferedImage 	rv = ImageIO.read(in);
+			in.close();
+			return rv;
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	/**
 	 * ファイル読み込み

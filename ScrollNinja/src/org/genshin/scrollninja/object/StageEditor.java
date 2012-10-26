@@ -2,6 +2,7 @@ package org.genshin.scrollninja.object;
 
 
 import org.genshin.scrollninja.BackgroundManager;
+import org.genshin.scrollninja.EditTable;
 import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.FileOperation;
 import org.genshin.scrollninja.GameMain;
@@ -29,8 +30,9 @@ public class StageEditor implements Screen {
 	private static int 			stageNum;
 	private static int			priority;
 	private static int			count[] = new int[10];			// トリガー取得の為のカウント用変数
-	private static Vector2		position = new Vector2( -64.0f, -32.0f);
+	private static Vector2		position = new Vector2( 0.0f, 0.0f);
 	private static Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
+	private static EditTable	editTable = new EditTable();
 
 	/**
 	 * 初期化
@@ -68,6 +70,7 @@ public class StageEditor implements Screen {
 		Move();
 		Mouse.Update();
 		Priority();
+		editTable.Update();
 
 		// キャラクター
 		StructObjectManager.Update(priority);
@@ -105,7 +108,8 @@ public class StageEditor implements Screen {
 			StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
 		}
 		if( count[1] == 1 ) {
-			FileOperation.Save();
+			editTable.test();
+//			FileOperation.Save();
 		}
 		if( count[2] == 1 ) {
 			FileOperation.Load();
