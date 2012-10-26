@@ -39,21 +39,6 @@ public class StageEditor implements Screen {
 	 * とりあえず全部生成
 	 */
 	public static void Init() {
-		for( int i = 0; i < EnemyManager.enemyList.size(); i ++ ) {
-			EnemyManager.DeleteEnemy(i);
-		}
-		for( int i = 0; i < MAX_STAGE; i ++) {
-//			BackgroundManager.CreateBackground(i + 1, false);
-		}
-		for( int i = 0; i < MAX_PLAYER; i ++ ) {
-//			PlayerManager.CreatePlayer(new Vector2(0.0f, 0.0f));
-		}
-		for( int i = 0; i < MAX_ENEMY; i ++ ) {
-//			EnemyManager.CreateEnemy(i, new Vector2(i * 30.0f, 0.0f));
-		}
-		for( int i = 0; i < MAX_STAGEOBJECT; i ++ ) {
-//			StageObjectManager.CreateStageObject(i, new Vector2(0.0f, 0.0f));
-		}
 
 		priority = 9;
 		
@@ -68,7 +53,6 @@ public class StageEditor implements Screen {
 	 * 更新
 	 */
 	private void Update() {
-//		ChangeStage();
 		Move();
 		Mouse.Update();
 		Priority();
@@ -107,7 +91,6 @@ public class StageEditor implements Screen {
 		}
 		
 		if( count[0] == 1 ) {
-			StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
 		}
 		if( count[1] == 1 ) {
 			FileOperation.Save();

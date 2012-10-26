@@ -32,7 +32,7 @@ public class StructObject {
 	public static final int			AUTO_ENEMY		= 102;
 	
 	// ステージオブジェクト
-	public static final int			ROCK_OBJECT		= 1000;
+	public static final int			ROCK_OBJECT		= 1;
 	public static final int			ROCK2_OBJECT	= 1001;
 
 	/**
