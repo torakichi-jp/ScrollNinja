@@ -60,6 +60,8 @@ public class StageEditor implements Screen {
 		for(int i = 0; i < 10; i++ ) {
 			count[i] = 0;
 		}
+		
+		editTable.Init();
 	}
 
 	/**
@@ -108,8 +110,7 @@ public class StageEditor implements Screen {
 			StructObjectManager.CreateStructObject(StructObject.ROCK_OBJECT);
 		}
 		if( count[1] == 1 ) {
-			editTable.test();
-//			FileOperation.Save();
+			FileOperation.Save();
 		}
 		if( count[2] == 1 ) {
 			FileOperation.Load();
@@ -121,8 +122,6 @@ public class StageEditor implements Screen {
 				}
 			}
 		}
-		
-		System.out.println(count[0]);
 
 //		System.out.println("マウスX:" + (Mouse.GetPosition().x * 0.1 - 64.0 ));
 //		System.out.println("マウスY:" + (Mouse.GetPosition().y * 0.1 - 36.0 ));
