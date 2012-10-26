@@ -2,6 +2,7 @@
 *.orig
 *.DS_Store
 *.log
++.class
 doc/
 bin/
 ScrollNinja-html/.gwt/.gwt-log
