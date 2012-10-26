@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.genshin.scrollninja.object.Item;
 
 // TODO おにぎり以外のアイテムはどうしようか
+// これもエネミーと同じように一つのリストにまとめてもよいかもしれない
 public class ItemManager {
 
 	private static ArrayList<Integer>	itemList		= new ArrayList<Integer>();	// アイテムリスト
