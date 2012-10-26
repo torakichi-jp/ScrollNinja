@@ -32,21 +32,19 @@ public class Pause {
 	private boolean gotoMain;				// メイン移行フラグ
 	private boolean gotoTitleMenu;			// タイトル移行フラグ
 	
-	/* アニメーション用
-	private Animation		walkAnimation;			// 歩きアニメーション
-	private TextureRegion[]	frame;					// アニメーションのコマ
-	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
-	private TextureRegion	nowFrame;				// 現在のコマ
-	private TextureRegion	nowFootFrame;			// 下半身用の現在のコマ
-	private int					count;					// カウント用変数
-	private float				stateTime;
-	private ArrayList<Sprite> 	sprite;
+	private Sprite foot;
+	private Sprite body;
+	private Animation walk;
+	private Animation footwalk;
+	private TextureRegion[] frame;
+	private TextureRegion nowFrame;
+	private TextureRegion nowFootFrame;
+	private int countFrame;
+	private float stateTime;
+	private ArrayList<Sprite> sprite;
+	private Vector2 AnimationPosition;
 	
-	private Sprite footSprite;
-	private Sprite bodySprite;
-	private Body body;
-	private Vector2 position;
-	*/
+	
 	// コンストラクタ
 	public Pause() {
 		// ワールドマップ
@@ -77,7 +75,35 @@ public class Pause {
 		load.setScale(ScrollNinja.scale);
 		
 		// アニメーション
-			
+		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
+		texture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
+		TextureRegion[][] tmp = TextureRegion.split(texture,64,64);
+		frame = new TextureRegion[6];
+		int index = 0;
+		for(int i = 0 ; i < frame.length;i++)
+			frame[index++] = tmp[1][i];
+		walk = new Animation(5.0f,frame);
+		
+		frame = new TextureRegion[6];
+		index = 0;
+		for(int i = 0 ; i < frame.length;i++)
+			frame[index++] = tmp[0][i];
+		footwalk = new Animation(5.0f,frame);
+		
+		foot = new Sprite(footwalk.getKeyFrame(0,true));
+		foot.setOrigin(foot.getWidth()*0.5f,foot.getHeight()*0.5f-8);
+		body = new Sprite(walk.getKeyFrame(0,true));
+		body.setOrigin(body.getWidth()*0.5f,body.getHeight()*0.5f-8);
+		foot.setScale(ScrollNinja.scale);
+		body.setScale(ScrollNinja.scale);
+		
+		sprite = new ArrayList<Sprite>();
+		sprite.add(foot);
+		sprite.add(body);
+		
+		nowFrame = walk.getKeyFrame(0,true);
+		nowFootFrame = footwalk.getKeyFrame(0,true);
+		
 		gotoMain = false;
 		gotoTitleMenu = false;
 	}
@@ -101,6 +127,10 @@ public class Pause {
 		returnGame.draw(GameMain.spriteBatch);
 		title.draw(GameMain.spriteBatch);
 		load.draw(GameMain.spriteBatch);
+		
+		foot.draw(GameMain.spriteBatch);
+		body.draw(GameMain.spriteBatch);
+		
 		GameMain.spriteBatch.end();
 	}
 	
@@ -178,6 +208,19 @@ public class Pause {
 	
 	// プレイヤーアニメーション
 	public void playerAnimation() {
+		sprite.get(0).setRegion(nowFrame);
+		sprite.get(1).setRegion(nowFootFrame);
+		
+		if(countFrame > 0)
+			countFrame--;
+		
+		if(countFrame == 0)
+			nowFrame = walk.getKeyFrame(stateTime,true);
+		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
+		stateTime++;
+		
+		foot.setPosition(0,-50);
+		body.setPosition(0,-50);
 	}
 	
 	// ゲッター セッター
