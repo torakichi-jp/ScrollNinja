@@ -46,7 +46,7 @@ public class StructObject {
 	 								 */
 	public float	positionX;		// 保存用座標Ｘ
 	public float	positionY;		// 保存用座標Ｙ
-	public int		priority;		// 優先度（数値が低い方が奥）
+	public Integer	priority;		// 優先度（数値が低い方が奥）
 	
 	/**
 	 * エディタで使うもの
@@ -98,7 +98,7 @@ public class StructObject {
 	/**
 	 * 優先度取得　
 	 */
-	public int GetPriority(){ return priority; }
+	public Integer GetPriority(){ return priority; }
 	
 	/**
 	 * 更新

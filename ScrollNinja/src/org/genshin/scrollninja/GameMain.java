@@ -1,6 +1,8 @@
 package org.genshin.scrollninja;
 
 import java.awt.RenderingHints.Key;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import org.genshin.scrollninja.object.Stage;
 import org.genshin.scrollninja.object.StageEditor;
@@ -95,8 +97,9 @@ public class GameMain implements Screen{
 
 			// TODO リリーズ時には削除orコメントアウト
 			if(Gdx.input.isKeyPressed(Keys.I)) {
-				scrollNinja.setScreen(new StageEditor());
-				StageEditor.Init();
+				StageEditor editor = new StageEditor();
+				scrollNinja.setScreen(editor);
+				editor.Init();
 			}
 
 			// 一時停止

@@ -1,11 +1,17 @@
 package org.genshin.scrollninja.object;
 
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Frame;
+import java.awt.event.KeyListener;
+
 import org.genshin.scrollninja.BackgroundManager;
 import org.genshin.scrollninja.EditTable;
 import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.FileOperation;
 import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.Keyboard;
 import org.genshin.scrollninja.Mouse;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.StructObject;
@@ -20,26 +26,27 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class StageEditor implements Screen {
-	// 定数
-	private static final int MAX_STAGE			= 1;
-	private static final int MAX_PLAYER			= 1;			// 全部種類です
-	private static final int MAX_ENEMY			= 1;
-	private static final int MAX_STAGEOBJECT	= 1;
 
 	// 変数
-	private static int 			stageNum;
-	private static int			priority;
-	private static int			count[] = new int[10];			// トリガー取得の為のカウント用変数
-	private static Vector2		position = new Vector2( 0.0f, 0.0f);
-	private static Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
-	private static EditTable	editTable = new EditTable();
+	private  int 			stageNum;
+	private  int			priority;
+	private  int			count[] = new int[10];			// トリガー取得の為のカウント用変数
+	private  Vector2		position = new Vector2( 0.0f, 0.0f);
+	private  Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
+	private  EditTable	editTable = new EditTable();
+	private Keyboard keyboard = new Keyboard();
+	private Container cont = new Container();
+	
+	public StageEditor() {
+		cont.addKeyListener(keyboard);
+		cont.setVisible(true);
+	}
 
 	/**
 	 * 初期化
 	 * とりあえず全部生成
 	 */
-	public static void Init() {
-
+	public  void Init() {
 		priority = 9;
 		
 		for(int i = 0; i < 10; i++ ) {
@@ -134,8 +141,6 @@ public class StageEditor implements Screen {
 					}
 				}
 			}
-
-
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 		renderer.render(GameMain.world, GameMain.camera.combined);
