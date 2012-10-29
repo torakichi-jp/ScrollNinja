@@ -9,6 +9,7 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -28,9 +29,12 @@ public class EditTable implements ActionListener {
 	private final int			WIDTH	= 300;
 	private final int			HEIGHT	= 720;
 	
+	private EditCanvas editCanvas = new EditCanvas(); 
 	private Frame  frm = new Frame();
 	private boolean frontFlag;
 	private int count = 0;
+	private int positionX;
+	private int positionY;
 	
 	public void Init() {
         
@@ -55,7 +59,7 @@ public class EditTable implements ActionListener {
         frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
 
         /* フレームに登録します。*/
-        frm.add(new EditCanvas());
+        frm.add(editCanvas);
 
         /* フレームを表示させます。*/
         frm.setVisible(true);
@@ -66,6 +70,8 @@ public class EditTable implements ActionListener {
 	 */
 	public EditTable(){
 		frontFlag = true;
+		positionX = 0;
+		positionY = 0;
 	}
 	
 	/**
@@ -73,7 +79,7 @@ public class EditTable implements ActionListener {
 	 */
 	public void Update() {
 		SetWindow();
-		
+		editCanvas.update();
 		
 		if( frontFlag ) {
 			frm.setAlwaysOnTop(true);		// 常に前面だけど非アクティブ
@@ -125,12 +131,16 @@ public class EditTable implements ActionListener {
 		private Color flameColor;			// フレーム色
 		private Color backColor;			// 背景色
 		private final static int MAX_IMAGE = 5;
-		MouseForCanvas mouse;
+		private MouseForCanvas mouse;
+		private boolean justPressed;
+		private Point point;
+		private int character;
 		
 		/**
 		 * コンストラクタ
 		 */
 		public EditCanvas(){
+			
 			mouse = new MouseForCanvas();
 			
 			// ここで画像読み込み
@@ -140,14 +150,45 @@ public class EditTable implements ActionListener {
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			
+			point = new Point();
+			justPressed = false;
+			character = 0;
+			
 			this.addMouseListener( mouse );
 			this.addMouseMotionListener( mouse );
 		}
 		
 		/**
+		 *  更新
+		 */
+		public void update() {
+			if( mouse.GetClick() ) {
+				point = mouse.GetPosition();
+				int x = 0;
+				int y = 0;
+
+				for( int i = 7; i >= 0; i -- ) {
+					if( point.y >= i * 100 ) {
+						y = i + 1;
+						i = 0;
+					}
+				}
+				for( int j = 3; j >= 0; j -- ) {
+					if( point.x >= j * 100 ) {
+						x = j + 1;
+						j = 0;
+					}
+				}
+				character = x + ( (y * 3) - 3);
+				StructObjectManager.CreateStructObject(character);
+				mouse.ResetClick();
+			}
+		}
+		
+		/**
 		 * @OVERRIDE
 		 */
-		public void Update(Graphics g) {
+		public void update(Graphics g) {
 		}
 		
 		/**
