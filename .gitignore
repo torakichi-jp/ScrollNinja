@@ -6,3 +6,5 @@
 doc/
 bin/
 ScrollNinja-html/.gwt/.gwt-log
+ScrollNinja-android/gen/org/genshin/scrollninja/BuildConfig.java
+ScrollNinja-html/war/WEB-INF/classes/org/genshin/scrollninja/client/GwtLauncher.class
