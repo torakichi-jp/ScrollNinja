@@ -46,9 +46,14 @@ public class GameMain implements Screen{
 	// ゲームの状態
 	public static int gameState;
 	public final static int GAME_RUNNING	= 0;	// ゲーム中
-	public final static int GAME_PAUSED		= 1;	// 一時停止中
+	public final static int GAME_PAUSED	= 1;	// 一時停止中
 	public final static int GO_TO_MENU		= 9;	// メニュー画面へ
-
+	
+	// ポーズの状態
+	public static int pauseState;
+	public final static int PAUSE_INIT   = 0;
+	public final static int PAUSE_UPDATE = 1;
+	
 	/**
 	 * コンストラクタ
 	 * @param game	ScrollNinja
@@ -72,6 +77,7 @@ public class GameMain implements Screen{
 		BackgroundManager.CreateBackground(stageNum, true);
 
 		gameState = GAME_RUNNING;
+		pauseState = PAUSE_INIT;
 	}
 
 	//************************************************************
@@ -111,8 +117,15 @@ public class GameMain implements Screen{
 			break;
 		// ゲーム一時停止
 		case GAME_PAUSED:
-			updatePause();
-			DrawPause();
+			switch(pauseState) {
+			case PAUSE_INIT:
+				InitPause();
+				break;
+			case PAUSE_UPDATE:
+				updatePause();
+				DrawPause();
+				break;
+			}
 			break;
 		// メインメニューへ戻る
 		case GO_TO_MENU:
@@ -149,11 +162,13 @@ public class GameMain implements Screen{
 		if(pause.GetgotoMainFlag()) {
 			pause.SetgotoMainFlag(false);
 			gameState = GAME_RUNNING;
+			pauseState = PAUSE_INIT;
 		}
 
 		if(pause.GetgotoTitleFlag()) {
 			pause.SetgotoTitleFlag(false);
 			gameState = GO_TO_MENU;
+
 		}
 	}
 
@@ -163,6 +178,14 @@ public class GameMain implements Screen{
 	 */
 	public void DrawPause() {
 		pause.draw();
+	}
+	
+	/*
+	 * 
+	 * */
+	public void InitPause() {
+		pause.init();
+		pauseState = PAUSE_UPDATE;
 	}
 
 	@Override
