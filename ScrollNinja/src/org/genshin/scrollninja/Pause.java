@@ -1,5 +1,6 @@
 package org.genshin.scrollninja;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -42,9 +43,15 @@ public class Pause {
 	private int countFrame;
 	private float stateTime;
 	private ArrayList<Sprite> sprite;
-	private Vector2 AnimationPosition;
+	
+	private Vector2 StartPosition;
+	private Vector2 EndPosition;
+	private int StartTime;
+	private int EndTime;
+	
+	private double stp;
 
-
+	
 	// コンストラクタ
 	public Pause() {
 		// ワールドマップ
@@ -103,7 +110,26 @@ public class Pause {
 
 		nowFrame = walk.getKeyFrame(0,true);
 		nowFootFrame = footwalk.getKeyFrame(0,true);
-
+		
+		stp = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.45f;
+		
+		// キャラ移動位置始点終点初期化
+		StartPosition = new Vector2(GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.45f,
+										GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- foot.getHeight()*0.5f*1.1f);
+		EndPosition = new Vector2(-93,148);
+		StartTime = 0;
+		EndTime = 120;
+		
+		BigDecimal de = new BigDecimal(stp);
+		BigDecimal fr = de.setScale(6,BigDecimal.ROUND_DOWN);
+		float val = fr.floatValue();
+		System.out.println("float:"+val);
+		
+		
+		// フラグ初期化
 		gotoMain = false;
 		gotoTitleMenu = false;
 		drawflag = false;
@@ -220,10 +246,14 @@ public class Pause {
 			nowFrame = walk.getKeyFrame(stateTime,true);
 		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
 		stateTime++;
-
+		
+		
+		System.out.println(StartPosition.x);
+		System.out.println(stp);
+		
 		// クリックでキャラクター移動
-		foot.setPosition(0,-50);
-		body.setPosition(0,-50);
+		foot.setPosition(StartPosition.x,StartPosition.y);
+		body.setPosition(StartPosition.x,StartPosition.y);
 	}
 
 	// ゲッター セッター
