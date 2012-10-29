@@ -14,10 +14,14 @@ import java.awt.Insets;
 import java.awt.Label;
 import java.awt.Panel;
 import java.awt.Point;
+import java.awt.ScrollPane;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+
+import javax.swing.JScrollPane;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -30,14 +34,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 //========================================
 public class EditTable {
 	
-	private final int			WIDTH	= 300;
+	private final int			WIDTH	= 360;
 	private final int			HEIGHT	= 720;
 	
 	private EditCanvas editCanvas = new EditCanvas(); 
 	private Frame  frm = new Frame();
 	private boolean frontFlag;
 	private int count = 0;
-	private Label label = new Label();
+	private Label label1 = new Label();
+	private Label label2 = new Label();
+	private Panel panel = new Panel();
 	
 	public void Init() {
         
@@ -55,18 +61,22 @@ public class EditTable {
         frm.toFront();
         
         /* タイトルの設定 */
-        frm.setTitle("ツールボックス");
+        frm.setTitle("ツールボックス"); 
         frm.setLayout(new GridLayout(2,1));
-        
-        /* 表示位置 */
         frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
-        /* フレームに登録します。*/
-//      panel2.add(label);
-//      frm.add(editCanvas);
-//      frm.add(label);
+        
+//        ScrollPane bar = new ScrollPane(ScrollPane.SCROLLBARS_AS_NEEDED);
+//        bar.setFocusable(true);
+//        bar.add(editCanvas);     
+//        frm.add(bar);
         frm.add(editCanvas);
-        frm.add(label);
-//      frm.add(panel2);
+
+        
+        
+        panel.setLayout(new GridLayout(2,1));
+        panel.add(label1);
+        panel.add(label2);
+        frm.add(panel);
 
         /* フレームを表示させます。*/
         frm.setVisible(true);
@@ -87,7 +97,8 @@ public class EditTable {
 		editCanvas.update();
 		for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
 			if( StructObjectManager.GetStructObject(i).GetHold() ) {
-				label.setText("優先度：" + StructObjectManager.GetStructObject(i).GetPriority().toString());
+				//TODO テスト
+				label1.setText("優先度：" + StructObjectManager.GetStructObject(i).GetPriority().toString());
 			}
 		}
 		
@@ -134,7 +145,7 @@ public class EditTable {
 		
 		private Color flameColor;			// フレーム色
 		private Color backColor;			// 背景色
-		private final static int MAX_IMAGE = 5;
+		private final static int MAX_IMAGE = 12;
 		private MouseForCanvas mouse;
 		private Point point;
 		private int character;
@@ -147,11 +158,30 @@ public class EditTable {
 			mouse = new MouseForCanvas();
 			
 			// ここで画像読み込み
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+			StructImageManager.CreateStructImage("data/pausemenuback.png");
+/*			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");*/
 			
 			point = new Point();
 			character = 0;
@@ -169,14 +199,14 @@ public class EditTable {
 				int x = 0;
 				int y = 0;
 
-				for( int i = 6; i >= 0; i -- ) {
-					if( point.y >= i * 100 ) {
+				for( int i = MAX_IMAGE / 3; i >= 0; i -- ) {
+					if( point.y >= i * 120 ) {
 						y = i + 1;
 						i = 0;
 					}
 				}
 				for( int j = 3; j >= 0; j -- ) {
-					if( point.x >= j * 100 ) {
+					if( point.x >= j * 120 ) {
 						x = j + 1;
 						j = 0;
 					}
@@ -200,11 +230,11 @@ public class EditTable {
 		public void paint(Graphics g) {
 			int k = 0;
 
-			for( int i = 0; i < 5; i ++ ) {
+			for( int i = 0; i < MAX_IMAGE / 3; i ++ ) {
 				for( int j = 0; j < 3; j ++, k ++ ) {
 					if( k >= MAX_IMAGE ) { return; }		// 全部読み込んだら終了
 					
-					g.drawImage(StructImageManager.GetImage(k), j * 100, i * 100, 100, 100, this);
+					g.drawImage(StructImageManager.GetImage(k), j * 120, i * 120, 120, 120, this);
 				}
 			}
 		}
