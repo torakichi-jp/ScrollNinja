@@ -48,8 +48,23 @@ public class Pause {
 	private Vector2 EndPosition;
 	private int StartTime;
 	private int EndTime;
+	// 始点位置
+	private BigDecimal SRoundX;
+	private BigDecimal SRoundY;
+	private BigDecimal SAfterRoundX;
+	private BigDecimal SAfterRoundY;
+	private double SbeforeRoundX;
+	private double SbeforeRoundY;
 	
-	private double stp;
+	// 終点位置
+	private BigDecimal ERoundX;
+	private BigDecimal ERoundY;
+	private BigDecimal EAfterRoundX;
+	private BigDecimal EAfterRoundY;
+	private double EbeforeRoundX;
+	private double EbeforeRoundY;
+
+
 
 	
 	// コンストラクタ
@@ -111,23 +126,10 @@ public class Pause {
 		nowFrame = walk.getKeyFrame(0,true);
 		nowFootFrame = footwalk.getKeyFrame(0,true);
 		
-		stp = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.45f;
-		
 		// キャラ移動位置始点終点初期化
-		StartPosition = new Vector2(GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.45f,
-										GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- foot.getHeight()*0.5f*1.1f);
-		EndPosition = new Vector2(-93,148);
+		StartPosition = new Vector2(0,0);
 		StartTime = 0;
 		EndTime = 120;
-		
-		BigDecimal de = new BigDecimal(stp);
-		BigDecimal fr = de.setScale(6,BigDecimal.ROUND_DOWN);
-		float val = fr.floatValue();
-		System.out.println("float:"+val);
-		
 		
 		// フラグ初期化
 		gotoMain = false;
@@ -247,13 +249,32 @@ public class Pause {
 		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
 		stateTime++;
 		
-		
-		System.out.println(StartPosition.x);
-		System.out.println(stp);
-		
+		System.out.println(StartPosition.x+"f");
 		// クリックでキャラクター移動
 		foot.setPosition(StartPosition.x,StartPosition.y);
 		body.setPosition(StartPosition.x,StartPosition.y);
+	}
+	
+	public void init() {
+		// 小数点切り捨て前
+		SbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.45f;
+		SbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.1f;
+		SRoundX = new BigDecimal(SbeforeRoundX);
+		SRoundY = new BigDecimal(SbeforeRoundY);
+		// 小数点第6位まで残す
+		SAfterRoundX = SRoundX.setScale(6,BigDecimal.ROUND_DOWN);
+		SAfterRoundY = SRoundY.setScale(6,BigDecimal.ROUND_DOWN);
+		StartPosition.x = SAfterRoundX.floatValue();
+		StartPosition.y = SAfterRoundY.floatValue();
+		
+		EbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*2.3f;
+		EbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.38f;
+		ERoundX = new BigDecimal(EbeforeRoundX);
+		ERoundY = new BigDecimal(EbeforeRoundY);
 	}
 
 	// ゲッター セッター
