@@ -10,12 +10,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 
 /*
  * 10/25 ゲームメインのポーズ処理をこっちで
@@ -29,7 +27,7 @@ public class Pause {
 	private Sprite load;						// (仮)ロード
 	private Sprite pausemenu;				// ポーズメニュー
 	private Sprite worldMap;					// ワールドマップ
-
+	
 	private boolean gotoMain;				// メイン移行フラグ
 	private boolean gotoTitleMenu;			// タイトル移行フラグ
 
@@ -43,26 +41,35 @@ public class Pause {
 	private int countFrame;
 	private float stateTime;
 	private ArrayList<Sprite> sprite;
-	
-	private Vector2 StartPosition;
-	private Vector2 EndPosition;
-	private int StartTime;
-	private int EndTime;
+	/**
+	 * 10/29
+	 * doubleの小数点切り捨てないとキャラがブレる
+	 * のでBigDecimal使う。
+	 * 始点と終点の間に通りたい座標を出して
+	 * moveVecで移動ベクトル出す
+	 * */
 	// 始点位置
-	private BigDecimal SRoundX;
-	private BigDecimal SRoundY;
-	private BigDecimal SAfterRoundX;
-	private BigDecimal SAfterRoundY;
-	private double SbeforeRoundX;
-	private double SbeforeRoundY;
+	private BigDecimal 	SRoundX;			// 丸めスタート
+	private BigDecimal 	SRoundY;
+	private BigDecimal 	SAfterRoundX;		// 小数点切り捨て後
+	private BigDecimal 	SAfterRoundY;
+	private double 		SbeforeRoundX;	// 小数点切り捨て前
+	private double 		SbeforeRoundY;
 	
 	// 終点位置
-	private BigDecimal ERoundX;
-	private BigDecimal ERoundY;
-	private BigDecimal EAfterRoundX;
-	private BigDecimal EAfterRoundY;
-	private double EbeforeRoundX;
-	private double EbeforeRoundY;
+	private BigDecimal 	ERoundX;
+	private BigDecimal 	ERoundY;
+	private BigDecimal 	EAfterRoundX;
+	private BigDecimal 	EAfterRoundY;
+	private double 		EbeforeRoundX;
+	private double 		EbeforeRoundY;
+	
+	private int 			StartTime;			// 移動時間カウント
+	private int 			EndTime;			// 移動にかける時間
+	private Vector2 		StartPosition;	// 始点
+	private Vector2 		EndPosition;		// 終点
+	
+	private Vector2 moveVec;
 
 
 
@@ -128,6 +135,8 @@ public class Pause {
 		
 		// キャラ移動位置始点終点初期化
 		StartPosition = new Vector2(0,0);
+		EndPosition = new Vector2(0,0);
+		moveVec = new Vector2(0,0);
 		StartTime = 0;
 		EndTime = 120;
 		
@@ -249,7 +258,18 @@ public class Pause {
 		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
 		stateTime++;
 		
+		if(Gdx.input.isKeyPressed(Keys.K)) {
+			// 120fまで加算
+			if(StartTime <= EndTime) {
+				StartTime++;
+			
+			StartPosition.x -= moveVec.x;
+			StartPosition.y -= moveVec.y;
+			}
+		}
+		
 		System.out.println(StartPosition.x+"f");
+		System.out.println(StartPosition.y+"f");
 		// クリックでキャラクター移動
 		foot.setPosition(StartPosition.x,StartPosition.y);
 		body.setPosition(StartPosition.x,StartPosition.y);
@@ -275,6 +295,17 @@ public class Pause {
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.38f;
 		ERoundX = new BigDecimal(EbeforeRoundX);
 		ERoundY = new BigDecimal(EbeforeRoundY);
+		EAfterRoundX = ERoundX.setScale(6,BigDecimal.ROUND_DOWN);
+		EAfterRoundY = ERoundY.setScale(6,BigDecimal.ROUND_DOWN);
+		EndPosition.x = EAfterRoundX.floatValue();
+		EndPosition.y = EAfterRoundY.floatValue();
+		
+		moveVec.x = StartPosition.x - EndPosition.x;
+		moveVec.y = StartPosition.y - EndPosition.y;
+		
+		// x秒あたりの移動量 (EndTimeフレームかけて移動する)
+		moveVec.x /= EndTime;
+		moveVec.y /= EndTime;
 	}
 
 	// ゲッター セッター
