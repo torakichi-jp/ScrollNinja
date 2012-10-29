@@ -24,7 +24,6 @@ public class ScrollNinja extends Game {
 	public static boolean FULL_SCREEN = false;		// フルスクリーンかどうか
 	public static float scale;						// カメラ、画像の縮小サイズ
 
-
 	@Override
 	public void create() {
 		/**

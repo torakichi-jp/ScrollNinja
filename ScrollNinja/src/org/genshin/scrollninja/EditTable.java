@@ -5,10 +5,14 @@ import java.awt.Button;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Label;
+import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +28,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 //========================================
 // フレーム用のクラス
 //========================================
-public class EditTable implements ActionListener {
+public class EditTable {
 	
 	private final int			WIDTH	= 300;
 	private final int			HEIGHT	= 720;
@@ -33,8 +37,7 @@ public class EditTable implements ActionListener {
 	private Frame  frm = new Frame();
 	private boolean frontFlag;
 	private int count = 0;
-	private int positionX;
-	private int positionY;
+	private Label label = new Label();
 	
 	public void Init() {
         
@@ -42,24 +45,28 @@ public class EditTable implements ActionListener {
         frm.setSize(new Dimension(WIDTH,HEIGHT));
         
         /* インセット値を確定させる */
-        frm.addNotify();
-        Insets a = frm.getInsets();
-        int t = a.top;
-        int b = a.bottom;
-        int r = a.right;
-        int l = a.left;
+//        frm.addNotify();
+ //       Insets a = frm.getInsets();
+        
+        /* フォントの設定 */
+        frm.setFont(new Font("Serif", Font.BOLD, 50));
         
         /* 前面へ */
         frm.toFront();
         
         /* タイトルの設定 */
         frm.setTitle("ツールボックス");
+        frm.setLayout(new GridLayout(2,1));
         
         /* 表示位置 */
         frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
-
         /* フレームに登録します。*/
+//      panel2.add(label);
+//      frm.add(editCanvas);
+//      frm.add(label);
         frm.add(editCanvas);
+        frm.add(label);
+//      frm.add(panel2);
 
         /* フレームを表示させます。*/
         frm.setVisible(true);
@@ -70,8 +77,6 @@ public class EditTable implements ActionListener {
 	 */
 	public EditTable(){
 		frontFlag = true;
-		positionX = 0;
-		positionY = 0;
 	}
 	
 	/**
@@ -80,6 +85,11 @@ public class EditTable implements ActionListener {
 	public void Update() {
 		SetWindow();
 		editCanvas.update();
+		for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
+			if( StructObjectManager.GetStructObject(i).GetHold() ) {
+				label.setText("優先度：" + StructObjectManager.GetStructObject(i).GetPriority().toString());
+			}
+		}
 		
 		if( frontFlag ) {
 			frm.setAlwaysOnTop(true);		// 常に前面だけど非アクティブ
@@ -116,12 +126,6 @@ public class EditTable implements ActionListener {
 			frontFlag = true;
 		}
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
 	
 	//========================================
 	// 描画用クラス
@@ -132,7 +136,6 @@ public class EditTable implements ActionListener {
 		private Color backColor;			// 背景色
 		private final static int MAX_IMAGE = 5;
 		private MouseForCanvas mouse;
-		private boolean justPressed;
 		private Point point;
 		private int character;
 		
@@ -151,7 +154,6 @@ public class EditTable implements ActionListener {
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			
 			point = new Point();
-			justPressed = false;
 			character = 0;
 			
 			this.addMouseListener( mouse );
@@ -167,7 +169,7 @@ public class EditTable implements ActionListener {
 				int x = 0;
 				int y = 0;
 
-				for( int i = 7; i >= 0; i -- ) {
+				for( int i = 6; i >= 0; i -- ) {
 					if( point.y >= i * 100 ) {
 						y = i + 1;
 						i = 0;
@@ -198,7 +200,7 @@ public class EditTable implements ActionListener {
 		public void paint(Graphics g) {
 			int k = 0;
 
-			for( int i = 0; i < 7; i ++ ) {
+			for( int i = 0; i < 5; i ++ ) {
 				for( int j = 0; j < 3; j ++, k ++ ) {
 					if( k >= MAX_IMAGE ) { return; }		// 全部読み込んだら終了
 					
