@@ -63,7 +63,7 @@ public class Player extends CharacterBase {
 	private static final float DASH_MAX_VEL	= 40.0f;	// ダッシュの最高速度
 	private static final float RUN_ACCEL		= 5.0f;	// 走りの加速度
 	private static final float DASH_ACCEL		= 10.0f;	// ダッシュの加速度
-	private static final float JUMP_POWER		= 50.0f;	// ジャンプ加速度
+	private static final float JUMP_POWER		= 70.0f;	// ジャンプ加速度
 	private static final int JUMP_MAX			= 2;		// 連続でジャンプできる回数
 
 	private static final int FOOT	= 0;
