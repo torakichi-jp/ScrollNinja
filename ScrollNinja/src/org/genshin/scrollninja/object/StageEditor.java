@@ -12,6 +12,7 @@ import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.FileOperation;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.Keyboard;
+import org.genshin.scrollninja.LayerWindow;
 import org.genshin.scrollninja.Mouse;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.StructObject;
@@ -34,6 +35,7 @@ public class StageEditor implements Screen {
 	private  Vector2		position = new Vector2( 0.0f, 0.0f);
 	private  Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
 	private  EditTable	editTable = new EditTable();
+	private LayerWindow layerWindow = new LayerWindow();
 	private Keyboard keyboard = new Keyboard();
 	private Container cont = new Container();
 	
@@ -54,6 +56,7 @@ public class StageEditor implements Screen {
 		}
 		
 		editTable.Init();
+		layerWindow.Init();
 	}
 
 	/**
@@ -64,6 +67,7 @@ public class StageEditor implements Screen {
 		Mouse.Update();
 		Priority();
 		editTable.Update();
+		layerWindow.Update();
 
 		// キャラクター
 		StructObjectManager.Update(priority);

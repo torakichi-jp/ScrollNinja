@@ -44,43 +44,19 @@ public class EditTable {
 	private Frame  frm = new Frame();
 	private boolean frontFlag;
 	private int count = 0;
+	private JScrollPane scrollPane;						// スクロールバー
 	
 	public void Init() {
         
 	       /* フレームを作成します。*/
         frm.setSize(new Dimension(WIDTH,HEIGHT));
         
-        /* インセット値を確定させる */
-//        frm.addNotify();
- //       Insets a = frm.getInsets();
-        
-        /* フォントの設定 */
-        frm.setFont(new Font("Serif", Font.BOLD, 25));
-        
         /* 前面へ */
         frm.toFront();
-        frm.setTitle("ツールボックス"); 
-        frm.setLayout(new GridLayout(2,1));
-        frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
+        frm.setTitle("アイテムボックス");
         
-//        ScrollPane bar = new ScrollPane(ScrollPane.SCROLLBARS_AS_NEEDED);
-//        bar.setFocusable(true);
-//        bar.add(editCanvas);     
-//        frm.add(bar);
-        
-        // キャンバス
-        frm.add(editCanvas);
-        
-        // ボタンのパネル
-    	Panel mainPanel = new Panel();
-    	mainPanel.setLayout(new GridLayout(5,1));		// パネルのレイアウトの設定
-    	
-    	for( int i = 0; i < 5; i ++ ) {
-    		ButtonForEdit button = new ButtonForEdit("押す前");
-    		mainPanel.add(button);
-    	}
-
-        frm.add(mainPanel);
+        scrollPane = new JScrollPane(editCanvas);
+        frm.add(scrollPane);
 
         /* フレームを表示させます。*/
         frm.setVisible(true);
@@ -113,7 +89,6 @@ public class EditTable {
 			frm.toBack();
 			frm.setAlwaysOnTop(false);
 		}
-		
 	}
 	
 	/**
@@ -127,7 +102,7 @@ public class EditTable {
 	 * ウインドウの位置変更
 	 */
 	public void SetWindow() {
-		if( Gdx.input.isKeyPressed(Keys.Q) ) {
+		if( Gdx.input.isKeyPressed(Keys.E) ) {
 			count ++;
 		}
 		else {
@@ -149,7 +124,7 @@ public class EditTable {
 		
 		private Color flameColor;			// フレーム色
 		private Color backColor;			// 背景色
-		private final static int MAX_IMAGE = 12;
+		private final static int MAX_IMAGE = 36;
 		private MouseForCanvas mouse;
 		private Point point;
 		private int character;
@@ -162,19 +137,6 @@ public class EditTable {
 			mouse = new MouseForCanvas();
 			
 			// ここで画像読み込み
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-			StructImageManager.CreateStructImage("data/pausemenuback.png");
-/*			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
@@ -185,7 +147,32 @@ public class EditTable {
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
 			StructImageManager.CreateStructImage("data/shuriken.png");
-			StructImageManager.CreateStructImage("data/shuriken.png");*/
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
+			StructImageManager.CreateStructImage("data/shuriken.png");
 			
 			point = new Point();
 			character = 0;
@@ -217,7 +204,7 @@ public class EditTable {
 				}
 				character = x + ( (y * 3) - 3);
 				System.out.println(character);
-//				StructObjectManager.CreateStructObject(character);
+				StructObjectManager.CreateStructObject(character);
 				mouse.ResetClick();
 			}
 		}

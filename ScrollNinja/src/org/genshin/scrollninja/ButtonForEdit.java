@@ -3,25 +3,25 @@ package org.genshin.scrollninja;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ButtonForEdit extends JButton implements ActionListener {
 	
-	private int i = 0;
-	private TextField text = new TextField();
+	private int type = 0;
 
-	public ButtonForEdit(String name) {
+	public ButtonForEdit(int Type) {
 		// TODO 自動生成されたコンストラクター・スタブ
-		setText(name);
+//		setText(name);
+		type = Type;
 		addActionListener(this);
+		
+		ImageIcon icon = new ImageIcon("data/shuriken.png");
+		this.setIcon(icon);
 	}
 
 	/**
@@ -30,9 +30,5 @@ public class ButtonForEdit extends JButton implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-//		this.setText("bbb");		
-		BufferedReader fp = new BufferedReader(new InputStreamReader(System.in));
-		try {this.setLabel(fp.readLine());}
-		catch (IOException err) { }
 	}
 }
