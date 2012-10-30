@@ -16,11 +16,14 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.ScrollPane;
 import java.awt.Scrollbar;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import com.badlogic.gdx.Gdx;
@@ -41,9 +44,6 @@ public class EditTable {
 	private Frame  frm = new Frame();
 	private boolean frontFlag;
 	private int count = 0;
-	private Label label1 = new Label();
-	private Label label2 = new Label();
-	private Panel panel = new Panel();
 	
 	public void Init() {
         
@@ -55,12 +55,10 @@ public class EditTable {
  //       Insets a = frm.getInsets();
         
         /* フォントの設定 */
-        frm.setFont(new Font("Serif", Font.BOLD, 50));
+        frm.setFont(new Font("Serif", Font.BOLD, 25));
         
         /* 前面へ */
         frm.toFront();
-        
-        /* タイトルの設定 */
         frm.setTitle("ツールボックス"); 
         frm.setLayout(new GridLayout(2,1));
         frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
@@ -69,14 +67,20 @@ public class EditTable {
 //        bar.setFocusable(true);
 //        bar.add(editCanvas);     
 //        frm.add(bar);
+        
+        // キャンバス
         frm.add(editCanvas);
+        
+        // ボタンのパネル
+    	Panel mainPanel = new Panel();
+    	mainPanel.setLayout(new GridLayout(5,1));		// パネルのレイアウトの設定
+    	
+    	for( int i = 0; i < 5; i ++ ) {
+    		ButtonForEdit button = new ButtonForEdit("押す前");
+    		mainPanel.add(button);
+    	}
 
-        
-        
-        panel.setLayout(new GridLayout(2,1));
-        panel.add(label1);
-        panel.add(label2);
-        frm.add(panel);
+        frm.add(mainPanel);
 
         /* フレームを表示させます。*/
         frm.setVisible(true);
@@ -98,7 +102,7 @@ public class EditTable {
 		for( int i = 0; i < StructObjectManager.GetListSize(); i ++ ) {
 			if( StructObjectManager.GetStructObject(i).GetHold() ) {
 				//TODO テスト
-				label1.setText("優先度：" + StructObjectManager.GetStructObject(i).GetPriority().toString());
+//				label1.setText("優先度：" + StructObjectManager.GetStructObject(i).GetPriority().toString());
 			}
 		}
 		
@@ -212,7 +216,8 @@ public class EditTable {
 					}
 				}
 				character = x + ( (y * 3) - 3);
-				StructObjectManager.CreateStructObject(character);
+				System.out.println(character);
+//				StructObjectManager.CreateStructObject(character);
 				mouse.ResetClick();
 			}
 		}

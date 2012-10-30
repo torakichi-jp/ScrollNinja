@@ -64,7 +64,7 @@ public class StructObject {
 		sprite = new ArrayList<Sprite>();
 		position = new Vector2(0.0f, 0.0f);
 		size = new Vector2(0.0f, 0.0f);
-		type = Type;
+		type = 1;		// とりあえず
 		positionX = 0.0f;
 		positionY = 0.0f;
 		priority = 0;
