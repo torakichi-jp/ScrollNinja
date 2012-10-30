@@ -68,8 +68,8 @@ public class Pause {
 	private double 		EbeforeRoundX;
 	private double 		EbeforeRoundY;
 	
-	private int 			StartTime;			// 移動時間カウント
-	private int 			EndTime;			// 移動にかける時間
+	private float 			StartTime;			// 移動時間カウント
+	private float 			EndTime;			// 移動にかける時間
 	private Vector2 		StartPosition;	// 始点
 	private Vector2 		EndPosition;		// 終点
 	
@@ -78,21 +78,40 @@ public class Pause {
 	/**
 	 * ベジエ曲線(キャラ移動用)
 	 * 4点座標を取り、Sのような曲線移動する
+	 * 
+	 * 4点でベジェ曲線 or 4点曲線4点曲線のカーブを二つつなげる
 	 * */
 	private Vector2 		BezierAvec;		// 移動方向ベクトル 点A
-	private BigDecimal	BezierRxAf;		// 小数点切り捨て後をfloat型へ変換用 x
-	private BigDecimal	BezierRyAf;		// 小数点切り捨て後をfloat型へ変換用 y
-	private BigDecimal	BezierRxResult;	// 小数点切り捨て用 x
-	private BigDecimal	BezierRyResult;	// 小数点切り捨て用 y
-	private double 		BezierRxBf;		// double型 x座標
-	private double 		BezierRyBf;		// double型 y座標
+	private BigDecimal	BezierARxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierARyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierARxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierARyResult;	// 小数点切り捨て用 y
+	private double 		BezierARxd;		// double型 x座標
+	private double 		BezierARyd;		// double型 y座標
 	
-	private double BezierB;
-	private double BezierC;
-	private double BizierD;
+	private Vector2 		BezierBvec;		// 移動方向ベクトル 点B
+	private BigDecimal	BezierBRxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierBRyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierBRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierBRyResult;	// 小数点切り捨て用 y
+	private double 		BezierBRxd;		// double型 x座標
+	private double 		BezierBRyd;		// double型 y座標
 	
-	private float a;
-	private float b;
+	private Vector2 		BezierCvec;		// 移動方向ベクトル 点C
+	private BigDecimal	BezierCRxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierCRyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierCRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierCRyResult;	// 小数点切り捨て用 y
+	private double 		BezierCRxd;		// double型 x座標
+	private double 		BezierCRyd;		// double型 y座標
+	
+	private Vector2 		BezierDvec;		// 移動方向ベクトル 点D
+	private BigDecimal	BezierDRxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierDRyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierDRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierDRyResult;	// 小数点切り捨て用 y
+	private double 		BezierDRxd;		// double型 x座標
+	private double 		BezierDRyd;		// double型 y座標
 	
 	// コンストラクタ
 	public Pause() {
@@ -157,11 +176,23 @@ public class Pause {
 		nowFootFrame = footwalk.getKeyFrame(0,true);
 		
 		// キャラ移動位置始点終点初期化
-		StartPosition = new Vector2(0,0);
+		/*StartPosition = new Vector2(GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.75f,
+								GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.75f);
+				*/
+		
+		//StartPosition = new Vector2(0,0);
 		EndPosition = new Vector2(0,0);
 		moveVec = new Vector2(0,0);
+
+		BezierAvec = new Vector2(0,0);
+		BezierBvec = new Vector2(0,0);
+		BezierCvec = new Vector2(0,0);
+		BezierDvec = new Vector2(0,0);
+		
 		StartTime = 0;
-		EndTime = 120;
+		EndTime = 1;
 		
 		// フラグ初期化
 		gotoMain = false;
@@ -289,20 +320,51 @@ public class Pause {
 		
 		if(Gdx.input.isKeyPressed(Keys.K)) {
 			// 120fまで加算
-			if(StartTime <= EndTime) {
-				StartTime++;
+			if(StartTime < EndTime) {
+				StartTime += 0.01f;
 			
-			StartPosition.x -= moveVec.x;
-			StartPosition.y -= moveVec.y;
+				
+				StartPosition.x = BezierAvec.x * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
+									3 * BezierBvec.x * StartTime * ((1-StartTime)*(1-StartTime)) +
+									3 * BezierCvec.x * (StartTime * StartTime) * (1-StartTime)+
+									 BezierDvec.x * (StartTime * StartTime * StartTime);
+
+				StartPosition.y = BezierAvec.y * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
+									3 * BezierBvec.y * StartTime * ((1-StartTime)*(1-StartTime)) +
+									3 * BezierCvec.y * (StartTime * StartTime) * (1-StartTime)+
+									 BezierDvec.y * (StartTime * StartTime * StartTime);
+				
+
+				/*
+				StartPosition.x = (BezierAvec.x * ((1-StartTime)*(1-StartTime))) + 
+										(2 * BezierBvec.x * StartTime * (1-StartTime)) +
+										(BezierCvec.x * (StartTime * StartTime));
+				
+				StartPosition.y = (BezierAvec.y * ((1-StartTime)*(1-StartTime))) + 
+										(2 * BezierBvec.y * StartTime * (1-StartTime)) +
+										(BezierCvec.y * (StartTime * StartTime));
+										*/
 			}
-		}
-		if(Gdx.input.isKeyPressed(Keys.T)) {
-			a++;
-		}	
-		if(Gdx.input.isKeyPressed(Keys.Y)) {
-			a--;
+			
 		}
 		
+		if(Gdx.input.isKeyPressed(Keys.I)) {
+			if(StartTime > 0) {
+				StartTime -= 0.01f;
+			
+				
+				StartPosition.x = BezierAvec.x * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
+									3 * BezierBvec.x * StartTime * ((1-StartTime)*(1-StartTime)) +
+									3 * BezierCvec.x * (StartTime * StartTime) * (1-StartTime)+
+									 BezierDvec.x * (StartTime * StartTime * StartTime);
+
+				StartPosition.y = BezierAvec.y * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
+									3 * BezierBvec.y * StartTime * ((1-StartTime)*(1-StartTime)) +
+									3 * BezierCvec.y * (StartTime * StartTime) * (1-StartTime)+
+									 BezierDvec.y * (StartTime * StartTime * StartTime);
+			}
+		}
+
 		//System.out.println(StartPosition.x+"f");
 		//System.out.println(StartPosition.y+"f");
 		// クリックでキャラクター移動
@@ -312,6 +374,7 @@ public class Pause {
 	
 	public void init() {
 		// 小数点切り捨て前
+		/*
 		SbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.75f;
 		SbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
@@ -341,6 +404,60 @@ public class Pause {
 		// x秒あたりの移動量 (EndTimeフレームかけて移動する)
 		moveVec.x /= EndTime;
 		moveVec.y /= EndTime;
+		*/
+		
+		
+		// A
+		BezierARxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.85f;
+		BezierARyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.78f;
+		BezierARxResult = new BigDecimal(BezierARxd);
+		BezierARyResult = new BigDecimal(BezierARyd);
+		BezierARxf = BezierARxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierARyf = BezierARyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierAvec.x = BezierARxf.floatValue();
+		BezierAvec.y = BezierARyf.floatValue();
+		
+		// 初期位置コピー
+		StartPosition = BezierAvec.cpy();
+		
+		// B
+		BezierBRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*2.9f;
+		BezierBRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.8f;
+		BezierBRxResult = new BigDecimal(BezierBRxd);
+		BezierBRyResult = new BigDecimal(BezierBRyd);
+		BezierBRxf = BezierBRxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierBRyf = BezierBRyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierBvec.x = BezierBRxf.floatValue();
+		BezierBvec.y = BezierBRyf.floatValue();
+		
+		// C
+		BezierCRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.9f;
+		BezierCRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.1f;
+		BezierCRxResult = new BigDecimal(BezierCRxd);
+		BezierCRyResult = new BigDecimal(BezierCRyd);
+		BezierCRxf = BezierCRxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierCRyf = BezierCRyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierCvec.x = BezierCRxf.floatValue();
+		BezierCvec.y = BezierCRyf.floatValue();
+		
+		// D
+		BezierDRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.625f;
+		BezierDRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.0f;
+		BezierDRxResult = new BigDecimal(BezierDRxd);
+		BezierDRyResult = new BigDecimal(BezierDRyd);
+		BezierDRxf = BezierDRxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierDRyf = BezierDRyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierDvec.x = BezierDRxf.floatValue();
+		BezierDvec.y = BezierDRyf.floatValue();
+		
 	}
 
 	// ゲッター セッター
