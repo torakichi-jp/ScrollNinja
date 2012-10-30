@@ -27,6 +27,9 @@ public class Pause {
 	private Sprite load;						// (仮)ロード
 	private Sprite pausemenu;				// ポーズメニュー
 	private Sprite worldMap;					// ワールドマップ
+	private Sprite fireVillage;				// 火の里
+	private Sprite waterVillage;			// 水の里
+	private Sprite windVillage;				// 風の里
 	
 	private boolean gotoMain;				// メイン移行フラグ
 	private boolean gotoTitleMenu;			// タイトル移行フラグ
@@ -47,6 +50,7 @@ public class Pause {
 	 * のでBigDecimal使う。
 	 * 始点と終点の間に通りたい座標を出して
 	 * moveVecで移動ベクトル出す
+	 * ↓2点間の移動のみ
 	 * */
 	// 始点位置
 	private BigDecimal 	SRoundX;			// 丸めスタート
@@ -69,19 +73,38 @@ public class Pause {
 	private Vector2 		StartPosition;	// 始点
 	private Vector2 		EndPosition;		// 終点
 	
-	private Vector2 moveVec;
-
-
-
+	private Vector2 moveVec;					// 移動方向ベクトル
+	
+	/**
+	 * ベジエ曲線(キャラ移動用)
+	 * 4点座標を取り、Sのような曲線移動する
+	 * */
+	private Vector2 		BezierAvec;		// 移動方向ベクトル 点A
+	private BigDecimal	BezierRxAf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierRyAf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierRyResult;	// 小数点切り捨て用 y
+	private double 		BezierRxBf;		// double型 x座標
+	private double 		BezierRyBf;		// double型 y座標
+	
+	private double BezierB;
+	private double BezierC;
+	private double BizierD;
+	
+	private float a;
+	private float b;
 	
 	// コンストラクタ
 	public Pause() {
 		// ワールドマップ
-		Texture worldMaptexture = new Texture(Gdx.files.internal("data/worldmap.png"));
+		Texture worldMaptexture = new Texture(Gdx.files.internal("data/map.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		TextureRegion worldRegion = new TextureRegion(worldMaptexture);
+		TextureRegion worldRegion = new TextureRegion(worldMaptexture,0,0,1024,1024);
 		worldMap = new Sprite(worldRegion);
-		worldMap.setScale(ScrollNinja.scale * 1.5f);
+		worldMap.setScale(ScrollNinja.scale * 1.7f);
+		TextureRegion fireRegion = new TextureRegion(worldMaptexture,0,512,256,256);
+		fireVillage = new Sprite(fireRegion);
+		fireVillage.setScale(ScrollNinja.scale);
 
 		// ポーズ画面中の背景
 		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
@@ -164,6 +187,7 @@ public class Pause {
 			worldMap.draw(GameMain.spriteBatch);
 			foot.draw(GameMain.spriteBatch);
 			body.draw(GameMain.spriteBatch);
+			fireVillage.draw(GameMain.spriteBatch);
 		}
 		returnGame.draw(GameMain.spriteBatch);
 		title.draw(GameMain.spriteBatch);
@@ -175,9 +199,9 @@ public class Pause {
 	// スプライトアップデート
 	public void spriteUpdate() {
 		worldMap.setPosition(GameMain.camera.position.x - worldMap.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.12f,
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - worldMap.getHeight()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.16f);
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.22f);
 
 		pausemenu.setPosition(GameMain.camera.position.x - pausemenu.getWidth()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - pausemenu.getWidth()*0.5f*0.12f,
@@ -198,6 +222,11 @@ public class Pause {
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - load.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - load.getHeight()*0.5f
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- load.getHeight()*0.5f*0.9f);
+		
+		fireVillage.setPosition(GameMain.camera.position.x - fireVillage.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.2f,
+				GameMain.camera.position.y - fireVillage.getHeight()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.65f);
 	}
 
 	// クリック時の処理
@@ -267,9 +296,15 @@ public class Pause {
 			StartPosition.y -= moveVec.y;
 			}
 		}
+		if(Gdx.input.isKeyPressed(Keys.T)) {
+			a++;
+		}	
+		if(Gdx.input.isKeyPressed(Keys.Y)) {
+			a--;
+		}
 		
-		System.out.println(StartPosition.x+"f");
-		System.out.println(StartPosition.y+"f");
+		//System.out.println(StartPosition.x+"f");
+		//System.out.println(StartPosition.y+"f");
 		// クリックでキャラクター移動
 		foot.setPosition(StartPosition.x,StartPosition.y);
 		body.setPosition(StartPosition.x,StartPosition.y);
@@ -278,9 +313,9 @@ public class Pause {
 	public void init() {
 		// 小数点切り捨て前
 		SbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.45f;
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.75f;
 		SbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.1f;
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.75f;
 		SRoundX = new BigDecimal(SbeforeRoundX);
 		SRoundY = new BigDecimal(SbeforeRoundY);
 		// 小数点第6位まで残す
@@ -290,9 +325,9 @@ public class Pause {
 		StartPosition.y = SAfterRoundY.floatValue();
 		
 		EbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*2.3f;
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.75f;
 		EbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.38f;
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.7f;
 		ERoundX = new BigDecimal(EbeforeRoundX);
 		ERoundY = new BigDecimal(EbeforeRoundY);
 		EAfterRoundX = ERoundX.setScale(6,BigDecimal.ROUND_DOWN);
