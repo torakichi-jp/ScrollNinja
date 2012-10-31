@@ -1,5 +1,10 @@
 package org.genshin.scrollninja;
 
+import java.awt.BasicStroke;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.CubicCurve2D;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -52,6 +57,7 @@ public class Pause {
 	 * moveVecで移動ベクトル出す
 	 * ↓2点間の移動のみ
 	 * */
+	
 	// 始点位置
 	private BigDecimal 	SRoundX;			// 丸めスタート
 	private BigDecimal 	SRoundY;
@@ -74,14 +80,13 @@ public class Pause {
 	private Vector2 		EndPosition;		// 終点
 	
 	private Vector2 moveVec;					// 移動方向ベクトル
-	
 	/**
 	 * ベジエ曲線(キャラ移動用)
 	 * 4点座標を取り、Sのような曲線移動する
 	 * 
 	 * 4点でベジェ曲線 or 4点曲線4点曲線のカーブを二つつなげる
 	 * */
-	private Vector2 		BezierAvec;		// 移動方向ベクトル 点A
+	private Vector2 		BezierAvec;		// 移動方向ベクトル 点A(火の里)
 	private BigDecimal	BezierARxf;		// 小数点切り捨て後をfloat型へ変換用 x
 	private BigDecimal	BezierARyf;		// 小数点切り捨て後をfloat型へ変換用 y
 	private BigDecimal	BezierARxResult;	// 小数点切り捨て用 x
@@ -105,13 +110,65 @@ public class Pause {
 	private double 		BezierCRxd;		// double型 x座標
 	private double 		BezierCRyd;		// double型 y座標
 	
-	private Vector2 		BezierDvec;		// 移動方向ベクトル 点D
+	private Vector2 		BezierDvec;		// 移動方向ベクトル 点D(水の里)
 	private BigDecimal	BezierDRxf;		// 小数点切り捨て後をfloat型へ変換用 x
 	private BigDecimal	BezierDRyf;		// 小数点切り捨て後をfloat型へ変換用 y
 	private BigDecimal	BezierDRxResult;	// 小数点切り捨て用 x
 	private BigDecimal	BezierDRyResult;	// 小数点切り捨て用 y
 	private double 		BezierDRxd;		// double型 x座標
 	private double 		BezierDRyd;		// double型 y座標
+
+	private Vector2		BezierEvec;		// 移動方向ベクトル 点E
+	private BigDecimal	BezierERxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierERyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierERxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierERyResult;	// 小数点切り捨て用 y
+	private double		BezierERxd;		// double型 x座標
+	private double		BezierERyd;		// double型 y座標
+
+	private Vector2		BezierFvec;		// 移動方向ベクトル 点F
+	private BigDecimal	BezierFRxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierFRyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierFRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierFRyResult;	// 小数点切り捨て用 y
+	private double		BezierFRxd;		// double型 x座標
+	private double		BezierFRyd;		// double型 y座標
+
+	private Vector2		BezierGvec;		// 移動方向ベクトル 点G
+	private BigDecimal	BezierGRxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierGRyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierGRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierGRyResult;	// 小数点切り捨て用 y
+	private double		BezierGRxd;		// double型 x座標
+	private double		BezierGRyd;		// double型 y座標
+
+	private Vector2		BezierHvec;		// 移動方向ベクトル 点H(風の里)
+	private BigDecimal	BezierHRxf;		// 小数点切り捨て後をfloat型へ変換用 x
+	private BigDecimal	BezierHRyf;		// 小数点切り捨て後をfloat型へ変換用 y
+	private BigDecimal	BezierHRxResult;	// 小数点切り捨て用 x
+	private BigDecimal	BezierHRyResult;	// 小数点切り捨て用 y
+	private double		BezierHRxd;		// double型 x座標
+	private double		BezierHRyd;		// double型 y座標
+
+	// draw curv2D bezier float
+	private float			BezAx;
+	private float			BezAy;
+	private float			BezBx;
+	private float			BezBy;
+	private float			BezCx;
+	private float			BezCy;
+	private float			BezDx;
+	private float			BezDy;
+	
+	private boolean WtoF;		// 水から火へ移動するフラグ
+	private static int villageState;
+	private final static int FIRE  = 0;
+	private final static int WATER = 1;
+	private final static int WIND  = 2;
+	
+	private Graphics g;
+	private Graphics2D g2;
+	
 	
 	// コンストラクタ
 	public Pause() {
@@ -124,7 +181,13 @@ public class Pause {
 		TextureRegion fireRegion = new TextureRegion(worldMaptexture,0,512,256,256);
 		fireVillage = new Sprite(fireRegion);
 		fireVillage.setScale(ScrollNinja.scale);
-
+		TextureRegion waterRegion = new TextureRegion(worldMaptexture,256,512,256,256);
+		waterVillage = new Sprite(waterRegion);
+		waterVillage.setScale(ScrollNinja.scale);
+		TextureRegion windRegion = new TextureRegion(worldMaptexture,512,512,256,256);
+		windVillage = new Sprite(windRegion);
+		windVillage.setScale(ScrollNinja.scale);
+		
 		// ポーズ画面中の背景
 		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
 		pausemenubackTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -174,15 +237,7 @@ public class Pause {
 
 		nowFrame = walk.getKeyFrame(0,true);
 		nowFootFrame = footwalk.getKeyFrame(0,true);
-		
-		// キャラ移動位置始点終点初期化
-		/*StartPosition = new Vector2(GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.75f,
-								GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.75f);
-				*/
-		
-		//StartPosition = new Vector2(0,0);
+
 		EndPosition = new Vector2(0,0);
 		moveVec = new Vector2(0,0);
 
@@ -190,14 +245,27 @@ public class Pause {
 		BezierBvec = new Vector2(0,0);
 		BezierCvec = new Vector2(0,0);
 		BezierDvec = new Vector2(0,0);
+		BezierEvec = new Vector2(0,0);
+		BezierFvec = new Vector2(0,0);
+		BezierGvec = new Vector2(0,0);
+		BezierHvec = new Vector2(0,0);
+		
+		// ラインを描画するたの
+		/*Graphics2D g2 = (Graphics2D)g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		BasicStroke wideStroke = new BasicStroke(4.0f);
+		g2.setStroke(wideStroke);*/
 		
 		StartTime = 0;
 		EndTime = 1;
+		
+		villageState = FIRE;
 		
 		// フラグ初期化
 		gotoMain = false;
 		gotoTitleMenu = false;
 		drawflag = false;
+		WtoF = false;
 	}
 
 	// アップデート
@@ -206,6 +274,7 @@ public class Pause {
 		clickedUpdate();
 		pressedUpdate();
 		playerAnimation();
+		villageUpdate();
 	}
 
 	// 描画
@@ -218,7 +287,18 @@ public class Pause {
 			worldMap.draw(GameMain.spriteBatch);
 			foot.draw(GameMain.spriteBatch);
 			body.draw(GameMain.spriteBatch);
-			fireVillage.draw(GameMain.spriteBatch);
+
+			switch(villageState) {
+			case FIRE:
+				fireVillage.draw(GameMain.spriteBatch);
+				break;
+			case WATER:
+				waterVillage.draw(GameMain.spriteBatch);
+				break;
+			case WIND:
+				windVillage.draw(GameMain.spriteBatch);
+				break;
+			}
 		}
 		returnGame.draw(GameMain.spriteBatch);
 		title.draw(GameMain.spriteBatch);
@@ -255,9 +335,19 @@ public class Pause {
 				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- load.getHeight()*0.5f*0.9f);
 		
 		fireVillage.setPosition(GameMain.camera.position.x - fireVillage.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.2f,
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.18f,
 				GameMain.camera.position.y - fireVillage.getHeight()*0.5f
 				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.65f);
+		
+		waterVillage.setPosition(GameMain.camera.position.x - waterVillage.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - waterVillage.getWidth()*0.5f*0.43f,
+				GameMain.camera.position.y - waterVillage.getHeight()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - waterVillage.getWidth()*0.5f*0.43f);
+		
+		windVillage.setPosition(GameMain.camera.position.x - windVillage.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - windVillage.getWidth()*0.5f*0.8f,
+				GameMain.camera.position.y - windVillage.getHeight()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - windVillage.getWidth()*0.5f*0.39f);
 	}
 
 	// クリック時の処理
@@ -275,17 +365,10 @@ public class Pause {
 				mousePositionY < 282 && mousePositionY > 255) {
 				gotoMain = true;
 			}
-			//
 			if(mousePositionX > 450 && mousePositionX < 647 &&
-				mousePositionY < 242 && mousePositionY > 215) {
-
-			}
-			//
+				mousePositionY < 242 && mousePositionY > 215) {}
 			if(mousePositionX > 450 && mousePositionX < 656 &&
-				mousePositionY < 208 && mousePositionY > 183) {
-
-			}
-
+				mousePositionY < 208 && mousePositionY > 183) {}
 		}
 	}
 
@@ -309,10 +392,9 @@ public class Pause {
 	public void playerAnimation() {
 		sprite.get(0).setRegion(nowFrame);
 		sprite.get(1).setRegion(nowFootFrame);
-
+		
 		if(countFrame > 0)
 			countFrame--;
-
 		if(countFrame == 0)
 			nowFrame = walk.getKeyFrame(stateTime,true);
 		nowFootFrame = footwalk.getKeyFrame(stateTime,true);
@@ -320,9 +402,8 @@ public class Pause {
 		
 		if(Gdx.input.isKeyPressed(Keys.K)) {
 			// 120fまで加算
-			if(StartTime < EndTime) {
+			if(StartTime <= EndTime) {
 				StartTime += 0.01f;
-			
 				
 				StartPosition.x = BezierAvec.x * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
 									3 * BezierBvec.x * StartTime * ((1-StartTime)*(1-StartTime)) +
@@ -333,9 +414,7 @@ public class Pause {
 									3 * BezierBvec.y * StartTime * ((1-StartTime)*(1-StartTime)) +
 									3 * BezierCvec.y * (StartTime * StartTime) * (1-StartTime)+
 									 BezierDvec.y * (StartTime * StartTime * StartTime);
-				
-
-				/*
+				/*　3点ベジェ曲線
 				StartPosition.x = (BezierAvec.x * ((1-StartTime)*(1-StartTime))) + 
 										(2 * BezierBvec.x * StartTime * (1-StartTime)) +
 										(BezierCvec.x * (StartTime * StartTime));
@@ -344,30 +423,29 @@ public class Pause {
 										(2 * BezierBvec.y * StartTime * (1-StartTime)) +
 										(BezierCvec.y * (StartTime * StartTime));
 										*/
+				if(StartTime >= EndTime)
+					villageState = WATER;
 			}
-			
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.I)) {
-			if(StartTime > 0) {
-				StartTime -= 0.01f;
-			
-				
+			if(StartTime >= 0) {
 				StartPosition.x = BezierAvec.x * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
 									3 * BezierBvec.x * StartTime * ((1-StartTime)*(1-StartTime)) +
 									3 * BezierCvec.x * (StartTime * StartTime) * (1-StartTime)+
 									 BezierDvec.x * (StartTime * StartTime * StartTime);
-
 				StartPosition.y = BezierAvec.y * ((1-StartTime)*(1-StartTime)*(1-StartTime)) +
 									3 * BezierBvec.y * StartTime * ((1-StartTime)*(1-StartTime)) +
 									3 * BezierCvec.y * (StartTime * StartTime) * (1-StartTime)+
 									 BezierDvec.y * (StartTime * StartTime * StartTime);
+				StartTime -= 0.01f;
+				if(StartTime <= 0)
+					villageState = FIRE;
 			}
 		}
-
 		//System.out.println(StartPosition.x+"f");
 		//System.out.println(StartPosition.y+"f");
-		// クリックでキャラクター移動
+		// TODO:クリックでキャラクター移動
 		foot.setPosition(StartPosition.x,StartPosition.y);
 		body.setPosition(StartPosition.x,StartPosition.y);
 	}
@@ -405,7 +483,6 @@ public class Pause {
 		moveVec.x /= EndTime;
 		moveVec.y /= EndTime;
 		*/
-		
 		
 		// A
 		BezierARxd = GameMain.camera.position.x - foot.getWidth()*0.5f
@@ -458,6 +535,67 @@ public class Pause {
 		BezierDvec.x = BezierDRxf.floatValue();
 		BezierDvec.y = BezierDRyf.floatValue();
 		
+		//-----------------
+		//E～G値未設定
+		//-----------------
+		// E
+		BezierERxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.0f;
+		BezierERyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.0f;
+		BezierERxResult = new BigDecimal(BezierERxd);
+		BezierERyResult = new BigDecimal(BezierERyd);
+		BezierERxf = BezierERxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierERyf = BezierERyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierEvec.x = BezierERxf.floatValue();
+		BezierEvec.y = BezierERyf.floatValue();
+		
+		// F
+		BezierFRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.0f;
+		BezierFRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.0f;
+		BezierFRxResult = new BigDecimal(BezierFRxd);
+		BezierFRyResult = new BigDecimal(BezierFRyd);
+		BezierFRxf = BezierFRxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierFRyf = BezierFRyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierFvec.x = BezierFRxf.floatValue();
+		BezierFvec.y = BezierFRyf.floatValue();
+		
+		// G
+		BezierGRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.0f;
+		BezierGRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.0f;
+		BezierGRxResult = new BigDecimal(BezierGRxd);
+		BezierGRyResult = new BigDecimal(BezierGRyd);
+		BezierGRxf = BezierGRxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierGRyf = BezierGRyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierGvec.x = BezierGRxf.floatValue();
+		BezierGvec.y = BezierGRyf.floatValue();
+		
+		// H ok
+		BezierHRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
+				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*3.175f;
+		BezierHRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
+				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.75f;
+		BezierHRxResult = new BigDecimal(BezierHRxd);
+		BezierHRyResult = new BigDecimal(BezierHRyd);
+		BezierHRxf = BezierHRxResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierHRyf = BezierHRyResult.setScale(6,BigDecimal.ROUND_DOWN);
+		BezierHvec.x = BezierHRxf.floatValue();
+		BezierHvec.y = BezierHRyf.floatValue();
+	}
+	
+	public void villageUpdate() {
+		switch(villageState) {
+		case FIRE:
+			break;
+		case WATER:
+			break;
+		case WIND:
+			break;
+		}
 	}
 
 	// ゲッター セッター
