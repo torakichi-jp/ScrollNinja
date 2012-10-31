@@ -36,6 +36,12 @@ public interface IPlayerController
 	boolean jump();
 	
 	/**
+	 * 空中でのジャンプの操作状態を取得する。
+	 * @return	空中でのジャンプの操作がある場合はtrue
+	 */
+	boolean aerialJump();
+	
+	/**
 	 * 攻撃の操作状態を取得する。
 	 * @return	攻撃の操作がある場合はtrue
 	 */

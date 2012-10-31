@@ -38,7 +38,7 @@ public class StageEditor implements Screen {
 	private LayerWindow layerWindow = new LayerWindow();
 	private Keyboard keyboard = new Keyboard();
 	private Container cont = new Container();
-	
+
 	public StageEditor() {
 		cont.addKeyListener(keyboard);
 		cont.setVisible(true);
@@ -50,11 +50,11 @@ public class StageEditor implements Screen {
 	 */
 	public  void Init() {
 		priority = 9;
-		
+
 		for(int i = 0; i < 10; i++ ) {
 			count[i] = 0;
 		}
-		
+
 		editTable.Init();
 		layerWindow.Init();
 	}
@@ -86,21 +86,21 @@ public class StageEditor implements Screen {
 		else {
 			count[1] = 0;
 		}
-		
+
 		if( Gdx.input.isKeyPressed(Keys.L)) {
 			count[2] ++;
 		}
 		else {
 			count[2] = 0;
 		}
-		
+
 		if( Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
 			count[3] ++;
 		}
 		else {
 			count[3] = 0;
 		}
-		
+
 		if( count[0] == 1 ) {
 		}
 		if( count[1] == 1 ) {
