@@ -11,6 +11,7 @@ import org.genshin.scrollninja.EditTable;
 import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.FileOperation;
 import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.ItemWindow;
 import org.genshin.scrollninja.Keyboard;
 import org.genshin.scrollninja.LayerWindow;
 import org.genshin.scrollninja.Mouse;
@@ -34,7 +35,8 @@ public class StageEditor implements Screen {
 	private  int			count[] = new int[10];			// トリガー取得の為のカウント用変数
 	private  Vector2		position = new Vector2( 0.0f, 0.0f);
 	private  Box2DDebugRenderer	renderer = new Box2DDebugRenderer();
-	private  EditTable	editTable = new EditTable();
+	private  ItemWindow itemWindow = new ItemWindow();
+	private EditTable editTable = new EditTable();
 	private LayerWindow layerWindow = new LayerWindow();
 	private Keyboard keyboard = new Keyboard();
 	private Container cont = new Container();
@@ -55,8 +57,9 @@ public class StageEditor implements Screen {
 			count[i] = 0;
 		}
 
+		itemWindow.Init();
 		editTable.Init();
-		layerWindow.Init();
+	//	layerWindow.Init();
 	}
 
 	/**

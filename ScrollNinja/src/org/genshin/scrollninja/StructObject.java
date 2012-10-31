@@ -249,7 +249,7 @@ public class StructObject {
 		bd.type = BodyType.StaticBody;
 		body = GameMain.world.createBody(bd);
 		body.setTransform(positionX, positionY, 0);
-		
+
 		Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);

@@ -12,15 +12,17 @@ import javax.swing.JButton;
 
 public class ButtonForEdit extends JButton implements ActionListener {
 	
-	private int type = 0;
+	public static final int ROCK		= 0;
+	
+	private int type;
 
-	public ButtonForEdit(int Type) {
+	public ButtonForEdit(String filePath, int Type) {
 		// TODO 自動生成されたコンストラクター・スタブ
 //		setText(name);
-		type = Type;
 		addActionListener(this);
+		type = Type;
 		
-		ImageIcon icon = new ImageIcon("data/shuriken.png");
+		ImageIcon icon = new ImageIcon(filePath);
 		this.setIcon(icon);
 	}
 
@@ -30,5 +32,9 @@ public class ButtonForEdit extends JButton implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
+//		switch( type ) {
+//		case ROCK:
+			StructObjectManager.CreateStructObject(1);
+//		}
 	}
 }
