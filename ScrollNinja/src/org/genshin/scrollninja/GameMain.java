@@ -189,7 +189,7 @@ public class GameMain implements Screen{
 	 * キャラクターの描画位置初期化
 	 * */
 	public void InitPause() {
-		pause.init();
+		pause.Init();
 		pauseState = PAUSE_UPDATE;
 	}
 
