@@ -50,7 +50,6 @@ public class LayerWindow {
     	scrollPane = new JScrollPane(panel);	// なんかコンストラクタで指定しないとうまく動かないわ
     	frm.add(scrollPane);
     	
-
 //	    panel.add( new ButtonForEdit("data/shuriken.png", 0));
     	
     	frm.setVisible(true);

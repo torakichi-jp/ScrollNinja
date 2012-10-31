@@ -11,9 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ButtonForEdit extends JButton implements ActionListener {
-	
+
 	public static final int ROCK		= 0;
-	
+
 	private int type;
 
 	public ButtonForEdit(String filePath, int Type) {
@@ -21,7 +21,7 @@ public class ButtonForEdit extends JButton implements ActionListener {
 //		setText(name);
 		addActionListener(this);
 		type = Type;
-		
+
 		ImageIcon icon = new ImageIcon(filePath);
 		this.setIcon(icon);
 	}
