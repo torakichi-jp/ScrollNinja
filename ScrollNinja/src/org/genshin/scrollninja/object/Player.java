@@ -375,7 +375,7 @@ public class Player extends CharacterBase {
 	{
 		if( controller.kaginawaThrow() )
 		{
-			kaginawa.attack();
+			kaginawa.doThrow();
 		}
 		kaginawa.Update();
 	}
