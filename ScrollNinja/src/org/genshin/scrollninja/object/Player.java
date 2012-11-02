@@ -5,7 +5,7 @@ import org.genshin.scrollninja.Interface;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.WeaponManager;
 import org.genshin.scrollninja.object.player.DefaultPlayerController;
-import org.genshin.scrollninja.object.player.IPlayerController;
+import org.genshin.scrollninja.object.player.PlayerController;
 import org.genshin.scrollninja.object.weapon.Kaginawa;
 
 import com.badlogic.gdx.Gdx;
@@ -90,7 +90,7 @@ public class Player extends CharacterBase {
 	private boolean				groundJudge;			// 地面と当たってますよフラグ
 	private WeaponBase			weapon;
 	private Kaginawa				kaginawa;				// 鉤縄
-	private IPlayerController	controller;			// プレイヤーの操作状態インタフェース
+	private PlayerController	controller;			// プレイヤーの操作状態インタフェース
 
 	private Animation		standAnimation;			// 立ちアニメーション
 	private Animation		walkAnimation;			// 歩きアニメーション
