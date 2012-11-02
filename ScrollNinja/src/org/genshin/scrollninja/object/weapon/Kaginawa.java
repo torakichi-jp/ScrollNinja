@@ -23,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 /**
  * 鉤縄クラス
@@ -62,7 +63,7 @@ public class Kaginawa extends WeaponBase
 	private State state;
 	
 	/** 縄の長さを制限するためのジョイント */
-	private Joint ropeJoint;
+	private Joint joint;
 	
 	/** 鉤縄の向き */
 	private Vector2 dir;
@@ -195,16 +196,31 @@ public class Kaginawa extends WeaponBase
 				Body kaginawa	= me.body;
 				Body owner		= me.owner;
 				
+				// 鉤縄を初期化
 				kaginawa.setActive(false);
+				
+				// 持ち主を初期化
 				owner.setGravityScale(1.0f);
 			}
 
 			@Override
 			void doThrow(Kaginawa me)
 			{
+				me.changeState(THROW);
+			}
+		},
+		
+		/**
+		 * 鉤縄を投げている状態
+		 */
+		THROW
+		{
+			@Override
+			void initialize(Kaginawa me)
+			{
 				Body kaginawa	= me.body;
 				Body owner		= me.owner;
-				Vector2 dir	= me.dir;
+				Vector2 dir		= me.dir;
 				
 				// FIXME 鉤縄の向き設定（仮）
 				Vector2 mousePos = new Vector2(
@@ -221,26 +237,14 @@ public class Kaginawa extends WeaponBase
 				dir.y = mousePos.y - ownerPos.y;
 				dir.nor();
 				
-				me.changeState(THROW);
-			}
-		},
-		
-		/**
-		 * 鉤縄を投げている状態
-		 */
-		THROW
-		{
-			@Override
-			void initialize(Kaginawa me)
-			{
-				Body kaginawa	= me.body;
-				Body owner		= me.owner;
-				Vector2 dir	= me.dir;
-				
+				// 鉤縄を初期化
+				kaginawa.setType(BodyType.DynamicBody);
+				kaginawa.setLinearVelocity(dir.x*THROW_VEL, dir.y*THROW_VEL);
 				kaginawa.setTransform(owner.getPosition(), 0);
 				kaginawa.setActive(true);
-				kaginawa.setLinearVelocity(dir.x*THROW_VEL, dir.y*THROW_VEL);
-				owner.setGravityScale(1.0f);
+				
+				// 持ち主を初期化
+				//owner.setGravityScale(1.0f);
 			}
 
 			@Override
@@ -256,7 +260,8 @@ public class Kaginawa extends WeaponBase
 				
 				if(direction.len2() > LEN_MAX*LEN_MAX)
 				{
-					doRelease(me);
+					//doRelease(me);
+					doHang(me);
 				}
 			}
 
@@ -289,10 +294,22 @@ public class Kaginawa extends WeaponBase
 			{
 				Body kaginawa	= me.body;
 				Body owner		= me.owner;
+				World world		= kaginawa.getWorld();
 				
+				// 鉤縄を初期化
+				kaginawa.setType(BodyType.DynamicBody);
 				kaginawa.setLinearVelocity(Vector2.Zero);
+				
+				// 持ち主を初期化
 				owner.setGravityScale(0.0f);
-				owner.setLinearVelocity(Vector2.Zero);
+				owner.setLinearVelocity(Vector2.Zero);		// TODO なくす？
+				
+				// ジョイントがあれば切り離す
+				if(me.joint != null)
+				{
+					kaginawa.getWorld().destroyJoint(me.joint);
+					me.joint = null;
+				}
 			}
 
 			@Override
@@ -306,7 +323,7 @@ public class Kaginawa extends WeaponBase
 				float len2 = direction.len2();
 				direction.nor().mul(SHRINK_VEL);
 	
-				owner.applyLinearImpulse(direction, ownerPos);
+				owner.setLinearVelocity(direction);
 	
 				if(len2 < (SHRINK_VEL*SHRINK_VEL)/30/30)
 				{
@@ -337,8 +354,26 @@ public class Kaginawa extends WeaponBase
 			{
 				Body kaginawa	= me.body;
 				Body owner		= me.owner;
+				World world		= kaginawa.getWorld();
+				
+				// 鉤縄にジョイントは存在しないハズ
+				assert kaginawa.getJointList().isEmpty();
 
+				// 鉤縄を初期化
+				kaginawa.setType(BodyType.StaticBody);
+				kaginawa.setLinearVelocity(Vector2.Zero);
+				
+				// 持ち主を初期化
 				owner.setGravityScale(1.0f);
+				
+				// ジョイントを生成
+				
+				RopeJointDef jd = new RopeJointDef();
+				jd.bodyA = owner;
+				jd.bodyB = kaginawa;
+				jd.maxLength = kaginawa.getPosition().sub(owner.getPosition()).len();
+				
+				me.joint = world.createJoint(jd);
 			}
 
 			@Override
@@ -370,10 +405,22 @@ public class Kaginawa extends WeaponBase
 			{
 				Body kaginawa	= me.body;
 				Body owner		= me.owner;
+				World world		= kaginawa.getWorld();
+				
+				// 鉤縄を初期化
+				kaginawa.setActive(false);
+				
+				// 持ち主を初期化
+				owner.setGravityScale(1.0f);
+				
+				// ジョイントがあれば切り離す
+				if(me.joint != null)
+				{
+					kaginawa.getWorld().destroyJoint(me.joint);
+					me.joint = null;
+				}
 				
 				// TODO 鉤縄を離した時のエフェクト的なものを発生させる。
-				kaginawa.setActive(false);
-				owner.setGravityScale(1.0f);
 			}
 
 			@Override
@@ -400,8 +447,10 @@ public class Kaginawa extends WeaponBase
 		/**
 		 * 鉤縄を投げる。
 		 * @param me	自身を指す鉤縄オブジェクト
+		 * 
+		 * FIXME 実験用に鉤縄投げ放題モード
 		 */
-		void doThrow(Kaginawa me) { /* 何もしない */ }
+		void doThrow(Kaginawa me) {	me.changeState(RELEASE); }///* 何もしない */ }
 
 		/**
 		 * 鉤縄を縮める。
