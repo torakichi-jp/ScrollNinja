@@ -54,6 +54,12 @@ public interface IPlayerController
 	boolean kaginawaThrow();
 	
 	/**
+	 * 鉤縄を縮める操作の状態を取得する。
+	 * @return	鉤縄を縮める操作がある場合はtrue
+	 */
+	boolean kaginawaShrink();
+	
+	/**
 	 * 鉤縄にぶら下がる操作の状態を取得する。
 	 * @return	鉤縄にぶら下がる操作がある場合はtrue
 	 */
