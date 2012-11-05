@@ -164,7 +164,7 @@ public class Kaginawa extends WeaponBase
 	protected void collisionNotify(Background obj, Contact contact)
 	{
 		// TODO 鉤縄の衝突処理とか。
-		doShrink();
+		doHang();
 	}
 	
 	/**
@@ -367,10 +367,11 @@ public class Kaginawa extends WeaponBase
 				owner.setGravityScale(1.0f);
 				
 				// ジョイントを生成
-				
 				RopeJointDef jd = new RopeJointDef();
 				jd.bodyA = owner;
 				jd.bodyB = kaginawa;
+				jd.localAnchorA.set(Vector2.Zero);
+				jd.localAnchorB.set(Vector2.Zero);
 				jd.maxLength = kaginawa.getPosition().sub(owner.getPosition()).len();
 				
 				me.joint = world.createJoint(jd);

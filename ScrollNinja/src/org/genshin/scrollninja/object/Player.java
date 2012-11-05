@@ -377,6 +377,18 @@ public class Player extends CharacterBase {
 		{
 			kaginawa.doThrow();
 		}
+		if( controller.kaginawaShrink() )
+		{
+			kaginawa.doShrink();
+		}
+		if( controller.kaginawaHang() )
+		{
+			kaginawa.doHang();
+		}
+		if( controller.kaginawaRelease() )
+		{
+			kaginawa.doRelease();
+		}
 		kaginawa.Update();
 	}
 

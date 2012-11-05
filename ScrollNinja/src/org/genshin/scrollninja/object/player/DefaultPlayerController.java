@@ -18,11 +18,11 @@ public class DefaultPlayerController extends BasePlayerController
 	@Override
 	protected void initialize()
 	{
-		registKey(ACTION.LEFT, Keys.A);
-		registKey(ACTION.RIGHT, Keys.D);
-		registKey(ACTION.DASH, Keys.SHIFT_LEFT);
-		registKey(ACTION.JUMP, Keys.W);
-		registMouse(ACTION.ATTACK, Buttons.LEFT);
-		registMouse(ACTION.KAGINAWA, Buttons.RIGHT);
+		registKey(State.LEFT, Keys.A);
+		registKey(State.RIGHT, Keys.D);
+		registKey(State.DASH, Keys.SHIFT_LEFT);
+		registKey(State.JUMP, Keys.W);
+		registMouse(State.ATTACK, Buttons.LEFT);
+		registMouse(State.KAGINAWA, Buttons.RIGHT);
 	}
 }
