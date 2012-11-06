@@ -14,6 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
+
 public class LayerWindow {
 	
 	private final int		WIDTH = 128;
@@ -37,14 +41,16 @@ public class LayerWindow {
 		frm.setTitle("レイヤー");
         frm.setSize(new Dimension(WIDTH,HEIGHT));
         frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
-		panel.setLayout( new GridLayout(15,1));
+		panel.setLayout( new GridLayout(0,1));
 
-    	for( int i = 0; i < 10; i ++ ) {
-    		panel.add( new ButtonForEdit(i));
-    	}
+//    	for( int i = 0; i < 10; i ++ ) {
+ //   		panel.add( new ButtonForEdit("data/shuriken.png", 0));
+ //   	}
     	
     	scrollPane = new JScrollPane(panel);	// なんかコンストラクタで指定しないとうまく動かないわ
     	frm.add(scrollPane);
+    	
+//	    panel.add( new ButtonForEdit("data/shuriken.png", 0));
     	
     	frm.setVisible(true);
 	}
@@ -53,6 +59,7 @@ public class LayerWindow {
 	 * 更新
 	 */
 	public void Update() {
+	    
 		if( frontFlag ) {
 			frm.setAlwaysOnTop(true);		// 常に前面だけど非アクティブ
 		}
