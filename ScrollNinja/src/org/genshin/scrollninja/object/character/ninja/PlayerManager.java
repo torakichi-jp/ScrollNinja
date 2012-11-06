@@ -1,15 +1,15 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object.character.ninja;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.Player;
+import org.genshin.scrollninja.GameMain;
 
 
 import com.badlogic.gdx.math.Vector2;
 
 // TODO playerListの中で、今操作中のプレイヤーは何番目？
 public class PlayerManager {
-	private static ArrayList<Player> playerList = new ArrayList<Player>();
+	private static ArrayList<PlayerNinja> playerList = new ArrayList<PlayerNinja>();
 
 	private PlayerManager(){}
 
@@ -18,7 +18,7 @@ public class PlayerManager {
 	 */
 	public static void Update() {
 		for( int i = 0; i < playerList.size(); i ++) {
-			playerList.get(i).Update();
+			playerList.get(i).update();
 		}
 	}
 
@@ -27,7 +27,7 @@ public class PlayerManager {
 	 */
 	public static void Draw() {
 		for( int i = 0; i < playerList.size(); i ++) {
-			playerList.get(i).Draw();
+			playerList.get(i).render();
 		}
 	}
 
@@ -37,10 +37,10 @@ public class PlayerManager {
 	 */
 	public static void CreatePlayer(Vector2 position) {
 		if (playerList == null)
-			playerList = new ArrayList<Player>();
+			playerList = new ArrayList<PlayerNinja>();
 
 		// 生成した順に管理番号付与
-		Player pPlayer = new Player(playerList.size() + 1, position);
+		PlayerNinja pPlayer = new PlayerNinja(GameMain.world, playerList.size() + 1, position);
 		playerList.add(pPlayer);						// 追加
 	}
 
@@ -49,7 +49,7 @@ public class PlayerManager {
 	 * @param i		管理番号
 	 * @return		プレイヤー
 	 */
-	public static Player GetPlayer( int i) {
+	public static PlayerNinja GetPlayer( int i) {
 		return playerList.get(i);
 	}
 
@@ -62,6 +62,6 @@ public class PlayerManager {
 				playerList.get(i).Release();
 			}
 		}
-		playerList = new ArrayList<Player>();
+		playerList = new ArrayList<PlayerNinja>();
 	}
 }

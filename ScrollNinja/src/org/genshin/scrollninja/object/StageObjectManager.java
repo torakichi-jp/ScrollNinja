@@ -1,11 +1,10 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.StageObject;
 
 
 import com.badlogic.gdx.math.Vector2;
@@ -29,7 +28,7 @@ public class StageObjectManager {
 	//************************************************************
 	public static void Draw() {
 		for( int i = 0; i < rockList.size(); i ++) {
-			rockList.get(i).Draw();
+			rockList.get(i).render();
 		}
 	}
 

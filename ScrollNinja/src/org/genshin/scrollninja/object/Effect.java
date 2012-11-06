@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,7 +32,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 //========================================
 // クラス宣言
 //========================================
-public class Effect extends ObjectBase {
+public class Effect extends AbstractObject {
 
 	//========================================
 	// 定数宣言
@@ -64,8 +67,8 @@ public class Effect extends ObjectBase {
 	 ***************************************************/
 	public Effect(int type, CharacterBase owner) {
 		this.owner	= owner;
-		sprite		= new ArrayList<Sprite>();
-		sensor		= new ArrayList<Fixture>();
+		sprites		= new ArrayList<Sprite>();
+		fixtures		= new ArrayList<Fixture>();
 		effectType	= type;
 		effectTime	= 0;
 		stateTime	= 0;
@@ -74,7 +77,7 @@ public class Effect extends ObjectBase {
 		useFlag		= false;
 
 		Create();
-		sensor.get(0).setUserData(this);
+		fixtures.get(0).setUserData(this);
 	}
 
 	/**************************************************
@@ -126,8 +129,8 @@ public class Effect extends ObjectBase {
 			fd.restitution	= 0;
 			fd.shape		= poly;
 
-			sensor.add(body.createFixture(poly, 0));
-			sensor.get(0).setSensor(true);
+			fixtures.add(body.createFixture(poly, 0));
+			fixtures.get(0).setSensor(true);
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み
@@ -136,9 +139,9 @@ public class Effect extends ObjectBase {
 			region = new TextureRegion(texture, 0, 0, 128, 128);
 
 			// スプライトに反映
-			sprite.add(new Sprite(region));
-			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(ScrollNinja.scale);
+			sprites.add(new Sprite(region));
+			sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
+			sprites.get(0).setScale(ScrollNinja.scale);
 
 			// アニメーション
 			tmp = TextureRegion.split(texture, 128, 128);
@@ -167,8 +170,8 @@ public class Effect extends ObjectBase {
 			fd.restitution	= 0;
 			fd.shape		= poly;
 
-			sensor.add(body.createFixture(poly, 0));
-			sensor.get(0).setSensor(true);
+			fixtures.add(body.createFixture(poly, 0));
+			fixtures.get(0).setSensor(true);
 			body.setBullet(true);			// すり抜け防止
 
 			// テクスチャの読み込み
@@ -177,9 +180,9 @@ public class Effect extends ObjectBase {
 			region = new TextureRegion(texture, 0, 0, 128, 128);
 
 			// スプライトに反映
-			sprite.add(new Sprite(region));
-			sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(ScrollNinja.scale);
+			sprites.add(new Sprite(region));
+			sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
+			sprites.get(0).setScale(ScrollNinja.scale);
 
 			// アニメーション
 			tmp = TextureRegion.split(texture, 128, 128);
@@ -220,9 +223,9 @@ public class Effect extends ObjectBase {
 									owner.position.y + 4, 0);
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
-			sprite.get(0).setPosition(position.x - 64 - (1 * owner.direction), position.y - 64 + 1);
-			sprite.get(0).setScale(-owner.direction * ScrollNinja.scale, ScrollNinja.scale);
-			sprite.get(0).setRegion(nowFrame);
+			sprites.get(0).setPosition(position.x - 64 - (1 * owner.direction), position.y - 64 + 1);
+			sprites.get(0).setScale(-owner.direction * ScrollNinja.scale, ScrollNinja.scale);
+			sprites.get(0).setRegion(nowFrame);
 
 			animation();
 		}
@@ -231,23 +234,23 @@ public class Effect extends ObjectBase {
 			stateTime = 0;
 			body.setTransform( -100.0f, -100.0f, 0.0f);
 			position = body.getPosition();
-			sprite.get(0).setPosition(position.x - 100, position.y);
+			sprites.get(0).setPosition(position.x - 100, position.y);
 		}
 	}
 
 	/**
 	 * スプライトを描画する。
 	 */
-	public void Draw()
+	public void render()
 	{
 		if( useFlag ) {
 			Vector2 pos = body.getPosition();
 			float rot = (float) Math.toDegrees(body.getAngle());
 
-			int count = sprite.size();
+			int count = sprites.size();
 			for (int i = 0; i < count; ++i)
 			{
-				Sprite current = sprite.get(i);
+				Sprite current = sprites.get(i);
 				// 座標・回転
 				current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
 				current.setRotation(rot);
@@ -278,28 +281,28 @@ public class Effect extends ObjectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObjectBase obj, Contact contact) {
-		obj.collisionNotify(this, contact);
+	public void dispatchCollision(AbstractObject object, Contact contact) {
+		object.notifyCollision(this, contact);
 	}
 
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}
+	public void notifyCollision(Background obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void notifyCollision(PlayerNinja obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){}
+	public void notifyCollision(Enemy obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Effect obj, Contact contact){}
+	public void notifyCollision(Effect obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Item obj, Contact contact){}
+	public void notifyCollision(Item obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){}
+	public void notifyCollision(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(WeaponBase obj, Contact contact){}
+	public void notifyCollision(AbstractWeapon obj, Contact contact){}
 }

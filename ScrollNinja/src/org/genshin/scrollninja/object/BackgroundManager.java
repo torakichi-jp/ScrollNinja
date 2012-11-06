@@ -1,6 +1,5 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
-import org.genshin.scrollninja.object.Background;
 
 
 // TODO ArrayListとして保持しておく必要はない？　というか無駄になるからステージ毎にCreateして１つのみにした方がよさげ？

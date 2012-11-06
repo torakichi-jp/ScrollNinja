@@ -4,8 +4,11 @@ import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.genshin.scrollninja.object.BackgroundManager;
 import org.genshin.scrollninja.object.Stage;
 import org.genshin.scrollninja.object.StageEditor;
+import org.genshin.scrollninja.object.StageManager;
+
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

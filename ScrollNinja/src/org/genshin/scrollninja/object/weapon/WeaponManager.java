@@ -1,4 +1,4 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object.weapon;
 
 //========================================
 // インポート
@@ -6,8 +6,6 @@ package org.genshin.scrollninja;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.object.CharacterBase;
-import org.genshin.scrollninja.object.WeaponBase;
-import org.genshin.scrollninja.object.weapon.Katana;
 
 //========================================
 // クラス宣言
@@ -29,7 +27,7 @@ public class WeaponManager {
 
 	public static void Update() {
 		for( int i = 0; i < katanaList.size(); i ++ ) {
-			katanaList.get(i).Update();
+			katanaList.get(i).update();
 		}
 	}
 
@@ -39,7 +37,7 @@ public class WeaponManager {
 	 * @param type			種類
 	 * @param lv			武器レベル
 	 */
-	public static WeaponBase CreateWeapon(CharacterBase owner, int type, int lv) {
+	public static AbstractWeapon CreateWeapon(CharacterBase owner, int type, int lv) {
 		switch(type) {
 		case KATANA:
 			Katana pKatana = new Katana(owner, katanaList.size() + 1, lv);

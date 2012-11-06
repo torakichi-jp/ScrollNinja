@@ -1,11 +1,10 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.Enemy;
 
 
 import com.badlogic.gdx.math.Vector2;
@@ -28,7 +27,7 @@ public class EnemyManager {
 		for (int i = 0; i <enemyList.size(); i ++) {
 			// 存在しているなら更新
 			if (enemyList.get(i) != null)
-				enemyList.get(i).Update();
+				enemyList.get(i).update();
 		}
 	}
 
@@ -39,7 +38,7 @@ public class EnemyManager {
 		for (int i = 0; i < enemyList.size(); i ++) {
 			// 存在しているなら描画
 			if (enemyList.get(i) != null)
-				enemyList.get(i).Draw();
+				enemyList.get(i).render();
 		}
 	}
 

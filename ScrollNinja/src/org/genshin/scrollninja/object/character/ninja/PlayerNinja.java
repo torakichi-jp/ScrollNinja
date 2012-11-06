@@ -1,12 +1,16 @@
-package org.genshin.scrollninja.object;
+package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.Interface;
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.WeaponManager;
-import org.genshin.scrollninja.object.player.DefaultPlayerController;
-import org.genshin.scrollninja.object.player.PlayerController;
+import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.Background;
+import org.genshin.scrollninja.object.CharacterBase;
+import org.genshin.scrollninja.object.Effect;
+import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.weapon.Kaginawa;
+import org.genshin.scrollninja.object.weapon.WeaponManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +26,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 // 制作メモ
 // 10/2 	制作開始
@@ -36,6 +41,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 //			・攻撃後すぐ戻ると不自然だったので上半身がそのまましばらく残るようにしました
 //			・落下速度の調整
 
+// TODO そのうちリファクタリングしてやるから待ってろ！
 // *メモ*
 // 攻撃はダッシュしながら攻撃可能（足は止まらない）
 // 右クリック押しっぱなしで伸び続ける
@@ -47,121 +53,56 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 //		↑の部分は現在立ちアニメーションがないのでコメントアウトしてモーション遷移確認のため歩きで代用しています
 // 		コメントアウト部分消すと完成した時どこ直せばいいのか探すのめんどいので消さないようにお願いします
 
-//========================================
-// クラス宣言
-//========================================
+// FIXME そのうちがっつりリファクタリングしてやるから待ってろ！
+
 /**
- * プレイヤークラス
- * @author
+ * プレイヤーが操作する忍者
+ * @author	インターン生
  * @author	kou
  * @since		1.0
  * @version	1.0
  */
-public class Player extends CharacterBase {
-	// 定数宣言
-	private static final float RUN_VEL_MAX				= 20.0f;	// 走りの最高速度
-	private static final float DASH_VEL_MAX			= 40.0f;	// ダッシュの最高速度
-	private static final float RUN_ACCEL				= 5.0f;	// 走りの加速度
-	private static final float DASH_ACCEL				= 10.0f;	// ダッシュの加速度
-	private static final float JUMP_POWER				= 70.0f;	// ジャンプ加速度
-	private static final int AERIAL_JUMP_COUNT_MAX		= 1;		// 空中でジャンプできる回数
-
-	private static final int FOOT	= 0;
-	private static final int BODY	= 1;
-
-	private static final int RIGHT			=  1;
-	private static final int LEFT			= -1;
-	private static final int STAND			=  0;
-	private static final int RUN				=  1;
-	private static final int DASH			=  2;
-	private static final int JUMP			=  3;
-	private static final int ATTACK			=  4;
-
-	// 変数宣言
-	private int					number;				// プレイヤー番号
-	private int					charge;				// チャージゲージ
-	private int					currentState;			// 現在の状態
-	private int					maxChakra;				// チャクラ最大値
-	private int					chakra;				// チャクラ
-	private int					count;					// カウント用変数
-	private int					invincibleTime;		// 無敵時間
-	private float				stateTime;
-	private int					restAerialJumpCount;	// 空中でジャンプできる残り回数
-	private boolean				groundJudge;			// 地面と当たってますよフラグ
-	private WeaponBase			weapon;
-	private Kaginawa				kaginawa;				// 鉤縄
-	private PlayerController	controller;			// プレイヤーの操作状態インタフェース
-
-	private Animation		standAnimation;			// 立ちアニメーション
-	private Animation		walkAnimation;			// 歩きアニメーション
-	private Animation		dashAnimation;			// ダッシュアニメーション
-	private Animation		jumpAnimation;			// ジャンプアニメーション
-	private Animation		attackAnimation;			// 攻撃アニメーション
-	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
-	private TextureRegion[]	frame;						// アニメーションのコマ
-	private TextureRegion	nowFrame;					// 現在のコマ
-	private TextureRegion	nowFootFrame;				// 下半身用の現在のコマ
-
-	// おそらく別のクラスに吐き出す変数
-	private int				money;					// お金
-	
-	// おそらく使わなくなる変数
-	private boolean				jump;					// ジャンプフラグ
-
-	//************************************************************
-	// Get
-	// ゲッターまとめ
-	//************************************************************
-	public int GetDirection(){ return direction; }
-	public int GetChakra(){ return chakra; }
-	public int GetMaxChakra(){ return maxChakra; }
-	public Sprite GetSprite(String type) {
-		if (type.equals("BODY"))
-			return sprite.get(BODY);
-		else
-			return sprite.get(FOOT);
-	}
-	public int GetMaxHP() { return MAX_HP;}
-	public float GetHP() { return hp; }
-	public WeaponBase GetWeapon(){ return weapon; }
-
+public class PlayerNinja extends CharacterBase {
 	/**
 	 * コンストラクタ
-	 * @param Number	管理番号
+	 * @param Number	管理番号		// XXX 何これ要るの？
 	 * @param position	初期座標
 	 */
-	public Player(int Number, Vector2 position) {
-		// body生成
-		BodyDef bd = new BodyDef();
-		bd.type = BodyType.DynamicBody;		// 移動する
-		bd.position.set(position);			// 座標初期化
-		bd.bullet = true;					// すり抜けない
-		bd.fixedRotation = true;			// 回転しない
-		body = GameMain.world.createBody(bd);
+	public PlayerNinja(World world, int Number, Vector2 position) {
+		// Body生成
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;	// 移動する
+		bodyDef.position.set(position);			// 座標初期化
+		bodyDef.bullet = true;					// すり抜けない
+		bodyDef.fixedRotation = true;			// 回転しない
+		createBody(world, bodyDef);
 
-		// fixture生成
-		PolygonShape poly = new PolygonShape();
-		poly.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
+		// 下半身のFixture生成
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(1.5f);
+		
+		FixtureDef footFixtureDef = new FixtureDef();
+		footFixtureDef.density		= 0.0f;			// 密度
+		footFixtureDef.friction		= 0.0f;			// 摩擦
+		footFixtureDef.restitution	= 0.0f;			// 反発
+		footFixtureDef.shape		= circleShape;	// 形状
+		
+		createFixture(footFixtureDef);
+		
+		circleShape.dispose();
+		
+		// 上半身のFixture生成
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
 
-		FixtureDef fd = new FixtureDef();
-		fd.density			= 0.0f;	// 密度
-		fd.friction		= 0.0f;	// 摩擦
-		fd.restitution	= 0.0f;	// 反発
-		fd.shape			= poly;	// 形状
+		FixtureDef bodyFixtureDef = new FixtureDef();
+		bodyFixtureDef.density		= 0.0f;			// 密度
+		bodyFixtureDef.friction		= 0.0f;			// 摩擦
+		bodyFixtureDef.restitution	= 0.0f;			// 反発
+		bodyFixtureDef.shape		= polygonShape;	// 形状
 
-		Fixture bodyFixture = body.createFixture(fd);
-		bodyFixture.setUserData(this);
-		poly.dispose();
-
-		CircleShape circle = new CircleShape();
-		circle.setRadius(1.5f);
-		fd.shape = circle;
-		Fixture footFixture = body.createFixture(fd);
-		footFixture.setUserData(this);
-		circle.dispose();
-
-		sensor.add(footFixture);
-		sensor.add(bodyFixture);
+		createFixture(bodyFixtureDef);
+		polygonShape.dispose();
 
 		// テクスチャの読み込み
 		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
@@ -202,8 +143,8 @@ public class Player extends CharacterBase {
 		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f - 8);
 		bodySprite.setScale(ScrollNinja.scale);
 
-		sprite.add(footSprite);
-		sprite.add(bodySprite);
+		sprites.add(footSprite);
+		sprites.add(bodySprite);
 
 		// 一番最初の表示　現在は歩きで代用
 		nowFrame = walkAnimation.getKeyFrame(0, true);
@@ -219,32 +160,31 @@ public class Player extends CharacterBase {
 		invincibleTime = 0;
 		number = Number;
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA, 2);	// TODO 今だけレベル２
-		kaginawa = new Kaginawa(body);
-		controller = new DefaultPlayerController();
-		restAerialJumpCount = AERIAL_JUMP_COUNT_MAX;
+		kaginawa = new Kaginawa(world, body);
+		controller = new DefaultPlayerNinjaController();
+		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT_MAX;
 	}
-
 
 	/**
 	 * 更新処理
 	 */
-	public void Update() {
+	public void update() {
 		// 操作状態を更新
 		controller.update();
 
-		sprite.get(BODY).setRegion(nowFrame);
-		sprite.get(FOOT).setRegion(nowFootFrame);
+		sprites.get(BODY).setRegion(nowFrame);
+		sprites.get(FOOT).setRegion(nowFootFrame);
 
 		int prevState = currentState;
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少S
 		if( count > 0 ) count --;						// アニメーションカウントの減少
 
-		Flashing();			// 点滅処理
-		Move();				// 移動処理
-		Stand();				// 立ち処理
-		Jump();				// ジャンプ処理
-		Attack();				// 攻撃処理
-		updateKaginawa();		// 鉤縄処理
+		flashing();			// 点滅処理
+		updateMove();		// 移動処理
+		updateStand();		// 立ち処理
+		updateJump();		// ジャンプ処理
+		updateAttack();		// 攻撃処理
+		updateKaginawa();	// 鉤縄処理
 
 		if( prevState != currentState ) {
 			stateTime = 0;
@@ -258,41 +198,138 @@ public class Player extends CharacterBase {
 
 		groundJudge = false;
 	}
+	
+	@Override
+	public void render()
+	{
+		kaginawa.render();
+		super.render();
+	}
+
+	@Override
+	public void dispatchCollision(AbstractObject object, Contact contact) {
+		object.notifyCollision(this, contact);
+	}
+
+	@Override
+	public void notifyCollision(Background obj, Contact contact) {
+		// 衝突したのが足でなければそのままでOK
+		Fixture footFixture = fixtures.get(FOOT);
+		if(contact.getFixtureA()!=footFixture && contact.getFixtureB()!=footFixture)
+			return;
+
+		// 足が地面に着いたらジャンプできるよ！
+		jump = false;
+		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT_MAX;
+
+		if( currentState != ATTACK ) {
+			//currentState = STAND;
+			currentState = RUN;
+		}
+
+		groundJudge = true;
+
+		// 壁走り
+		nearRotate( (float)Math.toRadians(contact.getWorldManifold().getNormal().angle()-90) );
+	}
+
+	@Override
+	public void notifyCollision(Item obj, Contact contact){
+		switch(obj.GetType()) {
+		case Item.ONIGIRI:
+			hp += 50;
+			if( hp > MAX_HP ) {
+				hp = MAX_HP;
+			}
+			Interface.calculateHP = true;
+			break;
+		case Item.OKANE:
+			break;
+		}
+	}
+	
+	@Override
+	public void notifyCollision(AbstractWeapon obj, Contact contact){
+		if (obj.GetOwner() != this) {
+			if( invincibleTime == 0 ) {
+				invincibleTime = 120;		// 無敵時間付与
+				hp -= obj.GetAttackNum();
+				Interface.calculateHP = true;
+			}
+			if( hp <= 0 ) {
+				// TODO ゲームオーバー処理へ
+				hp = 100;
+			}
+		}
+	}
+	
+	@Override
+	public void notifyCollision(Effect obj, Contact contact){
+		if (obj.GetOwner() != this) {
+			if( invincibleTime == 0 ) {
+				invincibleTime = 120;		// 無敵時間付与
+				hp -= obj.GetAttackNum();
+				Interface.calculateHP = true;
+			}
+			if( hp <= 0 ) {
+				// TODO ゲームオーバー処理へ
+				hp = 100;
+			}
+		}
+	}
+
+	//************************************************************
+	// Get
+	// ゲッターまとめ
+	//************************************************************
+	public int GetDirection(){ return direction; }
+	public int GetChakra(){ return chakra; }
+	public int GetMaxChakra(){ return maxChakra; }
+	public Sprite GetSprite(String type) {
+		if (type.equals("BODY"))
+			return sprites.get(BODY);
+		else
+			return sprites.get(FOOT);
+	}
+	public int GetMaxHP() { return MAX_HP;}
+	public float GetHP() { return hp; }
+	public AbstractWeapon GetWeapon(){ return weapon; }
 
 	/**
 	 *
 	 */
-	private void Stand() {
+	private void updateStand() {
 
 		Vector2 velocity = body.getLinearVelocity();
 		if( velocity.x == 0 ) {
 			currentState = STAND;
 		}
 	}
+	
 	/**
 	 * ジャンプ処理
 	 * Ｗでジャンプ
 	 */
-	private void Jump() {
+	private void updateJump() {
 
 		// 地面に接触しているならジャンプ可能
 		if( groundJudge ) {
 			// 上押したらジャンプ！
-			if (controller.jump()) {
+			if (controller.isJump()) {
 				jump = true;
 				currentState = JUMP;
 				body.setLinearVelocity(body.getLinearVelocity().x, 0.0f);
-				body.applyLinearImpulse(0.0f, JUMP_POWER, position.x, position.y);
+				body.applyLinearImpulse(0.0f, NinjaParam.INSTANCE.JUMP_POWER, position.x, position.y);
 			}
 		}
 		else
 		{
-			if(controller.aerialJump() && restAerialJumpCount > 0)
+			if(controller.isAerialJump() && restAerialJumpCount > 0)
 			{
 				restAerialJumpCount--;
 				currentState = JUMP;
 				body.setLinearVelocity(body.getLinearVelocity().x, 0.0f);
-				body.applyLinearImpulse(0.0f, JUMP_POWER, position.x, position.y);
+				body.applyLinearImpulse(0.0f, NinjaParam.INSTANCE.JUMP_POWER, position.x, position.y);
 			}
 			nearRotate(0);
 		}
@@ -302,12 +339,12 @@ public class Player extends CharacterBase {
 	 * 移動処理
 	 * 左右で移動
 	 */
-	private void Move()
+	private void updateMove()
 	{
-		if(controller.dash())
-			move(DASH_ACCEL, DASH_VEL_MAX, DASH);
+		if(controller.isDash())
+			move(NinjaParam.INSTANCE.DASH_ACCEL, NinjaParam.INSTANCE.DASH_VELOCITY_MAX, DASH);
 		else
-			move(RUN_ACCEL, RUN_VEL_MAX, RUN);
+			move(NinjaParam.INSTANCE.RUN_ACCEL, NinjaParam.INSTANCE.RUN_VELOCITY_MAX, RUN);
 	}
 
 	private void move(float accel, float maxVel, int state)
@@ -323,7 +360,7 @@ public class Player extends CharacterBase {
 
 		// 移動処理
 		// FIXME 斜面でずり落ちないようにする。摩擦いじる？
-		float moveLevel = controller.moveLevel();
+		float moveLevel = controller.getMoveLevel();
 
 		if(moveLevel == 0.0f)
 		{
@@ -353,7 +390,7 @@ public class Player extends CharacterBase {
 	// Attack
 	// 攻撃処理。左クリックで攻撃
 	//************************************************************
-	private void Attack() {
+	private void updateAttack() {
 		if( weapon.GetUseFlag() ) {
 			currentState = ATTACK;
 		}
@@ -361,42 +398,35 @@ public class Player extends CharacterBase {
 			currentState = JUMP;
 		}
 
-		if(controller.attack() && currentState != ATTACK ) {
+		if(controller.isAttack() && currentState != ATTACK ) {
 			count = 30 + 18;
 			currentState = ATTACK;
 			weapon.SetUseFlag(true);
 		}
 	}
-
+	
 	/**
 	 * 鉤縄の更新処理を実行する。
 	 */
 	private void updateKaginawa()
 	{
-		if( controller.kaginawaThrow() )
+		if( controller.isKaginawaThrow() )
 		{
 			kaginawa.doThrow();
 		}
-		if( controller.kaginawaShrink() )
+		if( controller.isKaginawaShrink() )
 		{
 			kaginawa.doShrink();
 		}
-		if( controller.kaginawaHang() )
+		if( controller.isKaginawaHang() )
 		{
 			kaginawa.doHang();
 		}
-		if( controller.kaginawaRelease() )
+		if( controller.isKaginawaRelease() )
 		{
 			kaginawa.doRelease();
 		}
-		kaginawa.Update();
-	}
-
-	@Override
-	public void Draw()
-	{
-		kaginawa.Draw();
-		super.Draw();
+		kaginawa.update();
 	}
 
 	//************************************************************
@@ -429,101 +459,25 @@ public class Player extends CharacterBase {
 	}
 
 	// 武器変更
-	private void changeWeapon() {
+	private void changeWeapon()
+	{
 	}
 
 	/**
 	 * 点滅処理
 	 */
-	public void Flashing() {
+	public void flashing() {
 		// 高速点滅
 		if( invincibleTime != 0 ) {
 			if( invincibleTime % 10 > 5 ) {
-				for(int i = 0; i < sprite.size(); i ++) {
-					sprite.get(i).setColor( 0, 0, 0, 0);
+				for(int i = 0; i < sprites.size(); i ++) {
+					sprites.get(i).setColor( 0, 0, 0, 0);
 				}
 			}
 			else {
-				for(int i = 0; i < sprite.size(); i ++) {
-					sprite.get(i).setColor(1, 1, 1, 1);
+				for(int i = 0; i < sprites.size(); i ++) {
+					sprites.get(i).setColor(1, 1, 1, 1);
 				}
-			}
-		}
-	}
-
-	@Override
-	public void collisionDispatch(ObjectBase obj, Contact contact) {
-		obj.collisionNotify(this, contact);
-	}
-
-	/**
-	 * @Override
-	 * 地面との当たり判定
-	 */
-	public void collisionNotify(Background obj, Contact contact) {
-		// 衝突したのが足でなければそのままでOK
-		Fixture footFixture = sensor.get(FOOT);
-		if(contact.getFixtureA()!=footFixture && contact.getFixtureB()!=footFixture)
-			return;
-
-		// 足が地面に着いたらジャンプできるよ！
-		jump = false;
-		restAerialJumpCount = AERIAL_JUMP_COUNT_MAX;
-
-		if( currentState != ATTACK ) {
-			//currentState = STAND;
-			currentState = RUN;
-		}
-
-		groundJudge = true;
-
-		// 壁走り
-		nearRotate( (float)Math.toRadians(contact.getWorldManifold().getNormal().angle()-90) );
-	}
-
-	/**
-	 * @Override
-	 * アイテムと当たった時
-	 */
-	public void collisionNotify(Item obj, Contact contact){
-		switch(obj.GetType()) {
-		case Item.ONIGIRI:
-			hp += 50;
-			if( hp > MAX_HP ) {
-				hp = MAX_HP;
-			}
-			Interface.calculateHP = true;
-			break;
-		case Item.OKANE:
-			break;
-		}
-	}
-
-	@Override
-	public void collisionNotify(WeaponBase obj, Contact contact){
-		if (obj.GetOwner() != this) {
-			if( invincibleTime == 0 ) {
-				invincibleTime = 120;		// 無敵時間付与
-				hp -= obj.GetAttackNum();
-				Interface.calculateHP = true;
-			}
-			if( hp <= 0 ) {
-				// TODO ゲームオーバー処理へ
-				hp = 100;
-			}
-		}
-	}
-	@Override
-	public void collisionNotify(Effect obj, Contact contact){
-		if (obj.GetOwner() != this) {
-			if( invincibleTime == 0 ) {
-				invincibleTime = 120;		// 無敵時間付与
-				hp -= obj.GetAttackNum();
-				Interface.calculateHP = true;
-			}
-			if( hp <= 0 ) {
-				// TODO ゲームオーバー処理へ
-				hp = 100;
 			}
 		}
 	}
@@ -543,4 +497,50 @@ public class Player extends CharacterBase {
 
 		body.setAngularVelocity(radian*stateTime);
 	}
+	
+	
+	// 定数宣言
+	private static final int FOOT	= 0;
+	private static final int BODY	= 1;
+
+	private static final int RIGHT			=  1;
+	private static final int LEFT			= -1;
+	private static final int STAND			=  0;
+	private static final int RUN				=  1;
+	private static final int DASH			=  2;
+	private static final int JUMP			=  3;
+	private static final int ATTACK			=  4;
+
+	// 変数宣言
+	private int			invincibleTime;				// 無敵時間
+	private boolean		groundJudge;				// 地面と当たってますよフラグ
+	private int			restAerialJumpCount;		// 空中でジャンプできる残り回数
+	private AbstractWeapon		weapon;						// 武器
+	private Kaginawa		kaginawa;					// 鉤縄
+	private NinjaControllerInterface	controller;		// 忍者の操作管理
+	
+	// なんだかよく分からない変数
+	private int			number;				// プレイヤー番号
+	private int			currentState;			// 現在の状態
+	private int			count;					// カウント用変数
+
+	// おそらく別のクラスに吐き出す変数
+	private int			charge;				// チャージゲージ
+	private int			maxChakra;			// チャクラ最大値
+	private int			chakra;				// チャクラ
+	private int			money;				// お金
+
+	private float			stateTime;				// アニメーションに使ってるっぽい謎変数
+	private Animation		standAnimation;			// 立ちアニメーション
+	private Animation		walkAnimation;			// 歩きアニメーション
+	private Animation		dashAnimation;			// ダッシュアニメーション
+	private Animation		jumpAnimation;			// ジャンプアニメーション
+	private Animation		attackAnimation;			// 攻撃アニメーション
+	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
+	private TextureRegion[]	frame;						// アニメーションのコマ
+	private TextureRegion	nowFrame;					// 現在のコマ
+	private TextureRegion	nowFootFrame;				// 下半身用の現在のコマ
+	
+	// おそらく使わなくなる変数
+	private boolean				jump;					// ジャンプフラグ
 }

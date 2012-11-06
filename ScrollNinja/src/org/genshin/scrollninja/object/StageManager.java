@@ -1,9 +1,8 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 //インポート
 //========================================
-import org.genshin.scrollninja.object.StageBase;
 
 // TODO 今はステージクラスのやりとりしているけど、ステージナンバーだけでもよさげな気が
 //========================================

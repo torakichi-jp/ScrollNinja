@@ -1,14 +1,15 @@
 package org.genshin.scrollninja.object.weapon;
 
 
-import org.genshin.scrollninja.EffectManager;
+import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.object.CharacterBase;
 import org.genshin.scrollninja.object.Effect;
-import org.genshin.scrollninja.object.WeaponBase;
+import org.genshin.scrollninja.object.EffectManager;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
 
-public class Katana extends WeaponBase {
+public class Katana extends AbstractWeapon {
 
 	/**
 	 * コンストラクタ
@@ -38,7 +39,7 @@ public class Katana extends WeaponBase {
 	/**
 	 * 更新
 	 */
-	public void Update() {
+	public void update() {
 		if( !use ) stateTime = 0; else stateTime ++;
 		if( stateTime % 18 == 0 ) use = false;
 
@@ -53,5 +54,11 @@ public class Katana extends WeaponBase {
 			EffectManager.GetEffect(Effect.FIRE_3, owner).Update(use);
 			break;
 		}
+	}
+
+	@Override
+	public void dispatchCollision(AbstractObject object, Contact contact)
+	{
+		object.dispatchCollision(this, contact);
 	}
 }

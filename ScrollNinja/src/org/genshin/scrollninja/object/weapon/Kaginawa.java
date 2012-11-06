@@ -5,9 +5,8 @@ package org.genshin.scrollninja.object.weapon;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.object.Background;
-import org.genshin.scrollninja.object.ObjectBase;
-import org.genshin.scrollninja.object.WeaponBase;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,72 +30,35 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
  * @since		1.0
  * @version	1.0
  */
-public class Kaginawa extends WeaponBase
+public class Kaginawa extends AbstractWeapon
 {
-	/** 衝突関連の定数 */
-	private static final class COLLISION
-	{
-		/** 衝突オブジェクトの半径({@value}) */
-		private static final float RADIUS = 1.0f;
-	}
-
-	/** スプライト関連の定数 */
-	private static final class SPRITE
-	{
-		/** テクスチャのパス({@value}) */
-		private static final String PATH = "data/shuriken.png";
-	}
-
-	/** 鉤縄の飛ぶ速度({@value}) */
-	private static final float THROW_VEL = 45.0f;
-
-	/** 鉤縄の縮む速度({@value}) */
-	private static final float SHRINK_VEL = THROW_VEL*2.0f;
-
-	/** 鉤縄の長さ({@value}) */
-	private static final float LEN_MAX = THROW_VEL*1.0f;
-
-	/** 鉤縄の持ち主 */
-	private Body owner;
-
-	/** 鉤縄の状態 */
-	private State state;
-	
-	/** 縄の長さを制限するためのジョイント */
-	private Joint joint;
-	
-	/** 鉤縄の向き */
-	private Vector2 dir;
-
 	/**
 	 * コンストラクタ
+	 * @param world		所属先となるWorldオブジェクト
+	 * @param owner		持ち主となるBodyオブジェクト
 	 */
-	public Kaginawa(Body owner)
+	public Kaginawa(World world, Body owner)
 	{
-		World world = GameMain.world;
-
-		// body生成
-		BodyDef bd = new BodyDef();
-		bd.type = BodyType.DynamicBody;		// 移動するオブジェクト
-		bd.active = false;					// 最初は活動しない
-		bd.bullet = true;					// すり抜けない
-		bd.gravityScale = 0.0f;				// 重力の影響を受けない
-		body = world.createBody(bd);
+		// Body生成
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;		// 移動するオブジェクト
+		bodyDef.active = false;					// 最初は活動しない
+		bodyDef.bullet = true;					// すり抜けない
+		bodyDef.gravityScale = 0.0f;				// 重力の影響を受けない
+		createBody(world, bodyDef);
 
 		// 衝突オブジェクト生成
-		CircleShape cs = new CircleShape();
-		cs.setRadius(COLLISION.RADIUS);
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(COLLISION.RADIUS);
 
-		FixtureDef fd = new FixtureDef();
-		fd.density		= 0.0f;	// 密度
-		fd.friction	= 0.0f;	// 摩擦
-		fd.isSensor	= true;	// センサーフラグ
-		fd.shape		= cs;		// 形状
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.density		= 0.0f;			// 密度
+		fixtureDef.friction		= 0.0f;			// 摩擦
+		fixtureDef.isSensor		= true;			// センサーフラグ
+		fixtureDef.shape		= circleShape;	// 形状
 
-		Fixture fixture = body.createFixture(fd);
-		fixture.setUserData(this);
-		sensor.add(fixture);
-		cs.dispose();
+		createFixture(fixtureDef);
+		circleShape.dispose();
 
 		// スプライト生成
 		Texture texture = new Texture(Gdx.files.internal(SPRITE.PATH));
@@ -106,11 +68,10 @@ public class Kaginawa extends WeaponBase
 		sprite.setOrigin(texture.getWidth()*0.5f, texture.getHeight()*0.5f);
 		sprite.setScale(ScrollNinja.scale);
 
-		this.sprite.add(sprite);
+		this.sprites.add(sprite);
 
 		// フィールド初期化
 		this.owner = owner;
-		dir = new Vector2();
 		
 		changeState(State.IDLE);
 	}
@@ -148,20 +109,19 @@ public class Kaginawa extends WeaponBase
 	}
 
 	@Override
-	public void Update()
+	public void update()
 	{
 		state.update(this);
 	}
 
 	@Override
-	protected void collisionDispatch(ObjectBase obj, Contact contact)
+	public void dispatchCollision(AbstractObject object, Contact contact)
 	{
-		// TODO collisionNotifyはpublic化する。（別パッケージなのでprotected呼べない）
-		//obj.collisionNotify(this, contact);
+		object.notifyCollision(this, contact);
 	}
 
 	@Override
-	protected void collisionNotify(Background obj, Contact contact)
+	public void notifyCollision(Background obj, Contact contact)
 	{
 		// TODO 鉤縄の衝突処理とか。
 		doHang();
@@ -178,6 +138,39 @@ public class Kaginawa extends WeaponBase
 		state = next;
 		state.initialize(this);
 	}
+	
+
+	/** 衝突関連の定数 */
+	private static final class COLLISION
+	{
+		/** 衝突オブジェクトの半径({@value}) */
+		private static final float RADIUS = 1.0f;
+	}
+
+	/** スプライト関連の定数 */
+	private static final class SPRITE
+	{
+		/** テクスチャのパス({@value}) */
+		private static final String PATH = "data/shuriken.png";
+	}
+
+	/** 鉤縄の飛ぶ速度({@value}) */
+	private static final float THROW_VEL = 45.0f;
+
+	/** 鉤縄の縮む速度({@value}) */
+	private static final float SHRINK_VEL = THROW_VEL*2.0f;
+
+	/** 鉤縄の長さ({@value}) */
+	private static final float LEN_MAX = THROW_VEL*1.0f;
+
+	/** 鉤縄の持ち主 */
+	private Body owner;
+
+	/** 鉤縄の状態 */
+	private State state;
+	
+	/** 縄の長さを制限するためのジョイント */
+	private Joint joint;
 	
 	
 	/** 
@@ -220,7 +213,7 @@ public class Kaginawa extends WeaponBase
 			{
 				Body kaginawa	= me.body;
 				Body owner		= me.owner;
-				Vector2 dir		= me.dir;
+				Vector2 dir		= new Vector2();
 				
 				// FIXME 鉤縄の向き設定（仮）
 				Vector2 mousePos = new Vector2(

@@ -4,12 +4,13 @@ package org.genshin.scrollninja.object;
 // インポート
 //========================================
 
+
 import com.badlogic.gdx.math.Vector2;
 
 //========================================
 // クラス宣言
 //========================================
-public abstract class CharacterBase extends ObjectBase {
+public abstract class CharacterBase extends AbstractObject {
 	// 変数宣言
 	// TODO MAXHPは増加するからプレイヤーデータ（レベル）読み込みで変更させないと
 	protected int	MAX_HP		=	100;

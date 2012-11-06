@@ -3,8 +3,11 @@ package org.genshin.scrollninja.object;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.PlayerManager;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.character.ninja.PlayerManager;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +25,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // TODO エネミー用しか作っていない
 // weaponパッケージに移動しようとしたらプレイヤー情報取得に詰まった…
-public class Syuriken extends WeaponBase {
+public class Syuriken extends AbstractWeapon {
 	private final int SYURIKEN_SPEED = 30;
 	private final int EXIST_TIME = 240;
 	private int timeCount;
@@ -50,8 +53,8 @@ public class Syuriken extends WeaponBase {
 	* 武器生成
 	**************************************************/
 	public void Create() {
-		sprite = new ArrayList<Sprite>();
-		sensor = new ArrayList<Fixture>();
+		sprites = new ArrayList<Sprite>();
+		fixtures = new ArrayList<Fixture>();
 
 		// テクスチャー読み込み
 		// TODO 手裏剣テクスチャの位置はとりあえずなので後で要調整
@@ -60,9 +63,9 @@ public class Syuriken extends WeaponBase {
 		TextureRegion region = new TextureRegion(texture, 0, 448, 64, 64);
 
 		// スプライト反映
-		sprite.add(new Sprite(region));
-		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-		sprite.get(0).setScale(ScrollNinja.scale * 0.5f);
+		sprites.add(new Sprite(region));
+		sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
+		sprites.get(0).setScale(ScrollNinja.scale * 0.5f);
 
 		// Body作成
 		BodyDef def	= new BodyDef();
@@ -80,16 +83,16 @@ public class Syuriken extends WeaponBase {
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		sensor.add(body.createFixture(fd));	// センサーに追加
-		sensor.get(0).setUserData(this);	// 当たり判定用にUserDataセット
-		sensor.get(0).setSensor(true);		// 他の当たり判定に影響しない
+		fixtures.add(body.createFixture(fd));	// センサーに追加
+		fixtures.get(0).setUserData(this);	// 当たり判定用にUserDataセット
+		fixtures.get(0).setSensor(true);		// 他の当たり判定に影響しない
 		body.setBullet(true);				// すり抜け防止
 		body.setFixedRotation(true);		// シミュレーションでの自動回転をしない
 		body.setGravityScale(0);			// 重力の影響を受けない
 
 		// プレイヤーの武器の設定
 		// TODO プレイヤーの場合はターゲットはマウスクリック座標？
-		if (owner.getClass().equals(Player.class)) {
+		if (owner.getClass().equals(PlayerNinja.class)) {
 
 		}
 
@@ -98,7 +101,7 @@ public class Syuriken extends WeaponBase {
 			timeCount = EXIST_TIME;				// 240で消える
 
 			// 出現位置
-			position = new Vector2(owner.getPosition());
+			position = new Vector2(owner.body.getPosition());
 			body.setTransform(position.x, position.y, 0);
 			// 角度を求める
 			// TODO 現在操作中のプレイヤー情報を求められるように変更必要あり
@@ -116,7 +119,7 @@ public class Syuriken extends WeaponBase {
 	/**
 	 * 更新
 	 */
-	public void Update() {
+	public void update() {
 		// 手裏剣表示時間
 		timeCount -= 1;
 		// 回転
@@ -136,30 +139,30 @@ public class Syuriken extends WeaponBase {
 	 * 当たり判定
 	 */
 	@Override
-	public void collisionDispatch(ObjectBase obj, Contact contact) {
-		obj.collisionNotify(this, contact);
+	public void dispatchCollision(AbstractObject object, Contact contact) {
+		object.notifyCollision(this, contact);
 	}
 
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}
+	public void notifyCollision(Background obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){
+	public void notifyCollision(PlayerNinja obj, Contact contact){
 		use = false;
 	}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){}
+	public void notifyCollision(Enemy obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Effect obj, Contact contact){}
+	public void notifyCollision(Effect obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Item obj, Contact contact){}
+	public void notifyCollision(Item obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){}
+	public void notifyCollision(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(WeaponBase obj, Contact contact){}
+	public void notifyCollision(AbstractWeapon obj, Contact contact){}
 }

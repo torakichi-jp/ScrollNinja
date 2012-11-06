@@ -1,14 +1,21 @@
-package org.genshin.scrollninja.object;
+package org.genshin.scrollninja.object.weapon;
 
 
+
+import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.CharacterBase;
+import org.genshin.scrollninja.object.Effect;
 
 import com.badlogic.gdx.math.Vector2;
 
-// *メモ*
-// なんか色々違うかもしれません…
-
-public class WeaponBase extends ObjectBase {
-
+/**
+ * 武器の基本クラス。
+ * @author	インターン生
+ * @author kou
+ * @since		1.0
+ * @version	1.0
+ */
+public abstract class AbstractWeapon extends AbstractObject {
 	// 迷ってるもの
 	protected int			level;			// レベル
 	protected int 			stateTime;		// 武器とエフェクトは同期する？のでここに

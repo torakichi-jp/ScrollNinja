@@ -1,13 +1,11 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 //========================================
 // インポート
 //========================================
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.CharacterBase;
-import org.genshin.scrollninja.object.Effect;
-import org.genshin.scrollninja.object.Player;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 
 
 //========================================
@@ -29,10 +27,10 @@ public class EffectManager {
 	 */
 	public static void Draw() {
 		for( int i = 0; i < effectList.size(); i ++ ) {
-			effectList.get(i).Draw();
+			effectList.get(i).render();
 		}
 		for( int i = 0; i < enemyEffectList.size(); i ++ ) {
-			enemyEffectList.get(i).Draw();
+			enemyEffectList.get(i).render();
 		}
 	}
 
@@ -42,7 +40,7 @@ public class EffectManager {
 	 */
 	public static void CreateEffect(int Type, CharacterBase owner) {
  		Effect pEffect = new Effect(Type, owner);	// オブジェクトを生成（&初期化）して
- 		if (owner.getClass().equals(Player.class))
+ 		if (owner.getClass().equals(PlayerNinja.class))
  			effectList.add(pEffect);				// リストに追加
  		else
  			enemyEffectList.add(pEffect);
@@ -53,7 +51,7 @@ public class EffectManager {
 	 * @param Type	種類
 	 */
 	public static void DeleteEffect(int Type, CharacterBase owner) {
-		if (owner.getClass().equals(Player.class))
+		if (owner.getClass().equals(PlayerNinja.class))
 			effectList.remove(effectList.indexOf(Type));		// 引数で渡されたオブジェクトを削除
 		else
 			enemyEffectList.remove(effectList.indexOf(Type));
@@ -65,7 +63,7 @@ public class EffectManager {
 	 * @return エフェクト
 	 */
 	public static Effect GetEffect(int Type, CharacterBase owner) {
-		if (owner.getClass().equals(Player.class)) {
+		if (owner.getClass().equals(PlayerNinja.class)) {
 			for(int i = 0; i < effectList.size(); i ++) {
 				if( effectList.get(i).GetType() == Type ) {
 					return effectList.get(i);				// 引数で渡されたオブジェクトのポインタを返す
@@ -87,7 +85,7 @@ public class EffectManager {
 	 * @return エフェクト
 	 */
 	public static Effect GetEffect(Effect current, CharacterBase owner) {
-		if (owner.getClass().equals(Player.class)) {
+		if (owner.getClass().equals(PlayerNinja.class)) {
 			for( int i = 0; i < effectList.size(); i ++ ) {
 				if( effectList.get(i).equals(current) )
 					return effectList.get(i);
@@ -107,7 +105,7 @@ public class EffectManager {
 	 * @return エフェクト
 	 */
 	public static Effect GetEffectForLoop(int i, CharacterBase owner) {
-		if (owner.getClass().equals(Player.class))
+		if (owner.getClass().equals(PlayerNinja.class))
 			return effectList.get(i);
 		else
 			return enemyEffectList.get(i);
@@ -118,7 +116,7 @@ public class EffectManager {
 	 * @return エフェクトリストサイズ
 	 */
 	public static int GetListSize(CharacterBase owner) {
-		if (owner.getClass().equals(Player.class))
+		if (owner.getClass().equals(PlayerNinja.class))
 			return effectList.size();
 		else
 			return enemyEffectList.size();

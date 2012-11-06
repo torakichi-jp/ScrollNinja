@@ -4,16 +4,13 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.BackgroundManager;
-import org.genshin.scrollninja.EffectManager;
-import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ItemManager;
-import org.genshin.scrollninja.PlayerManager;
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.StageObjectManager;
-import org.genshin.scrollninja.WeaponManager;
 import org.genshin.scrollninja.object.StageDataList.StageData;
+import org.genshin.scrollninja.object.character.ninja.PlayerManager;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.weapon.WeaponManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -24,7 +21,6 @@ public class Stage implements StageBase {
 	private Box2DDebugRenderer		renderer;		//
 	private ArrayList<Item>			popItems;		//
 	private ArrayList<Enemy>		popEnemys;		//
-	private ArrayList<Weapon>		popWeapons;
 
 	private int						stageNum;		// ステージナンバー
 	private StageData	 			stageData;		// ステージのデータ
@@ -114,16 +110,16 @@ public class Stage implements StageBase {
 
 		// カメラの移動制限
 		if (GameMain.camera.position.x <
-				-(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5
+				-(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
-				-(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5f
+				-(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5f
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		if (GameMain.camera.position.x >
-				(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5
+				(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
 			GameMain.camera.position.x =
-				(BackgroundManager.backgroundList.sprite.get(Background.MAIN).getWidth() * 0.5f
+				(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5f
 														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 
 		if (GameMain.camera.position.y < -(stageData.backgroundSize.get(Background.MAIN).y
@@ -158,7 +154,7 @@ public class Stage implements StageBase {
 
 	}
 
-	public Player spawnPlayer(Player player) {
+	public PlayerNinja spawnPlayer(PlayerNinja player) {
 		return player;
 	}
 

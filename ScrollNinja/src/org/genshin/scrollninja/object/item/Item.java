@@ -1,12 +1,19 @@
 
-package org.genshin.scrollninja.object;
+package org.genshin.scrollninja.object.item;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ItemManager;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.Background;
+import org.genshin.scrollninja.object.Effect;
+import org.genshin.scrollninja.object.Enemy;
+import org.genshin.scrollninja.object.ItemManager;
+import org.genshin.scrollninja.object.StageObject;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
 
 import com.badlogic.gdx.Gdx;
@@ -30,7 +37,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 // 当たり判定が二重になっているとき（地面とプレイヤー同時HITとか）にうまく削除が出来ないので削除フラグ追加
 
 // TODO これも別ファイルでデータリスト作って読み込めるようにするべきか
-public class Item extends ObjectBase {
+public class Item extends AbstractObject {
 
 	//========================================
 	// 定数宣言
@@ -53,8 +60,8 @@ public class Item extends ObjectBase {
 
 	// コンストラクタ
 	public Item(int Type, int num, float x,  float y) {
-		sprite			= new ArrayList<Sprite>();
-		sensor			= new ArrayList<Fixture>();
+		sprites			= new ArrayList<Sprite>();
+		fixtures			= new ArrayList<Fixture>();
 		type			= Type;
 		number			= num;
 		position		= new Vector2(x,y);
@@ -64,7 +71,7 @@ public class Item extends ObjectBase {
 		survivalTime	= 600;
 
 		Create();
-		sensor.get(0).setUserData(this);
+		fixtures.get(0).setUserData(this);
 	}
 
 	//************************************************************
@@ -77,9 +84,9 @@ public class Item extends ObjectBase {
 			Texture texture = new Texture(Gdx.files.internal("data/item.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 32, 32);
-			sprite.add(new Sprite(tmpRegion));
-			sprite.get(0).setPosition(-sprite.get(0).getWidth() * 0.5f, -sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(ScrollNinja.scale);
+			sprites.add(new Sprite(tmpRegion));
+			sprites.get(0).setPosition(-sprites.get(0).getWidth() * 0.5f, -sprites.get(0).getHeight() * 0.5f);
+			sprites.get(0).setScale(ScrollNinja.scale);
 
 			BodyDef def	= new BodyDef();
 			def.type	= BodyType.DynamicBody;		// 動く物体
@@ -96,8 +103,8 @@ public class Item extends ObjectBase {
 			fd.restitution	= 0;
 			fd.shape		= poly;
 
-			sensor.add(body.createFixture(poly, 0));
-			sensor.get(0).setSensor(true);		// 物理シミュレーションの影響を受けない
+			fixtures.add(body.createFixture(poly, 0));
+			fixtures.get(0).setSensor(true);		// 物理シミュレーションの影響を受けない
 			poly.dispose();
 			body.setGravityScale(0.0f);			// 重力無視
 			body.setBullet(true);			// すり抜け防止
@@ -112,7 +119,7 @@ public class Item extends ObjectBase {
 	// Update
 	// 更新処理まとめ
 	//************************************************************
-	public void Update() {
+	public void update() {
 
 		System.out.println(survivalTime);
 
@@ -130,8 +137,8 @@ public class Item extends ObjectBase {
 		position = body.getPosition();
 		body.setTransform(position ,0);
 
-		sprite.get(0).setPosition(position.x - 16, position.y - 16);
-		sprite.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
+		sprites.get(0).setPosition(position.x - 16, position.y - 16);
+		sprites.get(0).setRotation((float) (body.getAngle()*180/Math.PI));
 
 		Appear();
 		Flashing();
@@ -170,30 +177,30 @@ public class Item extends ObjectBase {
 		// 高速点滅
 		if( survivalTime < 60 ) {
 			if( survivalTime % 3 > 0 ) {
-				sprite.get(0).setColor( 0, 0, 0, 0);
+				sprites.get(0).setColor( 0, 0, 0, 0);
 			}
 			else {
-				sprite.get(0).setColor(1, 1, 1, 1);
+				sprites.get(0).setColor(1, 1, 1, 1);
 			}
 		}
 
 		// まぁ早め
 		else if( survivalTime < 180 ) {
 			if( survivalTime % 30 > 15 ) {
-				sprite.get(0).setColor( 0, 0, 0, 0);
+				sprites.get(0).setColor( 0, 0, 0, 0);
 			}
 			else {
-				sprite.get(0).setColor(1, 1, 1, 1);
+				sprites.get(0).setColor(1, 1, 1, 1);
 			}
 		}
 
 		// 普通
 		else if( survivalTime < 300 ) {
 			if( survivalTime % 60 > 30 ) {
-				sprite.get(0).setColor(0, 0, 0, 0);
+				sprites.get(0).setColor(0, 0, 0, 0);
 			}
 			else {
-				sprite.get(0).setColor(1, 1, 1, 1);
+				sprites.get(0).setColor(1, 1, 1, 1);
 			}
 		}
 	}
@@ -206,34 +213,34 @@ public class Item extends ObjectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObjectBase obj, Contact contact) {
-		obj.collisionNotify(this, contact);
+	public void dispatchCollision(AbstractObject object, Contact contact) {
+		object.notifyCollision(this, contact);
 	}
 
 	@Override
-	public void collisionNotify(Background obj, Contact contact){
+	public void notifyCollision(Background obj, Contact contact){
 		groundJudge = true;
 	}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){
+	public void notifyCollision(PlayerNinja obj, Contact contact){
 		deleteFlag = true;
 	}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){}
+	public void notifyCollision(Enemy obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Effect obj, Contact contact){}
+	public void notifyCollision(Effect obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Item obj, Contact contact){}
+	public void notifyCollision(Item obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){}
+	public void notifyCollision(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(WeaponBase obj, Contact contact){}
+	public void notifyCollision(AbstractWeapon obj, Contact contact){}
 
 	//************************************************************
 	// Get

@@ -6,16 +6,13 @@ import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.KeyListener;
 
-import org.genshin.scrollninja.BackgroundManager;
 import org.genshin.scrollninja.EditTable;
-import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.FileOperation;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.Keyboard;
 import org.genshin.scrollninja.LayerWindow;
 import org.genshin.scrollninja.Mouse;
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.StructObject;
 import org.genshin.scrollninja.StructObjectManager;
 
 import com.badlogic.gdx.Gdx;
@@ -173,14 +170,14 @@ public class StageEditor implements Screen {
 	private void Move() {
 		GameMain.camera.position.set(position.x, position.y, 0);
 
-		if (GameMain.camera.position.x < -(BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
-			GameMain.camera.position.x = -(BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
+		if (GameMain.camera.position.x < -(BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
+			GameMain.camera.position.x = -(BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.A) ) {
 			position.x --;
 		}
-		if (GameMain.camera.position.x > (BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
-			GameMain.camera.position.x = (BackgroundManager.backgroundList.sprite.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
+		if (GameMain.camera.position.x > (BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
+			GameMain.camera.position.x = (BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.D) ) {
 			position.x ++;

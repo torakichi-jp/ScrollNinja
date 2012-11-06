@@ -3,6 +3,7 @@ package org.genshin.scrollninja;
 import javax.swing.JOptionPane;
 
 import org.genshin.scrollninja.object.Background;
+import org.genshin.scrollninja.object.BackgroundManager;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

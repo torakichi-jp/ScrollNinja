@@ -3,12 +3,13 @@ package org.genshin.scrollninja.object;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.genshin.scrollninja.EnemyManager;
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ItemManager;
-import org.genshin.scrollninja.PlayerManager;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.EnemyDataList.EnemyData;
+import org.genshin.scrollninja.object.character.ninja.PlayerManager;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.weapon.Katana;
 
 import com.badlogic.gdx.Gdx;
@@ -70,9 +71,9 @@ public class Enemy extends CharacterBase {
 	private boolean				chase;			// 追いかけフラグ
 	private boolean				reverse;		// 方向反転フラグ
 	private boolean				deleteFlag;		// 削除フラグ
-	private Player 				player;			// プレイヤー
+	private PlayerNinja 				player;			// プレイヤー
 	private ArrayList<Syuriken> syuriken;		// 手裏剣
-	private WeaponBase			weapon;			// 刀
+	private AbstractWeapon			weapon;			// 刀
 	private int					attackInterval;	// 攻撃間隔
 
 	private Vector2				wanderingPosition;	// うろうろ場所用に出現位置を保存
@@ -127,8 +128,8 @@ public class Enemy extends CharacterBase {
 	* body、sensor、sprite、アニメーション作成
 	**************************************************/
 	public void Create() {
-		sprite = new ArrayList<Sprite>();
-		sensor = new ArrayList<Fixture>();
+		sprites = new ArrayList<Sprite>();
+		fixtures = new ArrayList<Fixture>();
 
 		// Body作成
 		BodyDef bd	= new BodyDef();
@@ -147,8 +148,8 @@ public class Enemy extends CharacterBase {
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		sensor.add(body.createFixture(fd));		// センサーに追加
-		sensor.get(0).setUserData(this);		// 当たり判定要にUserDataセット
+		fixtures.add(body.createFixture(fd));		// センサーに追加
+		fixtures.get(0).setUserData(this);		// 当たり判定要にUserDataセット
 		body.setTransform(position, 0);			// 最初の位置
 		body.setBullet(true);					// すり抜けない
 		body.setFixedRotation(true);			// 回転しない
@@ -166,9 +167,9 @@ public class Enemy extends CharacterBase {
 		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);		// TODO 変数のほうがよい？
 
 		// スプライトに反映
-		sprite.add(new Sprite(region));
-		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-		sprite.get(0).setScale(ScrollNinja.scale);
+		sprites.add(new Sprite(region));
+		sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
+		sprites.get(0).setScale(ScrollNinja.scale);
 
 		// アニメーション
 		// TODO 敵によってアニメーション枚数変わってくるだろうからどうにかうまい具合に…
@@ -188,7 +189,7 @@ public class Enemy extends CharacterBase {
 	 * Update()
 	 * 更新処理まとめ
 	 **************************************************/
-	public void Update() {
+	public void update() {
 		if( deleteFlag ) {
 			// TODO 落とす種類の選択と確率も必要か
 			ItemManager.CreateItem(Item.ONIGIRI, position.x, position.y);
@@ -206,7 +207,7 @@ public class Enemy extends CharacterBase {
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++) {
 				if (syuriken.get(i).GetUseFlag())
-					syuriken.get(i).Update();
+					syuriken.get(i).update();
 				else {
 					syuriken.get(i).Release();
 					syuriken.remove(i);
@@ -216,12 +217,12 @@ public class Enemy extends CharacterBase {
 
 		// 武器更新
 		if (weapon != null)
-			weapon.Update();
+			weapon.update();
 
 		// アニメーション更新
 		nowFrame = animation.getKeyFrame(stateTime, true);
 		stateTime ++;
-		sprite.get(0).setRegion(nowFrame);
+		sprites.get(0).setRegion(nowFrame);
 	}
 
 	/**************************************************
@@ -229,15 +230,15 @@ public class Enemy extends CharacterBase {
 	* スプライトを描画する。
 	**************************************************/
 	@Override
-	public void Draw()
+	public void render()
 	{
 		Vector2 pos = body.getPosition();
 		float rot = (float) Math.toDegrees(body.getAngle());
 
-		int count = sprite.size();
+		int count = sprites.size();
 		for (int i = 0; i < count; ++i)
 		{
-			Sprite current = sprite.get(i);
+			Sprite current = sprites.get(i);
 			// 座標・回転
 			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
 			current.setRotation(rot);
@@ -248,7 +249,7 @@ public class Enemy extends CharacterBase {
 		// 手裏剣の描画
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++)
-				syuriken.get(i).Draw();
+				syuriken.get(i).render();
 		}
 	}
 
@@ -313,7 +314,7 @@ public class Enemy extends CharacterBase {
 				direction *= -1;
 			}
 			reverse = false;
-			sprite.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
+			sprites.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
 			body.setLinearVelocity(WALK_SPEED * direction, GRAVITY);
 		}
 	}
@@ -350,7 +351,7 @@ public class Enemy extends CharacterBase {
 			if(player.body.getPosition().x < position.x) {
 				direction = LEFT;
 			}
-			sprite.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
+			sprites.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
 			body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
 		}
 
@@ -428,13 +429,13 @@ public class Enemy extends CharacterBase {
 		// 高速点滅
 		if( invincibleTime != 0 ) {
 			if( invincibleTime % 10 > 5 ) {
-				for(int i = 0; i < sprite.size(); i ++) {
-					sprite.get(i).setColor( 0, 0, 0, 0);
+				for(int i = 0; i < sprites.size(); i ++) {
+					sprites.get(i).setColor( 0, 0, 0, 0);
 				}
 			}
 			else {
-				for(int i = 0; i < sprite.size(); i ++) {
-					sprite.get(i).setColor(1, 1, 1, 1);
+				for(int i = 0; i < sprites.size(); i ++) {
+					sprites.get(i).setColor(1, 1, 1, 1);
 				}
 			}
 		}
@@ -445,29 +446,29 @@ public class Enemy extends CharacterBase {
 	**************************************************/
 	// TODO ジャンプの接地判定要検証？
 
-	public void collisionDispatch(ObjectBase obj, Contact contact) {
-		obj.collisionNotify(this, contact);
+	public void dispatchCollision(AbstractObject object, Contact contact) {
+		object.notifyCollision(this, contact);
 	}
 
 	@Override
-	public void collisionNotify(Background obj, Contact contact){
+	public void notifyCollision(Background obj, Contact contact){
 		jump = false;
 		body.setLinearVelocity(body.getLinearVelocity().x, GRAVITY);
 	}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void notifyCollision(PlayerNinja obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){
+	public void notifyCollision(Enemy obj, Contact contact){
 		reverse = true;
 		// 少しふっとぶ
 		body.setTransform(body.getPosition().x - 0.5f * direction, body.getPosition().y , body.getAngle());
 	}
 
 	@Override
-	public void collisionNotify(Effect obj, Contact contact){
-		if (obj.GetOwner().getClass().equals(Player.class)) {
+	public void notifyCollision(Effect obj, Contact contact){
+		if (obj.GetOwner().getClass().equals(PlayerNinja.class)) {
 			// 無敵じゃない時はダメージ
 			if( invincibleTime == 0 ) {
 				invincibleTime = 120;		// 無敵時間付与
@@ -481,16 +482,16 @@ public class Enemy extends CharacterBase {
 	}
 
 	@Override
-	public void collisionNotify(Item obj, Contact contact){}
+	public void notifyCollision(Item obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){
+	public void notifyCollision(StageObject obj, Contact contact){
 		// オブジェクトと当たったら反転
 		reverse = true;
 	}
 
 	@Override
-	public void collisionNotify(WeaponBase obj, Contact contact){}
+	public void notifyCollision(AbstractWeapon obj, Contact contact){}
 
 	/**************************************************
 	* Release　ObjectBaseのReleaseをオーバーライド
@@ -507,8 +508,8 @@ public class Enemy extends CharacterBase {
 		}
 		GameMain.world.destroyBody(body);
 		body = null;
-		sprite.clear();
-		sensor.clear();
+		sprites.clear();
+		fixtures.clear();
 	}
 
 	/**************************************************

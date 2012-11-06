@@ -2,7 +2,8 @@ package org.genshin.scrollninja;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.Player;
+import org.genshin.scrollninja.object.character.ninja.PlayerManager;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,7 +29,7 @@ public class Interface {
 	private TextureRegion nowFrame;		// 巻物の現在のコマ
 	private float stateTime;			// アニメーション用
 
-	private Player player;				// プレイヤー情報格納
+	private PlayerNinja player;				// プレイヤー情報格納
 	private float percentHP;			// 現在のHPの割合　1が最大
 	private float countHP;				// 巻物を0.01ずつ現在のHPの割合まで動かすためのカウンタ
 	private float percentChakra;		// 現在のチャクラの割合　1が最大

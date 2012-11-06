@@ -1,8 +1,8 @@
-package org.genshin.scrollninja;
+package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.object.Item;
+import org.genshin.scrollninja.object.item.Item;
 
 // TODO おにぎり以外のアイテムはどうしようか
 // これもエネミーと同じように一つのリストにまとめてもよいかもしれない
@@ -23,7 +23,7 @@ public class ItemManager {
 	public static void Update() {
 		if (onigiriList != null) {
 			for( int i = 0; i < onigiriList.size(); i ++) {
-				onigiriList.get(i).Update();
+				onigiriList.get(i).update();
 			}
 		}
 	}
@@ -34,7 +34,7 @@ public class ItemManager {
 	public static void Draw() {
 		if (onigiriList != null) {
 			for( int i = 0; i < onigiriList.size(); i ++) {
-				onigiriList.get(i).Draw();
+				onigiriList.get(i).render();
 			}
 		}
 	}

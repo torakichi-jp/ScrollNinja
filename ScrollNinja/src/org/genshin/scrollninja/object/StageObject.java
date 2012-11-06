@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
@@ -26,7 +29,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 //========================================
 // クラス宣言
 //========================================
-public class StageObject extends ObjectBase {
+public class StageObject extends AbstractObject {
 	public static final int ROCK			= 0;
 	public static final int HOUSE			= 1;
 
@@ -36,8 +39,8 @@ public class StageObject extends ObjectBase {
 
 	// コンストラクタ
 	public StageObject(int Type, int num, Vector2 pos) {
-		sprite		= new ArrayList<Sprite>();
-		sensor		= new ArrayList<Fixture>();
+		sprites		= new ArrayList<Sprite>();
+		fixtures		= new ArrayList<Fixture>();
 
 		number		= num;
 		type		= Type;
@@ -46,8 +49,8 @@ public class StageObject extends ObjectBase {
 		Create();
 	}
 	public StageObject(int Type, int num, float x, float y) {
-		sprite		= new ArrayList<Sprite>();
-		sensor		= new ArrayList<Fixture>();
+		sprites		= new ArrayList<Sprite>();
+		fixtures		= new ArrayList<Fixture>();
 
 		number		= num;
 		type		= Type;
@@ -62,11 +65,11 @@ public class StageObject extends ObjectBase {
 			Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
-			sprite.add(new Sprite(tmpRegion));
+			sprites.add(new Sprite(tmpRegion));
 			// TODO テクスチャとボディの位置関係がおかしい…
-			sprite.get(0).setOrigin(0, 0);
+			sprites.get(0).setOrigin(0, 0);
 			//sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprite.get(0).setScale(ScrollNinja.scale);
+			sprites.get(0).setScale(ScrollNinja.scale);
 
 			// 当たり判定読み込み
 			BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/stageObject.json"));
@@ -88,8 +91,8 @@ public class StageObject extends ObjectBase {
 			loader.attachFixture(body, "gravestone", fd, texture.getWidth() * ScrollNinja.scale);
 
 			for(int i = 0; i < body.getFixtureList().size(); i ++) {
-				sensor.add(body.getFixtureList().get(i));
-				sensor.get(i).setUserData(this);
+				fixtures.add(body.getFixtureList().get(i));
+				fixtures.get(i).setUserData(this);
 			}
 
 			// TODO テスト中でいれているだけ
@@ -103,30 +106,30 @@ public class StageObject extends ObjectBase {
 	}
 
 	@Override
-	public void collisionDispatch(ObjectBase obj, Contact contact) {
-		obj.collisionNotify(this, contact);
+	public void dispatchCollision(AbstractObject object, Contact contact) {
+		object.notifyCollision(this, contact);
 	}
 
 	@Override
-	public void collisionNotify(Background obj, Contact contact){}
+	public void notifyCollision(Background obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Player obj, Contact contact){}
+	public void notifyCollision(PlayerNinja obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Enemy obj, Contact contact){}
+	public void notifyCollision(Enemy obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Effect obj, Contact contact){}
+	public void notifyCollision(Effect obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(Item obj, Contact contact){}
+	public void notifyCollision(Item obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(StageObject obj, Contact contact){}
+	public void notifyCollision(StageObject obj, Contact contact){}
 
 	@Override
-	public void collisionNotify(WeaponBase obj, Contact contact){}
+	public void notifyCollision(AbstractWeapon obj, Contact contact){}
 
 	//************************************************************
 	// Get
