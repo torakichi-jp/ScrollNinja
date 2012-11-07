@@ -186,7 +186,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				
 				// 鉤縄を初期化
@@ -211,7 +211,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				Vector2 dir		= new Vector2();
 				
@@ -243,7 +243,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void update(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				
 				// 縄の長さが限界に達したらぶら下がりん。
@@ -285,7 +285,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				World world		= kaginawa.getWorld();
 				
@@ -308,7 +308,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void update(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				Vector2 kaginawaPos = kaginawa.getPosition();
 				Vector2 ownerPos = owner.getPosition();
@@ -345,7 +345,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				World world		= kaginawa.getWorld();
 				
@@ -397,7 +397,7 @@ public class Kaginawa extends AbstractWeapon
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.body;
+				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				World world		= kaginawa.getWorld();
 				
@@ -465,81 +465,3 @@ public class Kaginawa extends AbstractWeapon
 		void doRelease(Kaginawa me) { /* 何もしない */ }
 	}
 }
-
-
-
-
-///** 更新メソッド */
-//private enum UpdateMethod
-//{
-//	/** 何もしない更新メソッド */
-//	EMPTY
-//	{
-//		@Override
-//		void invoke(Kaginawa kaginawa)
-//		{
-//			/* 何もしない */
-//		}
-//	},
-//	/** 鉤縄が飛んでいる状態の更新メソッド */
-//	THROW
-//	{
-//		@Override
-//		void invoke(Kaginawa kaginawa)
-//		{
-//			// 縄の長さが限界に達したらぶら下がりん。
-//			Vector2 kaginawaPos = kaginawa.body.getPosition();
-//			Vector2 ownerPos = kaginawa.owner.getPosition();
-//			Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
-//			
-//			if(direction.len2() > LEN_MAX*LEN_MAX)
-//			{
-//				kaginawa.hang();
-//			}
-//		}
-//	},
-//	/** 鉤縄が縮んでいる状態の更新メソッド */
-//	SHRINK
-//	{
-//		@Override
-//		void invoke(Kaginawa kaginawa)
-//		{
-//			Vector2 kaginawaPos = kaginawa.body.getPosition();
-//			Vector2 ownerPos = kaginawa.owner.getPosition();
-//			Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
-//			float len2 = direction.len2();
-//			direction.nor().mul(SHRINK_VEL);
-//
-//			kaginawa.owner.applyLinearImpulse(direction, ownerPos);
-//
-//			if(len2 < (SHRINK_VEL*SHRINK_VEL)/30/30)
-//			{
-//				kaginawa.release();
-//			}
-//		}
-//	},
-//	/** 鉤縄にぶら下がっている状態の更新メソッド */
-//	HANG
-//	{
-//		@Override
-//		void invoke(Kaginawa kaginawa)
-//		{
-////			kaginawa.release();
-//		}
-//	},
-//	/** 鉤縄を離した状態の更新メソッド */
-//	RELEASE
-//	{
-//		@Override
-//		void invoke(Kaginawa kaginawa)
-//		{
-//			kaginawa.idle();
-//		}
-//	},
-//	;
-//	/**
-//	 * 更新メソッドを実行する。
-//	 * @param kaginawa	更新する鉤縄オブジェクト
-//	 */
-//	abstract void invoke(Kaginawa kaginawa);
-//}

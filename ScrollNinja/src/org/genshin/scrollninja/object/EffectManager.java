@@ -128,13 +128,13 @@ public class EffectManager {
 	public static void dispose() {
 		if (effectList != null) {
 			for (int i = 0; i < effectList.size(); i++) {
-				effectList.get(i).Release();
+				effectList.get(i).dispose();
 			}
 		}
 		effectList = new ArrayList<Effect>();
 		if (enemyEffectList != null) {
 			for (int i = 0; i < enemyEffectList.size(); i++) {
-				enemyEffectList.get(i).Release();
+				enemyEffectList.get(i).dispose();
 			}
 		}
 		enemyEffectList = new ArrayList<Effect>();

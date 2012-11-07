@@ -14,6 +14,7 @@ import org.genshin.scrollninja.object.weapon.WeaponManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Stage implements StageBase {
@@ -104,9 +105,10 @@ public class Stage implements StageBase {
 	// カメラ情報更新
 	//************************************************************
 	public void updateCamera() {
+		Vector2 playerPosition = PlayerManager.GetPlayer(0).getBody().getPosition();
+		
 		// カメラはプレイヤーに追随
-		GameMain.camera.position.set(PlayerManager.GetPlayer(0).body.getPosition().x,
-									 PlayerManager.GetPlayer(0).body.getPosition().y, 0);
+		GameMain.camera.position.set(playerPosition.x, playerPosition.y, 0);
 
 		// カメラの移動制限
 		if (GameMain.camera.position.x <

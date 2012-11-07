@@ -1,6 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.Interface;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.AbstractObject;
@@ -19,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -160,7 +160,7 @@ public class PlayerNinja extends CharacterBase {
 		invincibleTime = 0;
 		number = Number;
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA, 2);	// TODO 今だけレベル２
-		kaginawa = new Kaginawa(world, body);
+		kaginawa = new Kaginawa(world, getBody());
 		controller = new DefaultPlayerNinjaController();
 		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT_MAX;
 	}
@@ -194,7 +194,7 @@ public class PlayerNinja extends CharacterBase {
 		// 画像反転処理
 		flip(direction==RIGHT, false);
 
-		position = body.getPosition();
+		position = getBody().getPosition();
 
 		groundJudge = false;
 	}
@@ -214,7 +214,7 @@ public class PlayerNinja extends CharacterBase {
 	@Override
 	public void notifyCollision(Background obj, Contact contact) {
 		// 衝突したのが足でなければそのままでOK
-		Fixture footFixture = fixtures.get(FOOT);
+		Fixture footFixture = getFixture(FOOT);
 		if(contact.getFixtureA()!=footFixture && contact.getFixtureB()!=footFixture)
 			return;
 
@@ -300,7 +300,7 @@ public class PlayerNinja extends CharacterBase {
 	 */
 	private void updateStand() {
 
-		Vector2 velocity = body.getLinearVelocity();
+		Vector2 velocity = getBody().getLinearVelocity();
 		if( velocity.x == 0 ) {
 			currentState = STAND;
 		}
@@ -311,7 +311,8 @@ public class PlayerNinja extends CharacterBase {
 	 * Ｗでジャンプ
 	 */
 	private void updateJump() {
-
+		Body body = getBody();
+		
 		// 地面に接触しているならジャンプ可能
 		if( groundJudge ) {
 			// 上押したらジャンプ！
@@ -350,6 +351,7 @@ public class PlayerNinja extends CharacterBase {
 	private void move(float accel, float maxVel, int state)
 	{
 		// TODO 壁走り、天井走りを継続させるため、地面に足が着いている時は地面への吸着力を発生させる？
+		Body body = getBody();
 
 		// 速度制限
 		// FIXME 現状だと水平方向にしか制限が働かないため、なんとかする。
@@ -488,6 +490,7 @@ public class PlayerNinja extends CharacterBase {
 	 */
 	private void nearRotate(float radian)
 	{
+		Body body = getBody();
 		float stateTime = 10;		// 引数から指定する仕様に変更するかも知れない
 
 		radian -= body.getAngle();

@@ -19,12 +19,12 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // 制作メモ
 // 10/9	座標は動いてるけど絵が付いてってない。
@@ -128,13 +128,13 @@ public class Enemy extends CharacterBase {
 	* body、sensor、sprite、アニメーション作成
 	**************************************************/
 	public void Create() {
-		sprites = new ArrayList<Sprite>();
-		fixtures = new ArrayList<Fixture>();
-
 		// Body作成
-		BodyDef bd	= new BodyDef();
-		bd.type	= BodyType.DynamicBody;
-		body = GameMain.world.createBody(bd);
+		BodyDef bd			= new BodyDef();
+		bd.type				= BodyType.DynamicBody;
+		bd.bullet			= true;
+		bd.fixedRotation	= true;
+		bd.position.set(position);
+		createBody(GameMain.world, bd);
 
 		// fixture生成
 		// TODO この数値も変数にするべき？
@@ -148,12 +148,7 @@ public class Enemy extends CharacterBase {
 		fd.restitution	= 0;
 		fd.shape		= poly;
 
-		fixtures.add(body.createFixture(fd));		// センサーに追加
-		fixtures.get(0).setUserData(this);		// 当たり判定要にUserDataセット
-		body.setTransform(position, 0);			// 最初の位置
-		body.setBullet(true);					// すり抜けない
-		body.setFixedRotation(true);			// 回転しない
-
+		createFixture(fd);
 		poly.dispose();
 
 		// TODO ↓ここスッキリさせたい
@@ -198,7 +193,7 @@ public class Enemy extends CharacterBase {
 		}
 
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少
-		position = body.getPosition();					// 現在位置の更新
+		position = getBody().getPosition();					// 現在位置の更新
 
 		Action();			// 行動
 		Flashing();			// 点滅処理
@@ -209,7 +204,7 @@ public class Enemy extends CharacterBase {
 				if (syuriken.get(i).GetUseFlag())
 					syuriken.get(i).update();
 				else {
-					syuriken.get(i).Release();
+					syuriken.get(i).dispose();
 					syuriken.remove(i);
 				}
 			}
@@ -232,20 +227,8 @@ public class Enemy extends CharacterBase {
 	@Override
 	public void render()
 	{
-		Vector2 pos = body.getPosition();
-		float rot = (float) Math.toDegrees(body.getAngle());
-
-		int count = sprites.size();
-		for (int i = 0; i < count; ++i)
-		{
-			Sprite current = sprites.get(i);
-			// 座標・回転
-			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
-			current.setRotation(rot);
-			// 描画
-			current.draw(GameMain.spriteBatch);
-		}
-
+		super.render();
+		
 		// 手裏剣の描画
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++)
@@ -315,7 +298,7 @@ public class Enemy extends CharacterBase {
 			}
 			reverse = false;
 			sprites.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
-			body.setLinearVelocity(WALK_SPEED * direction, GRAVITY);
+			getBody().setLinearVelocity(WALK_SPEED * direction, GRAVITY);
 		}
 	}
 
@@ -327,14 +310,16 @@ public class Enemy extends CharacterBase {
 		// TODO 数値は固定？
 		// プレイヤーの位置を取得
 		player = PlayerManager.GetPlayer(0);
+		Body playerBody = player.getBody();
+		Vector2 playerPosition = playerBody.getPosition();
 
 		// 一定距離まで近づいたら
-		if (Math.abs(player.body.getPosition().x - position.x) < 20) {
+		if (Math.abs(playerPosition.x - position.x) < 20) {
 			// 追いかけフラグON
 			chase = true;
 		}
 		// 距離が離れたら
-		if (Math.abs(player.body.getPosition().x - position.x) > 30 && chase) {
+		if (Math.abs(playerPosition.x - position.x) > 30 && chase) {
 			// フラグOFF
 			chase = false;
 			attackFlag = false;
@@ -344,20 +329,20 @@ public class Enemy extends CharacterBase {
 
 		if (chase) {
 			// プレイヤーのX座標が敵のX座標より右にあるとき
-			if(player.body.getPosition().x > position.x) {
+			if(playerPosition.x > position.x) {
 				direction = RIGHT;
 			}
 			// 左にいる時
-			if(player.body.getPosition().x < position.x) {
+			if(playerPosition.x < position.x) {
 				direction = LEFT;
 			}
 			sprites.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
-			body.setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
+			getBody().setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
 		}
 
 		// すぐ近くにプレイヤーがきた時
-		if(	player.body.getPosition().x > position.x - 10 && player.body.getPosition().x < position.x + 10 &&
-			player.body.getPosition().y > position.y - 10 && player.body.getPosition().y < position.y + 10 ) {
+		if(	playerPosition.x > position.x - 10 && playerPosition.x < position.x + 10 &&
+				playerPosition.y > position.y - 10 && playerPosition.y < position.y + 10 ) {
 			// 攻撃フラグON
 			attackFlag = true;
 		}
@@ -391,7 +376,7 @@ public class Enemy extends CharacterBase {
 		// 最大数になったら空に戻す
 		if (syuriken.size() == MAX_SYURIKEN) {
 			for (int i = 0; i < syuriken.size(); i++) {
-				syuriken.get(i).Release();
+				syuriken.get(i).dispose();
 			}
 			syuriken = null;
 		}
@@ -410,6 +395,7 @@ public class Enemy extends CharacterBase {
 			velocity.y = JUMP_POWER;
 		}
 		if(jump) {
+			Body body = getBody();
 			body.setLinearVelocity(body.getLinearVelocity().x, velocity.y);
 			velocity.y -= 1f;
 		}
@@ -452,6 +438,7 @@ public class Enemy extends CharacterBase {
 
 	@Override
 	public void notifyCollision(Background obj, Contact contact){
+		Body body = getBody();
 		jump = false;
 		body.setLinearVelocity(body.getLinearVelocity().x, GRAVITY);
 	}
@@ -461,6 +448,7 @@ public class Enemy extends CharacterBase {
 
 	@Override
 	public void notifyCollision(Enemy obj, Contact contact){
+		Body body = getBody();
 		reverse = true;
 		// 少しふっとぶ
 		body.setTransform(body.getPosition().x - 0.5f * direction, body.getPosition().y , body.getAngle());
@@ -498,18 +486,22 @@ public class Enemy extends CharacterBase {
 	* 解放処理まとめ
 	**************************************************/
 	@Override
-	public void Release(){
+	public void dispose(){
 		if (weapon != null)
+		{
+			weapon.dispose();
 			weapon = null;
-		if (syuriken != null) {
-			for (int i = 0; i < syuriken.size(); i++)  {
-				syuriken.get(i).Release();
-			}
 		}
-		GameMain.world.destroyBody(body);
-		body = null;
-		sprites.clear();
-		fixtures.clear();
+
+		if(syuriken != null)
+		{
+			for (int i = 0; i < syuriken.size(); i++)  {
+				syuriken.get(i).dispose();
+			}
+			syuriken = null;
+		}
+		
+		super.dispose();
 	}
 
 	/**************************************************

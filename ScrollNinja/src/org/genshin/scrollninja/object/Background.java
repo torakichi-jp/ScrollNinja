@@ -14,8 +14,6 @@ import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
-import aurelienribon.bodyeditor.BodyEditorLoader;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -66,9 +64,6 @@ public class Background extends AbstractObject {
 		stageData = StageDataList.lead(stageNum);
 
 		playerPos = stageData.playerPosition;
-
-		sprites = new ArrayList<Sprite>();
-		fixtures = new ArrayList<Fixture>();
 
 		LoadTexture();
 		// MainMenuではcreateしない
@@ -141,10 +136,6 @@ public class Background extends AbstractObject {
 	 * 当たり判定作成
 	 ***************************************************/
 	public void createBody() {
-		// 当たり判定作成用ファイル読み込み
-		BodyEditorLoader loader =
-			new BodyEditorLoader(Gdx.files.internal(stageData.backgroundBodyFileName));
-
 		// ボディタイプ設定
 		BodyDef bd	= new BodyDef();
 		bd.type		= BodyType.StaticBody;		// 動かない物体
@@ -160,14 +151,8 @@ public class Background extends AbstractObject {
 		fd.restitution	= 0;		// 反発係数
 
 		// ボディ作成
-		body = GameMain.world.createBody(bd);
-		loader.attachFixture( body, stageData.backgroundBodyName, fd,
-								sprites.get(MAIN).getWidth() * ScrollNinja.scale);
-
-		for(int i = 0; i < body.getFixtureList().size(); i ++) {
-			fixtures.add(body.getFixtureList().get(i));
-			fixtures.get(i).setUserData(this);
-		}
+		createBody(GameMain.world, bd);
+		createFixtureFromFile(fd, stageData.backgroundBodyFileName, stageData.backgroundBodyName, sprites.get(MAIN).getWidth() * ScrollNinja.scale);
 	}
 
 	/**************************************************
@@ -175,7 +160,7 @@ public class Background extends AbstractObject {
 	 ***************************************************/
 	public void update() {
 		// プレイヤーの座標を代入
-		playerPos = PlayerManager.GetPlayer(0).body.getPosition();
+		playerPos = PlayerManager.GetPlayer(0).getBody().getPosition();
 
 		// 近景
 		if (playerPos.x > -(sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
@@ -227,20 +212,6 @@ public class Background extends AbstractObject {
 
 	@Override
 	public void notifyCollision(AbstractWeapon obj, Contact contact){}
-
-	/**************************************************
-	* Release　ObjectBaseのReleaseをオーバーライド
-	* 解放処理まとめ
-	**************************************************/
-	@Override
-	public void Release(){
-		if (body != null) {
-			GameMain.world.destroyBody(body);
-			body = null;
-		}
-		sprites.clear();
-		fixtures.clear();
-	}
 
 	//************************************************************
 	// Get

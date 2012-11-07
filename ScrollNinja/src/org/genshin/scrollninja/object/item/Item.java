@@ -2,7 +2,6 @@
 package org.genshin.scrollninja.object.item;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
@@ -15,22 +14,19 @@ import org.genshin.scrollninja.object.StageObject;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 // *メモ*
 // アイテム番号はマネージャで自動に割り振る
@@ -60,8 +56,6 @@ public class Item extends AbstractObject {
 
 	// コンストラクタ
 	public Item(int Type, int num, float x,  float y) {
-		sprites			= new ArrayList<Sprite>();
-		fixtures			= new ArrayList<Fixture>();
 		type			= Type;
 		number			= num;
 		position		= new Vector2(x,y);
@@ -71,7 +65,6 @@ public class Item extends AbstractObject {
 		survivalTime	= 600;
 
 		Create();
-		fixtures.get(0).setUserData(this);
 	}
 
 	//************************************************************
@@ -88,9 +81,14 @@ public class Item extends AbstractObject {
 			sprites.get(0).setPosition(-sprites.get(0).getWidth() * 0.5f, -sprites.get(0).getHeight() * 0.5f);
 			sprites.get(0).setScale(ScrollNinja.scale);
 
-			BodyDef def	= new BodyDef();
-			def.type	= BodyType.DynamicBody;		// 動く物体
-			body = GameMain.world.createBody(def);
+			BodyDef bd	= new BodyDef();
+			bd.type				= BodyType.DynamicBody;		// 動く物体
+			bd.bullet			= true;
+			bd.fixedRotation	= true;
+			bd.gravityScale		= 0.0f;
+			bd.position.set(position);
+			bd.linearVelocity.set(Vector2.Zero);
+			createBody(GameMain.world, bd);
 
 			// 当たり判定の作成
 			PolygonShape poly		= new PolygonShape();
@@ -102,15 +100,10 @@ public class Item extends AbstractObject {
 			fd.friction		= 0;//100.0f;
 			fd.restitution	= 0;
 			fd.shape		= poly;
+			fd.isSensor		= true;
 
-			fixtures.add(body.createFixture(poly, 0));
-			fixtures.get(0).setSensor(true);		// 物理シミュレーションの影響を受けない
+			createFixture(fd);
 			poly.dispose();
-			body.setGravityScale(0.0f);			// 重力無視
-			body.setBullet(true);			// すり抜け防止
-			body.setFixedRotation(true);	// シミュレーションでの自動回転をしない
-			body.setTransform(position, 0);		// 初期位置
-			body.setLinearVelocity(0.0f, 0.0f);
 			break;
 		}
 	}
@@ -120,8 +113,7 @@ public class Item extends AbstractObject {
 	// 更新処理まとめ
 	//************************************************************
 	public void update() {
-
-		System.out.println(survivalTime);
+		Body body = getBody();
 
 		survivalTime --;			// 生存時間減少
 
@@ -156,7 +148,7 @@ public class Item extends AbstractObject {
 		}
 		else {
 			if( !groundJudge ) {
-				body.setLinearVelocity(velocity);
+				getBody().setLinearVelocity(velocity);
 				velocity.y -= 0.5f;
 
 				if( velocity.y < -20.0f ) {
@@ -165,7 +157,7 @@ public class Item extends AbstractObject {
 			}
 			else {
 				velocity.y = 0.0f;
-				body.setLinearVelocity(velocity);
+				getBody().setLinearVelocity(velocity);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ public class BackgroundManager {
 	 ***************************************************/
 	public static void dispose() {
 		if (backgroundList != null)
-			backgroundList.Release();
+			backgroundList.dispose();
 		backgroundList = null;
 	}
 }

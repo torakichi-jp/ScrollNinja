@@ -39,9 +39,6 @@ public class StageObject extends AbstractObject {
 
 	// コンストラクタ
 	public StageObject(int Type, int num, Vector2 pos) {
-		sprites		= new ArrayList<Sprite>();
-		fixtures		= new ArrayList<Fixture>();
-
 		number		= num;
 		type		= Type;
 		position	= new Vector2(pos);
@@ -49,9 +46,6 @@ public class StageObject extends AbstractObject {
 		Create();
 	}
 	public StageObject(int Type, int num, float x, float y) {
-		sprites		= new ArrayList<Sprite>();
-		fixtures		= new ArrayList<Fixture>();
-
 		number		= num;
 		type		= Type;
 		position	= new Vector2(x,y);
@@ -78,25 +72,19 @@ public class StageObject extends AbstractObject {
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType.StaticBody;
 
+			// TODO テスト中でいれているだけ
+			bd.position.set(0.0f, -58.0f);
+			bd.angle = (float)Math.toRadians(20);
+			
+			createBody(GameMain.world, bd);
+
 			// Bodyの設定を設定
 			FixtureDef fd	= new FixtureDef();
 			fd.density		= 1000;				// 密度
 			fd.friction		= 0;				// 摩擦
 			fd.restitution	= 0;				// 反発係数
-
-			body = GameMain.world.createBody(bd);
-			// body.setTransform(0, 0, 0);
-
-			// 各種設定を適用。引数は　Body、JSON中身のどのデータを使うか、FixtureDef、サイズ
-			loader.attachFixture(body, "gravestone", fd, texture.getWidth() * ScrollNinja.scale);
-
-			for(int i = 0; i < body.getFixtureList().size(); i ++) {
-				fixtures.add(body.getFixtureList().get(i));
-				fixtures.get(i).setUserData(this);
-			}
-
-			// TODO テスト中でいれているだけ
-			body.setTransform(0, -58, (float)Math.toRadians(20));
+			
+			createFixtureFromFile(fd, "data/stageObject.json", "gravestone", texture.getWidth() * ScrollNinja.scale);
 
 			break;
 

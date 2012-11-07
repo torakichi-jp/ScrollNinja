@@ -57,7 +57,7 @@ public class EnemyManager {
 	 * @param num		管理番号
 	 */
 	public static void DeleteEnemy(int num) {
-		enemyList.get(num).Release();
+		enemyList.get(num).dispose();
 		enemyList.set(num, null);
 	}
 
@@ -68,7 +68,7 @@ public class EnemyManager {
 		if (enemyList != null) {
 			for (int i = 0; i < enemyList.size(); i++) {
 				if (enemyList.get(i) != null)
-					enemyList.get(i).Release();
+					enemyList.get(i).dispose();
 			}
 		}
 		enemyList = new ArrayList<Enemy>();

@@ -125,7 +125,7 @@ public class StageObjectManager {
 			if( stageObjectList.get(i).equals(Type) ) {
 				for( int j = 0; j < rockList.size(); j ++ ) {
 					if( rockList.get(j).GetNum() == Num ) {
-						rockList.get(j).Release();
+						rockList.get(j).dispose();
 						rockList.remove(j);					// 削除！
 					}
 				}
@@ -145,7 +145,7 @@ public class StageObjectManager {
 		stageObjectList = new ArrayList<Integer>();
 		if (rockList != null) {
 			for (int i = 0; i < rockList.size(); i++) {
-				rockList.get(i).Release();
+				rockList.get(i).dispose();
 			}
 		}
 		rockList = new ArrayList<StageObject>();

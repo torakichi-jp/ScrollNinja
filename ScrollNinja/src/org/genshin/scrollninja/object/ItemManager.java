@@ -86,7 +86,7 @@ public class ItemManager {
 			if( itemList.get(i).equals(Type) ) {
 				for( int j = 0; j < onigiriList.size(); j ++ ) {
 					if( onigiriList.get(j).GetNum() == Num ) {
-						onigiriList.get(j).Release();
+						onigiriList.get(j).dispose();
 						onigiriList.remove(j);					// 削除！
 					}
 				}
@@ -110,7 +110,7 @@ public class ItemManager {
 			if( itemList.get(i).equals(item.GetType()) ) {
 				for( int j = 0; j < onigiriList.size(); j ++ ) {
 					if( onigiriList.get(j).GetNum() == item.GetNum() ) {
-						onigiriList.get(j).Release();
+						onigiriList.get(j).dispose();
 						onigiriList.remove(j);					// 削除！
 					}
 				}
@@ -130,7 +130,7 @@ public class ItemManager {
 		itemList = new ArrayList<Integer>();;
 		if (onigiriList != null) {
 			for (int i = 0; i < onigiriList.size(); i++) {
-				onigiriList.get(i).Release();
+				onigiriList.get(i).dispose();
 			}
 		}
 		onigiriList = new ArrayList<Item>();

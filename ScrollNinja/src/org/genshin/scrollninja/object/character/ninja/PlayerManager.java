@@ -59,7 +59,7 @@ public class PlayerManager {
 	public static void dispose() {
 		if (playerList != null) {
 			for (int i = 0; i < playerList.size(); i++) {
-				playerList.get(i).Release();
+				playerList.get(i).dispose();
 			}
 		}
 		playerList = new ArrayList<PlayerNinja>();
