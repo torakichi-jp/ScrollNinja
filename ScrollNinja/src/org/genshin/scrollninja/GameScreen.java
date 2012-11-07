@@ -1,7 +1,6 @@
 package org.genshin.scrollninja;
 
 import java.util.List;
-import java.util.Vector;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 

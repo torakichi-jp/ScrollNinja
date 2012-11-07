@@ -1,22 +1,11 @@
 package org.genshin.scrollninja;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Panel;
-import java.awt.ScrollPane;
-import java.awt.TextField;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 
 public class LayerWindow {
 	

@@ -1,36 +1,16 @@
 package org.genshin.scrollninja;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Label;
-import java.awt.Panel;
 import java.awt.Point;
-import java.awt.ScrollPane;
-import java.awt.Scrollbar;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 
 //========================================
 // フレーム用のクラス

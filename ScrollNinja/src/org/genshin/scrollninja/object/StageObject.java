@@ -3,8 +3,6 @@ package org.genshin.scrollninja.object;
 //========================================
 // インポート
 //========================================
-import java.util.ArrayList;
-
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
@@ -20,9 +18,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 // TODO マップエディターで作成したのち、座標などを読み出せるように

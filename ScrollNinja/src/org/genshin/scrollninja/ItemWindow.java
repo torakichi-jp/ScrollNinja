@@ -7,8 +7,6 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.genshin.scrollninja.EditTable.EditCanvas;
-
 public class ItemWindow {
 	
 	private final int			WIDTH	= 360;
