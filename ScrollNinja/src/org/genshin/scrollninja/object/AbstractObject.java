@@ -2,6 +2,8 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
+import org.genshin.engine.system.Renderable;
+import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
@@ -27,7 +29,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractObject {
+public abstract class AbstractObject implements Updatable, Renderable {
 	/**
 	 * コンストラクタ
 	 * TODO 将来的には引数にWorldを投げて初期化させる？
