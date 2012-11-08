@@ -6,21 +6,19 @@ import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.Effect;
 import org.genshin.scrollninja.object.Kaginawa;
+import org.genshin.scrollninja.object.animation.AnimationInterface;
+import org.genshin.scrollninja.object.animation.TextureAnimation;
+import org.genshin.scrollninja.object.animation.TextureAnimationDef;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.weapon.WeaponManager;
+import org.genshin.scrollninja.utils.TextureFactory;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -70,12 +68,10 @@ public class PlayerNinja extends AbstractCharacter {
 	public PlayerNinja(World world, Vector2 position) {
 		super(world, position);
 		
+		// 初期座標設定
 		getBody().setTransform(position, 0.0f);
 		
 		// 一番最初の表示　現在は歩きで代用
-		nowFrame = walkAnimation.getKeyFrame(0, true);
-		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
-
 		charge		 = 0;
 		money		 = 0;
 		currentState = STAND;
@@ -94,10 +90,7 @@ public class PlayerNinja extends AbstractCharacter {
 	public void update() {
 		// 操作状態を更新
 		controller.update();
-
-		sprites.get(BODY).setRegion(nowFrame);
-		sprites.get(FOOT).setRegion(nowFootFrame);
-
+		
 		int prevState = currentState;
 		if( invincibleTime > 0 ) invincibleTime --;		// 無敵時間の減少S
 		if( count > 0 ) count --;						// アニメーションカウントの減少
@@ -108,14 +101,8 @@ public class PlayerNinja extends AbstractCharacter {
 		updateJump();		// ジャンプ処理
 		updateAttack();		// 攻撃処理
 		updateKaginawa();	// 鉤縄処理
-
-		if( prevState != currentState ) {
-			stateTime = 0;
-		}
+		
 		animation();		// アニメーション処理（これ最後で）
-
-		// 画像反転処理
-		flip(direction==RIGHT, false);
 
 		position = getBody().getPosition();
 
@@ -126,6 +113,11 @@ public class PlayerNinja extends AbstractCharacter {
 	public void render()
 	{
 		kaginawa.render();
+
+		currentBodyAnimation.apply(getSprite(BODY));
+		currentFootAnimation.apply(getSprite(FOOT));
+		flip(direction==RIGHT, false);
+		
 		super.render();
 	}
 
@@ -232,44 +224,45 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	protected void initializeSprite()
 	{
-		// テクスチャの読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		final int WIDTH = 64;
+		final int HEIGHT = 64;
+		
+		TextureAnimationDef tad = new TextureAnimationDef();
+		tad.texture = TextureFactory.getInstance().get("data/player.png");
+		tad.size.setLocation(WIDTH, HEIGHT);
+		
+		// アニメーション生成
+		tad.startIndex.setLocation(0, 0);
+		tad.frameCount = 6;
+		tad.time = 5.0f/60.0f;
+		tad.looping = true;
+		runFootAnimation = new TextureAnimation(tad);
 
-		// アニメーション
-		TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
+		tad.startIndex.setLocation(0, 1);
+		runBodyAnimation = new TextureAnimation(tad);
 
-		// 上半身・歩き　２行目６フレーム
-		frame = new TextureRegion[6];
-		int index = 0;
-		for (int i = 0; i < frame.length; i++)
-			frame[index++] = tmp[1][i];
-		walkAnimation = new Animation(5.0f, frame);
+		tad.startIndex.setLocation(0, 2);
+		tad.frameCount = 5;
+		tad.time = 3.6f/60.0f;
+		tad.looping = false;
+		katanaBodyAnimation = new TextureAnimation(tad);
+		
+		//アニメーション設定
+		currentBodyAnimation = runBodyAnimation;
+		currentFootAnimation = runFootAnimation;
+		
+		currentBodyAnimation.setCurrentTime(0.0f);
+		currentFootAnimation.setCurrentTime(0.0f);
+		
+		// スプライト生成
+		Sprite bodySprite = new Sprite(tad.texture, 0, 0, WIDTH, HEIGHT);
+		Sprite footSprite = new Sprite(tad.texture, 0, 0, WIDTH, HEIGHT);
 
-		// 下半身・歩き １行目６フレーム
-		frame = new TextureRegion[6];
-		index = 0;
-		for (int i = 0; i < frame.length; i
-				++)
-			frame[index++] = tmp[0][i];
-		footWalkAnimation = new Animation(5.0f, frame);
-
-		// 上半身・攻撃　３行目５フレーム
-		frame = new TextureRegion[5];
-		index = 0;
-		for (int i = 0; i < frame.length; i++)
-			frame[index++] = tmp[2][i];
-		attackAnimation = new Animation(3.6f, frame);
-
-		// スプライトに反映 最初は立ちの第１フレーム
-		// （※現在は用意されていないので歩きの第１フレームで代用）
-		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
-		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f - 8);
-		footSprite.setScale(ScrollNinja.scale);
-
-		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
-		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f - 8);
+		bodySprite.setOrigin(bodySprite.getWidth()*0.5f, bodySprite.getHeight()*0.5f-8);
+		footSprite.setOrigin(footSprite.getWidth()*0.5f, footSprite.getHeight()*0.5f-8);
+		
 		bodySprite.setScale(ScrollNinja.scale);
+		footSprite.setScale(ScrollNinja.scale);
 
 		sprites.add(footSprite);
 		sprites.add(bodySprite);
@@ -303,6 +296,7 @@ public class PlayerNinja extends AbstractCharacter {
 
 		createFixture(fd);
 		polygonShape.dispose();
+		Fixture hoge;
 	}
 	
 	
@@ -436,28 +430,8 @@ public class PlayerNinja extends AbstractCharacter {
 	// 現在の状態を参照して画像を更新
 	//************************************************************
 	private void animation() {
-		switch(currentState) {
-		case STAND:		// 立ち
-			break;
-		case RUN:		// 歩き
-			if( count == 0 ) {
-				nowFrame = walkAnimation.getKeyFrame(stateTime, true);
-			}
-			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
-			stateTime ++;
-			break;
-		case DASH:		// 走り
-			break;
-		case JUMP:		// ジャンプ
-			break;
-		case ATTACK:
-			if( count > 30 ) {
-				nowFrame = attackAnimation.getKeyFrame(stateTime, true);
-			}
-			nowFootFrame = footWalkAnimation.getKeyFrame(stateTime, true);
-			stateTime ++;
-			break;
-		}
+		currentBodyAnimation.update();
+		currentFootAnimation.update();
 	}
 
 	// 武器変更
@@ -521,6 +495,15 @@ public class PlayerNinja extends AbstractCharacter {
 	private AbstractWeapon		weapon;						// 武器
 	private Kaginawa			kaginawa;					// 鉤縄
 	private NinjaControllerInterface	controller;		// 忍者の操作管理
+
+	private AnimationInterface currentBodyAnimation;
+	private AnimationInterface currentFootAnimation;
+	
+	// XXX 仮。そのうち配列とかにする。
+	private AnimationInterface runFootAnimation;
+	private AnimationInterface runBodyAnimation;
+	private AnimationInterface katanaBodyAnimation;
+	
 	
 	// なんだかよく分からない変数
 	private int			number;				// プレイヤー番号
@@ -532,17 +515,6 @@ public class PlayerNinja extends AbstractCharacter {
 	private int			maxChakra;			// チャクラ最大値
 	private int			chakra;				// チャクラ
 	private int			money;				// お金
-
-	private float			stateTime;				// アニメーションに使ってるっぽい謎変数
-	private Animation		standAnimation;			// 立ちアニメーション
-	private Animation		walkAnimation;			// 歩きアニメーション
-	private Animation		dashAnimation;			// ダッシュアニメーション
-	private Animation		jumpAnimation;			// ジャンプアニメーション
-	private Animation		attackAnimation;			// 攻撃アニメーション
-	private Animation		footWalkAnimation;		// 下半身・歩きアニメーション
-	private TextureRegion[]	frame;						// アニメーションのコマ
-	private TextureRegion	nowFrame;					// 現在のコマ
-	private TextureRegion	nowFootFrame;				// 下半身用の現在のコマ
 	
 	// おそらく使わなくなる変数
 	private boolean				jump;					// ジャンプフラグ

@@ -221,11 +221,10 @@ public abstract class AbstractObject implements Updatable, Renderable
 	 * FIXME 最終的には消し去る。
 	 */
 	@Deprecated
-	protected final Body createBody(World world, BodyDef bodyDef)
+	protected final void createBody(World world, BodyDef bodyDef)
 	{
 		body = world.createBody(bodyDef);
 		body.setUserData(this);
-		return body;
 	}
 	
 	/**
