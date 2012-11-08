@@ -40,7 +40,7 @@ public class PlayerManager {
 			playerList = new ArrayList<PlayerNinja>();
 
 		// 生成した順に管理番号付与
-		PlayerNinja pPlayer = new PlayerNinja(GameMain.world, playerList.size() + 1, position);
+		PlayerNinja pPlayer = new PlayerNinja(GameMain.world, position);
 		playerList.add(pPlayer);						// 追加
 	}
 

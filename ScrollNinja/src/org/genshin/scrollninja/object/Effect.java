@@ -9,6 +9,7 @@ package org.genshin.scrollninja.object;
 //========================================
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
@@ -47,7 +48,7 @@ public class Effect extends AbstractObject {
 	public final static int WIND_3		= 8;
 
 	//変数宣言
-	private CharacterBase	owner;			// 使用者
+	private AbstractCharacter	owner;			// 使用者
 	private int				effectType;		// エフェクトの種類
 	private int 			effectTime;		// 効果時間
 	private float 			attackNum;		// 攻撃力
@@ -63,7 +64,7 @@ public class Effect extends AbstractObject {
 	 *
 	 * コンストラクタ
 	 ***************************************************/
-	public Effect(int type, CharacterBase owner) {
+	public Effect(int type, AbstractCharacter owner) {
 		this.owner	= owner;
 		effectType	= type;
 		effectTime	= 0;
@@ -84,7 +85,7 @@ public class Effect extends AbstractObject {
 	public int GetEffectTime() { return effectTime; }
 	public float GetAttackNum(){ return attackNum; }
 	public boolean GetUseFlag(){ return useFlag; }
-	public CharacterBase GetOwner() { return owner; }
+	public AbstractCharacter GetOwner() { return owner; }
 
 	//************************************************************
 	// Set

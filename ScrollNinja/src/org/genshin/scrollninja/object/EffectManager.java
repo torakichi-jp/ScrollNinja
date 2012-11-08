@@ -5,6 +5,7 @@ package org.genshin.scrollninja.object;
 //========================================
 import java.util.ArrayList;
 
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 
 
@@ -38,7 +39,7 @@ public class EffectManager {
 	 * 作成
 	 * @param Type	種類
 	 */
-	public static void CreateEffect(int Type, CharacterBase owner) {
+	public static void CreateEffect(int Type, AbstractCharacter owner) {
  		Effect pEffect = new Effect(Type, owner);	// オブジェクトを生成（&初期化）して
  		if (owner.getClass().equals(PlayerNinja.class))
  			effectList.add(pEffect);				// リストに追加
@@ -50,7 +51,7 @@ public class EffectManager {
 	 * 削除
 	 * @param Type	種類
 	 */
-	public static void DeleteEffect(int Type, CharacterBase owner) {
+	public static void DeleteEffect(int Type, AbstractCharacter owner) {
 		if (owner.getClass().equals(PlayerNinja.class))
 			effectList.remove(effectList.indexOf(Type));		// 引数で渡されたオブジェクトを削除
 		else
@@ -62,7 +63,7 @@ public class EffectManager {
 	 * @param Type		種類
 	 * @return エフェクト
 	 */
-	public static Effect GetEffect(int Type, CharacterBase owner) {
+	public static Effect GetEffect(int Type, AbstractCharacter owner) {
 		if (owner.getClass().equals(PlayerNinja.class)) {
 			for(int i = 0; i < effectList.size(); i ++) {
 				if( effectList.get(i).GetType() == Type ) {
@@ -84,7 +85,7 @@ public class EffectManager {
 	 * @param current	現在のエフェクト
 	 * @return エフェクト
 	 */
-	public static Effect GetEffect(Effect current, CharacterBase owner) {
+	public static Effect GetEffect(Effect current, AbstractCharacter owner) {
 		if (owner.getClass().equals(PlayerNinja.class)) {
 			for( int i = 0; i < effectList.size(); i ++ ) {
 				if( effectList.get(i).equals(current) )
@@ -104,7 +105,7 @@ public class EffectManager {
 	 * @param i
 	 * @return エフェクト
 	 */
-	public static Effect GetEffectForLoop(int i, CharacterBase owner) {
+	public static Effect GetEffectForLoop(int i, AbstractCharacter owner) {
 		if (owner.getClass().equals(PlayerNinja.class))
 			return effectList.get(i);
 		else
@@ -115,7 +116,7 @@ public class EffectManager {
 	 * サイズ参照
 	 * @return エフェクトリストサイズ
 	 */
-	public static int GetListSize(CharacterBase owner) {
+	public static int GetListSize(AbstractCharacter owner) {
 		if (owner.getClass().equals(PlayerNinja.class))
 			return effectList.size();
 		else

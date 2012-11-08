@@ -2,9 +2,9 @@ package org.genshin.scrollninja.object.weapon;
 
 
 import org.genshin.scrollninja.object.AbstractObject;
-import org.genshin.scrollninja.object.CharacterBase;
 import org.genshin.scrollninja.object.Effect;
 import org.genshin.scrollninja.object.EffectManager;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -15,7 +15,7 @@ public class Katana extends AbstractWeapon {
 	 * コンストラクタ
 	 * @param i		管理番号
 	 */
-	public Katana(CharacterBase chara, int i, int lv) {
+	public Katana(AbstractCharacter chara, int i, int lv) {
 		owner		= chara;					// 使用者
 		number		= i;						// 管理番号
 		level		= lv;						// レベル TODO

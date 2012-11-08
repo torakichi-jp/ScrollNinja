@@ -12,7 +12,7 @@ import com.badlogic.gdx.Input.Keys;
  * @since		1.0
  * @version	1.0
  */
-public class DefaultPlayerNinjaController extends PlayerNinjaControllerAbstract
+public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
 {
 	@Override
 	protected void initialize()

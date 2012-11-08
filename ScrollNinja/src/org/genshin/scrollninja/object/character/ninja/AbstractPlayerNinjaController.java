@@ -11,12 +11,12 @@ import com.badlogic.gdx.Gdx;
  * @since		1.0
  * @version	1.0
  */
-public abstract class PlayerNinjaControllerAbstract implements NinjaControllerInterface
+public abstract class AbstractPlayerNinjaController implements NinjaControllerInterface
 {
 	/**
 	 * コンストラクタ
 	 */
-	public PlayerNinjaControllerAbstract()
+	public AbstractPlayerNinjaController()
 	{
 		inputHelpers = new InputHelperInterface[InputType.values().length];
 		initialize();

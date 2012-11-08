@@ -29,21 +29,34 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractObject implements Updatable, Renderable {
+public abstract class AbstractObject implements Updatable, Renderable
+{
 	/**
-	 * コンストラクタ
-	 * TODO 将来的には引数にWorldを投げて初期化させる？
+	 * 古いソースとの整合性を保つためのコンストラクタ。
+	 * FIXME 最終的には消し去る。
 	 */
+	@Deprecated
 	public AbstractObject()
 	{
 		/* 何もしない */
 	}
-
-	//************************************************************
-	// dispose
-	// 開放処理まとめ
-	// XXX このメソッドは果たして必要なのか。
-	//************************************************************
+	
+	/**
+	 * コンストラクタ 
+	 * @param world			所属するWorldオブジェクト
+	 */
+	public AbstractObject(World world)
+	{
+		initializeBody(world);
+		initializeSprite();
+		initializeFixture();
+	}
+	
+	/**
+	 * 解放すべきものを全て解放する。
+	 * 
+	 * XXX このメソッドは果たして必要なのか。
+	 */
 	public void dispose(){
 		if(body!=null)
 		{
@@ -53,17 +66,13 @@ public abstract class AbstractObject implements Updatable, Renderable {
 		sprites.clear();
 	}
 
-	/**
-	 * オブジェクトを更新する。
-	 */
+	@Override
 	public void update()
 	{
 		/* 何もしない */
 	}
 
-	/**
-	 * スプライトを描画する。
-	 */
+	@Override
 	public void render()
 	{
 		// アクティブでなければ描画しない
@@ -164,25 +173,88 @@ public abstract class AbstractObject implements Updatable, Renderable {
 	{
 		/* 何もしない */
 	}
+
+	/**
+	 * 鉤縄との衝突を通知する。
+	 * @param obj		衝突したオブジェクト
+	 * @param contact	衝突情報
+	 */
+	public void notifyCollision(Kaginawa obj, Contact contact)
+	{
+		/* 何もしない */
+	}
 	
 	/**
-	 * Bodyを生成する。
-	 * @param world		Bodyを生成するWorldオブジェクト
-	 * @param bodyDef		生成するBodyの定義
-	 * @return			生成したBody
+	 * ここでSpriteを生成する。<br>
+	 * このメソッドは、AbstractObjectのコンストラクタから自動的に呼び出される。
 	 */
+	protected void initializeSprite()
+	{
+		// TODO 最終的にはabstract化する。
+	}
+	
+	/**
+	 * ここでBodyを生成する。<br>
+	 * このメソッドは、AbstractObjectのコンストラクタから自動的に呼び出される。
+	 * @param world			所属するWorldオブジェクト
+	 */
+	private final void initializeBody(World world)
+	{
+		body = world.createBody(createBodyDef());
+		body.setUserData(this);
+	}
+	
+	/**
+	 * Bodyの定義を生成する。<br>
+	 * initializeBodyメソッドにて、ここで生成した定義を元に自動的にBodyを生成する。<br>
+	 * Bodyの定義を変更したい場合は、このメソッドをオーバーライドする。<br>
+	 * @return		Bodyの定義
+	 */
+	protected BodyDef createBodyDef()
+	{
+		BodyDef bd = new BodyDef();
+		return bd;
+	}
+
+	/**
+	 * 古いソースとの整合性を保つためのBody生成メソッド。
+	 * FIXME 最終的には消し去る。
+	 */
+	@Deprecated
 	protected final Body createBody(World world, BodyDef bodyDef)
 	{
-		assert body == null : "Bodyの生成は1オブジェクト1回まで！";
-		
 		body = world.createBody(bodyDef);
 		body.setUserData(this);
-		
 		return body;
 	}
 	
 	/**
-	 * Fixtureを生成する。
+	 * ここでFixtureを生成する。<br>
+	 * このメソッドは、AbstractObjectのコンストラクタから自動的に呼び出される。<br>
+	 * ファイルからFixtureを生成したい場合、又は、複数のFixtureを生成したい場合は、このメソッドをオーバーライドする。
+	 */
+	protected void initializeFixture()
+	{
+		createFixture(createFixtureDef());
+	}
+	
+	/**
+	 * Fixtureの定義を生成する。<br>
+	 * initializeFixtureメソッドにて、ここで生成した定義を元にFixtureを生成する。<br>
+	 * Fixtureの定義を変更したい場合は、このメソッドをオーバーライドする。
+	 * @return		Fixtureの定義
+	 */
+	protected FixtureDef createFixtureDef()
+	{
+		FixtureDef fd = new FixtureDef();
+		fd.density		= 0.0f;		// 密度
+		fd.friction		= 0.0f;		// 摩擦 
+		return fd;
+	}
+	
+	/**
+	 * Fixtureを生成する。<br>
+	 * このメソッドは、基本的にinitializeFixtureメソッドからのみ呼び出す。
 	 * @param fixtureDef	生成するFixtureの定義
 	 */
 	protected final void createFixture(FixtureDef fixtureDef)
@@ -193,7 +265,8 @@ public abstract class AbstractObject implements Updatable, Renderable {
 	}
 	
 	/**
-	 * BodyEditorで作成されたファイルからFixtureを生成する。
+	 * BodyEditorで作成されたファイルからFixtureを生成する。<br>
+	 * このメソッドは、基本的にinitializeFixtureメソッドからのみ呼び出す。
 	 * @param fixtureDef	生成するFixtureの定義
 	 * @param fileName		ファイル名
 	 * @param fixtureName	ファイル内に設定されているFixtureの名前

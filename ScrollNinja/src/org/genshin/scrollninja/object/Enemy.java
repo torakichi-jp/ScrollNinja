@@ -6,6 +6,7 @@ import java.util.Random;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.EnemyDataList.EnemyData;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 // 制作メモ
 // 10/9	座標は動いてるけど絵が付いてってない。
@@ -39,7 +41,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 // 敵はプレイヤーを見つけたら剣や手裏剣などで攻撃
 // 範囲内にいない場合は左右に移動
 
-public class Enemy extends CharacterBase {
+public class Enemy extends AbstractCharacter {
 	// 定数宣言
 	// 方向
 	private final int RIGHT			=  1;

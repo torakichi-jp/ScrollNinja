@@ -2,6 +2,7 @@ package org.genshin.scrollninja.object;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
@@ -33,7 +34,7 @@ public class Syuriken extends AbstractWeapon {
 	 * @param owner		使用者
 	 * @param i			管理番号
 	 */
-	public Syuriken(CharacterBase owner, int i) {
+	public Syuriken(AbstractCharacter owner, int i) {
 		this.owner	= owner;					// 使用者
 		number		= i;						// 管理番号
 		level		= 2;						// レベル		TODO 外からひっぱってこないと

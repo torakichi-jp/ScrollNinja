@@ -3,10 +3,11 @@ package org.genshin.scrollninja.object.weapon;
 
 
 import org.genshin.scrollninja.object.AbstractObject;
-import org.genshin.scrollninja.object.CharacterBase;
 import org.genshin.scrollninja.object.Effect;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * 武器の基本クラス。
@@ -15,7 +16,20 @@ import com.badlogic.gdx.math.Vector2;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractWeapon extends AbstractObject {
+public abstract class AbstractWeapon extends AbstractObject
+{
+	/**
+	 * コンストラクタ
+	 */
+	public AbstractWeapon()
+	{
+	}
+	
+	
+	
+	
+	
+	// TODO 以下、そのうち要るもの要らないもの振り分ける。
 	// 迷ってるもの
 	protected int			level;			// レベル
 	protected int 			stateTime;		// 武器とエフェクトは同期する？のでここに
@@ -24,7 +38,7 @@ public abstract class AbstractWeapon extends AbstractObject {
 	protected int			attackNum;		// 攻撃力
 	protected int			number;			// 管理番号
 	protected Vector2		position;		// 座標
-	protected CharacterBase	owner;			// 使用者
+	protected AbstractCharacter	owner;			// 使用者
 	protected Effect		myEffect;
 	protected boolean		use;			// 使用フラグ
 
@@ -42,5 +56,5 @@ public abstract class AbstractWeapon extends AbstractObject {
 	public Effect GetMyEffect(){ return myEffect; }
 	public int GetStateTime(){ return stateTime; }
 	public float GetAttackNum() { return attackNum; }
-	public CharacterBase GetOwner() { return owner; }
+	public AbstractCharacter GetOwner() { return owner; }
 }

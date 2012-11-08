@@ -49,8 +49,6 @@ public class Background extends AbstractObject {
 	private int				stageNum;		// ステージ番号
 	private StageData 		stageData;		// ステージのデータ
 
-	public Background(){}
-
 	/**
 	 *  コンストラクタ
 	 *  @param num			ステージ番号

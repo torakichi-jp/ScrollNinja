@@ -1,12 +1,7 @@
-/**
- *
- */
-package org.genshin.scrollninja.object.weapon;
+package org.genshin.scrollninja.object;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.object.AbstractObject;
-import org.genshin.scrollninja.object.Background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,7 +24,7 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
  * @since		1.0
  * @version	1.0
  */
-public class Kaginawa extends AbstractWeapon
+public class Kaginawa extends AbstractDynamicObject
 {
 	/**
 	 * コンストラクタ
@@ -38,40 +33,9 @@ public class Kaginawa extends AbstractWeapon
 	 */
 	public Kaginawa(World world, Body owner)
 	{
-		// Body生成
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;		// 移動するオブジェクト
-		bodyDef.active = false;					// 最初は活動しない
-		bodyDef.bullet = true;					// すり抜けない
-		bodyDef.gravityScale = 0.0f;				// 重力の影響を受けない
-		createBody(world, bodyDef);
+		super(world);
 
-		// 衝突オブジェクト生成
-		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(COLLISION.RADIUS);
-
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.density		= 0.0f;			// 密度
-		fixtureDef.friction		= 0.0f;			// 摩擦
-		fixtureDef.isSensor		= true;			// センサーフラグ
-		fixtureDef.shape		= circleShape;	// 形状
-
-		createFixture(fixtureDef);
-		circleShape.dispose();
-
-		// スプライト生成
-		Texture texture = new Texture(Gdx.files.internal(SPRITE.PATH));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		Sprite sprite = new Sprite(texture);
-		sprite.setOrigin(texture.getWidth()*0.5f, texture.getHeight()*0.5f);
-		sprite.setScale(ScrollNinja.scale);
-
-		this.sprites.add(sprite);
-
-		// フィールド初期化
 		this.owner = owner;
-		
 		changeState(State.IDLE);
 	}
 
@@ -125,7 +89,40 @@ public class Kaginawa extends AbstractWeapon
 		// TODO 鉤縄の衝突処理とか。
 		doHang();
 	}
+
+	@Override
+	protected void initializeSprite()
+	{
+		Texture texture = new Texture(Gdx.files.internal(SPRITE.PATH));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		Sprite sprite = new Sprite(texture);
+		sprite.setOrigin(texture.getWidth()*0.5f, texture.getHeight()*0.5f);
+		sprite.setScale(ScrollNinja.scale);
+
+		this.sprites.add(sprite);
+	}
 	
+	@Override
+	protected BodyDef createBodyDef()
+	{
+		BodyDef bd = super.createBodyDef();
+		bd.gravityScale = 0.0f;
+		return bd;
+	}
+
+	@Override
+	protected FixtureDef createFixtureDef()
+	{
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(COLLISION.RADIUS);
+
+		FixtureDef fd	= super.createFixtureDef();
+		fd.isSensor		= true;			// XXX センサーフラグ。いずれはFilterに代わる予定。
+		fd.shape		= circleShape;
+		return fd;
+	}
+
 	/**
 	 * 状態を変更する。
 	 * @param next	次の状態

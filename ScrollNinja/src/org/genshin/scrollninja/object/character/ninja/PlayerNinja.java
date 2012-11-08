@@ -4,11 +4,11 @@ import org.genshin.scrollninja.Interface;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.object.Background;
-import org.genshin.scrollninja.object.CharacterBase;
 import org.genshin.scrollninja.object.Effect;
+import org.genshin.scrollninja.object.Kaginawa;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
-import org.genshin.scrollninja.object.weapon.Kaginawa;
 import org.genshin.scrollninja.object.weapon.WeaponManager;
 
 import com.badlogic.gdx.Gdx;
@@ -41,7 +41,6 @@ import com.badlogic.gdx.physics.box2d.World;
 //			・攻撃後すぐ戻ると不自然だったので上半身がそのまましばらく残るようにしました
 //			・落下速度の調整
 
-// TODO そのうちリファクタリングしてやるから待ってろ！
 // *メモ*
 // 攻撃はダッシュしながら攻撃可能（足は止まらない）
 // 右クリック押しっぱなしで伸び続ける
@@ -62,103 +61,27 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public class PlayerNinja extends CharacterBase {
+public class PlayerNinja extends AbstractCharacter {
 	/**
 	 * コンストラクタ
-	 * @param Number	管理番号		// XXX 何これ要るの？
+	 * @param world		所属するWorldオブジェクト
 	 * @param position	初期座標
 	 */
-	public PlayerNinja(World world, int Number, Vector2 position) {
-		// Body生成
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;	// 移動する
-		bodyDef.position.set(position);			// 座標初期化
-		bodyDef.bullet = true;					// すり抜けない
-		bodyDef.fixedRotation = true;			// 回転しない
-		createBody(world, bodyDef);
-
-		// 下半身のFixture生成
-		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(1.5f);
+	public PlayerNinja(World world, Vector2 position) {
+		super(world, position);
 		
-		FixtureDef footFixtureDef = new FixtureDef();
-		footFixtureDef.density		= 0.0f;			// 密度
-		footFixtureDef.friction		= 0.0f;			// 摩擦
-		footFixtureDef.restitution	= 0.0f;			// 反発
-		footFixtureDef.shape		= circleShape;	// 形状
+		getBody().setTransform(position, 0.0f);
 		
-		createFixture(footFixtureDef);
-		
-		circleShape.dispose();
-		
-		// 上半身のFixture生成
-		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
-
-		FixtureDef bodyFixtureDef = new FixtureDef();
-		bodyFixtureDef.density		= 0.0f;			// 密度
-		bodyFixtureDef.friction		= 0.0f;			// 摩擦
-		bodyFixtureDef.restitution	= 0.0f;			// 反発
-		bodyFixtureDef.shape		= polygonShape;	// 形状
-
-		createFixture(bodyFixtureDef);
-		polygonShape.dispose();
-
-		// テクスチャの読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		// アニメーション
-		TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
-
-		// 上半身・歩き　２行目６フレーム
-		frame = new TextureRegion[6];
-		int index = 0;
-		for (int i = 0; i < frame.length; i++)
-			frame[index++] = tmp[1][i];
-		walkAnimation = new Animation(5.0f, frame);
-
-		// 下半身・歩き １行目６フレーム
-		frame = new TextureRegion[6];
-		index = 0;
-		for (int i = 0; i < frame.length; i
-				++)
-			frame[index++] = tmp[0][i];
-		footWalkAnimation = new Animation(5.0f, frame);
-
-		// 上半身・攻撃　３行目５フレーム
-		frame = new TextureRegion[5];
-		index = 0;
-		for (int i = 0; i < frame.length; i++)
-			frame[index++] = tmp[2][i];
-		attackAnimation = new Animation(3.6f, frame);
-
-		// スプライトに反映 最初は立ちの第１フレーム
-		// （※現在は用意されていないので歩きの第１フレームで代用）
-		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
-		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f - 8);
-		footSprite.setScale(ScrollNinja.scale);
-
-		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
-		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f - 8);
-		bodySprite.setScale(ScrollNinja.scale);
-
-		sprites.add(footSprite);
-		sprites.add(bodySprite);
-
 		// 一番最初の表示　現在は歩きで代用
 		nowFrame = walkAnimation.getKeyFrame(0, true);
 		nowFootFrame = footWalkAnimation.getKeyFrame(0, true);
 
-		hp			 = MAX_HP;
 		charge		 = 0;
 		money		 = 0;
-		direction	 = 1;
 		currentState = STAND;
 		jump		 = false;
 		count		 = 0;
 		invincibleTime = 0;
-		number = Number;
 		weapon = WeaponManager.CreateWeapon(this, WeaponManager.KATANA, 2);	// TODO 今だけレベル２
 		kaginawa = new Kaginawa(world, getBody());
 		controller = new DefaultPlayerNinjaController();
@@ -305,6 +228,83 @@ public class PlayerNinja extends CharacterBase {
 			currentState = STAND;
 		}
 	}
+	
+	@Override
+	protected void initializeSprite()
+	{
+		// テクスチャの読み込み
+		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
+		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		// アニメーション
+		TextureRegion[][] tmp = TextureRegion.split(texture, 64, 64);
+
+		// 上半身・歩き　２行目６フレーム
+		frame = new TextureRegion[6];
+		int index = 0;
+		for (int i = 0; i < frame.length; i++)
+			frame[index++] = tmp[1][i];
+		walkAnimation = new Animation(5.0f, frame);
+
+		// 下半身・歩き １行目６フレーム
+		frame = new TextureRegion[6];
+		index = 0;
+		for (int i = 0; i < frame.length; i
+				++)
+			frame[index++] = tmp[0][i];
+		footWalkAnimation = new Animation(5.0f, frame);
+
+		// 上半身・攻撃　３行目５フレーム
+		frame = new TextureRegion[5];
+		index = 0;
+		for (int i = 0; i < frame.length; i++)
+			frame[index++] = tmp[2][i];
+		attackAnimation = new Animation(3.6f, frame);
+
+		// スプライトに反映 最初は立ちの第１フレーム
+		// （※現在は用意されていないので歩きの第１フレームで代用）
+		Sprite footSprite = new Sprite(footWalkAnimation.getKeyFrame(0, true));
+		footSprite.setOrigin(footSprite.getWidth() * 0.5f, footSprite.getHeight() * 0.5f - 8);
+		footSprite.setScale(ScrollNinja.scale);
+
+		Sprite bodySprite = new Sprite(walkAnimation.getKeyFrame(0, true));
+		bodySprite.setOrigin(bodySprite.getWidth() * 0.5f, bodySprite.getHeight() * 0.5f - 8);
+		bodySprite.setScale(ScrollNinja.scale);
+
+		sprites.add(footSprite);
+		sprites.add(bodySprite);
+	}
+
+	@Override
+	protected BodyDef createBodyDef()
+	{
+		BodyDef bd = super.createBodyDef();
+		bd.fixedRotation = true;		// 回転しない
+		return bd;
+	}
+
+	@Override
+	protected void initializeFixture()
+	{
+		FixtureDef fd = createFixtureDef();
+		
+		// 下半身
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(1.5f);
+		fd.shape = circleShape;
+		
+		createFixture(fd);
+		circleShape.dispose();
+		
+		// 上半身
+		PolygonShape polygonShape = new PolygonShape();
+		polygonShape.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
+		fd.shape = polygonShape;
+
+		createFixture(fd);
+		polygonShape.dispose();
+	}
+	
 	
 	/**
 	 * ジャンプ処理
@@ -515,11 +515,11 @@ public class PlayerNinja extends CharacterBase {
 	private static final int ATTACK			=  4;
 
 	// 変数宣言
-	private int			invincibleTime;				// 無敵時間
-	private boolean		groundJudge;				// 地面と当たってますよフラグ
-	private int			restAerialJumpCount;		// 空中でジャンプできる残り回数
+	private int				invincibleTime;				// 無敵時間
+	private boolean			groundJudge;				// 地面と当たってますよフラグ
+	private int				restAerialJumpCount;		// 空中でジャンプできる残り回数
 	private AbstractWeapon		weapon;						// 武器
-	private Kaginawa		kaginawa;					// 鉤縄
+	private Kaginawa			kaginawa;					// 鉤縄
 	private NinjaControllerInterface	controller;		// 忍者の操作管理
 	
 	// なんだかよく分からない変数
