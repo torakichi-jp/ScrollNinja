@@ -140,10 +140,7 @@ public class Background extends AbstractObject {
 					   (-sprites.get(MAIN).getHeight() * 0.5f - tmp) * ScrollNinja.scale);
 
 		// ボディ設定
-		FixtureDef fd	= new FixtureDef();
-		fd.density		= 1000;		// 密度
-		fd.friction		= 100;		// 摩擦
-		fd.restitution	= 0;		// 反発係数
+		FixtureDef fd	= TerrainParam.INSTANCE.FIXTURE_DEF.createFixtureDef();
 
 		// ボディ作成
 		createBody(GameMain.world, bd);

@@ -7,6 +7,7 @@ import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
+import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;

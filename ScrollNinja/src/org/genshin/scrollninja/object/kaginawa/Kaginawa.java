@@ -1,7 +1,10 @@
-package org.genshin.scrollninja.object;
+package org.genshin.scrollninja.object.kaginawa;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.AbstractDynamicObject;
+import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.Background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

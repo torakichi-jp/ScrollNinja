@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.character.ninja.controller;
 
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;

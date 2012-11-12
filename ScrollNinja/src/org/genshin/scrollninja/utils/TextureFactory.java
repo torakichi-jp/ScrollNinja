@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
  * @since		1.0
  * @version	1.0
  */
-public class TextureFactory extends AbstractResourceFactory<Texture, String>
+public final class TextureFactory extends AbstractResourceFactory<Texture, String>
 {
 	/**
 	 * コンストラクタ
@@ -21,7 +21,11 @@ public class TextureFactory extends AbstractResourceFactory<Texture, String>
 	{
 		/* 何もしない */
 	}
-	
+
+	/**
+	 * シングルトンインスタンスを取得する。
+	 * @return		シングルトンインスタンス
+	 */
 	public static TextureFactory getInstance()
 	{
 		return instance;
@@ -35,5 +39,6 @@ public class TextureFactory extends AbstractResourceFactory<Texture, String>
 		return texture;
 	}
 
+	/** シングルトンインスタンス */
 	private static final TextureFactory instance = new TextureFactory(); 
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.character.ninja.controller;
 
 /**
  * 忍者の操作状態を管理するオブジェクトのインタフェース。
