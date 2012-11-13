@@ -16,6 +16,7 @@ import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.utils.TextureFactory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -128,6 +129,7 @@ public class PlayerNinja extends AbstractCharacter {
 
 		// 足が地面に着いたらフラグを立てる
 		grounded = true;
+		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
 		Vector2 normal = contact.getWorldManifold().getNormal();
 		frontDirection.set(normal.y, -normal.x);
 
@@ -193,24 +195,23 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	protected void initializeFixture()
 	{
-		FixtureDef fd = NinjaParam.INSTANCE.FIXTURE_DEF.createFixtureDef();
-		
 		// 下半身
+		FixtureDef ffd = NinjaParam.INSTANCE.FOOT_FIXTURE_DEF.createFixtureDef();
 		CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(1.5f);
-		fd.shape = circleShape;
+		ffd.shape = circleShape;
 		
-		createFixture(fd);
+		createFixture(ffd);
 		circleShape.dispose();
 		
 		// 上半身
+		FixtureDef bfd = NinjaParam.INSTANCE.BODY_FIXTURE_DEF.createFixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
-		fd.shape = polygonShape;
+		bfd.shape = polygonShape;
 
-		createFixture(fd);
+		createFixture(bfd);
 		polygonShape.dispose();
-		Fixture hoge;
 	}
 	
 	void move()
@@ -235,15 +236,6 @@ public class PlayerNinja extends AbstractCharacter {
 				}
 				body.setLinearVelocity(velocity);
 			}
-//			if( groundJudge ) {
-//                Vector2 velocity = body.getLinearVelocity();
-//                velocity.x *= 0.8;
-//                if( velocity.x < 0.5 && velocity.x > -0.5 ) {
-//                        velocity.x = 0;
-//                }
-//                body.setLinearVelocity(velocity);
-//        }
-
 		}
 		else
 		{
@@ -274,9 +266,13 @@ public class PlayerNinja extends AbstractCharacter {
 		{
 			isJump = controller.isJump();
 		}
-		else
+		else 
 		{
-			isJump = controller.isAerialJump();
+			if( controller.isAerialJump() && restAerialJumpCount > 0 )
+			{
+				isJump = true;
+				restAerialJumpCount--;
+			}
 		}
 		
 		if( isJump )
@@ -289,21 +285,21 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	void kaginawa()
 	{
-		if( controller.isKaginawaThrow() )
+		if( controller.isKaginawaSlack() )
 		{
-			kaginawa.doThrow();
+			kaginawa.slack();
 		}
 		if( controller.isKaginawaShrink() )
 		{
-			kaginawa.doShrink();
+			kaginawa.shrink();
 		}
 		if( controller.isKaginawaHang() )
 		{
-			kaginawa.doHang();
+			kaginawa.hang();
 		}
 		if( controller.isKaginawaRelease() )
 		{
-			kaginawa.doRelease();
+			kaginawa.release();
 		}
 	}
 
@@ -614,21 +610,21 @@ public class PlayerNinja extends AbstractCharacter {
 	 */
 	private void updateKaginawa()
 	{
-		if( controller.isKaginawaThrow() )
+		if( controller.isKaginawaSlack() )
 		{
-			kaginawa.doThrow();
+			kaginawa.slack();
 		}
 		if( controller.isKaginawaShrink() )
 		{
-			kaginawa.doShrink();
+			kaginawa.shrink();
 		}
 		if( controller.isKaginawaHang() )
 		{
-			kaginawa.doHang();
+			kaginawa.hang();
 		}
 		if( controller.isKaginawaRelease() )
 		{
-			kaginawa.doRelease();
+			kaginawa.release();
 		}
 		kaginawa.update();
 	}

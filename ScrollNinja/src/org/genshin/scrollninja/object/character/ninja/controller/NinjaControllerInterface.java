@@ -47,10 +47,10 @@ public interface NinjaControllerInterface
 	boolean isAttack();
 	
 	/**
-	 * 鉤縄を投げる操作の状態を取得する。
-	 * @return	鉤縄を投げる操作がある場合はtrue
+	 * 鉤縄を伸ばす操作の状態を取得する。
+	 * @return	鉤縄を伸ばす操作がある場合はtrue
 	 */
-	boolean isKaginawaThrow();
+	boolean isKaginawaSlack();
 	
 	/**
 	 * 鉤縄を縮める操作の状態を取得する。

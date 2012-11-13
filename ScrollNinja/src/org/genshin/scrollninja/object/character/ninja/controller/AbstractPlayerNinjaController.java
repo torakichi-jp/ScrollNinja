@@ -3,7 +3,10 @@
  */
 package org.genshin.scrollninja.object.character.ninja.controller;
 
+import org.genshin.scrollninja.utils.XMLFactory;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
  * プレイヤーが操作する忍者の操作状態を管理するオブジェクトの基本クラス。
@@ -19,6 +22,11 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	public AbstractPlayerNinjaController()
 	{
 		inputHelpers = new InputHelperInterface[InputType.values().length];
+		
+		Element root = XMLFactory.getInstance().get("data/xml/object_param.xml");
+		root = root.getChildByName("Kaginawa");
+		KAGINAWA_RELEASE_TIME = root.getFloat("ReleaseTime");
+		
 		initialize();
 	}
 
@@ -78,7 +86,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	}
 
 	@Override
-	public final boolean isKaginawaThrow()
+	public final boolean isKaginawaSlack()
 	{
 		return inputHelpers[InputType.KAGINAWA.ordinal()].isTrigger();
 	}
@@ -147,7 +155,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	private InputHelperInterface inputHelpers[];
 	
 	/** 鉤縄を離す入力の判定用 */
-	private final float KAGINAWA_RELEASE_TIME = 0.1f;
+	private final float KAGINAWA_RELEASE_TIME;
 	
 	/** 鉤縄を離す入力の判定用タイマー */
 	private float kaginawaReleaseTimer;

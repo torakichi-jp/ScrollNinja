@@ -1,15 +1,8 @@
-/**
- * 
- */
 package org.genshin.scrollninja.object.character.ninja;
-
-import java.io.IOException;
 
 import org.genshin.scrollninja.utils.FixtureDefFromXML;
 import org.genshin.scrollninja.utils.XMLFactory;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
@@ -28,32 +21,28 @@ enum NinjaParam
 	 */
 	NinjaParam()
 	{
-		Element root = XMLFactory.getInstance().get("data/xml/object.xml");
+		Element root = XMLFactory.getInstance().get("data/xml/object_param.xml");
 		root = root.getChildByName("Ninja");
 		
-		// 物理演算関連
-		Element fixtureDef = root.getChildByName("FixtureDef");
-		
-		FIXTURE_DEF = new FixtureDefFromXML(fixtureDef);
-		
-		// 忍者の動き関連
-		Element param = root.getChildByName("Param");
-		
+		//---- 忍者の挙動関連
 		// 走り
-		RUN_ACCEL			= param.getFloat("RunAccel");
-		RUN_MAX_VELOCITY	= param.getFloat("RunMaxVelocity");
+		RUN_ACCEL			= root.getFloat("RunAccel");
+		RUN_MAX_VELOCITY	= root.getFloat("RunMaxVelocity");
 		
 		// ダッシュ
-		DASH_ACCEL			= param.getFloat("DashAccel");
-		DASH_MAX_VELOCITY	= param.getFloat("DashMaxVelocity");
+		DASH_ACCEL			= root.getFloat("DashAccel");
+		DASH_MAX_VELOCITY	= root.getFloat("DashMaxVelocity");
 		
 		// ジャンプ
-		JUMP_POWER			= param.getFloat("JumpPower");
-		AERIAL_JUMP_COUNT	= param.getInt("AerialJumpCount");
+		JUMP_POWER			= root.getFloat("JumpPower");
+		AERIAL_JUMP_COUNT	= root.getInt("AerialJumpCount");
+		
+		//---- 衝突関連
+		Element bodyFixtureDef = root.getChildByName("BodyFixtureDef");
+		BODY_FIXTURE_DEF = new FixtureDefFromXML(bodyFixtureDef);
+		Element footFixtureDef = root.getChildByName("FootFixtureDef");
+		FOOT_FIXTURE_DEF = new FixtureDefFromXML(footFixtureDef);
 	}
-	
-	/** Fixtureの定義情報 */
-	final FixtureDefFromXML FIXTURE_DEF;
 	
 	/** 走りの加速度 */
 	final float RUN_ACCEL;
@@ -72,4 +61,10 @@ enum NinjaParam
 	
 	/** 空中でジャンプできる回数 */
 	final int AERIAL_JUMP_COUNT;
+	
+	/** 上半身Fixtureの定義情報 */
+	final FixtureDefFromXML BODY_FIXTURE_DEF;
+	
+	/** 下半身Fixtureの定義情報 */
+	final FixtureDefFromXML FOOT_FIXTURE_DEF;
 }

@@ -20,7 +20,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 /**
  * 鉤縄クラス
@@ -44,35 +43,35 @@ public class Kaginawa extends AbstractDynamicObject
 	}
 
 	/**
-	 * 鉤縄を投げる。
+	 * 鉤縄を伸ばす。
 	 */
-	public final void doThrow()
+	public final void slack()
 	{
-		state.doThrow(this);
+		state.slack(this);
 	}
 	
 	/**
 	 * 鉤縄を縮める。
 	 */
-	public final void doShrink()
+	public final void shrink()
 	{
-		state.doShrink(this);
+		state.shrink(this);
 	}
 
 	/**
 	 * 鉤縄にぶら下がる。
 	 */
-	public final void doHang()
+	public final void hang()
 	{
-		state.doHang(this);
+		state.hang(this);
 	}
 
 	/**
 	 * 鉤縄を離す。
 	 */
-	public final void doRelease()
+	public final void release()
 	{
-		state.doRelease(this);
+		state.release(this);
 	}
 
 	@Override
@@ -91,7 +90,7 @@ public class Kaginawa extends AbstractDynamicObject
 	public void notifyCollision(Background obj, Contact contact)
 	{
 		// TODO 鉤縄の衝突処理とか。
-		doHang();
+		hang();
 	}
 
 	@Override
@@ -119,7 +118,7 @@ public class Kaginawa extends AbstractDynamicObject
 	protected FixtureDef createFixtureDef()
 	{
 		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(COLLISION.RADIUS);
+		circleShape.setRadius(KaginawaParam.INSTANCE.COLLISION_RADIUS);
 
 		FixtureDef fd	= super.createFixtureDef();
 		fd.isSensor		= true;			// XXX センサーフラグ。いずれはFilterに代わる予定。
@@ -138,14 +137,6 @@ public class Kaginawa extends AbstractDynamicObject
 		state = next;
 		state.initialize(this);
 	}
-	
-
-	/** 衝突関連の定数 */
-	private static final class COLLISION
-	{
-		/** 衝突オブジェクトの半径({@value}) */
-		private static final float RADIUS = 1.0f;
-	}
 
 	/** スプライト関連の定数 */
 	private static final class SPRITE
@@ -153,15 +144,6 @@ public class Kaginawa extends AbstractDynamicObject
 		/** テクスチャのパス({@value}) */
 		private static final String PATH = "data/shuriken.png";
 	}
-
-	/** 鉤縄の飛ぶ速度({@value}) */
-	private static final float THROW_VEL = 45.0f;
-
-	/** 鉤縄の縮む速度({@value}) */
-	private static final float SHRINK_VEL = THROW_VEL*2.0f;
-
-	/** 鉤縄の長さ({@value}) */
-	private static final float LEN_MAX = THROW_VEL*1.0f;
 
 	/** 鉤縄の持ち主 */
 	private Body owner;
@@ -197,16 +179,16 @@ public class Kaginawa extends AbstractDynamicObject
 			}
 
 			@Override
-			void doThrow(Kaginawa me)
+			void slack(Kaginawa me)
 			{
-				me.changeState(THROW);
+				me.changeState(SLACK);
 			}
 		},
 		
 		/**
-		 * 鉤縄を投げている状態
+		 * 鉤縄を伸ばしている状態
 		 */
-		THROW
+		SLACK
 		{
 			@Override
 			void initialize(Kaginawa me)
@@ -232,7 +214,7 @@ public class Kaginawa extends AbstractDynamicObject
 				
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
-				kaginawa.setLinearVelocity(dir.x*THROW_VEL, dir.y*THROW_VEL);
+				kaginawa.setLinearVelocity(dir.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, dir.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
 				kaginawa.setTransform(owner.getPosition(), 0);
 				kaginawa.setActive(true);
 				
@@ -251,7 +233,7 @@ public class Kaginawa extends AbstractDynamicObject
 				Vector2 ownerPos = owner.getPosition();
 				Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
 				
-				if(direction.len2() > LEN_MAX*LEN_MAX)
+				if(direction.len2() > KaginawaParam.INSTANCE.LENGTH*KaginawaParam.INSTANCE.LENGTH)
 				{
 					//doRelease(me);
 					me.changeState(HANG);
@@ -259,13 +241,13 @@ public class Kaginawa extends AbstractDynamicObject
 			}
 
 			@Override
-			void doShrink(Kaginawa me)
+			void shrink(Kaginawa me)
 			{
 				me.changeState(SHRINK);
 			}
 
 			@Override
-			void doRelease(Kaginawa me)
+			void release(Kaginawa me)
 			{
 				me.changeState(RELEASE);
 			}
@@ -308,24 +290,24 @@ public class Kaginawa extends AbstractDynamicObject
 				Vector2 ownerPos = owner.getPosition();
 				Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
 				float len2 = direction.len2();
-				direction.nor().mul(SHRINK_VEL);
+				direction.nor().mul(KaginawaParam.INSTANCE.SHRINK_VELOCITY);
 	
 				owner.setLinearVelocity(direction);
 	
-				if(len2 < (SHRINK_VEL*SHRINK_VEL)/30/30)
+				if(len2 < (KaginawaParam.INSTANCE.SHRINK_VELOCITY*KaginawaParam.INSTANCE.SHRINK_VELOCITY)/30/30)
 				{
-					doRelease(me);
+					release(me);
 				}
 			}
 
 			@Override
-			void doHang(Kaginawa me)
+			void hang(Kaginawa me)
 			{
 				me.changeState(HANG);
 			}
 
 			@Override
-			void doRelease(Kaginawa me)
+			void release(Kaginawa me)
 			{
 				me.changeState(RELEASE);
 			}
@@ -367,13 +349,13 @@ public class Kaginawa extends AbstractDynamicObject
 			}
 
 			@Override
-			void doShrink(Kaginawa me)
+			void shrink(Kaginawa me)
 			{
 				me.changeState(SHRINK);
 			}
 
 			@Override
-			void doRelease(Kaginawa me)
+			void release(Kaginawa me)
 			{
 				me.changeState(RELEASE);
 			}
@@ -429,29 +411,27 @@ public class Kaginawa extends AbstractDynamicObject
 		void update(Kaginawa me) { /* 何もしない */ }
 
 		/**
-		 * 鉤縄を投げる。
+		 * 鉤縄を伸ばす。
 		 * @param me	自身を指す鉤縄オブジェクト
-		 * 
-		 * FIXME 実験用に鉤縄投げ放題モード
 		 */
-		void doThrow(Kaginawa me) {	 /* 何もしない */ }
+		void slack(Kaginawa me) { /* 何もしない */ }
 
 		/**
 		 * 鉤縄を縮める。
 		 * @param me	自身を指す鉤縄オブジェクト
 		 */
-		void doShrink(Kaginawa me) { /* 何もしない */ }
+		void shrink(Kaginawa me) { /* 何もしない */ }
 
 		/**
 		 * 鉤縄にぶら下がる。
 		 * @param me	自身を指す鉤縄オブジェクト
 		 */
-		void doHang(Kaginawa me) { /* 何もしない */ }
+		void hang(Kaginawa me) { /* 何もしない */ }
 
 		/**
 		 * 鉤縄を離す。
 		 * @param me	自身を示す鉤縄オブジェクト
 		 */
-		void doRelease(Kaginawa me) { /* 何もしない */ }
+		void release(Kaginawa me) { /* 何もしない */ }
 	}
 }

@@ -1,10 +1,12 @@
 package org.genshin.scrollninja.utils;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
- * Fixtureの定義をXMLから取得する。
+ * Fixtureの定義をXMLから取得し、生成する。
  * @author kou
  * @since		1.0
  * @version	1.0
@@ -17,6 +19,7 @@ public class FixtureDefFromXML
 	 */
 	public FixtureDefFromXML(Element element)
 	{
+		element = element.getChildByName("FixtureDef");
 		density		= element.getFloat("Density", 0.0f);
 		friction	= element.getFloat("Friction", 0.2f);
 		restitution	= element.getFloat("Restitution", 0.0f);

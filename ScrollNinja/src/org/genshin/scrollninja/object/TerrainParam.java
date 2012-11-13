@@ -21,13 +21,11 @@ enum TerrainParam
 	 */
 	TerrainParam()
 	{
-		Element root = XMLFactory.getInstance().get("data/xml/object.xml");
+		Element root = XMLFactory.getInstance().get("data/xml/object_param.xml");
 		root = root.getChildByName("Terrain");
 		
-		// 物理演算関連
-		Element fixtureDef = root.getChildByName("FixtureDef");
-		
-		FIXTURE_DEF = new FixtureDefFromXML(fixtureDef);
+		// 衝突関連
+		FIXTURE_DEF = new FixtureDefFromXML(root);
 	}
 	
 	/** Fixtureの定義情報 */
