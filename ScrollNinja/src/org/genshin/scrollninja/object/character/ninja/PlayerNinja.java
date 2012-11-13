@@ -216,6 +216,7 @@ public class PlayerNinja extends AbstractCharacter {
 	void move()
 	{
 		// TODO 壁走り、天井走りを継続させるため、地面に足が着いている時は地面への吸着力を発生させる？
+		Body body = getBody();
 		
 		// 移動処理
 		// FIXME 斜面でずり落ちないようにする。摩擦いじる？
@@ -223,7 +224,26 @@ public class PlayerNinja extends AbstractCharacter {
 
 		if(moveLevel == 0.0f)
 		{
-			// TODO 摩擦的な処理を加えるべき？
+			// TODO 摩擦的な処理。box2dのfrictionに任せるべき？
+			if( IsGrounded() )
+			{
+				Vector2 velocity = body.getLinearVelocity();
+				velocity.mul(0.8f);
+				if(velocity.len2() < (0.5f*0.5f))
+				{
+					velocity.set(Vector2.Zero);
+				}
+				body.setLinearVelocity(velocity);
+			}
+//			if( groundJudge ) {
+//                Vector2 velocity = body.getLinearVelocity();
+//                velocity.x *= 0.8;
+//                if( velocity.x < 0.5 && velocity.x > -0.5 ) {
+//                        velocity.x = 0;
+//                }
+//                body.setLinearVelocity(velocity);
+//        }
+
 		}
 		else
 		{
@@ -235,6 +255,14 @@ public class PlayerNinja extends AbstractCharacter {
 			{
 				run(moveLevel);
 			}
+		}
+
+		// 速度制限
+		// FIXME 現状だと水平方向にしか制限が働かないため、なんとかする。
+		final float maxVelocity = controller.isDash() ? NinjaParam.INSTANCE.DASH_MAX_VELOCITY : NinjaParam.INSTANCE.RUN_MAX_VELOCITY; 
+		Vector2 vel = body.getLinearVelocity();
+		if( Math.abs(vel.x) > maxVelocity ) {
+			body.setLinearVelocity(Math.signum(vel.x)*maxVelocity, vel.y);
 		}
 	}
 	
@@ -332,13 +360,6 @@ public class PlayerNinja extends AbstractCharacter {
 		Vector2 position = body.getPosition();
 		
 		body.applyLinearImpulse(accel*moveLevel*frontDirection.x, accel*moveLevel*frontDirection.y, position.x, position.y);
-		
-		// 速度制限
-		// FIXME 現状だと水平方向にしか制限が働かないため、なんとかする。
-		Vector2 vel = body.getLinearVelocity();
-		if( Math.abs(vel.x) > maxVelocity ) {
-			body.setLinearVelocity(Math.signum(vel.x)*maxVelocity, vel.y);
-		}
 	}
 	
 	/** 忍者の状態を管理するオブジェクト */
