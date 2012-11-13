@@ -92,8 +92,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	@Override
 	public final boolean isKaginawaHang()
 	{
-		// FIXME 鉤縄実験用の一時的な処理。
-		return false;//inputHelpers[State.KAGINAWA.ordinal()].prs() && kaginawaReleaseTimer>=KAGINAWA_RELEASE_TIME;
+		return inputHelpers[InputType.KAGINAWA.ordinal()].isPress() && kaginawaReleaseTimer>=KAGINAWA_RELEASE_TIME;
 	}
 
 	@Override

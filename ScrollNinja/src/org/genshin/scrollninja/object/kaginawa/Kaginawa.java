@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 /**
@@ -253,7 +254,7 @@ public class Kaginawa extends AbstractDynamicObject
 				if(direction.len2() > LEN_MAX*LEN_MAX)
 				{
 					//doRelease(me);
-					doHang(me);
+					me.changeState(HANG);
 				}
 			}
 
@@ -261,12 +262,6 @@ public class Kaginawa extends AbstractDynamicObject
 			void doShrink(Kaginawa me)
 			{
 				me.changeState(SHRINK);
-			}
-
-			@Override
-			void doHang(Kaginawa me)
-			{
-				me.changeState(HANG);
 			}
 
 			@Override
@@ -359,13 +354,9 @@ public class Kaginawa extends AbstractDynamicObject
 				owner.setGravityScale(1.0f);
 				
 				// ジョイントを生成
-				RopeJointDef jd = new RopeJointDef();
-				jd.bodyA = owner;
-				jd.bodyB = kaginawa;
-				jd.localAnchorA.set(Vector2.Zero);
-				jd.localAnchorB.set(Vector2.Zero);
-				jd.maxLength = kaginawa.getPosition().sub(owner.getPosition()).len();
-				
+				// XXX RopeJoint使っても面白いかも知れない。
+				DistanceJointDef jd = new DistanceJointDef();
+				jd.initialize(owner, kaginawa, owner.getPosition(), kaginawa.getPosition());
 				me.joint = world.createJoint(jd);
 			}
 
@@ -443,7 +434,7 @@ public class Kaginawa extends AbstractDynamicObject
 		 * 
 		 * FIXME 実験用に鉤縄投げ放題モード
 		 */
-		void doThrow(Kaginawa me) {	me.changeState(RELEASE); }///* 何もしない */ }
+		void doThrow(Kaginawa me) {	 /* 何もしない */ }
 
 		/**
 		 * 鉤縄を縮める。
