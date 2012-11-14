@@ -196,7 +196,7 @@ public class PlayerNinja extends AbstractCharacter {
 	protected void initializeFixture()
 	{
 		// 下半身
-		FixtureDef ffd = NinjaParam.INSTANCE.FOOT_FIXTURE_DEF.createFixtureDef();
+		FixtureDef ffd = NinjaParam.INSTANCE.FOOT_FIXTURE_DEF_LOADER.createFixtureDef();
 		CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(1.5f);
 		ffd.shape = circleShape;
@@ -205,7 +205,7 @@ public class PlayerNinja extends AbstractCharacter {
 		circleShape.dispose();
 		
 		// 上半身
-		FixtureDef bfd = NinjaParam.INSTANCE.BODY_FIXTURE_DEF.createFixtureDef();
+		FixtureDef bfd = NinjaParam.INSTANCE.BODY_FIXTURE_DEF_LOADER.createFixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
 		bfd.shape = polygonShape;

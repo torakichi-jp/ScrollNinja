@@ -96,14 +96,8 @@ public class Kaginawa extends AbstractDynamicObject
 	@Override
 	protected void initializeSprite()
 	{
-		Texture texture = new Texture(Gdx.files.internal(SPRITE.PATH));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-		Sprite sprite = new Sprite(texture);
-		sprite.setOrigin(texture.getWidth()*0.5f, texture.getHeight()*0.5f);
-		sprite.setScale(ScrollNinja.scale);
-
-		this.sprites.add(sprite);
+		//this.sprites.add(KaginawaParam.INSTANCE.ROPE_SPRITE_LOADER.create())
+		this.sprites.add(KaginawaParam.INSTANCE.ANCHOR_SPRITE_LOADER.create());
 	}
 	
 	@Override
@@ -215,7 +209,7 @@ public class Kaginawa extends AbstractDynamicObject
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
 				kaginawa.setLinearVelocity(dir.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, dir.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
-				kaginawa.setTransform(owner.getPosition(), 0);
+				kaginawa.setTransform(owner.getPosition(), (float)Math.toRadians(dir.angle()));
 				kaginawa.setActive(true);
 				
 				// 持ち主を初期化

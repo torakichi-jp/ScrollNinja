@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.utils;
 
+import java.util.logging.Logger;
+
 import org.genshin.engine.resource.factory.AbstractResourceFactory;
 
 import com.badlogic.gdx.graphics.Texture;

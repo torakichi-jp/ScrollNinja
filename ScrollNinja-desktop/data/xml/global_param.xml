@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- グローバルパラメータ -->
+<GlobalParam>
+	<!-- 世界の単位（box2dの速度制限回避用） -->
+	<WorldScale>0.1</WorldScale>
+	
+	<!-- XMLファイルを格納するディレクトリ -->
+	<XMLDirectoryPath>data/xml/</XMLDirectoryPath>
+	<!-- 衝突関連のファイルを格納するディレクトリ -->
+	<CollisionDirectoryPath>data/</CollisionDirectoryPath>
+	<!-- テクスチャを格納するディレクトリ -->
+	<TextureDirectoryPath>data/texture/</TextureDirectoryPath>
+	
+	<!-- オブジェクトパラメータ -->
+	<ObjectParamXMLFileName>object_param.xml</ObjectParamXMLFileName>
+	<!-- 衝突パラメータ -->
+	<CollisionParamXMLFileName>collision_param.xml</CollisionParamXMLFileName>
+	<!-- スプライトパラメータ -->
+	<SpriteParamXMLFileName>sprite_param.xml</SpriteParamXMLFileName>
+</GlobalParam>
+

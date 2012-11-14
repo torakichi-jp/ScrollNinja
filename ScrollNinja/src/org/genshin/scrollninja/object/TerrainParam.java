@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object;
 
-import org.genshin.scrollninja.utils.FixtureDefFromXML;
+import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.utils.FixtureDefLoader;
 import org.genshin.scrollninja.utils.XMLFactory;
 
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -19,15 +20,17 @@ enum TerrainParam
 	/**
 	 * コンストラクタ
 	 */
-	TerrainParam()
+	private TerrainParam()
 	{
-		Element root = XMLFactory.getInstance().get("data/xml/object_param.xml");
-		root = root.getChildByName("Terrain");
-		
-		// 衝突関連
-		FIXTURE_DEF = new FixtureDefFromXML(root);
+		//---- 衝突関連
+		{
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_PATH);
+			rootElement = rootElement.getChildByName("Terrain");
+			
+			FIXTURE_DEF_LOADER = new FixtureDefLoader(rootElement);
+		}
 	}
 	
 	/** Fixtureの定義情報 */
-	final FixtureDefFromXML FIXTURE_DEF;
+	final FixtureDefLoader FIXTURE_DEF_LOADER;
 }

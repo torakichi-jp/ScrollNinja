@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- オブジェクトの固有パラメータ -->
 <ObjectParam>
-	<!-- 忍者関連の定数 -->
+	<!-- 忍者 -->
 	<Ninja>
 		<!-- 走りの加速度 -->
 		<RunAccel>5.0</RunAccel>
@@ -14,21 +16,9 @@
 		<JumpPower>70.0f</JumpPower>
 		<!-- 空中でジャンプできる回数 -->
 		<AerialJumpCount>1</AerialJumpCount>
-		<!-- 上半身の衝突に関する定数 -->
-		<BodyFixtureDef>
-			<FixtureDef>
-				<Friction>0.0</Friction>
-			</FixtureDef>
-		</BodyFixtureDef>
-		<!-- 下半身の衝突に関する定数 -->
-		<FootFixtureDef>
-			<FixtureDef>
-				<Friction>0.0</Friction>
-			</FixtureDef>
-		</FootFixtureDef>
 	</Ninja>
 	
-	<!-- 鉤縄関連の定数 -->
+	<!-- 鉤縄 -->
 	<Kaginawa>
 		<!-- 伸びる速度 -->
 		<SlackVelocity>90.0</SlackVelocity>
@@ -38,62 +28,6 @@
 		<Length>45.0</Length>
 		<!-- 鉤縄を離す入力の際の判定用時間（秒） -->
 		<ReleaseTime>0.2</ReleaseTime>
-		<!-- 衝突に関する定数 -->
-		<FixtureDef>
-			<CircleShape>
-				<Radius>1.0</Radius>
-			</CircleShape>
-		</FixtureDef>
 	</Kaginawa>
-	
-	<!-- 地形関連の定数（ステージの設定ファイルに隔離するべきかも） -->
-	<Terrain>
-		<!-- 衝突に関する定数 -->
-		<FixtureDef>
-			<Friction>0.0</Friction>
-		</FixtureDef>
-	</Terrain>
-	
-	<!-- カンペ（コピペ用。ゲーム中では使わない） -->
-	<CunningPaper>
-		<!-- 衝突に関する定数 -->
-		<FixtureDef>
-			<!-- 密度　単位：kg/m^2　省略時：0.0 -->
-			<Density>0.0</Density>
-			<!-- 摩擦　範囲：[0, 1]　省略時：0.2 -->
-			<Friction>0.2</Friction>
-			<!-- 反発力　範囲：[0, 1]　省略時：0.0 -->
-			<Restitution>0.0</Restitution>
-			<!-- 矩形の衝突判定 -->
-			<PolygonShape>
-				<!-- 横幅　省略時：1.0 -->
-				<Width>1.0</Width>
-				<!-- 縦幅　省略時：1.0 -->
-				<Height>1.0</Height>
-				<!-- 中央となるX座標（0.0を指定するとど真ん中）　省略時：0.0 -->
-				<CenterX>0.0</CenterX>
-				<!-- 中央となるY座標（0.0を指定するとど真ん中）　省略時：0.0 -->
-				<CenterY>0.0</CenterY>
-				<!-- 角度　範囲：[0, 360)　省略時：0.0 -->
-				<Angle>0.0</Angle>
-			</PolygonShape>
-			<!-- 円の衝突判定 -->
-			<CircleShape>
-				<!-- 半径　省略時：1.0 -->
-				<Radius>1.0</Radius>
-				<!-- 中央となるX座標（0.0を指定するとど真ん中）　省略時：0.0 -->
-				<CenterX>0.0</CenterX>
-				<!-- 中央となるY座標（0.0を指定するとど真ん中）　省略時：0.0 -->
-				<CenterY>0.0</CenterY>
-			</CircleShape>
-			<!-- BodyEditorで作成した衝突判定 -->
-			<BodyEditorShape>
-				<!-- ファイルパス（実行ファイルからの相対パス） -->
-				<FilePath>data/hoge.json</FilePath>
-				<!-- BodyEditor内で設定した名称 -->
-				<FixtureName>hoge</FixtureName>
-			</BodyEditorShape>
-		</FixtureDef>
-	</CunningPaper>
-</Object>
+</ObjectParam>
 
