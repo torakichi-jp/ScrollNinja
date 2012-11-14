@@ -13,6 +13,7 @@ import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.WeaponManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -25,6 +26,9 @@ public class Stage implements StageBase {
 
 	private int						stageNum;		// ステージナンバー
 	private StageData	 			stageData;		// ステージのデータ
+	
+	private boolean prevInput;
+	private boolean renderDebug = true;
 
 	// コンストラクタ
 	public Stage(int num){
@@ -64,6 +68,21 @@ public class Stage implements StageBase {
 
 		updateCamera();
 		GameMain.playerInfo.update();
+		
+		
+		// TODO 最終的には消すハズ
+		if( Gdx.input.isKeyPressed(Keys.H) )
+		{
+			if(!prevInput)
+			{
+				renderDebug = !renderDebug;
+			}
+			prevInput = true;
+		}
+		else
+		{
+			prevInput = false;
+		}
 	}
 
 	//************************************************************
@@ -91,7 +110,7 @@ public class Stage implements StageBase {
 		GameMain.spriteBatch.end();										// 描画終了
 
 		// TODO リリース前にこの処理をクリア直後に持ってくる
-		renderer.render(GameMain.world, GameMain.camera.combined);
+		if(renderDebug)	renderer.render(GameMain.world, GameMain.camera.combined);
 		GameMain.world.step(Gdx.graphics.getDeltaTime(), 20, 20);
 
 		/**

@@ -1,11 +1,10 @@
 package org.genshin.scrollninja.utils;
 
-import java.util.logging.Logger;
-
 import org.genshin.engine.resource.factory.AbstractResourceFactory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
 /**
  * テクスチャを生成・管理するクラス（シングルトン）<br>
@@ -38,6 +37,7 @@ public final class TextureFactory extends AbstractResourceFactory<Texture, Strin
 	{
 		Texture texture = new Texture(id);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		return texture;
 	}
 

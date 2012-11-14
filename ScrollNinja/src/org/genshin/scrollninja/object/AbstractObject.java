@@ -91,9 +91,13 @@ public abstract class AbstractObject implements Updatable, Renderable
 			Sprite current = sprites.get(i);
 			// 座標・回転
 			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
-			current.setRotation(rot);
+			current.rotate(rot);
+			
 			// 描画
 			current.draw(spriteBatch);
+			
+			// 回転は戻しておく
+			current.rotate(-rot);
 		}
 	}
 

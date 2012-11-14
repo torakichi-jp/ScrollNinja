@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.kaginawa;
 
 import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
 import org.genshin.scrollninja.object.AbstractObject;
@@ -90,13 +91,13 @@ public class Kaginawa extends AbstractDynamicObject
 	public void notifyCollision(Background obj, Contact contact)
 	{
 		// TODO 鉤縄の衝突処理とか。
-		hang();
+		state.collision(this);
 	}
 
 	@Override
 	protected void initializeSprite()
 	{
-		//this.sprites.add(KaginawaParam.INSTANCE.ROPE_SPRITE_LOADER.create())
+		this.sprites.add(KaginawaParam.INSTANCE.ROPE_SPRITE_LOADER.create());
 		this.sprites.add(KaginawaParam.INSTANCE.ANCHOR_SPRITE_LOADER.create());
 	}
 	
@@ -130,6 +131,23 @@ public class Kaginawa extends AbstractDynamicObject
 		
 		state = next;
 		state.initialize(this);
+	}
+
+	@Override
+	public void render()
+	{
+		// XXX 縄の描画（仮）
+		Vector2 kaginawaPosition = getBody().getPosition();
+		Vector2 ownerPosition = owner.getPosition();
+		Vector2 direction = ownerPosition.sub(kaginawaPosition);
+		Sprite rope = sprites.get(0);
+		float len = direction.len()/GlobalParam.INSTANCE.WORLD_SCALE;
+		
+		rope.setSize(len, rope.getHeight());
+		rope.setRotation(direction.angle());
+		rope.setRegion(0, 0, (int)len, 64);
+		
+		super.render();
 	}
 
 	/** スプライト関連の定数 */
@@ -209,8 +227,12 @@ public class Kaginawa extends AbstractDynamicObject
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
 				kaginawa.setLinearVelocity(dir.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, dir.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
-				kaginawa.setTransform(owner.getPosition(), (float)Math.toRadians(dir.angle()));
+				kaginawa.setTransform(owner.getPosition(), 0.0f);
 				kaginawa.setActive(true);
+				
+				// XXX 仮
+				Sprite anchor = me.sprites.get(1);
+				anchor.setRotation(dir.angle());
 				
 				// 持ち主を初期化
 				//owner.setGravityScale(1.0f);
@@ -244,6 +266,12 @@ public class Kaginawa extends AbstractDynamicObject
 			void release(Kaginawa me)
 			{
 				me.changeState(RELEASE);
+			}
+
+			@Override
+			void collision(Kaginawa me)
+			{
+				me.changeState(HANG);
 			}
 		},
 		
@@ -427,5 +455,11 @@ public class Kaginawa extends AbstractDynamicObject
 		 * @param me	自身を示す鉤縄オブジェクト
 		 */
 		void release(Kaginawa me) { /* 何もしない */ }
+		
+		/**
+		 * 鉤縄が何かに衝突した。
+		 * @param me	自身を示す鉤縄オブジェクト
+		 */
+		void collision(Kaginawa me) { /* 何もしない */ }
 	}
 }
