@@ -7,7 +7,6 @@ import org.genshin.scrollninja.object.Effect;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * 武器の基本クラス。

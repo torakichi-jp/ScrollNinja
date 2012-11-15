@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- オブジェクトの固有パラメータ -->
+<!-- オブジェクト関連の設定 -->
 <ObjectParam>
 	<!-- 忍者 -->
 	<Ninja>

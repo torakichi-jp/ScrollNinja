@@ -12,11 +12,11 @@
 	<!-- テクスチャを格納するディレクトリ -->
 	<TextureDirectoryPath>data/texture/</TextureDirectoryPath>
 	
-	<!-- オブジェクトパラメータ -->
+	<!-- オブジェクト関連の設定ファイル -->
 	<ObjectParamXMLFileName>object_param.xml</ObjectParamXMLFileName>
-	<!-- 衝突パラメータ -->
+	<!-- 衝突関連の設定ファイル -->
 	<CollisionParamXMLFileName>collision_param.xml</CollisionParamXMLFileName>
-	<!-- スプライトパラメータ -->
+	<!-- スプライト関連の設定ファイル -->
 	<SpriteParamXMLFileName>sprite_param.xml</SpriteParamXMLFileName>
 </GlobalParam>
 

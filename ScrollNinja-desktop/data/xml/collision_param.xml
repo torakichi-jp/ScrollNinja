@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- 衝突関連のパラメータ -->
+<!-- 衝突関連の設定 -->
 <CollisionParam>
 	<!-- 忍者 -->
 	<Ninja>

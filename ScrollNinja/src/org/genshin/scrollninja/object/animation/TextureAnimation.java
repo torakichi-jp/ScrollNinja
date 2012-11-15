@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.animation;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

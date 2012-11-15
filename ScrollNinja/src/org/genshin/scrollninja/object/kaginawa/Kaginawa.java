@@ -8,8 +8,6 @@ import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.object.Background;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -148,13 +146,6 @@ public class Kaginawa extends AbstractDynamicObject
 		rope.setRegion(0, 0, (int)len, 64);
 		
 		super.render();
-	}
-
-	/** スプライト関連の定数 */
-	private static final class SPRITE
-	{
-		/** テクスチャのパス({@value}) */
-		private static final String PATH = "data/shuriken.png";
 	}
 
 	/** 鉤縄の持ち主 */
