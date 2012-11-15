@@ -23,5 +23,6 @@ public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
 		registKey(InputType.JUMP, Keys.W);
 		registMouse(InputType.ATTACK, Buttons.LEFT);
 		registMouse(InputType.KAGINAWA, Buttons.RIGHT);
+		registKey(InputType.KAGINAWA_RELEASE, Keys.S);
 	}
 }

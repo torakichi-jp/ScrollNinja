@@ -25,7 +25,6 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 		
 		Element root = XMLFactory.getInstance().get("data/xml/object_param.xml");
 		root = root.getChildByName("Kaginawa");
-		KAGINAWA_RELEASE_TIME = root.getFloat("ReleaseTime");
 		
 		initialize();
 	}
@@ -38,17 +37,6 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 		{
 			assert inputHelpers[i]!=null : "NinjaControllerは正しく初期化されていません。(InputType=" + InputType.values()[i].toString() + ")";
 			inputHelpers[i].update();
-		}
-		
-		/** 鉤縄を離す入力の判定用タイマー */
-		final float delta = 1.0f/60.0f;
-		if( inputHelpers[InputType.KAGINAWA.ordinal()].isTrigger() )
-		{
-			kaginawaReleaseTimer = 0.0f;
-		}
-		else
-		{
-			kaginawaReleaseTimer += delta;
 		}
 	}
 
@@ -100,13 +88,13 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	@Override
 	public final boolean isKaginawaHang()
 	{
-		return inputHelpers[InputType.KAGINAWA.ordinal()].isPress() && kaginawaReleaseTimer>=KAGINAWA_RELEASE_TIME;
+		return inputHelpers[InputType.KAGINAWA.ordinal()].isPress();
 	}
 
 	@Override
 	public final boolean isKaginawaRelease()
 	{
-		return inputHelpers[InputType.KAGINAWA.ordinal()].isRelease() && kaginawaReleaseTimer<KAGINAWA_RELEASE_TIME;
+		return inputHelpers[InputType.KAGINAWA_RELEASE.ordinal()].isTrigger();
 	}
 
 	/**
@@ -149,16 +137,11 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 		JUMP,
 		ATTACK,
 		KAGINAWA,
+		KAGINAWA_RELEASE,
 	}
 	
 	/** 入力補助オブジェクト */
 	private InputHelperInterface inputHelpers[];
-	
-	/** 鉤縄を離す入力の判定用 */
-	private final float KAGINAWA_RELEASE_TIME;
-	
-	/** 鉤縄を離す入力の判定用タイマー */
-	private float kaginawaReleaseTimer;
 	
 	
 	

@@ -26,8 +26,6 @@
 		<ShrinkVelocity>90.0</ShrinkVelocity>
 		<!-- 鉤縄の長さ -->
 		<Length>45.0</Length>
-		<!-- 鉤縄を離す入力の際の判定用時間（秒） -->
-		<ReleaseTime>0.2</ReleaseTime>
 	</Kaginawa>
 </ObjectParam>
 

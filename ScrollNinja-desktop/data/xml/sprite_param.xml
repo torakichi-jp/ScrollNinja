@@ -2,6 +2,15 @@
 
 <!-- スプライト関連の設定 -->
 <SpriteParam>
+	<!-- マウスカーソル -->
+	<Cursor>
+		<Sprite>
+			<Texture>
+				<FilePath>cursor.png</FilePath>
+			</Texture>
+		</Sprite>
+	</Cursor>
+	
 	<!-- 忍者 -->
 	<Ninja>
 	</Ninja>
