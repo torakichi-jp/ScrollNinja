@@ -11,70 +11,71 @@
 		</Sprite>
 	</Cursor>
 	
-	<!-- 忍者 -->
-	<Ninja>
-		<!-- 上半身 -->
-		<Body>
-			<Sprite>
-				<Texture>
-					<FilePath>ninja.png</FilePath>
-					<Width>64</Width>
-					<Height>64</Height>
-				</Texture>
-				<!-- 待機アニメーション -->
-				<Animation>
-					<Name>Stay</Name>
-					<StartY>4</StartY>
-					<FrameCount>4</FrameCount>
-					<Time>6</Time>
-				</Animation>
-				<!-- 走りアニメーション -->
-				<Animation>
-					<Name>Run</Name>
-					<StartY>1</StartY>
-					<FrameCount>6</FrameCount>
-					<Time>6</Time>
-				</Animation>
-				<!-- ダッシュアニメーション -->
-				<Animation>
-					<Name>Dash</Name>
-					<StartY>2</StartY>
-					<FrameCount>6</FrameCount>
-					<Time>3</Time>
-				</Animation>
-			</Sprite>
-		</Body>
-		<Foot>
-			<Sprite>
-				<Texture>
-					<FilePath>ninja.png</FilePath>
-					<Width>64</Width>
-					<Height>64</Height>
-				</Texture>
-				<!-- 待機アニメーション -->
-				<Animation>
-					<Name>Stay</Name>
-					<StartY>3</StartY>
-					<FrameCount>4</FrameCount>
-					<Time>6</Time>
-				</Animation>
-				<!-- 走りアニメーション -->
-				<Animation>
-					<Name>Run</Name>
-					<StartY>0</StartY>
-					<FrameCount>6</FrameCount>
-					<Time>6</Time>
-				</Animation>
-				<!-- ダッシュアニメーション -->
-				<Animation>
-					<Name>Dash</Name>
-					<StartY>0</StartY>
-					<FrameCount>6</FrameCount>
-					<Time>3</Time>
-				</Animation>
-			</Sprite>
-		</Foot>
-	</Ninja>
+	<!-- 忍者の上半身 -->
+	<NinjaBody>
+		<Sprite>
+			<Texture>
+				<FilePath>ninja.png</FilePath>
+				<Width>64</Width>
+				<Height>64</Height>
+			</Texture>
+			<OriginY>-8.0</OriginY>
+			<!-- 待機アニメーション -->
+			<Animation>
+				<Name>Stay</Name>
+				<StartY>4</StartY>
+				<FrameCount>4</FrameCount>
+				<Time>6</Time>
+			</Animation>
+			<!-- 走りアニメーション -->
+			<Animation>
+				<Name>Run</Name>
+				<StartY>1</StartY>
+				<FrameCount>6</FrameCount>
+				<Time>6</Time>
+			</Animation>
+			<!-- ダッシュアニメーション -->
+			<Animation>
+				<Name>Dash</Name>
+				<StartY>2</StartY>
+				<FrameCount>6</FrameCount>
+				<Time>4</Time>
+			</Animation>
+		</Sprite>
+	</NinjaBody>
+	
+	<!-- 忍者の下半身 -->
+	<NinjaFoot>
+		<Sprite>
+			<Texture>
+				<FilePath>ninja.png</FilePath>
+				<Width>64</Width>
+				<Height>64</Height>
+			</Texture>
+			<OriginY>-8.0</OriginY>
+			<!-- 待機アニメーション -->
+			<Animation>
+				<Name>Stay</Name>
+				<StartY>3</StartY>
+				<FrameCount>4</FrameCount>
+				<Time>6</Time>
+			</Animation>
+			<!-- 走りアニメーション -->
+			<Animation>
+				<Name>Run</Name>
+				<StartY>0</StartY>
+				<FrameCount>6</FrameCount>
+				<Time>6</Time>
+			</Animation>
+			<!-- ダッシュアニメーション -->
+			<Animation>
+				<Name>Dash</Name>
+				<StartY>0</StartY>
+				<FrameCount>6</FrameCount>
+				<Time>4</Time>
+			</Animation>
+		</Sprite>
+	</NinjaFoot>
 	
 	<!-- 鉤縄 -->
 	<Kaginawa>
@@ -125,9 +126,9 @@
 				<!-- 1フレーム目の座標　単位：0から始まる、フレーム単位で数えた時の座標　省略時：0 -->
 				<StartX>0</StartX>
 				<StartY>0</StartY>
-				<!-- アニメーションのフレーム数 -->
+				<!-- アニメーションのフレーム数　省略時：1 -->
 				<FrameCount>8</FrameCount>
-				<!-- 1フレームの時間 -->
+				<!-- 1フレームの時間　省略時：1 -->
 				<Time>3</Time>
 				<!-- ループフラグ　省略時：true -->
 				<Looping>true</Looping>

@@ -1,17 +1,14 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
-import org.genshin.scrollninja.object.animation.AnimationInterface;
-import org.genshin.scrollninja.object.animation.TextureAnimation;
-import org.genshin.scrollninja.object.animation.TextureAnimationDef;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.controller.DefaultPlayerNinjaController;
 import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
-import org.genshin.scrollninja.utils.TextureFactory;
+import org.genshin.scrollninja.render.RenderObjectFactory;
+import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -90,8 +87,8 @@ public class PlayerNinja extends AbstractCharacter {
 		kaginawa.update();
 		
 		// アニメーションを更新
-		currentBodyAnimation.update();
-		currentFootAnimation.update();
+		bodyRenderObject.update();
+		footRenderObject.update();
 		
 		// 地面との接触フラグは落としておく
 		grounded = false;
@@ -105,11 +102,36 @@ public class PlayerNinja extends AbstractCharacter {
 	{
 		kaginawa.render();
 
-		currentBodyAnimation.apply(getSprite(BODY));
-		currentFootAnimation.apply(getSprite(FOOT));
-		flip(direction==RIGHT, false);
+		//flip(direction==RIGHT, false);
 		
-		super.render();
+		//---- 描画処理（仮）
+		// TODO AbstractObjectからspritesを追い出したら消す処理
+		Body body = getBody();
+		
+		// アクティブでなければ描画しない
+		if(!body.isActive())
+			return;
+		
+		// 描画処理
+		final Vector2 pos = body.getPosition();
+		final float rot = (float) Math.toDegrees(body.getAngle());
+
+		final RenderObjectInterface renderObjects[] = { footRenderObject, bodyRenderObject };
+		final int count = 2;
+		for (int i = 0; i < count; ++i)
+		{
+			final Sprite current = renderObjects[i].getSprite();
+			
+			// 座標・回転
+			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
+			current.rotate(rot);
+			
+			// 描画
+			renderObjects[i].render();
+			
+			// 回転は戻しておく
+			current.rotate(-rot);
+		}
 	}
 
 	@Override
@@ -137,48 +159,12 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	protected void initializeSprite()
 	{
-		final int WIDTH = 64;
-		final int HEIGHT = 64;
-		
-		TextureAnimationDef tad = new TextureAnimationDef();
-		tad.texture = TextureFactory.getInstance().get("data/player.png");
-		tad.size.setLocation(WIDTH, HEIGHT);
-		
-		// アニメーション生成
-		tad.startIndex.setLocation(0, 0);
-		tad.frameCount = 6;
-		tad.time = 5.0f/60.0f;
-		tad.looping = true;
-		runFootAnimation = new TextureAnimation(tad);
+		bodyRenderObject = RenderObjectFactory.getInstance().get("NinjaBody");
+		footRenderObject = RenderObjectFactory.getInstance().get("NinjaFoot");
 
-		tad.startIndex.setLocation(0, 1);
-		runBodyAnimation = new TextureAnimation(tad);
-
-		tad.startIndex.setLocation(0, 2);
-		tad.frameCount = 5;
-		tad.time = 3.6f/60.0f;
-		tad.looping = false;
-		katanaBodyAnimation = new TextureAnimation(tad);
-		
-		//アニメーション設定
-		currentBodyAnimation = runBodyAnimation;
-		currentFootAnimation = runFootAnimation;
-		
-		currentBodyAnimation.setCurrentTime(0.0f);
-		currentFootAnimation.setCurrentTime(0.0f);
-		
-		// スプライト生成
-		Sprite bodySprite = new Sprite(tad.texture, 0, 0, WIDTH, HEIGHT);
-		Sprite footSprite = new Sprite(tad.texture, 0, 0, WIDTH, HEIGHT);
-
-		bodySprite.setOrigin(bodySprite.getWidth()*0.5f, bodySprite.getHeight()*0.5f-8);
-		footSprite.setOrigin(footSprite.getWidth()*0.5f, footSprite.getHeight()*0.5f-8);
-		
-		bodySprite.setScale(ScrollNinja.scale);
-		footSprite.setScale(ScrollNinja.scale);
-
-		sprites.add(footSprite);
-		sprites.add(bodySprite);
+		final String animName = "Stay";
+		bodyRenderObject.setAnimation(animName);
+		footRenderObject.setAnimation(animName);
 	}
 
 	@Override
@@ -360,17 +346,6 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	/** 忍者の操作を管理するオブジェクト */
 	private NinjaControllerInterface	controller;
-
-	/** 上半身に割り当てられている現在のアニメーション */
-	private AnimationInterface currentBodyAnimation;
-	
-	/** 下半身に割り当てられている現在のアニメーション */
-	private AnimationInterface currentFootAnimation;
-	
-	// XXX 仮。そのうち配列とかにする。
-	private AnimationInterface runFootAnimation;
-	private AnimationInterface runBodyAnimation;
-	private AnimationInterface katanaBodyAnimation;
 	
 	/** 鉤縄オブジェクト */
 	private Kaginawa	kaginawa;
@@ -383,6 +358,10 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	/** 正面方向を表すベクトル */
 	private final Vector2 frontDirection = new Vector2();
+	
+	/** 描画オブジェクト（仮） */
+	private RenderObjectInterface bodyRenderObject;
+	private RenderObjectInterface footRenderObject;
 	
 	
 	
@@ -631,8 +610,8 @@ public class PlayerNinja extends AbstractCharacter {
 	// 現在の状態を参照して画像を更新
 	//************************************************************
 	private void animation() {
-		currentBodyAnimation.update();
-		currentFootAnimation.update();
+//		currentBodyAnimation.update();
+//		currentFootAnimation.update();
 	}
 
 	// 武器変更

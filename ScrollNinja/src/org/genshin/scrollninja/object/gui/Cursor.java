@@ -3,6 +3,7 @@ package org.genshin.scrollninja.object.gui;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.render.RenderObjectFactory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
