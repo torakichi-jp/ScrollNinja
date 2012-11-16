@@ -26,7 +26,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 //========================================
 // クラス宣言
 //========================================
-public class StageObject extends AbstractObject {
+public class StageObject extends AbstractCollisionObject {
 	public static final int ROCK			= 0;
 	public static final int HOUSE			= 1;
 
@@ -91,7 +91,7 @@ public class StageObject extends AbstractObject {
 	}
 
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact) {
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact) {
 		object.notifyCollision(this, contact);
 	}
 

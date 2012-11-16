@@ -31,7 +31,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 //========================================
 // クラス宣言
 //========================================
-public class Effect extends AbstractObject {
+public class Effect extends AbstractCollisionObject {
 
 	//========================================
 	// 定数宣言
@@ -259,7 +259,7 @@ public class Effect extends AbstractObject {
 	}
 
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact) {
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact) {
 		object.notifyCollision(this, contact);
 	}
 

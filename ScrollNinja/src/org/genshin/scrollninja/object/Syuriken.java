@@ -132,7 +132,7 @@ public class Syuriken extends AbstractWeapon {
 	 * 当たり判定
 	 */
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact) {
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact) {
 		object.notifyCollision(this, contact);
 	}
 

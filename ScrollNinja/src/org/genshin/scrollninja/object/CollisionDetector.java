@@ -23,8 +23,8 @@ public class CollisionDetector {
 			Contact contact = contactList.get(i);
 
 			if( contact.isTouching() ) {
-				AbstractObject a = (AbstractObject)contact.getFixtureA().getBody().getUserData();
-				AbstractObject b = (AbstractObject)contact.getFixtureB().getBody().getUserData();
+				AbstractCollisionObject a = (AbstractCollisionObject)contact.getFixtureA().getBody().getUserData();
+				AbstractCollisionObject b = (AbstractCollisionObject)contact.getFixtureB().getBody().getUserData();
 				if( a != null && b != null ) {		//TODO バグ起こさない為に一応
 					a.dispatchCollision(b, contact);
 					b.dispatchCollision(a, contact);

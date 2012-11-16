@@ -24,7 +24,7 @@ enum TerrainParam
 	{
 		//---- 衝突関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_PATH);
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Terrain");
 			
 			FIXTURE_DEF_LOADER = new FixtureDefLoader(rootElement);

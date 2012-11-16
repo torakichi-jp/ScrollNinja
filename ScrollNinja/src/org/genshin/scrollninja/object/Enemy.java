@@ -433,7 +433,7 @@ public class Enemy extends AbstractCharacter {
 	**************************************************/
 	// TODO ジャンプの接地判定要検証？
 
-	public void dispatchCollision(AbstractObject object, Contact contact) {
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact) {
 		object.notifyCollision(this, contact);
 	}
 

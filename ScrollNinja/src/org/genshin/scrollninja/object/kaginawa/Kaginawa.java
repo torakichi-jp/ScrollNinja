@@ -3,8 +3,8 @@ package org.genshin.scrollninja.object.kaginawa;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
-import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.object.Background;
 
 import com.badlogic.gdx.Gdx;
@@ -80,7 +80,7 @@ public class Kaginawa extends AbstractDynamicObject
 	}
 
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact)
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact)
 	{
 		object.notifyCollision(this, contact);
 	}
@@ -242,7 +242,6 @@ public class Kaginawa extends AbstractDynamicObject
 				
 				if(direction.len2() > KaginawaParam.INSTANCE.LENGTH*KaginawaParam.INSTANCE.LENGTH)
 				{
-					//doRelease(me);
 					me.changeState(HANG);
 				}
 			}

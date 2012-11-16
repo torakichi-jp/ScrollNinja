@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object.weapon;
 
 
-import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Effect;
 import org.genshin.scrollninja.object.EffectManager;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
@@ -57,7 +57,7 @@ public class Katana extends AbstractWeapon {
 	}
 
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact)
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact)
 	{
 		object.dispatchCollision(this, contact);
 	}

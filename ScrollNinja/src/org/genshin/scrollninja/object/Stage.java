@@ -9,6 +9,7 @@ import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.StageDataList.StageData;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.WeaponManager;
 
@@ -27,6 +28,8 @@ public class Stage implements StageBase {
 	private int						stageNum;		// ステージナンバー
 	private StageData	 			stageData;		// ステージのデータ
 	
+	private Cursor cursor;
+	
 	private boolean prevInput;
 	private boolean renderDebug = true;
 
@@ -36,6 +39,8 @@ public class Stage implements StageBase {
 		stageData = StageDataList.lead(stageNum);
 
 		renderer = new Box2DDebugRenderer();
+		
+		cursor = new Cursor();
 	}
 
 	//************************************************************
@@ -43,6 +48,7 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update() {
+		cursor.update();
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update();
 		BackgroundManager.backgroundList.update();
@@ -106,6 +112,7 @@ public class Stage implements StageBase {
 			ItemManager.Draw();
 			BackgroundManager.backgroundList.Draw(2);
 			GameMain.playerInfo.Draw();
+			cursor.render();
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 

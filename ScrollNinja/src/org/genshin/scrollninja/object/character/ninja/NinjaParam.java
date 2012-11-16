@@ -24,7 +24,7 @@ enum NinjaParam
 	{
 		//---- 忍者の挙動関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.OBJECT_PARAM_XML_FILE_PATH);
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.OBJECT_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Ninja");
 			
 			// 走り
@@ -42,7 +42,7 @@ enum NinjaParam
 		
 		//---- 衝突関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_PATH);
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Ninja");
 			
 			// 上半身

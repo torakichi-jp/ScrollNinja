@@ -26,18 +26,21 @@ public enum GlobalParam
 		WORLD_SCALE = rootElement.getFloat("WorldScale", 0.1f);
 		
 		// ディレクトリパス
-		String XMLDirectoryPath		= rootElement.get("XMLDirectoryPath");
+		XML_DIRECTORY_PATH			= rootElement.get("XMLDirectoryPath");
 		COLLISION_DIRECTORY_PATH	= rootElement.get("CollisionDirectoryPath");
 		TEXTURE_DIRECTORY_PATH		= rootElement.get("TextureDirectoryPath");
 		
 		// XMLファイルのパス
-		OBJECT_PARAM_XML_FILE_PATH		= XMLDirectoryPath + rootElement.get("ObjectParamXMLFileName");
-		COLLISION_PARAM_XML_FILE_PATH	= XMLDirectoryPath + rootElement.get("CollisionParamXMLFileName");
-		SPRITE_PARAM_XML_FILE_PATH		= XMLDirectoryPath + rootElement.get("SpriteParamXMLFileName");
+		OBJECT_PARAM_XML_FILE_NAME		= rootElement.get("ObjectParamXMLFileName");
+		COLLISION_PARAM_XML_FILE_NAME	= rootElement.get("CollisionParamXMLFileName");
+		SPRITE_PARAM_XML_FILE_NAME		= rootElement.get("SpriteParamXMLFileName");
 	}
 	
 	/** 世界の単位 */
 	public final float WORLD_SCALE;
+
+	/** XMLファイルを格納しているディレクトリのパス */
+	public final String XML_DIRECTORY_PATH;
 	
 	/** 衝突に関連するファイルを格納しているディレクトリのパス */
 	public final String COLLISION_DIRECTORY_PATH;
@@ -46,11 +49,11 @@ public enum GlobalParam
 	public final String TEXTURE_DIRECTORY_PATH;
 	
 	/** オブジェクトパラメータを記述したXMLファイルのパス */
-	public final String OBJECT_PARAM_XML_FILE_PATH;
+	public final String OBJECT_PARAM_XML_FILE_NAME;
 	
 	/** 衝突パラメータを記述したXMLファイルのパス */
-	public final String COLLISION_PARAM_XML_FILE_PATH;
+	public final String COLLISION_PARAM_XML_FILE_NAME;
 	
 	/** スプライトパラメータを記述したXMLファイルのパス */
-	public final String SPRITE_PARAM_XML_FILE_PATH;
+	public final String SPRITE_PARAM_XML_FILE_NAME;
 }

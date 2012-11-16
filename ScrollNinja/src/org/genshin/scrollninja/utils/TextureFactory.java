@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.utils;
 
-import org.genshin.engine.resource.factory.AbstractResourceFactory;
+import org.genshin.engine.factory.AbstractFlyweightFactory;
+import org.genshin.scrollninja.GlobalParam;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
  * @since		1.0
  * @version	1.0
  */
-public final class TextureFactory extends AbstractResourceFactory<Texture, String>
+public final class TextureFactory extends AbstractFlyweightFactory<Texture, String>
 {
 	/**
 	 * コンストラクタ
@@ -33,9 +34,9 @@ public final class TextureFactory extends AbstractResourceFactory<Texture, Strin
 	}
 	
 	@Override
-	protected Texture create(String id)
+	protected Texture create(String key)
 	{
-		Texture texture = new Texture(id);
+		final Texture texture = new Texture(key);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		return texture;

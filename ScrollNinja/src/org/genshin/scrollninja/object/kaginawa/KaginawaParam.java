@@ -25,7 +25,7 @@ enum KaginawaParam
 	{
 		//---- 鉤縄の挙動関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.OBJECT_PARAM_XML_FILE_PATH);
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.OBJECT_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Kaginawa");
 			SLACK_VELOCITY		= rootElement.getFloat("SlackVelocity");
 			SHRINK_VELOCITY		= rootElement.getFloat("ShrinkVelocity");
@@ -34,7 +34,7 @@ enum KaginawaParam
 		
 		//---- 衝突関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_PATH);
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Kaginawa");
 			FIXTURE_DEF_LOADER = new FixtureDefLoader(rootElement);
 
@@ -44,7 +44,7 @@ enum KaginawaParam
 		
 		//---- スプライト関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.SPRITE_PARAM_XML_FILE_PATH);
+			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.SPRITE_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Kaginawa");
 			
 			// 鉤

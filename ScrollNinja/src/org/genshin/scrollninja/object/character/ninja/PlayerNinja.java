@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.animation.AnimationInterface;
 import org.genshin.scrollninja.object.animation.TextureAnimation;
@@ -113,7 +113,7 @@ public class PlayerNinja extends AbstractCharacter {
 	}
 
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact) {
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact) {
 		object.notifyCollision(this, contact);
 	}
 	

@@ -13,6 +13,67 @@
 	
 	<!-- 忍者 -->
 	<Ninja>
+		<!-- 上半身 -->
+		<Body>
+			<Sprite>
+				<Texture>
+					<FilePath>ninja.png</FilePath>
+					<Width>64</Width>
+					<Height>64</Height>
+				</Texture>
+				<!-- 待機アニメーション -->
+				<Animation>
+					<Name>Stay</Name>
+					<StartY>4</StartY>
+					<FrameCount>4</FrameCount>
+					<Time>6</Time>
+				</Animation>
+				<!-- 走りアニメーション -->
+				<Animation>
+					<Name>Run</Name>
+					<StartY>1</StartY>
+					<FrameCount>6</FrameCount>
+					<Time>6</Time>
+				</Animation>
+				<!-- ダッシュアニメーション -->
+				<Animation>
+					<Name>Dash</Name>
+					<StartY>2</StartY>
+					<FrameCount>6</FrameCount>
+					<Time>3</Time>
+				</Animation>
+			</Sprite>
+		</Body>
+		<Foot>
+			<Sprite>
+				<Texture>
+					<FilePath>ninja.png</FilePath>
+					<Width>64</Width>
+					<Height>64</Height>
+				</Texture>
+				<!-- 待機アニメーション -->
+				<Animation>
+					<Name>Stay</Name>
+					<StartY>3</StartY>
+					<FrameCount>4</FrameCount>
+					<Time>6</Time>
+				</Animation>
+				<!-- 走りアニメーション -->
+				<Animation>
+					<Name>Run</Name>
+					<StartY>0</StartY>
+					<FrameCount>6</FrameCount>
+					<Time>6</Time>
+				</Animation>
+				<!-- ダッシュアニメーション -->
+				<Animation>
+					<Name>Dash</Name>
+					<StartY>0</StartY>
+					<FrameCount>6</FrameCount>
+					<Time>3</Time>
+				</Animation>
+			</Sprite>
+		</Foot>
 	</Ninja>
 	
 	<!-- 鉤縄 -->
@@ -40,27 +101,37 @@
 	<!-- カンペ（コピペ用。ゲーム中では使わない） -->
 	<CunningPaper>
 		<Sprite>
-			<!-- テクスチャのパラメータ -->
+			<!-- テクスチャの設定 -->
 			<Texture>
 				<!-- テクスチャのファイルパス（ディレクトリパスはglobal_param.xmlで指定する） -->
 				<FilePath>hoge.png</FilePath>
-				<!-- UVマップのX座標　単位：ピクセル　省略時：0 -->
+				<!-- UVマップの開始座標　単位：ピクセル　省略時：0 -->
 				<X>0</X>
-				<!-- UVマップのX座標　単位：ピクセル　省略時：0 -->
 				<Y>0</Y>
-				<!-- UVマップの横幅　単位：ピクセル　省略時：テクスチャの横幅 -->
+				<!-- UVマップの大きさ　単位：ピクセル　省略時：テクスチャの大きさ -->
 				<Width>64</Width>
-				<!-- UVマップの縦幅　単位：ピクセル　省略時：テクスチャの縦幅 -->
 				<Height>64</Height>
 			</Texture>
-			<!-- スプライトの横幅　省略時：テクスチャに合わせる -->
+			<!-- スプライトの大きさ　省略時：テクスチャに合わせる -->
 			<Width>64.0</Width>
-			<!-- スプライトの縦幅　省略時：テクスチャに合わせる -->
 			<Height>64.0</Height>
-			<!-- 中央となるX座標（0.0を指定するとど真ん中）　省略時：0.0 -->
+			<!-- 中央となる座標（0.0を指定するとど真ん中）　省略時：0.0 -->
 			<OriginX>0.0</OriginX>
-			<!-- 中央となるY座標（0.0を指定するとど真ん中）　省略時：0.0 -->
 			<OriginY>0.0</OriginY>
+			<!-- アニメーションの設定 -->
+			<Animation>
+				<!-- アニメーションの名前 -->
+				<Name>hoge</Name>
+				<!-- 1フレーム目の座標　単位：0から始まる、フレーム単位で数えた時の座標　省略時：0 -->
+				<StartX>0</StartX>
+				<StartY>0</StartY>
+				<!-- アニメーションのフレーム数 -->
+				<FrameCount>8</FrameCount>
+				<!-- 1フレームの時間 -->
+				<Time>3</Time>
+				<!-- ループフラグ　省略時：true -->
+				<Looping>true</Looping>
+			</Animation>
 		</Sprite>
 	</CunningPaper>
 </SpriteParam>

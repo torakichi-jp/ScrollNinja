@@ -2,7 +2,7 @@ package org.genshin.scrollninja.object.weapon;
 
 
 
-import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Effect;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 
@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractWeapon extends AbstractObject
+public abstract class AbstractWeapon extends AbstractCollisionObject
 {
 	/**
 	 * コンストラクタ

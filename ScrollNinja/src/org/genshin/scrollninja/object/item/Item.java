@@ -3,7 +3,7 @@ package org.genshin.scrollninja.object.item;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.ScrollNinja;
-import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.Effect;
 import org.genshin.scrollninja.object.Enemy;
@@ -30,7 +30,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 // 当たり判定が二重になっているとき（地面とプレイヤー同時HITとか）にうまく削除が出来ないので削除フラグ追加
 
 // TODO これも別ファイルでデータリスト作って読み込めるようにするべきか
-public class Item extends AbstractObject {
+public class Item extends AbstractCollisionObject {
 
 	//========================================
 	// 定数宣言
@@ -202,7 +202,7 @@ public class Item extends AbstractObject {
 	}
 
 	@Override
-	public void dispatchCollision(AbstractObject object, Contact contact) {
+	public void dispatchCollision(AbstractCollisionObject object, Contact contact) {
 		object.notifyCollision(this, contact);
 	}
 

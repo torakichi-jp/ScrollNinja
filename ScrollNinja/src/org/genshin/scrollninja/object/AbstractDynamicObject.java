@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author kou
  *
  */
-public abstract class AbstractDynamicObject extends AbstractObject
+public abstract class AbstractDynamicObject extends AbstractCollisionObject
 {
 	/**
 	 * 古いソースとの整合性を保つためのコンストラクタ。
