@@ -7,6 +7,7 @@ import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
+import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
@@ -69,24 +70,40 @@ public abstract class AbstractCollisionObject extends AbstractObject
 			return;
 		
 		// 描画処理
-		final SpriteBatch spriteBatch = GameMain.spriteBatch;
-		final Vector2 pos = body.getPosition();
-		final float rot = (float) Math.toDegrees(body.getAngle());
-
-		final int count = sprites.size();
-		for (int i = 0; i < count; ++i)
+		if( !getRenderObjects().isEmpty() )
 		{
-			final Sprite current = sprites.get(i);
+			final Vector2 position = body.getPosition();
+			final float rotation = (float)Math.toDegrees(body.getAngle());
 			
-			// 座標・回転
-			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
-			current.rotate(rot);
-			
-			// 描画
-			current.draw(spriteBatch);
-			
-			// 回転は戻しておく
-			current.rotate(-rot);
+			for( RenderObjectInterface ro : getRenderObjects() )
+			{
+				ro.setPosition(position.x, position.y);
+				ro.setRotation(rotation);
+				ro.update();
+				ro.render();
+			}
+		}
+		else
+		{
+			final SpriteBatch spriteBatch = GameMain.spriteBatch;
+			final Vector2 pos = body.getPosition();
+			final float rot = (float) Math.toDegrees(body.getAngle());
+	
+			final int count = sprites.size();
+			for (int i = 0; i < count; ++i)
+			{
+				final Sprite current = sprites.get(i);
+				
+				// 座標・回転
+				current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
+				current.rotate(rot);
+				
+				// 描画
+				current.draw(spriteBatch);
+				
+				// 回転は戻しておく
+				current.rotate(-rot);
+			}
 		}
 	}
 

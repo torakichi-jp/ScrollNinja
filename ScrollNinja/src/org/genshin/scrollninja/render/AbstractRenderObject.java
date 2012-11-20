@@ -8,6 +8,7 @@ import org.genshin.scrollninja.render.animation.AnimationInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * 描画オブジェクトの基本クラス
@@ -39,8 +40,12 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	@Override
 	public void setAnimation(String name)
 	{
-		currentAnimation = animations.get(name);
-		animationTime = 0.0f;
+		AnimationInterface nextAnimation = animations.get(name);
+		if( currentAnimation != nextAnimation )
+		{
+			currentAnimation = nextAnimation;
+			animationTime = 0.0f;
+		}
 	}
 	
 	@Override
@@ -49,6 +54,18 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 		animationTime = time;
 	}
 	
+	@Override
+	public void setPosition(float x, float y)
+	{
+		sprite.setPosition(x - sprite.getOriginX(), y - sprite.getOriginY());
+	}
+
+	@Override
+	public void setRotation(float degrees)
+	{
+		sprite.setRotation(degrees);
+	}
+
 	@Override
 	public boolean hasAnimation()
 	{
@@ -77,6 +94,24 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	public float getAnimationTime()
 	{
 		return animationTime;
+	}
+
+	@Override
+	public float getPositionX()
+	{
+		return sprite.getX() + sprite.getOriginX();
+	}
+
+	@Override
+	public float getPositionY()
+	{
+		return sprite.getY() + sprite.getOriginY();
+	}
+
+	@Override
+	public float getRotation()
+	{
+		return sprite.getRotation();
 	}
 	
 	/**

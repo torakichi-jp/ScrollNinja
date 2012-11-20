@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 /**
  * 鉤縄クラス
@@ -346,11 +346,16 @@ public class Kaginawa extends AbstractDynamicObject
 				
 				// 持ち主を初期化
 				owner.setGravityScale(1.0f);
+				owner.setLinearVelocity(Vector2.Zero);
 				
 				// ジョイントを生成
-				// XXX RopeJoint使っても面白いかも知れない。
-				DistanceJointDef jd = new DistanceJointDef();
-				jd.initialize(owner, kaginawa, owner.getPosition(), kaginawa.getPosition());
+				// XXX 状況に合わせてRopeJointとDistanceJointを使い分けるかも？
+				RopeJointDef jd = new RopeJointDef();
+				jd.bodyA = owner;
+				jd.bodyB = kaginawa;
+				jd.localAnchorA.set(Vector2.Zero);
+				jd.localAnchorB.set(Vector2.Zero);
+				jd.maxLength = owner.getPosition().tmp().sub(kaginawa.getPosition()).len();
 				me.joint = world.createJoint(jd);
 			}
 

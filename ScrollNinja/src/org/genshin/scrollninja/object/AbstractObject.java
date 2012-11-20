@@ -5,23 +5,10 @@ import java.util.ArrayList;
 import org.genshin.engine.system.Renderable;
 import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
-import org.genshin.scrollninja.object.item.Item;
-import org.genshin.scrollninja.object.kaginawa.Kaginawa;
-import org.genshin.scrollninja.object.weapon.AbstractWeapon;
+import org.genshin.scrollninja.render.RenderObjectInterface;
 
-import aurelienribon.bodyeditor.BodyEditorLoader;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * オブジェクトの基本クラス
@@ -61,24 +48,25 @@ public abstract class AbstractObject implements Updatable, Renderable
 	public void render()
 	{
 		// 描画処理
-		final SpriteBatch spriteBatch = GameMain.spriteBatch;
-
-		final int count = sprites.size();
-		for (int i = 0; i < count; ++i)
+		if( !renderObjects.isEmpty() )
 		{
-			final Sprite current = sprites.get(i);
-			
-			current.draw(spriteBatch);
+			for(RenderObjectInterface ro : renderObjects)
+			{
+				ro.update();
+				ro.render();
+			}
 		}
-	}
-	
-	/**
-	 * ここでSpriteを生成する。<br>
-	 * このメソッドは、AbstractObjectのコンストラクタから自動的に呼び出される。
-	 */
-	protected void initializeSprite()
-	{
-		// TODO 最終的にはabstract化する。
+		else
+		{
+			final SpriteBatch spriteBatch = GameMain.spriteBatch;
+			final int count = sprites.size();
+			for (int i = 0; i < count; ++i)
+			{
+				final Sprite current = sprites.get(i);
+				
+				current.draw(spriteBatch);
+			}
+		}
 	}
 	
 	/**
@@ -93,6 +81,25 @@ public abstract class AbstractObject implements Updatable, Renderable
 		{
 			sprites.get(i).flip(x, y);
 		}
+	}
+	
+	/**
+	 * ここでSpriteを生成する。<br>
+	 * このメソッドは、AbstractObjectのコンストラクタから自動的に呼び出される。
+	 */
+	protected void initializeSprite()
+	{
+		// TODO 最終的にはabstract化する。
+	}
+	
+	/**
+	 * 描画オブジェクトを追加する。
+	 * @param renderObject		描画オブジェクト
+	 */
+	protected void addRenderObject(RenderObjectInterface renderObject)
+	{
+		assert renderObject != null;
+		renderObjects.add(renderObject);
 	}
 	
 	/**
@@ -111,10 +118,35 @@ public abstract class AbstractObject implements Updatable, Renderable
 	 */
 	protected Sprite getSprite(int index)
 	{
+		assert index < sprites.size();
 		return sprites.get(index);
 	}
 	
+	/**
+	 * 描画オブジェクトの配列を取得する。
+	 * @return		描画オブジェクトの配列
+	 */
+	protected ArrayList<RenderObjectInterface> getRenderObjects()
+	{
+		return renderObjects;
+	}
+	
+	/**
+	 * 描画オブジェクトを取得する。
+	 * @param index		インデックス番号
+	 * @return		描画オブジェクト
+	 */
+	protected RenderObjectInterface getRenderObject(int index)
+	{
+		assert index < renderObjects.size();
+		return renderObjects.get(index);
+	}
+	
 
+	/** 描画オブジェクト配列 */
+	protected final ArrayList<RenderObjectInterface> renderObjects = new ArrayList<RenderObjectInterface>(1);
+	
+	// XXX スプライト配列はいずれ廃止して、描画オブジェクト配列に置き換える。
 	/** スプライト配列 */
 	protected final ArrayList<Sprite>	sprites = new ArrayList<Sprite>(1);		// TODO いずれprivate化すべし。
 }

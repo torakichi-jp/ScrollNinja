@@ -4,6 +4,7 @@ import org.genshin.engine.system.Renderable;
 import org.genshin.engine.system.Updatable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 
 public interface RenderObjectInterface extends Updatable, Renderable
 {
@@ -18,6 +19,19 @@ public interface RenderObjectInterface extends Updatable, Renderable
 	 * @param time		アニメーションの時間（秒）
 	 */
 	public void setAnimationTime(float time);
+	
+	/**
+	 * 座標を設定する。
+	 * @param x		X座標
+	 * @param y		Y座標
+	 */
+	public void setPosition(float x, float y);
+	
+	/**
+	 * 回転を設定する。
+	 * @param degrees		角度（単位：度）
+	 */
+	public void setRotation(float degrees);
 
 	/**
 	 * アニメーションを持つか調べる。
@@ -48,5 +62,22 @@ public interface RenderObjectInterface extends Updatable, Renderable
 	 * @return		アニメーションの時間
 	 */
 	public float getAnimationTime();
-
+	
+	/**
+	 * X座標を取得する。
+	 * @return		座標
+	 */
+	public float getPositionX();
+	
+	/**
+	 * Y座標を取得する。
+	 * @return		座標
+	 */
+	public float getPositionY();
+	
+	/**
+	 * 角度を取得する。
+	 * @return		角度（単位：度）
+	 */
+	public float getRotation();
 }

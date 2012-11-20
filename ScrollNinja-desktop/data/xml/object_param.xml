@@ -21,7 +21,7 @@
 	<!-- 鉤縄 -->
 	<Kaginawa>
 		<!-- 伸びる速度 -->
-		<SlackVelocity>90.0</SlackVelocity>
+		<SlackVelocity>180.0</SlackVelocity>
 		<!-- 縮む速度 -->
 		<ShrinkVelocity>90.0</ShrinkVelocity>
 		<!-- 鉤縄の長さ -->

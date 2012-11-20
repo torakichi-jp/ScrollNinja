@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import java.util.logging.Logger;
+
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
@@ -76,7 +78,8 @@ public class PlayerNinja extends AbstractCharacter {
 	/**
 	 * 更新処理
 	 */
-	public void update() {
+	public void update()
+	{
 		// 操作状態を更新
 		controller.update();
 
@@ -85,10 +88,6 @@ public class PlayerNinja extends AbstractCharacter {
 		
 		// 鉤縄を更新
 		kaginawa.update();
-		
-		// アニメーションを更新
-		bodyRenderObject.update();
-		footRenderObject.update();
 		
 		// 地面との接触フラグは落としておく
 		grounded = false;
@@ -102,36 +101,7 @@ public class PlayerNinja extends AbstractCharacter {
 	{
 		kaginawa.render();
 
-		//flip(direction==RIGHT, false);
-		
-		//---- 描画処理（仮）
-		// TODO AbstractObjectからspritesを追い出したら消す処理
-		Body body = getBody();
-		
-		// アクティブでなければ描画しない
-		if(!body.isActive())
-			return;
-		
-		// 描画処理
-		final Vector2 pos = body.getPosition();
-		final float rot = (float) Math.toDegrees(body.getAngle());
-
-		final RenderObjectInterface renderObjects[] = { footRenderObject, bodyRenderObject };
-		final int count = 2;
-		for (int i = 0; i < count; ++i)
-		{
-			final Sprite current = renderObjects[i].getSprite();
-			
-			// 座標・回転
-			current.setPosition(pos.x - current.getOriginX(), pos.y - current.getOriginY());
-			current.rotate(rot);
-			
-			// 描画
-			renderObjects[i].render();
-			
-			// 回転は戻しておく
-			current.rotate(-rot);
-		}
+		super.render();
 	}
 
 	@Override
@@ -159,12 +129,15 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	protected void initializeSprite()
 	{
-		bodyRenderObject = RenderObjectFactory.getInstance().get("NinjaBody");
-		footRenderObject = RenderObjectFactory.getInstance().get("NinjaFoot");
+		RenderObjectInterface bodyRenderObject = RenderObjectFactory.getInstance().get("NinjaBody");
+		RenderObjectInterface footRenderObject = RenderObjectFactory.getInstance().get("NinjaFoot");
 
 		final String animName = "Stay";
 		bodyRenderObject.setAnimation(animName);
 		footRenderObject.setAnimation(animName);
+
+		addRenderObject(footRenderObject);
+		addRenderObject(bodyRenderObject);
 	}
 
 	@Override
@@ -219,16 +192,19 @@ public class PlayerNinja extends AbstractCharacter {
 				}
 				body.setLinearVelocity(velocity);
 			}
+			setAnimation("Stay");
 		}
 		else
 		{
 			if(controller.isDash())
 			{
 				dash(moveLevel);
+				setAnimation("Dash");
 			}
 			else
 			{
 				run(moveLevel);
+				setAnimation("Run");
 			}
 		}
 
@@ -302,6 +278,52 @@ public class PlayerNinja extends AbstractCharacter {
 
 		body.setAngularVelocity(radian*stateTime);
 	}
+
+	/**
+	 * 上半身のアニメーションを設定する。
+	 * @param name		アニメーションの名前
+	 */
+	void setBodyAnimation(String name)
+	{
+		getBodyRenderObject().setAnimation(name);
+	}
+
+	/**
+	 * 下半身のアニメーションを設定する。
+	 * @param name		アニメーションの名前
+	 */
+	void setFootAnimation(String name)
+	{
+		getFootRenderObject().setAnimation(name);
+	}
+	
+	/**
+	 * アニメーションを設定する。
+	 * @param name		アニメーションの名前
+	 */
+	void setAnimation(String name)
+	{
+		setBodyAnimation(name);
+		setFootAnimation(name);
+	}
+	
+	/**
+	 * 上半身の描画オブジェクトを取得する。
+	 * @return		上半身の描画オブジェクト
+	 */
+	RenderObjectInterface getBodyRenderObject()
+	{
+		return getRenderObject(1);
+	}
+	
+	/**
+	 * 下半身の描画オブジェクトを取得する。
+	 * @return		下半身の描画オブジェクト
+	 */
+	RenderObjectInterface getFootRenderObject()
+	{
+		return getRenderObject(0);
+	}
 	
 	/**
 	 * 忍者の操作を管理するオブジェクトを取得する。
@@ -358,10 +380,6 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	/** 正面方向を表すベクトル */
 	private final Vector2 frontDirection = new Vector2();
-	
-	/** 描画オブジェクト（仮） */
-	private RenderObjectInterface bodyRenderObject;
-	private RenderObjectInterface footRenderObject;
 	
 	
 	

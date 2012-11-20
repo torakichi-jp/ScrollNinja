@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.render;
 
-import java.util.logging.Logger;
-
 import org.genshin.engine.factory.FactoryInterface;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.render.animation.AnimationInterface;
@@ -59,8 +57,6 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 		for(int i = 0;  i < childCount;  ++i)
 		{
 			Element childElement = rootElement.getChild(i);
-
-			Logger.global.info(childElement.getName());
 			
 			if( childElement.getName().equals("Animation") )
 			{
