@@ -3,6 +3,8 @@
  */
 package org.genshin.scrollninja.object.character.ninja.controller;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * 忍者の操作状態を管理するオブジェクトのインタフェース。
  * @author	kou
@@ -21,6 +23,12 @@ public interface NinjaControllerInterface
 	 * @return	左方向への移動操作がある場合は-1.0f、右方向への移動操作がある場合は1.0f、移動操作がない場合は0.0f
 	 */
 	float getMoveLevel();
+	
+	/**
+	 * 忍者の向きを取得する。（スプライトの左右反転の判定、攻撃・鉤縄の射出方向などに使用する）
+	 * @return		忍者の向き
+	 */
+	Vector2 getDirection();
 	
 	/**
 	 * ダッシュの操作状態を取得する。

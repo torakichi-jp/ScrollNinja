@@ -107,6 +107,18 @@ public abstract class AbstractCollisionObject extends AbstractObject
 		}
 	}
 
+	@Override
+	public float getPositionX()
+	{
+		return body.getPosition().x;
+	}
+
+	@Override
+	public float getPositionY()
+	{
+		return body.getPosition().y;
+	}
+
 	/**
 	 * 衝突を振り分ける。
 	 * @param object	衝突したオブジェクト

@@ -7,11 +7,14 @@ import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.controller.DefaultPlayerNinjaController;
 import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
+import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -61,8 +64,9 @@ public class PlayerNinja extends AbstractCharacter {
 	 * コンストラクタ
 	 * @param world		所属するWorldオブジェクト
 	 * @param position	初期座標
+	 * @param cursor	カーソルオブジェクト（鉤縄の向き計算用）
 	 */
-	public PlayerNinja(World world, Vector2 position) {
+	public PlayerNinja(World world, Vector2 position, Cursor cursor) {
 		super(world, position);
 		
 		// 初期座標設定
@@ -70,7 +74,7 @@ public class PlayerNinja extends AbstractCharacter {
 		
 		// フィールドの初期化
 		state = new NinjaStateOnGround(this);
-		controller = new DefaultPlayerNinjaController();
+		controller = new DefaultPlayerNinjaController(this, cursor);
 		kaginawa = new Kaginawa(world, getBody());
 		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
 	}
@@ -99,8 +103,16 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	public void render()
 	{
+		//---- 描画時の左右反転フラグを設定する。
+		final Vector2 direction = controller.getDirection();
+		final float upAngle = getBody().getAngle();
+		final Vector2 upDirection = new Vector2(-(float)Math.sin(upAngle), (float)Math.cos(upAngle));
+		flip(upDirection.crs(direction) < 0.0f, false);
+		
+		//---- 鉤縄を描画する。
 		kaginawa.render();
 
+		//---- 自身を描画する。
 		super.render();
 	}
 
@@ -246,7 +258,7 @@ public class PlayerNinja extends AbstractCharacter {
 	{
 		if( controller.isKaginawaSlack() )
 		{
-			kaginawa.slack();
+			kaginawa.slack(controller.getDirection());
 		}
 		if( controller.isKaginawaShrink() )
 		{
@@ -606,7 +618,7 @@ public class PlayerNinja extends AbstractCharacter {
 	{
 		if( controller.isKaginawaSlack() )
 		{
-			kaginawa.slack();
+			kaginawa.slack(Vector2.Zero);
 		}
 		if( controller.isKaginawaShrink() )
 		{

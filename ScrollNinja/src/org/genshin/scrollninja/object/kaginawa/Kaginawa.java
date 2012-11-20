@@ -43,10 +43,11 @@ public class Kaginawa extends AbstractDynamicObject
 
 	/**
 	 * 鉤縄を伸ばす。
+	 * @param direction 伸ばす方向
 	 */
-	public final void slack()
+	public final void slack(Vector2 direction)
 	{
-		state.slack(this);
+		state.slack(this, direction);
 	}
 	
 	/**
@@ -149,13 +150,16 @@ public class Kaginawa extends AbstractDynamicObject
 	}
 
 	/** 鉤縄の持ち主 */
-	private Body owner;
+	private final Body owner;
 
 	/** 鉤縄の状態 */
 	private State state;
 	
 	/** 縄の長さを制限するためのジョイント */
 	private Joint joint;
+	
+	/** 鉤縄の向き */
+	private final Vector2 direction = new Vector2();
 	
 	
 	/** 
@@ -182,8 +186,9 @@ public class Kaginawa extends AbstractDynamicObject
 			}
 
 			@Override
-			void slack(Kaginawa me)
+			void slack(Kaginawa me, Vector2 direction)
 			{
+				me.direction.set(direction.nor());
 				me.changeState(SLACK);
 			}
 		},
@@ -196,34 +201,19 @@ public class Kaginawa extends AbstractDynamicObject
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.getBody();
-				Body owner		= me.owner;
-				Vector2 dir		= new Vector2();
-				
-				// FIXME 鉤縄の向き設定（仮）
-				Vector2 mousePos = new Vector2(
-					Gdx.input.getX() - Gdx.graphics.getWidth()*0.5f,
-					Gdx.graphics.getHeight()*0.5f - Gdx.input.getY()
-				);
-				Vector2 ownerPos = owner.getPosition();
-
-				mousePos.mul(ScrollNinja.scale);
-				mousePos.x += GameMain.camera.position.x;
-				mousePos.y += GameMain.camera.position.y;
-
-				dir.x = mousePos.x - ownerPos.x;
-				dir.y = mousePos.y - ownerPos.y;
-				dir.nor();
+				Body kaginawa		= me.getBody();
+				Body owner			= me.owner;
+				Vector2 direction	= me.direction;
 				
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
-				kaginawa.setLinearVelocity(dir.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, dir.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
+				kaginawa.setLinearVelocity(direction.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, direction.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
 				kaginawa.setTransform(owner.getPosition(), 0.0f);
 				kaginawa.setActive(true);
 				
 				// XXX 仮
 				Sprite anchor = me.sprites.get(1);
-				anchor.setRotation(dir.angle());
+				anchor.setRotation(direction.angle());
 				
 				// 持ち主を初期化
 				//owner.setGravityScale(1.0f);
@@ -429,9 +419,10 @@ public class Kaginawa extends AbstractDynamicObject
 
 		/**
 		 * 鉤縄を伸ばす。
-		 * @param me	自身を指す鉤縄オブジェクト
+		 * @param me			自身を指す鉤縄オブジェクト
+		 * @param direction		伸ばす方向
 		 */
-		void slack(Kaginawa me) { /* 何もしない */ }
+		void slack(Kaginawa me, Vector2 direction) { /* 何もしない */ }
 
 		/**
 		 * 鉤縄を縮める。

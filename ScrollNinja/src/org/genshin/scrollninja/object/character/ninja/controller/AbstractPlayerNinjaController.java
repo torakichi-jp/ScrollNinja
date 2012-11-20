@@ -6,6 +6,7 @@ package org.genshin.scrollninja.object.character.ninja.controller;
 import org.genshin.scrollninja.utils.XMLFactory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
@@ -23,21 +24,21 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	{
 		inputHelpers = new InputHelperInterface[InputType.values().length];
 		
-		Element root = XMLFactory.getInstance().get("data/xml/object_param.xml");
-		root = root.getChildByName("Kaginawa");
-		
 		initialize();
 	}
 
 	@Override
 	public final void update()
 	{
-		/** 入力情報を更新する。 */
+		//---- 入力情報を更新する。
 		for(int i = 0;  i < inputHelpers.length;  ++i)
 		{
 			assert inputHelpers[i]!=null : "NinjaControllerは正しく初期化されていません。(InputType=" + InputType.values()[i].toString() + ")";
 			inputHelpers[i].update();
 		}
+		
+		//---- 忍者の向きを更新する。
+		updateDirection();
 	}
 
 	@Override
@@ -47,6 +48,12 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 		if(inputHelpers[InputType.LEFT.ordinal()].isPress())	result -= 1.0f;
 		if(inputHelpers[InputType.RIGHT.ordinal()].isPress())	result += 1.0f;
 		return result;
+	}
+
+	@Override
+	public final Vector2 getDirection()
+	{
+		return direction;
 	}
 
 	@Override
@@ -103,6 +110,21 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	protected abstract void initialize();
 	
 	/**
+	 * 忍者の向きを計算する。
+	 */
+	protected abstract void updateDirection();
+	
+	/**
+	 * 忍者の向きを設定する。
+	 * @param x		ベクトルのX成分
+	 * @param y		ベクトルのY成分
+	 */
+	protected void setDirection(float x, float y)
+	{
+		direction.set(x, y);
+	}
+	
+	/**
 	 * キーボード入力を登録する。
 	 * @param inputType		行動の種類
 	 * @param key			キーコード(com.badlogic.gdx.Input.Keys)
@@ -142,6 +164,9 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	
 	/** 入力補助オブジェクト */
 	private InputHelperInterface inputHelpers[];
+	
+	/** 忍者の向き */
+	private final Vector2 direction = new Vector2();
 	
 	
 	

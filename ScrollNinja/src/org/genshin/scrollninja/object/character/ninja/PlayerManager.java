@@ -3,7 +3,7 @@ package org.genshin.scrollninja.object.character.ninja;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
-
+import org.genshin.scrollninja.object.gui.Cursor;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -35,12 +35,12 @@ public class PlayerManager {
 	 * プレイヤー生成
 	 * @param position	初期座標
 	 */
-	public static void CreatePlayer(Vector2 position) {
+	public static void CreatePlayer(Vector2 position, Cursor cursor) {
 		if (playerList == null)
 			playerList = new ArrayList<PlayerNinja>();
 
 		// 生成した順に管理番号付与
-		PlayerNinja pPlayer = new PlayerNinja(GameMain.world, position);
+		PlayerNinja pPlayer = new PlayerNinja(GameMain.world, position, cursor);
 		playerList.add(pPlayer);						// 追加
 	}
 

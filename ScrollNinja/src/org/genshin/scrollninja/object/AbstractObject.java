@@ -22,7 +22,6 @@ public abstract class AbstractObject implements Updatable, Renderable
 	/**
 	 * コンストラクタ
 	 */
-	@Deprecated
 	public AbstractObject()
 	{
 		initializeSprite();
@@ -70,16 +69,58 @@ public abstract class AbstractObject implements Updatable, Renderable
 	}
 	
 	/**
+	 * X座標を取得する。
+	 * @return		X座標
+	 */
+	public float getPositionX()
+	{
+		if( !renderObjects.isEmpty() )
+		{
+			return renderObjects.get(0).getPositionX();
+		}
+		else
+		{
+			return sprites.get(0).getX();
+		}
+	}
+	
+	/**
+	 * Y座標を取得する。
+	 * @return		Y座標
+	 */
+	public float getPositionY()
+	{
+		if( !renderObjects.isEmpty() )
+		{
+			return renderObjects.get(0).getPositionY();
+		}
+		else
+		{
+			return sprites.get(0).getY();
+		}
+	}
+	
+	/**
 	 * スプライト反転フラグを設定する。
 	 * @param x		x方向の反転フラグ
 	 * @param y		y方向の反転フラグ
 	 */
 	protected final void flip(boolean x, boolean y)
 	{
-		int count = sprites.size();
-		for(int i = 0; i < count;  ++i)
+		if( !renderObjects.isEmpty() )
 		{
-			sprites.get(i).flip(x, y);
+			for( RenderObjectInterface ro : renderObjects )
+			{
+				Sprite sprite = ro.getSprite();
+				sprite.setScale(Math.abs(sprite.getScaleX())*(x?-1.0f:1.0f), Math.abs(sprite.getScaleY())*(y?-1.0f:1.0f));
+			}
+		}
+		{
+			int count = sprites.size();
+			for(int i = 0; i < count;  ++i)
+			{
+				sprites.get(i).flip(x, y);
+			}
 		}
 	}
 	

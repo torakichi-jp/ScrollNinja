@@ -23,7 +23,8 @@
 			<!-- 待機アニメーション -->
 			<Animation>
 				<Name>Stay</Name>
-				<StartY>4</StartY>
+				<StartX>4</StartX>
+				<StartY>3</StartY>
 				<FrameCount>4</FrameCount>
 				<Time>6</Time>
 			</Animation>

@@ -5,6 +5,7 @@ package org.genshin.scrollninja.object;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.StageDataList.StageData;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
@@ -40,7 +41,7 @@ public class Stage implements StageBase {
 
 		renderer = new Box2DDebugRenderer();
 		
-		cursor = new Cursor();
+		cursor = new Cursor(GameMain.camera, 2.0f * GlobalParam.INSTANCE.WORLD_SCALE);
 	}
 
 	//************************************************************
@@ -202,7 +203,7 @@ public class Stage implements StageBase {
 
 	@Override
 	public void Init() {
-		PlayerManager.CreatePlayer(stageData.playerPosition);
+		PlayerManager.CreatePlayer(stageData.playerPosition, cursor);
 		// TODO 後でステージオブジェクトリスト追加
 		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
 		for (int i = 0; i < stageData.enemyType.size(); i++) {
