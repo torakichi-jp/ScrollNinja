@@ -7,7 +7,6 @@ import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.MainMenu;
 import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.StageDataList.StageData;
-import org.genshin.scrollninja.object.character.ninja.PlayerManager;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
@@ -17,7 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -44,8 +43,6 @@ public class Background extends AbstractCollisionObject {
 	public final static int	NEAR			= 2;
 
 	// 変数宣言
-	private Vector2			playerPos;		// プレイヤーの位置
-
 	private int				stageNum;		// ステージ番号
 	private StageData 		stageData;		// ステージのデータ
 
@@ -57,8 +54,6 @@ public class Background extends AbstractCollisionObject {
 	public Background(int num, boolean createFlag) {
 		stageNum = num;
 		stageData = StageDataList.lead(stageNum);
-
-		playerPos = stageData.playerPosition;
 
 		LoadTexture();
 		// MainMenuではcreateしない
@@ -152,32 +147,32 @@ public class Background extends AbstractCollisionObject {
 	 ***************************************************/
 	public void update() {
 		// プレイヤーの座標を代入
-		playerPos = PlayerManager.GetPlayer(0).getBody().getPosition();
+		Vector3 cameraPos = GameMain.camera.position;
 
 		// 近景
-		if (playerPos.x > -(sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
-			&& playerPos.x < (sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
-			sprites.get(NEAR).setPosition(-sprites.get(NEAR).getWidth() * 0.5f - playerPos.x * 1.5f,
+		if (cameraPos.x > -(sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
+			&& cameraPos.x < (sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
+			sprites.get(NEAR).setPosition(-sprites.get(NEAR).getWidth() * 0.5f - cameraPos.x * 1.5f,
 										 sprites.get(NEAR).getY());
 		// TODO 要調整 20は適当
 		float tmp = (ScrollNinja.window.y - sprites.get(NEAR).getHeight() * 2) * 0.5f * ScrollNinja.scale;
-		if (playerPos.y >
+		if (cameraPos.y >
 			-(stageData.backgroundSize.get(MAIN).y - ScrollNinja.window.y) * 0.5  * ScrollNinja.scale
-			  && playerPos.y < 20)
+			  && cameraPos.y < 20)
 			sprites.get(NEAR).setPosition(sprites.get(NEAR).getX(),
-										 -sprites.get(NEAR).getHeight() * 0.5f - tmp + playerPos.y);
+										 -sprites.get(NEAR).getHeight() * 0.5f - tmp + cameraPos.y);
 
 		// 遠景
-		if (playerPos.x > -(sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
-			&& playerPos.x < (sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
-			sprites.get(FAR).setPosition(playerPos.x - (sprites.get(FAR).getWidth() * 0.5f) + (playerPos.x * -0.05f),
+		if (cameraPos.x > -(sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale
+			&& cameraPos.x < (sprites.get(MAIN).getWidth() - ScrollNinja.window.x) * 0.5 * ScrollNinja.scale)
+			sprites.get(FAR).setPosition(cameraPos.x - (sprites.get(FAR).getWidth() * 0.5f) + (cameraPos.x * -0.05f),
 										sprites.get(FAR).getY());
 
 		// 近景
-		if (playerPos.y > -(sprites.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale
-			&& playerPos.y < (stageData.backgroundSize.get(MAIN).y - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale)
+		if (cameraPos.y > -(sprites.get(FAR).getHeight() - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale
+			&& cameraPos.y < (stageData.backgroundSize.get(MAIN).y - ScrollNinja.window.y) * 0.5 * ScrollNinja.scale)
 			sprites.get(FAR).setPosition(sprites.get(FAR).getX(),
-										playerPos.y - (sprites.get(FAR).getHeight() * 0.5f) + (playerPos.y * -0.15f));
+										cameraPos.y - (sprites.get(FAR).getHeight() * 0.5f) + (cameraPos.y * -0.15f));
 	}
 
 	@Override

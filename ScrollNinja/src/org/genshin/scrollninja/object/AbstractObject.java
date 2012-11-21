@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractObject implements Updatable, Renderable
+public abstract class AbstractObject implements ObjectInterface
 {
 	/**
 	 * コンストラクタ
@@ -27,11 +27,7 @@ public abstract class AbstractObject implements Updatable, Renderable
 		initializeSprite();
 	}
 	
-	/**
-	 * 解放すべきものを全て解放する。
-	 * 
-	 * XXX このメソッドは果たして必要なのか。
-	 */
+	@Override
 	public void dispose()
 	{
 		sprites.clear();
@@ -68,10 +64,7 @@ public abstract class AbstractObject implements Updatable, Renderable
 		}
 	}
 	
-	/**
-	 * X座標を取得する。
-	 * @return		X座標
-	 */
+	@Override
 	public float getPositionX()
 	{
 		if( !renderObjects.isEmpty() )
@@ -84,10 +77,7 @@ public abstract class AbstractObject implements Updatable, Renderable
 		}
 	}
 	
-	/**
-	 * Y座標を取得する。
-	 * @return		Y座標
-	 */
+	@Override
 	public float getPositionY()
 	{
 		if( !renderObjects.isEmpty() )

@@ -13,6 +13,7 @@ import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.WeaponManager;
+import org.genshin.scrollninja.render.CameraTranslater;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -30,9 +31,10 @@ public class Stage implements StageBase {
 	private StageData	 			stageData;		// ステージのデータ
 	
 	private Cursor cursor;
+	private CameraTranslater cameraTranslater;
 	
 	private boolean prevInput;
-	private boolean renderDebug = true;
+	private boolean renderDebug = false;
 
 	// コンストラクタ
 	public Stage(int num){
@@ -132,35 +134,7 @@ public class Stage implements StageBase {
 	// カメラ情報更新
 	//************************************************************
 	public void updateCamera() {
-		Vector2 playerPosition = PlayerManager.GetPlayer(0).getBody().getPosition();
-		
-		// カメラはプレイヤーに追随
-		GameMain.camera.position.set(playerPosition.x, playerPosition.y, 0);
-
-		// カメラの移動制限
-		if (GameMain.camera.position.x <
-				-(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5
-														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
-			GameMain.camera.position.x =
-				-(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5f
-														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
-		if (GameMain.camera.position.x >
-				(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5
-														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale)
-			GameMain.camera.position.x =
-				(BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth() * 0.5f
-														- ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
-
-		if (GameMain.camera.position.y < -(stageData.backgroundSize.get(Background.MAIN).y
-												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
-			GameMain.camera.position.y = -(stageData.backgroundSize.get(Background.MAIN).y
-												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale + 1;
-		if (GameMain.camera.position.y > (stageData.backgroundSize.get(Background.MAIN).y
-												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale)
-			GameMain.camera.position.y = (stageData.backgroundSize.get(Background.MAIN).y
-												- ScrollNinja.window.y) * 0.5f * ScrollNinja.scale - 1;
-
-		GameMain.camera.update();
+		cameraTranslater.update();
 	}
 
 	//************************************************************
@@ -212,6 +186,14 @@ public class Stage implements StageBase {
 										 stageData.enemyPosition.get((i+1)*(j+1)-1));
 			}
 		}
+		
+		cameraTranslater = new CameraTranslater(GameMain.camera);
+		cameraTranslater.addTargetObject(cursor);
+		cameraTranslater.addTargetObject(PlayerManager.GetPlayer(0));
+
+		final float width = BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth()*ScrollNinja.scale;
+		final float height = stageData.backgroundSize.get(Background.MAIN).y*ScrollNinja.scale;
+		cameraTranslater.setTranslateArea(width*-0.5f, height*-0.5f, width, height);
 	}
 
 	@Override

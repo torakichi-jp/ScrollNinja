@@ -72,9 +72,9 @@ public class GameMain implements Screen{
 		stage				= new Stage(stageNum);
 		playerInfo			= new Interface();
 
+		BackgroundManager.CreateBackground(stageNum, true);
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
-		BackgroundManager.CreateBackground(stageNum, true);
 
 		gameState = GAME_RUNNING;
 		pauseState = PAUSE_INIT;

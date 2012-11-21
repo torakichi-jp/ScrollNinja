@@ -3,7 +3,7 @@
  */
 package org.genshin.scrollninja.object.character.ninja.controller;
 
-import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.ObjectInterface;
 
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -21,7 +21,7 @@ public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
 	 * @param ninja		忍者オブジェクト（忍者の向き計算用）
 	 * @param cursor	マウスカーソルオブジェクト（忍者の向き計算用）
 	 */
-	public DefaultPlayerNinjaController(AbstractObject ninja, AbstractObject cursor)
+	public DefaultPlayerNinjaController(ObjectInterface ninja, ObjectInterface cursor)
 	{
 		this.ninja = ninja;
 		this.cursor = cursor;
@@ -51,8 +51,8 @@ public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
 
 
 	/** 忍者オブジェクト（鉤縄の向き計算用） */
-	private final AbstractObject ninja;
+	private final ObjectInterface ninja;
 	
 	/** マウスカーソルオブジェクト（鉤縄の向き計算用） */
-	private final AbstractObject cursor;
+	private final ObjectInterface cursor;
 }
