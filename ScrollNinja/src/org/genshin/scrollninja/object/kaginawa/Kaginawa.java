@@ -345,7 +345,7 @@ public class Kaginawa extends AbstractDynamicObject
 				jd.bodyB = kaginawa;
 				jd.localAnchorA.set(Vector2.Zero);
 				jd.localAnchorB.set(Vector2.Zero);
-				jd.maxLength = owner.getPosition().tmp().sub(kaginawa.getPosition()).len();
+				jd.maxLength = owner.getPosition().dst(kaginawa.getPosition());
 				me.joint = world.createJoint(jd);
 			}
 
