@@ -6,7 +6,7 @@ import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.object.ObjectInterface;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * カメラを動かすオブジェクト
@@ -29,35 +29,46 @@ public class CameraTranslater implements Updatable
 	public void update()
 	{
 		//---- 目標座標を計算する。
-		targetPosition.set(Vector2.Zero);
+		float targetX = 0.0f;
+		float targetY = 0.0f;
 		for(ObjectInterface object : targetObjects)
 		{
-			targetPosition.add(object.getPositionX(), object.getPositionY());
+			targetX += object.getPositionX();
+			targetY += object.getPositionY();
 		}
-		targetPosition.mul(1.0f / targetObjects.size());
+		final float div = 1.0f/targetObjects.size();
+		targetX *= div;
+		targetY *= div;
 		
 		//---- 座標を適用する。
-		camera.position.x = targetPosition.x;
-		camera.position.y = targetPosition.y;
+		camera.translate(
+			(targetX - camera.position.x) * interporation,
+			(targetY - camera.position.y) * interporation,
+			0.0f
+		);
 		
 		//---- 移動範囲を制限する。
+		final float left		= translateArea.x;
+		final float right		= translateArea.x + translateArea.width;
+		final float top		= translateArea.y;
+		final float bottom		= translateArea.y + translateArea.height;
 		// X
-		if( camera.position.x > translateArea.right )
+		if( camera.position.x > right )
 		{
-			camera.position.x = translateArea.right;
+			camera.position.x = right;
 		}
-		else if( camera.position.x < translateArea.left )
+		else if( camera.position.x < left )
 		{
-			camera.position.x = translateArea.left;
+			camera.position.x = left;
 		}
 		// Y
-		if( camera.position.y > translateArea.bottom )
+		if( camera.position.y > bottom )
 		{
-			camera.position.y = translateArea.bottom;
+			camera.position.y = bottom;
 		}
-		else if( camera.position.y < translateArea.top )
+		else if( camera.position.y < top )
 		{
-			camera.position.y = translateArea.top;
+			camera.position.y = top;
 		}
 		
 		//---- カメラを更新する。
@@ -99,31 +110,11 @@ public class CameraTranslater implements Updatable
 	private final Camera camera;
 	
 	/** 移動可能な範囲 */
-	private final Area translateArea = new Area(0, 0, 0, 0);
+	private final Rectangle translateArea = new Rectangle(0, 0, 0, 0);
 	
 	/** 追従するオブジェクトの配列 */
 	private final ArrayList<ObjectInterface> targetObjects = new ArrayList<ObjectInterface>(1);
 	
-	/** 目標座標 */
-	private final Vector2 targetPosition = new Vector2();
-	
-	/** 補間係数（デフォルト値：0.9） */
-	private float interporation = 0.9f;
-	
-	
-	private class Area
-	{
-		private Area(float x, float y, float width, float height)
-		{
-			set(x, y, width, height);
-		}
-		private void set(float x, float y, float width, float height)
-		{
-			left = x;
-			top = y;
-			right = x+width;
-			bottom = y+height;
-		}
-		private float left, right, top, bottom;
-	}
+	/** 補間係数（デフォルト値：0.1） */
+	private float interporation = 0.1f;
 }
