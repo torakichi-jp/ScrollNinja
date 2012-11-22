@@ -8,7 +8,6 @@ import org.genshin.scrollninja.render.animation.AnimationInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * 描画オブジェクトの基本クラス

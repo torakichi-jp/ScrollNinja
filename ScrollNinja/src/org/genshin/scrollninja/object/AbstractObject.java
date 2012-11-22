@@ -2,8 +2,6 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.engine.system.Renderable;
-import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 

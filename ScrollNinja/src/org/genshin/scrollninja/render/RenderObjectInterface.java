@@ -4,7 +4,6 @@ import org.genshin.engine.system.Renderable;
 import org.genshin.engine.system.Updatable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 
 public interface RenderObjectInterface extends Updatable, Renderable
 {

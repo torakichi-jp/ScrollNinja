@@ -1,10 +1,8 @@
 package org.genshin.scrollninja.utils;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import org.genshin.engine.factory.AbstractFlyweightFactory;
-import org.genshin.scrollninja.GlobalParam;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.XmlReader;

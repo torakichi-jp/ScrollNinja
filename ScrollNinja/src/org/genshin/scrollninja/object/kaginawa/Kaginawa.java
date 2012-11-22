@@ -1,13 +1,10 @@
 package org.genshin.scrollninja.object.kaginawa;
 
-import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.GlobalParam;
-import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
 import org.genshin.scrollninja.object.Background;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -278,7 +275,7 @@ public class Kaginawa extends AbstractDynamicObject
 				// ジョイントがあれば切り離す
 				if(me.joint != null)
 				{
-					kaginawa.getWorld().destroyJoint(me.joint);
+					world.destroyJoint(me.joint);
 					me.joint = null;
 				}
 			}
@@ -389,7 +386,7 @@ public class Kaginawa extends AbstractDynamicObject
 				// ジョイントがあれば切り離す
 				if(me.joint != null)
 				{
-					kaginawa.getWorld().destroyJoint(me.joint);
+					world.destroyJoint(me.joint);
 					me.joint = null;
 				}
 				

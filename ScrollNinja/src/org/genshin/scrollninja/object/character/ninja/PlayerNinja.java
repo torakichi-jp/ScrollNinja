@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import java.util.logging.Logger;
-
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
@@ -13,8 +11,6 @@ import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;

@@ -289,9 +289,6 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	{
 		assert body != null : "先にBodyを生成する。";
 		
-		final ArrayList<Fixture> fixtureList = body.getFixtureList();
-		final int firstIndex = fixtureList.size();
-		
 		BodyEditorLoader loader = new BodyEditorLoader( Gdx.files.internal(fileName) );
 		loader.attachFixture(body, fixtureName, fixtureDef, scale);
 	}

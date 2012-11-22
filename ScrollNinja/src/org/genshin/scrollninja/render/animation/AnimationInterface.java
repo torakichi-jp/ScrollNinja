@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.render.animation;
 
-import org.genshin.engine.system.Updatable;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**

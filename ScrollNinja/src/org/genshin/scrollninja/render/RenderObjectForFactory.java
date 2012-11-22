@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.render;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
  * ファクトリクラスで生成する専用の描画オブジェクト

@@ -3,11 +3,8 @@
  */
 package org.genshin.scrollninja.object.character.ninja.controller;
 
-import org.genshin.scrollninja.utils.XMLFactory;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
  * プレイヤーが操作する忍者の操作状態を管理するオブジェクトの基本クラス。
