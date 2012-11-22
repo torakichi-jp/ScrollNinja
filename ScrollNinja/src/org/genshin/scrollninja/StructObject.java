@@ -247,7 +247,7 @@ public class StructObject {
 		body = GameMain.world.createBody(bd);
 		body.setTransform(positionX, positionY, 0);
 
-		Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/old/stage_object.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 		sprite.add(new Sprite(tmpRegion));
@@ -268,7 +268,7 @@ public class StructObject {
 		body = GameMain.world.createBody(bd);
 		body.setTransform(positionX, positionY, 0);			// 最初の位置
 
-		Texture texture = new Texture(Gdx.files.internal("data/enemy.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/old/enemy.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 0, 64, 64);
 

@@ -20,13 +20,13 @@ public class StageDataList {
 			data.enemyType.add(1);
 			data.enemyNum.add(1);
 			data.enemyPosition.add(new Vector2(30, 0));
-			data.backgroundFileName.add("data/stage/00_far.png");
+			data.backgroundFileName.add("data/old/stage/00_far.png");
 			data.backgroundSize.add(new Vector2(1024, 1024));
-			data.backgroundFileName.add("data/stage/00_main.png");
+			data.backgroundFileName.add("data/old/stage/00_main.png");
 			data.backgroundSize.add(new Vector2(2048, 1333));
-			data.backgroundFileName.add("data/stage/00_near.png");
+			data.backgroundFileName.add("data/old/stage/00_near.png");
 			data.backgroundSize.add(new Vector2(2048, 256));
-			data.backgroundBodyFileName = "data/stage/00.json";
+			data.backgroundBodyFileName = "data/old/stage/00.json";
 			data.backgroundBodyName = "bgTest";
 
 			// data.musicFileName.add("data/");

@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
 		createWorld();
 /*
 		// 背景(手前)テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/stage_near_test.png"));
+		texture = new Texture(Gdx.files.internal("data/old/stage_near_test.png"));
 		// コメントアウトしても動く。効果がいまいちわからない…
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		// テクスチャ範囲
@@ -120,7 +120,7 @@ public class GameScreen implements Screen {
 		stageSpr.setPosition(-(w / 2), -1024);
 */
 		/*// 背景（奥）テクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/stage_far_test.png"));
+		texture = new Texture(Gdx.files.internal("data/old/stage_far_test.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		tmpRegion = new TextureRegion(texture, 0, 0, 1024, 1024);
 		// 背景スプライトにセット
@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
 		*/
 
 		// キャラクターテクスチャ読み込み
-		texture = new Texture(Gdx.files.internal("data/chara.png"));
+		texture = new Texture(Gdx.files.internal("data/old/chara.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		region = new TextureRegion(texture, 0, 0, 64, 64);
 		// キャラクタースプライトにセット
@@ -138,7 +138,7 @@ public class GameScreen implements Screen {
 		charaSpr.setOrigin(charaSpr.getWidth() / 2, charaSpr.getHeight() / 2);
 
 		// 墓石
-		texture = new Texture(Gdx.files.internal("data/obj_gravestone.png"));
+		texture = new Texture(Gdx.files.internal("data/old/obj_gravestone.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 256, 256);
 		stoneSpr = new Sprite(tmpRegion);
@@ -148,7 +148,7 @@ public class GameScreen implements Screen {
 		createChara();
 
 		// アニメーション
-		Texture dash = new Texture(Gdx.files.internal("data/dash_test.png"));
+		Texture dash = new Texture(Gdx.files.internal("data/old/dash_test.png"));
 		TextureRegion[][] tmp = TextureRegion.split(dash, 64, 64);
 		frame = new TextureRegion[6];
 		int index = 0;
@@ -163,8 +163,8 @@ public class GameScreen implements Screen {
 		stateTime = 0f;
 
 		// サウンド
-		sound = Gdx.audio.newSound(Gdx.files.internal("data/sound/foot_step.ogg"));
-		music = Gdx.audio.newMusic(Gdx.files.internal("data/BGM.wav"));
+		sound = Gdx.audio.newSound(Gdx.files.internal("data/old/sound/foot_step.ogg"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/old/BGM.wav"));
 		music.setLooping(true);
 		//music.play();
 	}
@@ -173,7 +173,7 @@ public class GameScreen implements Screen {
 	private void createWorld() {
 		// BodyEditorで作成した当たり判定を読み込む
 		BodyEditorLoader loader =
-				new BodyEditorLoader(Gdx.files.internal("data/test.json"));
+				new BodyEditorLoader(Gdx.files.internal("data/old/test.json"));
 
 		// Bodyのタイプを設定 Staticは動かない物体
 		BodyDef bd = new BodyDef();
@@ -223,7 +223,7 @@ public class GameScreen implements Screen {
 
 		// BodyEditorで作成した当たり判定を読み込む
 		BodyEditorLoader loader =
-				new BodyEditorLoader(Gdx.files.internal("data/stageObject.json"));
+				new BodyEditorLoader(Gdx.files.internal("data/old/stageObject.json"));
 
 		// Bodyのタイプを設定 Staticは動かない物体
 		BodyDef bd = new BodyDef();

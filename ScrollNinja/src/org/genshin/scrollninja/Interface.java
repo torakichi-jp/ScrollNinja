@@ -47,7 +47,7 @@ public class Interface {
 		weapon = new ArrayList<Sprite>();
 
 		// テクスチャ画像読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/interface.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/old/interface.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		// 巻物アニメーション

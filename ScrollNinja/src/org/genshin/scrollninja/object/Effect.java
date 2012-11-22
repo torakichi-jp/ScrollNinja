@@ -124,7 +124,7 @@ public class Effect extends AbstractCollisionObject {
 			fd.isSensor		= true;
 
 			// テクスチャの読み込み
-			texture = new Texture(Gdx.files.internal("data/effect_fire.png"));
+			texture = new Texture(Gdx.files.internal("data/old/effect_fire.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			region = new TextureRegion(texture, 0, 0, 128, 128);
 
@@ -159,7 +159,7 @@ public class Effect extends AbstractCollisionObject {
 			fd.isSensor		= true;
 
 			// テクスチャの読み込み
-			texture = new Texture(Gdx.files.internal("data/effect_fire.png"));
+			texture = new Texture(Gdx.files.internal("data/old/effect_fire.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			region = new TextureRegion(texture, 0, 0, 128, 128);
 

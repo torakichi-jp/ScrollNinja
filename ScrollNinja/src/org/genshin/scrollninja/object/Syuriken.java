@@ -52,7 +52,7 @@ public class Syuriken extends AbstractWeapon {
 	public void Create() {
 		// テクスチャー読み込み
 		// TODO 手裏剣テクスチャの位置はとりあえずなので後で要調整
-		Texture	texture = new Texture(Gdx.files.internal("data/enemy.png"));
+		Texture	texture = new Texture(Gdx.files.internal("data/old/enemy.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion region = new TextureRegion(texture, 0, 448, 64, 64);
 

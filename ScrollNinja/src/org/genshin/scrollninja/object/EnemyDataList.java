@@ -25,7 +25,7 @@ public class EnemyDataList {
 
 		// 敵１設定
 		if (id == 0) {
-			data.enemyFileName = "data/enemy.png";
+			data.enemyFileName = "data/old/enemy.png";
 			data.maxHp = 100;
 			data.speed = 1;
 			data.enemyMode = NON_ACTIVE;
@@ -34,7 +34,7 @@ public class EnemyDataList {
 
 		// 敵２設定
 		if (id == 1) {
-			data.enemyFileName = "data/enemy.png";
+			data.enemyFileName = "data/old/enemy.png";
 			data.maxHp = 150;
 			data.speed = 1;
 			data.enemyMode = ACTIVE;

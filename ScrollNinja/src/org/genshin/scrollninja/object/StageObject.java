@@ -53,7 +53,7 @@ public class StageObject extends AbstractCollisionObject {
 	public void Create() {
 		switch(type) {
 		case ROCK:
-			Texture texture = new Texture(Gdx.files.internal("data/stage_object.png"));
+			Texture texture = new Texture(Gdx.files.internal("data/old/stage_object.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 			sprites.add(new Sprite(tmpRegion));
@@ -63,7 +63,7 @@ public class StageObject extends AbstractCollisionObject {
 			sprites.get(0).setScale(ScrollNinja.scale);
 
 			// 当たり判定読み込み
-			BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/stageObject.json"));
+			BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/old/stageObject.json"));
 
 			// Bodyのタイプを設定 Staticは動かない物体
 			BodyDef bd = new BodyDef();
@@ -81,7 +81,7 @@ public class StageObject extends AbstractCollisionObject {
 			fd.friction		= 0;				// 摩擦
 			fd.restitution	= 0;				// 反発係数
 			
-			createFixtureFromFile(fd, "data/stageObject.json", "gravestone", texture.getWidth() * ScrollNinja.scale);
+			createFixtureFromFile(fd, "data/old/stageObject.json", "gravestone", texture.getWidth() * ScrollNinja.scale);
 
 			break;
 

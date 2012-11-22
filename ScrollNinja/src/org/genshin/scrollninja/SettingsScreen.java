@@ -38,7 +38,7 @@ public class SettingsScreen implements Screen {
 
 		// テクスチャ読み込み
 		try {
-			texture = new Texture(Gdx.files.internal("data/back02_test.png"));
+			texture = new Texture(Gdx.files.internal("data/old/back02_test.png"));
 		} catch (NullPointerException e) {
 			System.out.println("ファイルがありません");
 		} catch (GdxRuntimeException e) {

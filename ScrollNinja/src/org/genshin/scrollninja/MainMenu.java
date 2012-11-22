@@ -57,7 +57,7 @@ public class MainMenu implements Screen{
 		BackgroundManager.CreateBackground(nextStageNum, false);
 
 		// テクスチャ読み込み
-		Texture texture = new Texture(Gdx.files.internal("data/menu.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/old/menu.png"));
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		spritePositionX = -105;
@@ -106,8 +106,8 @@ public class MainMenu implements Screen{
 	public void update(float delta) {
 
 		if (Gdx.input.isKeyPressed(Keys.A)) {
-			FileOperation.LoadFile("data/test.txt");
-			FileOperation.ExportFile("data/aaa.txt");
+			FileOperation.LoadFile("data/old/test.txt");
+			FileOperation.ExportFile("data/old/aaa.txt");
 		}
 
 		// エンターキーでコンティニュー　仮挿入中

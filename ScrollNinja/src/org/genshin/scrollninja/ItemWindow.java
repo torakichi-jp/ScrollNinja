@@ -36,7 +36,7 @@ public class ItemWindow {
 		frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
 		panel.setLayout( new GridLayout(0,3));
 		
-		panel.add( new ButtonForEdit("data/shuriken.png", 1));
+		panel.add( new ButtonForEdit("data/old/shuriken.png", 1));
 		
     	scrollPane = new JScrollPane(panel);	// なんかコンストラクタで指定しないとうまく動かないわ
     	frm.add(scrollPane);

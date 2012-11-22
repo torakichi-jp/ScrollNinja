@@ -166,7 +166,7 @@ public class Pause {
 	// コンストラクタ
 	public Pause() {
 		// ワールドマップ
-		Texture worldMaptexture = new Texture(Gdx.files.internal("data/map.png"));
+		Texture worldMaptexture = new Texture(Gdx.files.internal("data/old/map.png"));
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture,0,0,1024,1024);
 		worldMap = new Sprite(worldRegion);
@@ -182,14 +182,14 @@ public class Pause {
 		windVillage.setScale(ScrollNinja.scale);
 		
 		// ポーズ画面中の背景
-		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/pausemenuback.png"));
+		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/old/pausemenuback.png"));
 		pausemenubackTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion pauseRegion = new TextureRegion(pausemenubackTexture);
 		pausemenu = new Sprite(pauseRegion);
 		pausemenu.setScale(ScrollNinja.scale * 1.5f);
 
 		// ポーズメニュー
-		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/menu.png"));
+		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/old/menu.png"));
 		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
 		TextureRegion returnGameRegion = new TextureRegion(pauseMenuTexture,0,0,256,35);
 		returnGame = new Sprite(returnGameRegion);
@@ -202,7 +202,7 @@ public class Pause {
 		load.setScale(ScrollNinja.scale);
 
 		// アニメーション
-		Texture texture = new Texture(Gdx.files.internal("data/player.png"));
+		Texture texture = new Texture(Gdx.files.internal("data/old/player.png"));
 		texture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
 		TextureRegion[][] tmp = TextureRegion.split(texture,64,64);
 		frame = new TextureRegion[6];

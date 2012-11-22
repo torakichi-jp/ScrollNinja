@@ -33,13 +33,13 @@ public class LayerWindow {
 		panel.setLayout( new GridLayout(0,1));
 
 //    	for( int i = 0; i < 10; i ++ ) {
- //   		panel.add( new ButtonForEdit("data/shuriken.png", 0));
+ //   		panel.add( new ButtonForEdit("data/old/shuriken.png", 0));
  //   	}
     	
     	scrollPane = new JScrollPane(panel);	// なんかコンストラクタで指定しないとうまく動かないわ
     	frm.add(scrollPane);
     	
-//	    panel.add( new ButtonForEdit("data/shuriken.png", 0));
+//	    panel.add( new ButtonForEdit("data/old/shuriken.png", 0));
     	
     	frm.setVisible(true);
 	}

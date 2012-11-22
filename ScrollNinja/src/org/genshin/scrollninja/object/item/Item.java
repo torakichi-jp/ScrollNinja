@@ -71,7 +71,7 @@ public class Item extends AbstractCollisionObject {
 	private void Create() {
 		switch(type) {
 		case ONIGIRI:
-			Texture texture = new Texture(Gdx.files.internal("data/item.png"));
+			Texture texture = new Texture(Gdx.files.internal("data/old/item.png"));
 			texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 32, 32);
 			sprites.add(new Sprite(tmpRegion));
