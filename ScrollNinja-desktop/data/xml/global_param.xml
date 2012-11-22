@@ -10,7 +10,7 @@
 	<!-- 衝突関連のファイルを格納するディレクトリ -->
 	<CollisionDirectoryPath>data/</CollisionDirectoryPath>
 	<!-- テクスチャを格納するディレクトリ -->
-	<TextureDirectoryPath>data/texture/</TextureDirectoryPath>
+	<TextureDirectoryPath>data/textures/</TextureDirectoryPath>
 	
 	<!-- オブジェクト関連の設定ファイル -->
 	<ObjectParamXMLFileName>object_param.xml</ObjectParamXMLFileName>

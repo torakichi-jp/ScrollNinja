@@ -144,7 +144,7 @@ public class Kaginawa extends AbstractDynamicObject
 		
 		rope.setSize(len, rope.getHeight());
 		rope.setRotation(direction.angle());
-		rope.setRegion(0, 0, (int)len, 64);
+		rope.setRegion(0, 0, (int)len, rope.getRegionHeight());
 		
 		super.render();
 	}

@@ -6,7 +6,7 @@
 	<Cursor>
 		<Sprite>
 			<Texture>
-				<FilePath>cursor.png</FilePath>
+				<FilePath>gui/cursor.png</FilePath>
 			</Texture>
 		</Sprite>
 	</Cursor>
@@ -15,7 +15,7 @@
 	<NinjaBody>
 		<Sprite>
 			<Texture>
-				<FilePath>ninja.png</FilePath>
+				<FilePath>ninja/ninja.png</FilePath>
 				<Width>64</Width>
 				<Height>64</Height>
 			</Texture>
@@ -49,7 +49,7 @@
 	<NinjaFoot>
 		<Sprite>
 			<Texture>
-				<FilePath>ninja.png</FilePath>
+				<FilePath>ninja/ninja.png</FilePath>
 				<Width>64</Width>
 				<Height>64</Height>
 			</Texture>
@@ -84,7 +84,7 @@
 		<Anchor>
 			<Sprite>
 				<Texture>
-					<FilePath>kaginawa_anchor.png</FilePath>
+					<FilePath>weapon/kaginawa_anchor.png</FilePath>
 				</Texture>
 				<OriginX>-16</OriginX>
 			</Sprite>
@@ -93,7 +93,7 @@
 		<Rope>
 			<Sprite>
 				<Texture>
-					<FilePath>kaginawa_rope.png</FilePath>
+					<FilePath>weapon/kaginawa_rope.png</FilePath>
 				</Texture>
 				<OriginX>-32</OriginX>
 			</Sprite>
