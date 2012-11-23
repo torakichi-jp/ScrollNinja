@@ -5,6 +5,7 @@ import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
 import org.genshin.scrollninja.object.Background;
 
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -93,7 +94,10 @@ public class Kaginawa extends AbstractDynamicObject
 	@Override
 	protected void initializeSprite()
 	{
-		this.sprites.add(KaginawaParam.INSTANCE.ROPE_SPRITE_LOADER.create());
+		final Sprite ropeSprite = KaginawaParam.INSTANCE.ROPE_SPRITE_LOADER.create();
+		ropeSprite.getTexture().setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+		
+		this.sprites.add(ropeSprite);
 		this.sprites.add(KaginawaParam.INSTANCE.ANCHOR_SPRITE_LOADER.create());
 	}
 	

@@ -70,7 +70,7 @@ public class StageObject extends AbstractCollisionObject {
 			bd.type = BodyType.StaticBody;
 
 			// TODO テスト中でいれているだけ
-			bd.position.set(0.0f, -58.0f);
+			bd.position.set(position);
 			bd.angle = (float)Math.toRadians(20);
 			
 			createBody(GameMain.world, bd);

@@ -37,7 +37,6 @@ public final class TextureFactory extends AbstractFlyweightFactory<Texture, Stri
 	{
 		final Texture texture = new Texture(key);
 		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		return texture;
 	}
 

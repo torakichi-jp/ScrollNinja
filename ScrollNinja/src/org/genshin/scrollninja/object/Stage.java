@@ -54,10 +54,11 @@ public class Stage implements StageBase {
 		cursor.update();
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update();
-		BackgroundManager.backgroundList.update();
 		WeaponManager.Update();
 		PlayerManager.Update();
 		ItemManager.Update();
+		updateCamera();
+		BackgroundManager.backgroundList.update();
 
 		// TODO 今だけリポップ
 		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
@@ -67,15 +68,12 @@ public class Stage implements StageBase {
 
 		// TODO 今だけリポップ
 		if( EnemyManager.enemyList.size() == 0) {
-			for (int i = 0; i < stageData.enemyType.size(); i++) {
-				for (int j = 0; j < stageData.enemyNum.get(i); j++) {
-					EnemyManager.CreateEnemy(stageData.enemyType.get(i),
-										 	 stageData.enemyPosition.get((i+1)*(j+1)-1));
-				}
+			for(StageData.EnemyData enemy : stageData.enemyData)
+			{
+				EnemyManager.CreateEnemy(enemy.type, enemy.position);
 			}
 		}
 
-		updateCamera();
 		GameMain.playerInfo.update();
 		
 		
@@ -177,23 +175,19 @@ public class Stage implements StageBase {
 
 	@Override
 	public void Init() {
-		PlayerManager.CreatePlayer(stageData.playerPosition, cursor);
+		PlayerManager.CreatePlayer(stageData.startPosition, cursor);
 		// TODO 後でステージオブジェクトリスト追加
-		StageObjectManager.CreateStageObject(StageObject.ROCK, 0.0f, 0.0f);
-		for (int i = 0; i < stageData.enemyType.size(); i++) {
-			for (int j = 0; j < stageData.enemyNum.get(i); j++) {
-				EnemyManager.CreateEnemy(stageData.enemyType.get(i),
-										 stageData.enemyPosition.get((i+1)*(j+1)-1));
-			}
+		StageObjectManager.CreateStageObject(StageObject.ROCK, 200.0f, 38.0f);
+		for(StageData.EnemyData enemy : stageData.enemyData)
+		{
+			EnemyManager.CreateEnemy(enemy.type, enemy.position);
 		}
 		
 		cameraTranslater = new CameraTranslater(GameMain.camera);
 		cameraTranslater.addTargetObject(cursor);
 		cameraTranslater.addTargetObject(PlayerManager.GetPlayer(0));
 
-		final float width = BackgroundManager.backgroundList.sprites.get(Background.MAIN).getWidth()*ScrollNinja.scale;
-		final float height = stageData.backgroundSize.get(Background.MAIN).y*ScrollNinja.scale;
-		cameraTranslater.setTranslateArea(width*-0.5f, height*-0.5f, width, height);
+		cameraTranslater.setTranslateArea(0.0f, 0.0f, stageData.size.x, stageData.size.y);
 	}
 
 	@Override
