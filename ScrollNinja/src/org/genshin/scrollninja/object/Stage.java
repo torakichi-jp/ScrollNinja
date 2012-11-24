@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.GlobalParam;
-import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.object.StageDataList.StageData;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
@@ -18,7 +17,6 @@ import org.genshin.scrollninja.render.CameraTranslater;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Stage implements StageBase {

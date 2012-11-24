@@ -183,7 +183,7 @@ public class Kaginawa extends AbstractDynamicObject
 				kaginawa.setActive(false);
 				
 				// 持ち主を初期化
-				owner.setGravityScale(1.0f);
+				//owner.setGravityScale(1.0f);
 			}
 
 			@Override
@@ -273,7 +273,7 @@ public class Kaginawa extends AbstractDynamicObject
 				kaginawa.setLinearVelocity(Vector2.Zero);
 				
 				// 持ち主を初期化
-				owner.setGravityScale(0.0f);
+				//owner.setGravityScale(0.0f);
 				owner.setLinearVelocity(Vector2.Zero);		// TODO なくす？
 				
 				// ジョイントがあれば切り離す
@@ -336,7 +336,7 @@ public class Kaginawa extends AbstractDynamicObject
 				kaginawa.setLinearVelocity(Vector2.Zero);
 				
 				// 持ち主を初期化
-				owner.setGravityScale(1.0f);
+				//owner.setGravityScale(1.0f);
 				owner.setLinearVelocity(Vector2.Zero);
 				
 				// ジョイントを生成
@@ -385,7 +385,7 @@ public class Kaginawa extends AbstractDynamicObject
 				kaginawa.setActive(false);
 				
 				// 持ち主を初期化
-				owner.setGravityScale(1.0f);
+				//owner.setGravityScale(1.0f);
 				
 				// ジョイントがあれば切り離す
 				if(me.joint != null)

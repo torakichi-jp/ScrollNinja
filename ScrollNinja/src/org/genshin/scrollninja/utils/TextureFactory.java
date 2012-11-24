@@ -4,7 +4,6 @@ import org.genshin.engine.factory.AbstractFlyweightFactory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
 
 /**
  * テクスチャを生成・管理するクラス（シングルトン）<br>

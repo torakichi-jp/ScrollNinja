@@ -20,9 +20,9 @@ public interface NinjaControllerInterface
 	
 	/**
 	 * 移動の操作状態を取得する。
-	 * @return	左方向への移動操作がある場合は-1.0f、右方向への移動操作がある場合は1.0f、移動操作がない場合は0.0f
+	 * @return		左方向への移動操作がある場合は-1.0f、右方向への移動操作がある場合は1.0f、移動操作がない場合は0.0f
 	 */
-	float getMoveLevel();
+	float getMovePower();
 	
 	/**
 	 * 忍者の向きを取得する。（スプライトの左右反転の判定、攻撃・鉤縄の射出方向などに使用する）

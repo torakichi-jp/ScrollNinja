@@ -38,6 +38,7 @@ enum NinjaParam
 			// ジャンプ
 			JUMP_POWER			= rootElement.getFloat("JumpPower");
 			AERIAL_JUMP_COUNT	= rootElement.getInt("AerialJumpCount");
+			GROUNDED_JUDGE_TIME	= rootElement.getInt("GroundedJudgeTime");
 		}
 		
 		//---- 衝突関連
@@ -70,6 +71,9 @@ enum NinjaParam
 	
 	/** 空中でジャンプできる回数 */
 	final int AERIAL_JUMP_COUNT;
+
+	/** 地面との衝突判定を出し続ける時間 */
+	final int GROUNDED_JUDGE_TIME;
 	
 	/** 上半身Fixtureの定義情報 */
 	final FixtureDefLoader BODY_FIXTURE_DEF_LOADER;

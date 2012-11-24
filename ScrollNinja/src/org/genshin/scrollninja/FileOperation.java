@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
+
 import javax.imageio.ImageIO;
 
 public class FileOperation {

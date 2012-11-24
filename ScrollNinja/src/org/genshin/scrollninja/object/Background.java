@@ -3,8 +3,6 @@ package org.genshin.scrollninja.object;
 //========================================
 // インポート
 //========================================
-import java.util.logging.Logger;
-
 import org.genshin.scrollninja.GameMain;
 import org.genshin.scrollninja.MainMenu;
 import org.genshin.scrollninja.object.StageDataList.StageData;

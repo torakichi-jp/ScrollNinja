@@ -39,7 +39,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	}
 
 	@Override
-	public final float getMoveLevel()
+	public final float getMovePower()
 	{
 		float result = 0.0f;
 		if(inputHelpers[InputType.LEFT.ordinal()].isPress())	result -= 1.0f;

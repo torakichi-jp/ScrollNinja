@@ -5,8 +5,6 @@ package org.genshin.scrollninja.object;
 //========================================
 import java.util.ArrayList;
 
-
-
 import com.badlogic.gdx.math.Vector2;
 
 //========================================
