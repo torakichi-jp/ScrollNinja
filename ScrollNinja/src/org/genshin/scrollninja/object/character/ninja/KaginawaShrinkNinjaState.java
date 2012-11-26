@@ -2,6 +2,7 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 
 /**
  * 鉤縄を縮めている時の忍者の処理。<br>
@@ -15,7 +16,12 @@ class KaginawaShrinkNinjaState extends AbstractKaginawaNinjaState
 	@Override
 	public void collisionTerrain(PlayerNinja me, Contact contact)
 	{
-		// なにもしない
+		//---- まだ地上にいる時はスルー
+		if( me.isGrounded() )
+			return;
+		
+		//---- 地面との接触フラグを立てる
+		collisionTerrain = true;
 	}
 	
 	@Override
@@ -66,6 +72,12 @@ class KaginawaShrinkNinjaState extends AbstractKaginawaNinjaState
 	@Override
 	protected NinjaStateInterface getNextState(PlayerNinja me)
 	{
+		//---- 地形に吸着する状態へ
+		if( collisionTerrain )
+		{
+			return new SnapTerrainNinjaState();
+		}
+		
 		//---- 鉤縄にぶら下がっている状態へ
 		if( me.kaginawa.isHangState() )
 		{
@@ -75,4 +87,7 @@ class KaginawaShrinkNinjaState extends AbstractKaginawaNinjaState
 		//---- あとは基本クラスに任せる。
 		return super.getNextState(me);
 	}
+	
+	/** 地形と衝突したフラグ */
+	boolean collisionTerrain = false;
 }

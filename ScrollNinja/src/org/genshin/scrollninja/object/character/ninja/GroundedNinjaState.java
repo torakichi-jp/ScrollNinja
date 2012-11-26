@@ -63,7 +63,7 @@ class GroundedNinjaState extends AbstractNormalNinjaState
 		//---- 地上で鉤縄にぶら下がっている状態へ
 		if( me.kaginawa.isHangState() )
 		{
-			return new GroundedKaginawaHangNinjaState();
+			return new GroundedToKaginawaNinjaState();
 		}
 		
 		//---- あとは基本クラスに任せる

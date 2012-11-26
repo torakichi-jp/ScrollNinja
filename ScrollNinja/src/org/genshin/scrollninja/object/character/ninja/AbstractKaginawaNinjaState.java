@@ -17,9 +17,6 @@ abstract class AbstractKaginawaNinjaState extends AbstractNinjaState
 		//---- 前方ベクトルを強制的にX軸にする。
 		me.frontDirection.set(Vector2.X);
 		
-		//---- 姿勢を起こす
-		nearRotate(me, 0.0f, 0.1f);
-		
 		//---- 地面との接触フラグをへし折っておく
 		me.groundedTimer = 0;
 		

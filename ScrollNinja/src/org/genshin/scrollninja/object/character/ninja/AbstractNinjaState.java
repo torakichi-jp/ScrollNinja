@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import java.util.logging.Logger;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -12,6 +14,13 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 abstract class AbstractNinjaState implements NinjaStateInterface
 {
+	static String oldState = "";
+	AbstractNinjaState()
+	{
+		String newState = getClass().getSimpleName();
+		Logger.global.info(oldState + " -> " + newState);
+		oldState = getClass().getSimpleName();
+	}
 	@Override
 	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
 	{
