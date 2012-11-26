@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.GlobalParam;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -29,8 +31,8 @@ class GroundedNinjaState extends AbstractNormalNinjaState
 		// TODO ブレーキはbox2dの摩擦力に任せるべき？
 		final Body body = me.getBody();
 		final Vector2 velocity = body.getLinearVelocity();
-		velocity.mul(0.8f);
-		if(velocity.len2() < (0.5f*0.5f))
+		velocity.mul(0.95f);
+		if(velocity.len2() < GlobalParam.INSTANCE.WORLD_SCALE)
 		{
 			velocity.set(Vector2.Zero);
 		}
@@ -52,13 +54,19 @@ class GroundedNinjaState extends AbstractNormalNinjaState
 	@Override
 	protected NinjaStateInterface getNextState(PlayerNinja me)
 	{
-		//---- 足が地面から離れていればジャンプ状態へ
+		//---- 足が地面から離れていれば空中状態へ
 		if( !me.isGrounded() )
 		{
 			return new AerialNinjaState();
 		}
 		
-		//---- どれにも当てはまらなければ現状維持
-		return this;
+		//---- 地上で鉤縄にぶら下がっている状態へ
+		if( me.kaginawa.isHangState() )
+		{
+			return new GroundedKaginawaHangNinjaState();
+		}
+		
+		//---- あとは基本クラスに任せる
+		return super.getNextState(me);
 	}
 }

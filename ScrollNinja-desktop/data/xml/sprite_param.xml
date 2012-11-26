@@ -42,6 +42,13 @@
 				<FrameCount>6</FrameCount>
 				<Time>4</Time>
 			</Animation>
+			<!-- 鉤縄状態時のアニメーション -->
+			<Animation>
+				<Name>Kaginawa</Name>
+				<StartY>5</StartY>
+				<FrameCount>4</FrameCount>
+				<Time>6</Time>
+			</Animation>
 		</Sprite>
 	</NinjaBody>
 	
@@ -74,6 +81,21 @@
 				<StartY>0</StartY>
 				<FrameCount>6</FrameCount>
 				<Time>4</Time>
+			</Animation>
+			<!-- 鉤縄状態時のアニメーション（前方向） -->
+			<Animation>
+				<Name>KaginawaFront</Name>
+				<StartY>6</StartY>
+				<FrameCount>4</FrameCount>
+				<Time>6</Time>
+			</Animation>
+			<!-- 鉤縄状態時のアニメーション（後ろ方向） -->
+			<Animation>
+				<Name>KaginawaBack</Name>
+				<StartX>4</StartX>
+				<StartY>6</StartY>
+				<FrameCount>4</FrameCount>
+				<Time>6</Time>
 			</Animation>
 		</Sprite>
 	</NinjaFoot>

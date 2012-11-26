@@ -2,8 +2,6 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
 /**
  * 忍者の状態の基本クラス。<br>
@@ -25,41 +23,6 @@ abstract class AbstractNinjaState implements NinjaStateInterface
 		
 		//---- 次の状態を返す。
 		return getNextState(me);
-	}
-	
-	@Override
-	public void collisionTerrain(PlayerNinja me, Contact contact)
-	{
-		//---- 衝突したのが下半身でなければ何もしない。
-		final Fixture footFixture = me.getFootFixture();
-		if(contact.getFixtureA() != footFixture && contact.getFixtureB() != footFixture)
-			return;
-		
-		//---- 衝突したのが下半身なら地面に立っている時の処理を加える。
-		// 空中ジャンプのカウント初期化
-		me.restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
-		
-		// 地面との衝突判定用タイマー初期化
-		me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
-		
-		// 前方ベクトルを設定
-		final boolean useWorldManifold = true;
-		if(useWorldManifold)
-		{
-			final Vector2 normal = contact.getWorldManifold().getNormal();
-			me.frontDirection.set(normal.y, -normal.x);
-
-			// キャラの角度を補正
-			nearRotate( me, (float)Math.toRadians(normal.angle() - 90.0f), 0.1f );
-		}
-		else
-		{
-			final float angle = me.getBody().getAngle();
-			me.frontDirection.set( (float)Math.cos(angle), (float)Math.sin(angle) );
-			
-			// キャラの角度を補正
-			nearRotate( me, (float)Math.toRadians(contact.getWorldManifold().getNormal().angle() - 90.0f), 0.1f );
-		}
 	}
 
 	/**
@@ -160,25 +123,11 @@ abstract class AbstractNinjaState implements NinjaStateInterface
 	 */
 	protected abstract void updateJump(PlayerNinja me);
 	
-	protected void updateKaginawa(PlayerNinja me)
-	{
-		if( me.controller.isKaginawaSlack() )
-		{
-			me.kaginawa.slack(me.controller.getDirection());
-		}
-		if( me.controller.isKaginawaShrink() )
-		{
-			me.kaginawa.shrink();
-		}
-		if( me.controller.isKaginawaHang() )
-		{
-			me.kaginawa.hang();
-		}
-		if( me.controller.isKaginawaRelease() )
-		{
-			me.kaginawa.release();
-		}
-	}
+	/**
+	 * 鉤縄の更新処理を実行する。
+	 * @param me		自身を示す忍者オブジェクト
+	 */
+	protected abstract void updateKaginawa(PlayerNinja me);
 	
 	/**
 	 * 重力の更新処理を実行する。
