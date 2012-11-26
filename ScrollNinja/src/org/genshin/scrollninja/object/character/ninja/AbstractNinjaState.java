@@ -14,13 +14,6 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 abstract class AbstractNinjaState implements NinjaStateInterface
 {
-	static String oldState = "";
-	AbstractNinjaState()
-	{
-		String newState = getClass().getSimpleName();
-		Logger.global.info(oldState + " -> " + newState);
-		oldState = getClass().getSimpleName();
-	}
 	@Override
 	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
 	{
