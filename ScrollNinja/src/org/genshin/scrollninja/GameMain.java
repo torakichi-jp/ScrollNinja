@@ -32,7 +32,7 @@ public class GameMain implements Screen{
 	public static World					world;			// ワールド
 	public static OrthographicCamera	camera;			// カメラ
 	public static SpriteBatch			spriteBatch;	// スプライトバッチ
-	public static Interface 			playerInfo;		// インターフェース
+//	public static Interface 			playerInfo;		// インターフェース
 	public static Pause					pause;			// ポーズ
 
 	private int							stageNum;		// ステージナンバー
@@ -70,7 +70,7 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		stageNum			= num;
 		stage				= new Stage(stageNum);
-		playerInfo			= new Interface();
+//		playerInfo			= new Interface();
 
 		BackgroundManager.CreateBackground(stageNum, true);
 		StageManager.ChangeStage(stage);
