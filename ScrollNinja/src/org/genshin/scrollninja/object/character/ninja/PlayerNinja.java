@@ -1,5 +1,6 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
@@ -115,10 +116,12 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	protected void initializeFixture()
 	{
+		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		
 		// 下半身
 		FixtureDef ffd = NinjaParam.INSTANCE.FOOT_FIXTURE_DEF_LOADER.createFixtureDef();
 		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(1.5f);
+		circleShape.setRadius(15.0f * worldScale);
 		ffd.shape = circleShape;
 		
 		createFixture(ffd);
@@ -127,7 +130,7 @@ public class PlayerNinja extends AbstractCharacter {
 		// 上半身
 		FixtureDef bfd = NinjaParam.INSTANCE.BODY_FIXTURE_DEF_LOADER.createFixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
-		polygonShape.setAsBox(1.6f, 1.6f, new Vector2(0.0f, 1.6f), 0.0f);
+		polygonShape.setAsBox(16.0f * worldScale, 16.0f * worldScale, new Vector2(0.0f * worldScale, 16.0f * worldScale), 0.0f);
 		bfd.shape = polygonShape;
 
 		createFixture(bfd);

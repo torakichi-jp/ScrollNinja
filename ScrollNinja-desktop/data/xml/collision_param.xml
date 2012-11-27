@@ -22,7 +22,7 @@
 	<Kaginawa>
 		<FixtureDef>
 			<CircleShape>
-				<Radius>1.0</Radius>
+				<Radius>10.0</Radius>
 			</CircleShape>
 		</FixtureDef>
 	</Kaginawa>

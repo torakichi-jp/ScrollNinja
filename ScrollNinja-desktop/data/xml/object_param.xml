@@ -5,15 +5,15 @@
 	<!-- 忍者 -->
 	<Ninja>
 		<!-- 走りの加速度（毎秒） -->
-		<RunAccel>300.0</RunAccel>
+		<RunAccel>3000.0</RunAccel>
 		<!-- 走りの最高速度（毎秒） -->
-		<RunMaxVelocity>30.0</RunMaxVelocity>
+		<RunMaxVelocity>300.0</RunMaxVelocity>
 		<!-- ダッシュの加速度（毎秒） -->
-		<DashAccel>600.0</DashAccel>
+		<DashAccel>6000.0</DashAccel>
 		<!-- 走りの最高速度　（毎秒） -->
-		<DashMaxVelocity>60.0</DashMaxVelocity>
+		<DashMaxVelocity>600.0</DashMaxVelocity>
 		<!-- ジャンプ力 -->
-		<JumpPower>70.0f</JumpPower>
+		<JumpPower>700.0f</JumpPower>
 		<!-- 空中でジャンプできる回数 -->
 		<AerialJumpCount>1</AerialJumpCount>
 		<!-- ジャンプ以外で足が地面から離れた時に地面判定をし続ける時間　単位：フレーム数 -->
@@ -23,11 +23,11 @@
 	<!-- 鉤縄 -->
 	<Kaginawa>
 		<!-- 伸びる速度 -->
-		<SlackVelocity>180.0</SlackVelocity>
+		<SlackVelocity>1280.0</SlackVelocity>
 		<!-- 縮む速度 -->
-		<ShrinkVelocity>90.0</ShrinkVelocity>
+		<ShrinkVelocity>900.0</ShrinkVelocity>
 		<!-- 鉤縄の長さ -->
-		<Length>45.0</Length>
+		<Length>450.0</Length>
 	</Kaginawa>
 </ObjectParam>
 

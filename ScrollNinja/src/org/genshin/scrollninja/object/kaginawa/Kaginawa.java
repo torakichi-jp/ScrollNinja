@@ -82,15 +82,15 @@ public class Kaginawa extends AbstractDynamicObject
 	public void render()
 	{
 		// XXX 縄の描画（仮）
-		Vector2 kaginawaPosition = getBody().getPosition();
-		Vector2 ownerPosition = owner.getPosition();
-		Vector2 direction = ownerPosition.sub(kaginawaPosition);
-		Sprite rope = sprites.get(0);
-		float len = direction.len()/GlobalParam.INSTANCE.WORLD_SCALE;
+		final Vector2 kaginawaPosition = getBody().getPosition();
+		final Vector2 ownerPosition = owner.getPosition();
+		final Vector2 direction = ownerPosition.sub(kaginawaPosition);
+		final Sprite rope = sprites.get(0);
+		final float len = direction.len();
 		
 		rope.setSize(len, rope.getHeight());
 		rope.setRotation(direction.angle());
-		rope.setRegion(0, 0, (int)len, rope.getRegionHeight());
+		rope.setRegion(0, 0, (int)(len*GlobalParam.INSTANCE.INV_WORLD_SCALE), rope.getRegionHeight());
 		
 		super.render();
 	}

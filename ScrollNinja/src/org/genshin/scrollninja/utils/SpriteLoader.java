@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.utils;
 
 import org.genshin.scrollninja.GlobalParam;
-import org.genshin.scrollninja.ScrollNinja;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,12 +23,14 @@ public class SpriteLoader
 	{
 		assert xmlElement != null;
 		
+		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		
 		xmlElement		= xmlElement.getChildByName("Sprite");
 		textureLoader	= new TextureLoader(xmlElement.getChildByName("Texture"));
-		width			= xmlElement.getFloat("Width", 0.0f);
-		height			= xmlElement.getFloat("Height", 0.0f);
-		originX			= xmlElement.getFloat("OriginX", 0.0f);
-		originY			= xmlElement.getFloat("OriginY", 0.0f);
+		width			= xmlElement.getFloat("Width", 0.0f) * worldScale;
+		height			= xmlElement.getFloat("Height", 0.0f) * worldScale;
+		originX			= xmlElement.getFloat("OriginX", 0.0f) * worldScale;
+		originY			= xmlElement.getFloat("OriginY", 0.0f) * worldScale;
 	}
 	
 	/**
@@ -38,14 +39,14 @@ public class SpriteLoader
 	 */
 	public Sprite create()
 	{
-		Sprite sprite = new Sprite(textureLoader.create());
+		final Sprite sprite = new Sprite(textureLoader.create());
 
-		float w = width == 0.0f ? sprite.getWidth() : width;
-		float h = height == 0.0f ? sprite.getHeight() : height;
+		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		final float w = width == 0.0f ? sprite.getWidth() * worldScale : width;
+		final float h = height == 0.0f ? sprite.getHeight() * worldScale : height;
 		
 		sprite.setSize(w, h);
 		sprite.setOrigin(sprite.getWidth()*0.5f+originX, sprite.getHeight()*0.5f+originY);
-		sprite.setScale(ScrollNinja.scale);
 		
 		return sprite;
 	}

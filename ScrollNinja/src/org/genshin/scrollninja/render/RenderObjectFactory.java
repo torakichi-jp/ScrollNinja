@@ -54,9 +54,10 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 		// アニメーション生成
 		rootElement = rootElement.getChildByName("Sprite");
 		final int childCount = rootElement.getChildCount();
+		final float invWorldScale = GlobalParam.INSTANCE.INV_WORLD_SCALE;
 		for(int i = 0;  i < childCount;  ++i)
 		{
-			Element childElement = rootElement.getChild(i);
+			final Element childElement = rootElement.getChild(i);
 			
 			if( childElement.getName().equals("Animation") )
 			{
@@ -64,8 +65,8 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 
 				TextureAnimationDef tad = new TextureAnimationDef();
 				tad.texture			= sprite.getTexture();
-				tad.size.x			= (int)sprite.getWidth();
-				tad.size.y			= (int)sprite.getHeight();
+				tad.size.x			= (int)(sprite.getWidth() * invWorldScale);
+				tad.size.y			= (int)(sprite.getHeight() * invWorldScale);
 				tad.startIndex.x	= childElement.getInt("StartX", 0);
 				tad.startIndex.y	= childElement.getInt("StartY", 0);
 				tad.frameCount		= childElement.getInt("FrameCount", 1);

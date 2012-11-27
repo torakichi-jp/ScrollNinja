@@ -22,21 +22,23 @@ enum NinjaParam
 	 */
 	private NinjaParam()
 	{
+		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		
 		//---- 忍者の挙動関連
 		{
 			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.OBJECT_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Ninja");
 			
 			// 走り
-			RUN_ACCEL			= rootElement.getFloat("RunAccel");
-			RUN_MAX_VELOCITY	= rootElement.getFloat("RunMaxVelocity");
+			RUN_ACCEL			= rootElement.getFloat("RunAccel") * worldScale;
+			RUN_MAX_VELOCITY	= rootElement.getFloat("RunMaxVelocity") * worldScale;
 			
 			// ダッシュ
-			DASH_ACCEL			= rootElement.getFloat("DashAccel");
-			DASH_MAX_VELOCITY	= rootElement.getFloat("DashMaxVelocity");
+			DASH_ACCEL			= rootElement.getFloat("DashAccel") * worldScale;
+			DASH_MAX_VELOCITY	= rootElement.getFloat("DashMaxVelocity") * worldScale;
 			
 			// ジャンプ
-			JUMP_POWER			= rootElement.getFloat("JumpPower");
+			JUMP_POWER			= rootElement.getFloat("JumpPower") * worldScale;
 			AERIAL_JUMP_COUNT	= rootElement.getInt("AerialJumpCount");
 			GROUNDED_JUDGE_TIME	= rootElement.getInt("GroundedJudgeTime");
 		}

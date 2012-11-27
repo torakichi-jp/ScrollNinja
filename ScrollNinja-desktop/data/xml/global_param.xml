@@ -3,7 +3,7 @@
 <!-- グローバルパラメータ -->
 <GlobalParam>
 	<!-- 世界の単位（box2dの速度制限回避用） -->
-	<WorldScale>0.1</WorldScale>
+	<WorldScale>0.01</WorldScale>
 	
 	<!-- XMLファイルを格納するディレクトリ -->
 	<XMLDirectoryPath>data/xml/</XMLDirectoryPath>

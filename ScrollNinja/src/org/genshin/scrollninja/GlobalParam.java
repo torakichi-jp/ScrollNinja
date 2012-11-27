@@ -24,6 +24,7 @@ public enum GlobalParam
 		
 		// 世界の単位
 		WORLD_SCALE = rootElement.getFloat("WorldScale", 0.1f);
+		INV_WORLD_SCALE = 1.0f / WORLD_SCALE;
 		
 		// ディレクトリパス
 		XML_DIRECTORY_PATH			= rootElement.get("XMLDirectoryPath");
@@ -38,6 +39,9 @@ public enum GlobalParam
 	
 	/** 世界の単位 */
 	public final float WORLD_SCALE;
+	
+	/** 世界の単位を逆にしたもの（1/WORLD_SCALE） */
+	public final float INV_WORLD_SCALE;
 
 	/** XMLファイルを格納しているディレクトリのパス */
 	public final String XML_DIRECTORY_PATH;

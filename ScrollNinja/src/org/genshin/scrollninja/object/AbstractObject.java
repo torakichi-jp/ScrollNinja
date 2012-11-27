@@ -100,7 +100,7 @@ public abstract class AbstractObject implements ObjectInterface
 			for( RenderObjectInterface ro : renderObjects )
 			{
 				Sprite sprite = ro.getSprite();
-				sprite.setScale(Math.abs(sprite.getScaleX())*(x?-1.0f:1.0f), Math.abs(sprite.getScaleY())*(y?-1.0f:1.0f));
+				sprite.setScale(x?-1.0f:1.0f, y?-1.0f:1.0f);
 			}
 		}
 		{
