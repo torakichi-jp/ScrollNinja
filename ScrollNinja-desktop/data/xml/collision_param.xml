@@ -14,7 +14,7 @@
 		<Foot>
 			<FixtureDef>
 				<Dencity>1.0</Dencity>
-				<Friction>0.4</Friction>
+				<Friction>0.8</Friction>
 			</FixtureDef>
 		</Foot>
 	</Ninja>

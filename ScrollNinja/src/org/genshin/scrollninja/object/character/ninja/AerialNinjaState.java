@@ -21,6 +21,9 @@ class AerialNinjaState extends AbstractNormalNinjaState
 		//---- 姿勢を起こす
 		nearRotate(me, 0.0f, 0.1f);
 		
+		//---- 連続ジャンプ時は摩擦を無視する
+		me.getFootFixture().setFriction(me.controller.isJump() ? 0.0f : me.defaultFriction);
+		
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
 	}
@@ -41,6 +44,7 @@ class AerialNinjaState extends AbstractNormalNinjaState
 		//---- 地面と接触したら地上状態へ
 		if( me.isGrounded() )
 		{
+			me.getFootFixture().setFriction(me.defaultFriction);
 			return new GroundedNinjaState();
 		}
 		

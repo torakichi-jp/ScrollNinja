@@ -47,6 +47,7 @@ public class PlayerNinja extends AbstractCharacter {
 		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
 		groundedTimer = 0;
 		worldGravity = world.getGravity().len();
+		defaultFriction = getFootFixture().getFriction();
 
 		state = new AerialNinjaState();
 	}
@@ -241,6 +242,9 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	/** 移動する方向（天井に張り付いた状態から自然に移動する用） */
 	float moveDirection = 0.0f;
+	
+	/** 摩擦のデフォルト値 */
+	final float defaultFriction;
 	
 	/** 忍者の状態を管理するオブジェクト */
 	private NinjaStateInterface		state;
