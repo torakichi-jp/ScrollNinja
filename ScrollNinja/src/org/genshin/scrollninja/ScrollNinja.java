@@ -35,7 +35,7 @@ public class ScrollNinja extends Game {
 		// アスペクト比計算
 		//calculateAspectRatio();
 		// TODO 画面比によってスケーリング変えれる？
-		scale = 0.1f;
+		scale = GlobalParam.INSTANCE.WORLD_SCALE;
 
 		// TODO リリース時にはメニュー画面から開始する。
 		//setScreen(new MainMenu(this));	// メインメニュー読み込み

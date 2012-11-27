@@ -59,20 +59,20 @@ public class Stage implements StageBase {
 		BackgroundManager.backgroundList.update();
 
 		// TODO 今だけリポップ
-		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
-			EffectManager.enemyEffectList = new ArrayList<Effect>();
-			EnemyManager.dispose();
-		}
+//		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
+//			EffectManager.enemyEffectList = new ArrayList<Effect>();
+//			EnemyManager.dispose();
+//		}
+//
+//		// TODO 今だけリポップ
+//		if( EnemyManager.enemyList.size() == 0) {
+//			for(StageData.EnemyData enemy : stageData.enemyData)
+//			{
+//				EnemyManager.CreateEnemy(enemy.type, enemy.position);
+//			}
+//		}
 
-		// TODO 今だけリポップ
-		if( EnemyManager.enemyList.size() == 0) {
-			for(StageData.EnemyData enemy : stageData.enemyData)
-			{
-				EnemyManager.CreateEnemy(enemy.type, enemy.position);
-			}
-		}
-
-		GameMain.playerInfo.update();
+//		GameMain.playerInfo.update();
 		
 		
 		// TODO 最終的には消すハズ
@@ -110,7 +110,7 @@ public class Stage implements StageBase {
 			EffectManager.Draw();
 			ItemManager.Draw();
 			BackgroundManager.backgroundList.Draw(2);
-			GameMain.playerInfo.Draw();
+//			GameMain.playerInfo.Draw();
 			cursor.render();
 		}
 		GameMain.spriteBatch.end();										// 描画終了
@@ -175,7 +175,7 @@ public class Stage implements StageBase {
 	public void Init() {
 		PlayerManager.CreatePlayer(stageData.startPosition, cursor);
 		// TODO 後でステージオブジェクトリスト追加
-		StageObjectManager.CreateStageObject(StageObject.ROCK, 200.0f, 38.0f);
+//		StageObjectManager.CreateStageObject(StageObject.ROCK, 200.0f, 38.0f);
 		for(StageData.EnemyData enemy : stageData.enemyData)
 		{
 			EnemyManager.CreateEnemy(enemy.type, enemy.position);

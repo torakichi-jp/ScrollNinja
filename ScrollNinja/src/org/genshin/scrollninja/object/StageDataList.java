@@ -23,21 +23,21 @@ public class StageDataList {
 			data.collisionData.fileName = "data/stages/test.json";
 			data.collisionData.bodyName = "bgTest";
 			
-			{
-				StageData.EnemyData enemy = data.new EnemyData();
-				enemy.type = 0;
-				enemy.num = 1;
-				enemy.position.set( data.startPosition.x + 20.0f, data.startPosition.y );
-				data.enemyData.add(enemy);
-			}
-			
-			{
-				StageData.EnemyData enemy = data.new EnemyData();
-				enemy.type = 1;
-				enemy.num = 1;
-				enemy.position.set( data.startPosition.x + 30.0f, data.startPosition.y );
-				data.enemyData.add(enemy);
-			}
+//			{
+//				StageData.EnemyData enemy = data.new EnemyData();
+//				enemy.type = 0;
+//				enemy.num = 1;
+//				enemy.position.set( data.startPosition.x + 20.0f, data.startPosition.y );
+//				data.enemyData.add(enemy);
+//			}
+//			
+//			{
+//				StageData.EnemyData enemy = data.new EnemyData();
+//				enemy.type = 1;
+//				enemy.num = 1;
+//				enemy.position.set( data.startPosition.x + 30.0f, data.startPosition.y );
+//				data.enemyData.add(enemy);
+//			}
 			
 			{
 				StageData.LayerData layer = data.new LayerData();
