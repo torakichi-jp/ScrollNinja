@@ -175,7 +175,7 @@ public class Stage implements StageBase {
 	public void Init() {
 		PlayerManager.CreatePlayer(stageData.startPosition, cursor);
 		// TODO 後でステージオブジェクトリスト追加
-		StageObjectManager.CreateStageObject(StageObject.ROCK, 200.0f, 38.0f);
+//		StageObjectManager.CreateStageObject(StageObject.ROCK, 200.0f, 38.0f);
 		for(StageData.EnemyData enemy : stageData.enemyData)
 		{
 			EnemyManager.CreateEnemy(enemy.type, enemy.position);
