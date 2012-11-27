@@ -2,8 +2,11 @@
 
 <!-- グローバルパラメータ -->
 <GlobalParam>
-	<!-- 世界の単位（box2dの速度制限回避用） -->
-	<WorldScale>0.01</WorldScale>
+	<!-- 世界の最高速度（毎秒）　初期値：128.0 -->
+	<MaxWorldVelocity>12800.0</MaxWorldVelocity>
+	
+	<!-- 重力加速度（毎秒）　初期値：1000.0 -->
+	<Gravity>1000.0</Gravity>
 	
 	<!-- XMLファイルを格納するディレクトリ -->
 	<XMLDirectoryPath>data/xml/</XMLDirectoryPath>

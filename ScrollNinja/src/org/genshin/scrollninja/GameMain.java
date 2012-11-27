@@ -62,7 +62,7 @@ public class GameMain implements Screen{
 	public GameMain(Game game, int num) {
 		scrollNinja		= game;
 		// TODO 重力は調整必要あり
-		world				= new World(new Vector2(0, -1500.0f * ScrollNinja.scale), true);
+		world				= new World(new Vector2(0, GlobalParam.INSTANCE.GRAVITY), true);
 
 		// TODO 画面サイズによって数値を変更
 		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
