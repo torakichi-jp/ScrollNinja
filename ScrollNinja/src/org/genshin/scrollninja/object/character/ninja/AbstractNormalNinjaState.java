@@ -73,10 +73,10 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 				me.setAnimation("Run");
 			}
 		}
-		//---- 移動入力がなければブレーキをかける。
+		//---- 移動入力がなければアニメーションを待機状態に変更する。
 		else
 		{
-			updateBrake(me);
+			me.setAnimation("Stay");
 		}
 	}
 	
@@ -91,15 +91,6 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 		{
 			me.kaginawa.shrink();
 		}
-	}
-	
-	/**
-	 * ブレーキの更新処理を実行する。
-	 * @param me		自身を示す忍者オブジェクト
-	 */
-	protected void updateBrake(PlayerNinja me)
-	{
-		me.setAnimation("Stay");
 	}
 
 	@Override

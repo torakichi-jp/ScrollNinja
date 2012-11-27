@@ -13,7 +13,8 @@
 		<!-- 下半身 -->
 		<Foot>
 			<FixtureDef>
-				<Friction>0.0</Friction>
+				<Dencity>1.0</Dencity>
+				<Friction>0.4</Friction>
 			</FixtureDef>
 		</Foot>
 	</Ninja>
@@ -30,7 +31,8 @@
 	<!-- 地形（ステージの設定ファイルに隔離するべきかも） -->
 	<Terrain>
 		<FixtureDef>
-			<Friction>0.0</Friction>
+			<Dencity>1.0</Dencity>
+			<Friction>0.5</Friction>
 		</FixtureDef>
 	</Terrain>
 	

@@ -1,9 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import org.genshin.scrollninja.GlobalParam;
-
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * 地面と接触している時の忍者の処理。<br>
@@ -22,24 +18,6 @@ class GroundedNinjaState extends AbstractNormalNinjaState
 		
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
-	}
-
-	@Override
-	protected void updateBrake(PlayerNinja me)
-	{
-		//---- ブレーキをかける。
-		// TODO ブレーキはbox2dの摩擦力に任せるべき？
-		final Body body = me.getBody();
-		final Vector2 velocity = body.getLinearVelocity();
-		velocity.mul(0.95f);
-		if(velocity.len2() < GlobalParam.INSTANCE.WORLD_SCALE)
-		{
-			velocity.set(Vector2.Zero);
-		}
-		body.setLinearVelocity(velocity);
-		
-		//---- 基本クラスの処理も実行する。
-		super.updateBrake(me);
 	}
 
 	@Override
