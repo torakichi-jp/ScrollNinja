@@ -66,4 +66,10 @@ public enum GlobalParam
 	
 	/** スプライトパラメータを記述したXMLファイルのパス */
 	public final String SPRITE_PARAM_XML_FILE_NAME;
+	
+	/** ゲーム内時間（秒） */
+	public float gameTime = 0.0f;
+	
+	/** ゲーム内時間（フレーム数） */
+	public int frameCount = 0;
 }
