@@ -47,7 +47,7 @@ public class PlayerNinja extends AbstractCharacter {
 		groundedTimer = 0;
 		worldGravity = world.getGravity().len();
 
-		state = new GroundedNinjaState();
+		state = new AerialNinjaState();
 	}
 
 	/**
@@ -132,6 +132,17 @@ public class PlayerNinja extends AbstractCharacter {
 
 		createFixture(bfd);
 		polygonShape.dispose();
+	}
+	
+	/**
+	 * 移動する方向を更新する。
+	 */
+	void updateMoveDirection()
+	{
+		if(groundedTimer < NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME-1 || frontDirection.x >= 0.0f)
+			moveDirection = 1.0f;
+		else
+			moveDirection = -1.0f;
 	}
 
 	/**

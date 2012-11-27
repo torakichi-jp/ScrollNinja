@@ -3,6 +3,8 @@
  */
 package org.genshin.scrollninja.object.character.ninja.controller;
 
+import java.util.logging.Logger;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
@@ -51,6 +53,12 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	public final Vector2 getDirection()
 	{
 		return direction;
+	}
+
+	@Override
+	public boolean isMoveStart()
+	{
+		return inputHelpers[InputType.LEFT.ordinal()].isTrigger() || inputHelpers[InputType.RIGHT.ordinal()].isTrigger();
 	}
 
 	@Override

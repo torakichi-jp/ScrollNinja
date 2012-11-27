@@ -57,6 +57,10 @@ class SnapTerrainNinjaState extends AbstractNinjaState
 		//---- 吸着処理が完了したら地上状態へ
 		if(snapComplete)
 		{
+			if(me.controller.getMovePower() != 0.0f)
+			{
+				me.updateMoveDirection();
+			}
 			return new GroundedNinjaState();
 		}
 		

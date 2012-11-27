@@ -31,6 +31,12 @@ public interface NinjaControllerInterface
 	Vector2 getDirection();
 	
 	/**
+	 * 移動し始める時の操作状態を取得する。
+	 * @return		移動し始める時の操作がある場合はtrue
+	 */
+	boolean isMoveStart();
+	
+	/**
 	 * ダッシュの操作状態を取得する。
 	 * @return　ダッシュの操作がある場合はtrue
 	 */
