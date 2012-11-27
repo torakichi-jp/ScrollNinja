@@ -63,33 +63,33 @@ abstract class AbstractNinjaState implements NinjaStateInterface
 	protected final void move(PlayerNinja me, float movePower, float accel, float maxVelocity)
 	{
 		final Body body = me.getBody();
-		final Vector2 oldVelocity = body.getLinearVelocity().tmp();		// 古い速度
+		final Vector2 oldVelocity = body.getLinearVelocity().tmp();
+		final float oldVelocityLenAbs = Math.abs( me.frontDirection.dot(oldVelocity) );
 		
 		//---- 加速度を加える
 		body.applyLinearImpulse(accel*movePower*me.frontDirection.x, accel*movePower*me.frontDirection.y, me.getPositionX(), me.getPositionY());
 		
 		//---- 速度に制限をかける
-		final Vector2 newVelocity = body.getLinearVelocity();		// 新しい速度
-		final float maxVelocity2 = maxVelocity * maxVelocity;		// maxVelocityの2乗
-		final float newVelocityLen2 = newVelocity.len2();
+		final Vector2 newVelocity = body.getLinearVelocity();
+		final float newVelocityLen = me.frontDirection.dot(newVelocity);
+		final float newVelocityLenAbs = Math.abs(newVelocityLen);
 		
 		// 制限速度を越えた場合
-		if( newVelocityLen2 > maxVelocity2 )
+		if( newVelocityLenAbs > maxVelocity )
 		{
-			final float oldVelocityLen2 = oldVelocity.len2();
 			// 最初から制限速度を越えていた場合
-			if( oldVelocityLen2 > maxVelocity2 )
+			if( oldVelocityLenAbs > maxVelocity )
 			{
 				// 加速度を加えた結果さらに加速していた場合、この加速はなかったことにする
-				if( newVelocityLen2 > oldVelocityLen2 )
+				if( newVelocityLenAbs > oldVelocityLenAbs )
 				{
 					body.setLinearVelocity(oldVelocity);
 				}
 			}
-			// 加速度を加えた結果、制限速度を越えてしまった場合、丸める
+			// 加速度を加えた結果制限速度を越えてしまった場合、前方に働く速度が制限速度内になるように丸める
 			else
 			{
-				body.setLinearVelocity( newVelocity.nor().mul(maxVelocity) );
+				body.setLinearVelocity( newVelocity.sub(me.frontDirection.tmp().mul(maxVelocity/newVelocityLen)) );
 			}
 		}
 	}
