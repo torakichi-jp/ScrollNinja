@@ -16,9 +16,6 @@ public class KaginawaHangNinjaState extends AbstractKaginawaNinjaState
 	@Override
 	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
 	{
-		//---- 姿勢を起こす
-		nearRotate(me, 0.0f, 0.1f);
-		
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
 	}

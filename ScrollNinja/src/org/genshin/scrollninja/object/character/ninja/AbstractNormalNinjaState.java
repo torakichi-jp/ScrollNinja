@@ -55,22 +55,27 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 		final float movePower = me.controller.getMovePower() * deltaTime;
 		if(movePower != 0.0f)
 		{
+			if(me.moveDirection == 0.0f)
+			{
+				me.moveDirection = me.frontDirection.x >= 0.0f ? 1.0f : -1.0f;
+			}
 			// ダッシュ
 			if( me.controller.isDash() )
 			{
-				move(me, movePower, NinjaParam.INSTANCE.DASH_ACCEL, NinjaParam.INSTANCE.DASH_MAX_VELOCITY);
+				move(me, movePower*me.moveDirection, NinjaParam.INSTANCE.DASH_ACCEL, NinjaParam.INSTANCE.DASH_MAX_VELOCITY);
 				me.setAnimation("Dash");
 			}
 			// 走り
 			else
 			{
-				move(me, movePower, NinjaParam.INSTANCE.RUN_ACCEL, NinjaParam.INSTANCE.RUN_MAX_VELOCITY);
+				move(me, movePower*me.moveDirection, NinjaParam.INSTANCE.RUN_ACCEL, NinjaParam.INSTANCE.RUN_MAX_VELOCITY);
 				me.setAnimation("Run");
 			}
 		}
 		//---- 移動入力がなければブレーキをかける。
 		else
 		{
+			me.moveDirection = 0.0f;
 			updateBrake(me);
 		}
 	}
