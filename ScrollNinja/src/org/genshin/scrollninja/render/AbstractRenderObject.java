@@ -3,7 +3,7 @@ package org.genshin.scrollninja.render;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.genshin.scrollninja.GameMain;
+import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.render.animation.AnimationInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;

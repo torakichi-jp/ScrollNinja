@@ -2,11 +2,15 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.GameMain;
+import org.genshin.old.scrollninja.GameMain;
+import org.genshin.old.scrollninja.object.Background;
+import org.genshin.old.scrollninja.object.Effect;
+import org.genshin.old.scrollninja.object.Enemy;
+import org.genshin.old.scrollninja.object.StageObject;
+import org.genshin.old.scrollninja.object.item.Item;
+import org.genshin.old.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
-import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
-import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;

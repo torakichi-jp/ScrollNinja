@@ -1,8 +1,8 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
-import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.controller.DefaultPlayerNinjaController;
 import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;

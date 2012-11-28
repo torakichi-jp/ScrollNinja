@@ -1,5 +1,7 @@
 package org.genshin.scrollninja;
 
+import org.genshin.old.scrollninja.GameMain;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;

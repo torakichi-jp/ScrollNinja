@@ -1,9 +1,9 @@
 package org.genshin.scrollninja.object.kaginawa;
 
+import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
-import org.genshin.scrollninja.object.Background;
 
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;

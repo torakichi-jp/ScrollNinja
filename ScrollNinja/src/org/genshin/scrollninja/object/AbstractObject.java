@@ -2,7 +2,7 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.GameMain;
+import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
