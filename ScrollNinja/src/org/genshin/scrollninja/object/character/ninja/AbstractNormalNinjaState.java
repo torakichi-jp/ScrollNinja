@@ -45,8 +45,9 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 		}
 
 		// キャラの角度を補正
+		// TODO なだらかな坂に真っ直ぐ立つ処理（仮）　現在は発動しないようにしてある。
 		final float normalAngle = normal.angle();
-		final float verticalAngleZone = 45.0f;
+		final float verticalAngleZone = 0.0f;
 		final float rotateTime = 0.1f;
 		if( Math.abs(normalAngle % 180.0f - 90.0f) < verticalAngleZone )
 		{
