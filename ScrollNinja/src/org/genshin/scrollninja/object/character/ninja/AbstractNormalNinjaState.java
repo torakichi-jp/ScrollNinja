@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import java.util.logging.Logger;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -43,7 +45,17 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 		}
 
 		// キャラの角度を補正
-		nearRotate( me, (float)Math.toRadians(normal.angle()-90.0f), 0.1f );
+		final float normalAngle = normal.angle();
+		final float verticalAngleZone = 45.0f;
+		final float rotateTime = 0.1f;
+		if( Math.abs(normalAngle % 180.0f - 90.0f) < verticalAngleZone )
+		{
+			nearRotate( me, (float)Math.toRadians(me.jumpDirection.angle()-90.0f), rotateTime );
+		}
+		else
+		{
+			nearRotate( me, (float)Math.toRadians(normalAngle-90.0f), rotateTime );
+		}
 	}
 	
 	@Override
