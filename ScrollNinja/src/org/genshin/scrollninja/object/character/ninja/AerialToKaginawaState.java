@@ -9,13 +9,22 @@ package org.genshin.scrollninja.object.character.ninja;
  */
 class AerialToKaginawaState extends AerialState
 {
+	/**
+	 * コンストラクタ
+	 * @param me		自身を示す忍者オブジェクト
+	 */
+	AerialToKaginawaState(PlayerNinja me)
+	{
+		super(me);
+	}
+
 	@Override
 	protected StateInterface getNextState(PlayerNinja me)
 	{
 		//---- 地面と接触したら通常状態へ
 		if( me.isGrounded() )
 		{
-			return new GroundedToKaginawaState();
+			return new GroundedToKaginawaState(me);
 		}
 
 		//---- 鉤縄が縮み始めたら、鉤縄が縮んでいる時の状態へ

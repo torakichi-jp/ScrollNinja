@@ -13,6 +13,16 @@ import com.badlogic.gdx.physics.box2d.Contact;
 class KaginawaShrinkState extends AbstractKaginawaState
 {
 	@Override
+	public StateInterface update(PlayerNinja me, float deltaTime)
+	{
+		//---- 地面との接触フラグをへし折っておく
+		me.groundedTimer = 0;
+		
+		//---- あとは基本クラスに任せる
+		return super.update(me, deltaTime);
+	}
+
+	@Override
 	public void collisionTerrain(PlayerNinja me, Contact contact)
 	{
 		//---- まだ地上にいる時はスルー

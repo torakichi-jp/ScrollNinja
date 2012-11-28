@@ -78,6 +78,12 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	}
 
 	@Override
+	public boolean isLeaveSnap()
+	{
+		return isKaginawaRelease();
+	}
+
+	@Override
 	public final boolean isAttack()
 	{
 		return inputHelpers[InputType.ATTACK.ordinal()].isPress();

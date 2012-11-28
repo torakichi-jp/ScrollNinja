@@ -49,7 +49,7 @@ public class PlayerNinja extends AbstractCharacter {
 		worldGravity = world.getGravity().len();
 		defaultFriction = getFootFixture().getFriction();
 
-		state = new AerialState();
+		state = new AerialState(this);
 	}
 
 	/**

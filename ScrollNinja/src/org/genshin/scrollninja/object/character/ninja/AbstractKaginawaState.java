@@ -20,9 +20,6 @@ abstract class AbstractKaginawaState extends AbstractState
 		//---- 姿勢を起こす
 		nearRotate(me, 0.0f, 0.1f);
 		
-		//---- 地面との接触フラグをへし折っておく
-		me.groundedTimer = 0;
-		
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
 	}
@@ -48,12 +45,12 @@ abstract class AbstractKaginawaState extends AbstractState
 			// 地上
 			if( me.isGrounded() )
 			{
-				return new GroundedState();
+				return new GroundedState(me);
 			}
 			// 空中
 			else
 			{
-				return new AerialState();
+				return new AerialState(me);
 			}
 		}
 		

@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.kaginawa;
 
+import java.util.logging.Logger;
+
 import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
@@ -320,11 +322,6 @@ public class Kaginawa extends AbstractDynamicObject
 				direction.nor().mul(KaginawaParam.INSTANCE.SHRINK_VELOCITY);
 	
 				owner.setLinearVelocity(direction);
-	
-				if(len2 < (KaginawaParam.INSTANCE.SHRINK_VELOCITY*KaginawaParam.INSTANCE.SHRINK_VELOCITY)/30/30)
-				{
-					release(me);
-				}
 			}
 
 			@Override

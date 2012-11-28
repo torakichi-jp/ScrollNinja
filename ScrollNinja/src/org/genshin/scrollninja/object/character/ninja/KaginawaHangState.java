@@ -2,7 +2,6 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
 /**
  * 鉤縄にぶら下がっている時の忍者の処理。<br>
@@ -24,8 +23,7 @@ public class KaginawaHangState extends AbstractKaginawaState
 	public void collisionTerrain(PlayerNinja me, Contact contact)
 	{
 		//---- 衝突したのが下半身でなければ何もしない。
-		final Fixture footFixture = me.getFootFixture();
-		if(contact.getFixtureA() != footFixture && contact.getFixtureB() != footFixture)
+		if( checkContactIsFoot(me, contact) )
 			return;
 		
 		//---- 下半身が地面に衝突した場合、自動的に鉤縄を切断する。

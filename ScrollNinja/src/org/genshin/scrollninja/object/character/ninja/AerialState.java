@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
 
 
 /**
@@ -12,21 +13,30 @@ import com.badlogic.gdx.math.Vector2;
  */
 class AerialState extends AbstractNormalState
 {
-	@Override
-	public StateInterface update(PlayerNinja me, float deltaTime)
+	/**
+	 * コンストラクタ
+	 * @param me		自身を示す忍者オブジェクト
+	 */
+	AerialState(PlayerNinja me)
 	{
-		//---- 初回フレームに限り、地上フラグが残っているのでへし折る
-		if(firstFrame)
-		{
-			me.groundedTimer = 0;
-			firstFrame = false;
-		}
+		//---- 地上フラグをへし折る
+		me.groundedTimer = 0;
 		
 		//---- 前方ベクトルを強制的にX軸にする。
 		me.frontDirection.set(Vector2.X);
 		
 		//---- ジャンプ方向ベクトルを強制的にY軸にする。
 		me.jumpDirection.set(Vector2.Y);
+	}
+	
+	@Override
+	public StateInterface update(PlayerNinja me, float deltaTime)
+	{
+		//---- 初回フレーム判定用
+		if(firstFrame)
+		{
+			firstFrame = false;
+		}
 		
 		//---- 姿勢を起こす
 		nearRotate(me, 0.0f, 0.1f);
@@ -36,6 +46,22 @@ class AerialState extends AbstractNormalState
 		
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
+	}
+	
+	@Override
+	public void collisionTerrain(PlayerNinja me, Contact contact)
+	{
+		//---- 衝突したのが足でなければ何もしない？
+		if( !checkContactIsFoot(me, contact) )
+			return;
+		
+		//---- 初回フレームなら何もしない
+		if( firstFrame )
+			return;
+		
+		//---- 地面と接触した時の処理を加える。
+		// 地面との衝突判定用タイマー初期化
+		me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
 	}
 	
 	@Override
@@ -54,8 +80,7 @@ class AerialState extends AbstractNormalState
 		//---- 地面と接触したら地上状態へ
 		if( me.isGrounded() )
 		{
-			me.getFootFixture().setFriction(me.defaultFriction);
-			return new GroundedState();
+			return new GroundedState(me);
 		}
 		
 		//---- 鉤縄にぶら下がっている状態へ
@@ -67,7 +92,7 @@ class AerialState extends AbstractNormalState
 		//---- あとは基本クラスに任せる
 		return super.getNextState(me);
 	}
-	
+
 	/** 初回フレームフラグ */
 	boolean firstFrame = true;
 }

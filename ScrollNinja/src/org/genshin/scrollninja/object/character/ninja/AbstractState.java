@@ -1,7 +1,13 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import java.util.logging.Logger;
+
+import org.genshin.scrollninja.GlobalParam;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.Fixture;
 
 /**
  * 忍者の状態の基本クラス。<br>
@@ -12,6 +18,15 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 abstract class AbstractState implements StateInterface
 {
+// XXX お手軽状態遷移出力（よく使うので残しておく。最終的には消す）
+//	static String oldState;
+//	AbstractState()
+//	{
+//		String newState = getClass().getSimpleName();
+//		Logger.global.info(GlobalParam.INSTANCE.frameCount + ": " + oldState + " -> " + newState);
+//		oldState = newState;
+//	}
+	
 	@Override
 	public StateInterface update(PlayerNinja me, float deltaTime)
 	{
@@ -139,6 +154,18 @@ abstract class AbstractState implements StateInterface
 	protected void updateGravity(PlayerNinja me, float deltaTime)
 	{
 		me.getBody().applyLinearImpulse(me.frontDirection.y * me.worldGravity * deltaTime, -me.frontDirection.x * me.worldGravity * deltaTime, me.getPositionX(), me.getPositionY());
+	}
+	
+	/**
+	 * 衝突したのが下半身か調べる。
+	 * @param me		自身を示す忍者オブジェクト
+	 * @param contact	衝突情報
+	 * @return
+	 */
+	protected boolean checkContactIsFoot(PlayerNinja me, Contact contact)
+	{
+		final Fixture footFixture = me.getFootFixture();
+		return contact.getFixtureA() == footFixture || contact.getFixtureB() == footFixture;
 	}
 	
 	/**

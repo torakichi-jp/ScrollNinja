@@ -1,35 +1,41 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import java.util.logging.Logger;
+
+import org.genshin.scrollninja.GlobalParam;
+
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
 class SnapTerrainState extends AbstractState
 {
 	@Override
 	public void collisionTerrain(PlayerNinja me, Contact contact)
 	{
-		//---- 衝突したのが下半身なら吸着完了！
-		final Fixture footFixture = me.getFootFixture();
-		if(contact.getFixtureA() == footFixture || contact.getFixtureB() == footFixture)
-		{
-			snapComplete = true;
-			me.kaginawa.release();
-			me.getBody().setLinearVelocity(Vector2.Zero);
-		}
-		
-		//---- 衝突したのが下半身なら地面に立っている時の処理を加える。
-		// 空中ジャンプのカウント初期化
-		me.restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
-		
-		// 地面との衝突判定用タイマー初期化
-		me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
-		
-		// 前方ベクトルを設定
 		final Vector2 normal = contact.getWorldManifold().getNormal();
-		me.frontDirection.set(normal.y, -normal.x);
+		
+		//---- 衝突したのが下半身なら吸着完了！
+		if( checkContactIsFoot(me, contact) )
+		{
+			final Body body = me.getBody();
+			final float safeVelocity = 200.0f * GlobalParam.INSTANCE.WORLD_SCALE;
+			
+			if(body.getLinearVelocity().len2() < safeVelocity * safeVelocity)
+			{
+				snapComplete = true;
+				me.kaginawa.release();
+				body.setLinearVelocity(Vector2.Zero);
+				
+				//---- 地上フラグを立てておく。
+				me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
+				
+				//---- 前方ベクトルを設定しておく。
+				me.frontDirection.set(normal.y, -normal.x);
+			}
+		}
 
-		// キャラの角度を補正
+		//---- キャラの角度を補正
 		nearRotate( me, (float)Math.toRadians(normal.angle() - 90.0f), 0.1f );
 	}
 
@@ -61,7 +67,7 @@ class SnapTerrainState extends AbstractState
 			{
 				me.updateMoveDirection();
 			}
-			return new GroundedState();
+			return new GroundedState(me);
 		}
 		
 		//---- どれにも当てはまらなければ現状維持

@@ -55,6 +55,12 @@ public interface NinjaControllerInterface
 	boolean isAerialJump();
 	
 	/**
+	 * 天井への吸着をやめる操作状態を取得する。
+	 * @return		天井への吸着をやめる操作がある場合はtrue
+	 */
+	boolean isLeaveSnap();
+	
+	/**
 	 * 攻撃の操作状態を取得する。
 	 * @return	攻撃の操作がある場合はtrue
 	 */
