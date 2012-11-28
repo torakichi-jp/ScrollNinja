@@ -252,7 +252,7 @@ public class StructObject {
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 256, 256);
 		sprite.add(new Sprite(tmpRegion));
 		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-		sprite.get(0).setScale(ScrollNinja.scale);
+		sprite.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		size.x = 5.0f;
 		size.y = 6.0f;
@@ -275,7 +275,7 @@ public class StructObject {
 		// スプライトに反映
 		sprite.add(new Sprite(region));
 		sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-		sprite.get(0).setScale(ScrollNinja.scale);
+		sprite.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 当たり判定のサイズ
 		size.x = 1.6f;

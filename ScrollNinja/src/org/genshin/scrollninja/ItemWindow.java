@@ -33,7 +33,7 @@ public class ItemWindow {
 		frm.toFront();
 		frm.setTitle("アイテムウィンドウ");
 		frm.setSize(new Dimension(WIDTH,HEIGHT));
-		frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
+		frm.setBounds((int)GlobalParam.INSTANCE.CLIENT_WIDTH - WIDTH,0/*(int)GlobalParam.INSTANCE.CLIENT_HEIGHT - a.top*/, WIDTH, HEIGHT);
 		panel.setLayout( new GridLayout(0,3));
 		
 		panel.add( new ButtonForEdit("data/old/shuriken.png", 1));

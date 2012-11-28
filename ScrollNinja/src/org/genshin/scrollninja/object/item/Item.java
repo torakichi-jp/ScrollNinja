@@ -2,7 +2,7 @@
 package org.genshin.scrollninja.object.item;
 
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.Background;
 import org.genshin.scrollninja.object.Effect;
@@ -76,7 +76,7 @@ public class Item extends AbstractCollisionObject {
 			TextureRegion tmpRegion = new TextureRegion(texture, 0, 0, 32, 32);
 			sprites.add(new Sprite(tmpRegion));
 			sprites.get(0).setPosition(-sprites.get(0).getWidth() * 0.5f, -sprites.get(0).getHeight() * 0.5f);
-			sprites.get(0).setScale(ScrollNinja.scale);
+			sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 			BodyDef bd	= new BodyDef();
 			bd.type				= BodyType.DynamicBody;		// 動く物体

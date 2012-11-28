@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.EnemyDataList.EnemyData;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
@@ -165,7 +165,7 @@ public class Enemy extends AbstractCharacter {
 		// スプライトに反映
 		sprites.add(new Sprite(region));
 		sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
-		sprites.get(0).setScale(ScrollNinja.scale);
+		sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// アニメーション
 		// TODO 敵によってアニメーション枚数変わってくるだろうからどうにかうまい具合に…
@@ -298,7 +298,7 @@ public class Enemy extends AbstractCharacter {
 				direction *= -1;
 			}
 			reverse = false;
-			sprites.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
+			sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE * -direction, GlobalParam.INSTANCE.WORLD_SCALE);
 			getBody().setLinearVelocity(WALK_SPEED * direction, GRAVITY);
 		}
 	}
@@ -337,7 +337,7 @@ public class Enemy extends AbstractCharacter {
 			if(playerPosition.x < position.x) {
 				direction = LEFT;
 			}
-			sprites.get(0).setScale(ScrollNinja.scale * -direction, ScrollNinja.scale);
+			sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE * -direction, GlobalParam.INSTANCE.WORLD_SCALE);
 			getBody().setLinearVelocity(CHASE_SPEED * direction, GRAVITY);
 		}
 

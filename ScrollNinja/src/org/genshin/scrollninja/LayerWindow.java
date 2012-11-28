@@ -29,7 +29,7 @@ public class LayerWindow {
 		frm.toFront();
 		frm.setTitle("レイヤー");
         frm.setSize(new Dimension(WIDTH,HEIGHT));
-        frm.setBounds((int)ScrollNinja.window.x - WIDTH,0/*(int)ScrollNinja.window.y - a.top*/, WIDTH, HEIGHT);
+        frm.setBounds((int)GlobalParam.INSTANCE.CLIENT_WIDTH - WIDTH,0/*(int)GlobalParam.INSTANCE.CLIENT_HEIGHT - a.top*/, WIDTH, HEIGHT);
 		panel.setLayout( new GridLayout(0,1));
 
 //    	for( int i = 0; i < 10; i ++ ) {

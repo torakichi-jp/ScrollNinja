@@ -8,7 +8,7 @@ package org.genshin.scrollninja.object;
 // インポート
 //========================================
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
@@ -131,7 +131,7 @@ public class Effect extends AbstractCollisionObject {
 			// スプライトに反映
 			sprites.add(new Sprite(region));
 			sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
-			sprites.get(0).setScale(ScrollNinja.scale);
+			sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 			// アニメーション
 			tmp = TextureRegion.split(texture, 128, 128);
@@ -166,7 +166,7 @@ public class Effect extends AbstractCollisionObject {
 			// スプライトに反映
 			sprites.add(new Sprite(region));
 			sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
-			sprites.get(0).setScale(ScrollNinja.scale);
+			sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 			// アニメーション
 			tmp = TextureRegion.split(texture, 128, 128);
@@ -213,7 +213,7 @@ public class Effect extends AbstractCollisionObject {
 			position = body.getPosition();
 			// 64はTextureRegionの幅÷２。後は微調整
 			sprites.get(0).setPosition(position.x - 64 - (1 * owner.direction), position.y - 64 + 1);
-			sprites.get(0).setScale(-owner.direction * ScrollNinja.scale, ScrollNinja.scale);
+			sprites.get(0).setScale(-owner.direction * GlobalParam.INSTANCE.WORLD_SCALE, GlobalParam.INSTANCE.WORLD_SCALE);
 			sprites.get(0).setRegion(nowFrame);
 
 			animation();

@@ -44,8 +44,8 @@ public class MainMenu implements Screen{
 		this.scrollNinja = game;
 
 		// カメラ作成
-		camera = new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
-										ScrollNinja.window.y * ScrollNinja.scale);
+		camera = new OrthographicCamera(GlobalParam.INSTANCE.CLIENT_WIDTH * GlobalParam.INSTANCE.WORLD_SCALE,
+										GlobalParam.INSTANCE.CLIENT_HEIGHT * GlobalParam.INSTANCE.WORLD_SCALE);
 		// スプライトバッチ作成
 		spriteBatch = new SpriteBatch();
 
@@ -66,37 +66,37 @@ public class MainMenu implements Screen{
 		TextureRegion region = new TextureRegion(texture, 0, 0, 256, 35);
 		modeContinue = new Sprite(region);
 		modeContinue.setPosition(spritePositionX, 0);
-		modeContinue.setScale(ScrollNinja.scale);
+		modeContinue.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 選択肢ニューゲーム
 		region = new TextureRegion(texture, 0, 40, 256, 35);
 		modeNewGame = new Sprite(region);
 		modeNewGame.setPosition(spritePositionX, -4);
-		modeNewGame.setScale(ScrollNinja.scale);
+		modeNewGame.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 選択肢ロードゲーム
 		region = new TextureRegion(texture, 0, 85, 256, 35);
 		modeLoadGame = new Sprite(region);
 		modeLoadGame.setPosition(spritePositionX, -8);
-		modeLoadGame.setScale(ScrollNinja.scale);
+		modeLoadGame.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 選択肢ネットワーク
 		region = new TextureRegion(texture, 0, 128, 256, 35);
 		modeNetwork = new Sprite(region);
 		modeNetwork.setPosition(spritePositionX, -12);
-		modeNetwork.setScale(ScrollNinja.scale);
+		modeNetwork.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 選択肢オプション
 		region = new TextureRegion(texture, 0, 176, 256, 35);
 		modeOption = new Sprite(region);
 		modeOption.setPosition(spritePositionX, -16);
-		modeOption.setScale(ScrollNinja.scale);
+		modeOption.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 選択肢終了
 		region = new TextureRegion(texture, 0, 218, 256, 35);
 		modeExit = new Sprite(region);
 		modeExit.setPosition(spritePositionX, -20);
-		modeExit.setScale(ScrollNinja.scale);
+		modeExit.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 初期化
 		scrollFlag = false;

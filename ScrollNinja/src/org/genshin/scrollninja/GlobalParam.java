@@ -22,6 +22,11 @@ public enum GlobalParam
 	{
 		Element rootElement = XMLFactory.getInstance().get("data/xml/global_param.xml");
 		
+		//---- クライアント領域のサイズ
+		CLIENT_WIDTH = rootElement.getInt("ClientWidth", 640);
+		CLIENT_HEIGHT = rootElement.getInt("ClientHeight", 480);
+		
+		//---- 宇宙の法則
 		// 世界の単位
 		WORLD_SCALE = 128.0f / rootElement.getFloat("MaxWorldVelocity", 128.0f);
 		INV_WORLD_SCALE = 1.0f / WORLD_SCALE;
@@ -29,16 +34,22 @@ public enum GlobalParam
 		// 重力加速度
 		GRAVITY = rootElement.getFloat("Gravity", 1000.0f) * -1.0f * WORLD_SCALE;
 		
-		// ディレクトリパス
+		//---- ディレクトリパス
 		XML_DIRECTORY_PATH			= rootElement.get("XMLDirectoryPath");
 		COLLISION_DIRECTORY_PATH	= rootElement.get("CollisionDirectoryPath");
 		TEXTURE_DIRECTORY_PATH		= rootElement.get("TextureDirectoryPath");
 		
-		// XMLファイルのパス
+		//---- XMLファイルのパス
 		OBJECT_PARAM_XML_FILE_NAME		= rootElement.get("ObjectParamXMLFileName");
 		COLLISION_PARAM_XML_FILE_NAME	= rootElement.get("CollisionParamXMLFileName");
 		SPRITE_PARAM_XML_FILE_NAME		= rootElement.get("SpriteParamXMLFileName");
 	}
+	
+	/** クライアント領域の横幅 */
+	public final int CLIENT_WIDTH;
+
+	/** クライアント領域の縦幅 */
+	public final int CLIENT_HEIGHT;
 	
 	/** 世界の単位 */
 	public final float WORLD_SCALE;

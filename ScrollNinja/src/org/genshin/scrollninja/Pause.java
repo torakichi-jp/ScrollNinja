@@ -169,36 +169,36 @@ public class Pause {
 		worldMaptexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion worldRegion = new TextureRegion(worldMaptexture,0,0,1024,1024);
 		worldMap = new Sprite(worldRegion);
-		worldMap.setScale(ScrollNinja.scale * 1.7f);
+		worldMap.setScale(GlobalParam.INSTANCE.WORLD_SCALE * 1.7f);
 		TextureRegion fireRegion = new TextureRegion(worldMaptexture,0,512,256,256);
 		fireVillage = new Sprite(fireRegion);
-		fireVillage.setScale(ScrollNinja.scale);
+		fireVillage.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 		TextureRegion waterRegion = new TextureRegion(worldMaptexture,256,512,256,256);
 		waterVillage = new Sprite(waterRegion);
-		waterVillage.setScale(ScrollNinja.scale);
+		waterVillage.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 		TextureRegion windRegion = new TextureRegion(worldMaptexture,512,512,256,256);
 		windVillage = new Sprite(windRegion);
-		windVillage.setScale(ScrollNinja.scale);
+		windVillage.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 		
 		// ポーズ画面中の背景
 		Texture pausemenubackTexture = new Texture(Gdx.files.internal("data/old/pausemenuback.png"));
 		pausemenubackTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		TextureRegion pauseRegion = new TextureRegion(pausemenubackTexture);
 		pausemenu = new Sprite(pauseRegion);
-		pausemenu.setScale(ScrollNinja.scale * 1.5f);
+		pausemenu.setScale(GlobalParam.INSTANCE.WORLD_SCALE * 1.5f);
 
 		// ポーズメニュー
 		Texture pauseMenuTexture = new Texture(Gdx.files.internal("data/old/menu.png"));
 		pauseMenuTexture.setFilter(TextureFilter.Linear,TextureFilter.Linear);
 		TextureRegion returnGameRegion = new TextureRegion(pauseMenuTexture,0,0,256,35);
 		returnGame = new Sprite(returnGameRegion);
-		returnGame.setScale(ScrollNinja.scale);
+		returnGame.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 		TextureRegion titleRegion = new TextureRegion(pauseMenuTexture,0,40,256,35);
 		title = new Sprite(titleRegion);
-		title.setScale(ScrollNinja.scale);
+		title.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 		TextureRegion loadRegion = new TextureRegion(pauseMenuTexture,0,85,256,35);
 		load = new Sprite(loadRegion);
-		load.setScale(ScrollNinja.scale);
+		load.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// アニメーション
 		Texture texture = new Texture(Gdx.files.internal("data/old/player.png"));
@@ -220,8 +220,8 @@ public class Pause {
 		foot.setOrigin(foot.getWidth()*0.5f,foot.getHeight()*0.5f-8);
 		body = new Sprite(walk.getKeyFrame(0,true));
 		body.setOrigin(body.getWidth()*0.5f,body.getHeight()*0.5f-8);
-		foot.setScale(ScrollNinja.scale);
-		body.setScale(ScrollNinja.scale);
+		foot.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
+		body.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		sprite = new ArrayList<Sprite>();
 		sprite.add(foot);
@@ -302,44 +302,44 @@ public class Pause {
 	// スプライトアップデート
 	public void spriteUpdate() {
 		worldMap.setPosition(GameMain.camera.position.x - worldMap.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.1f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - worldMap.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - worldMap.getHeight()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - worldMap.getWidth()*0.5f*0.22f);
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - worldMap.getWidth()*0.5f*0.22f);
 
 		pausemenu.setPosition(GameMain.camera.position.x - pausemenu.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - pausemenu.getWidth()*0.5f*0.12f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - pausemenu.getWidth()*0.5f*0.12f,
 				GameMain.camera.position.y - pausemenu.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - pausemenu.getHeight()*0.5f*0.115f);
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - pausemenu.getHeight()*0.5f*0.115f);
 
 		returnGame.setPosition(GameMain.camera.position.x - returnGame.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - returnGame.getWidth()*0.5f*0.1f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - returnGame.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - returnGame.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- returnGame.getHeight()*0.5f*0.5f);
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE)- returnGame.getHeight()*0.5f*0.5f);
 
 		title.setPosition(GameMain.camera.position.x - title.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - title.getWidth()*0.5f*0.1f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - title.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - title.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- title.getHeight()*0.5f*0.7f);
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE)- title.getHeight()*0.5f*0.7f);
 
 		load.setPosition(GameMain.camera.position.x - load.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - load.getWidth()*0.5f*0.1f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - load.getWidth()*0.5f*0.1f,
 				GameMain.camera.position.y - load.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale)- load.getHeight()*0.5f*0.9f);
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE)- load.getHeight()*0.5f*0.9f);
 		
 		fireVillage.setPosition(GameMain.camera.position.x - fireVillage.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.18f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - fireVillage.getWidth()*0.5f*0.18f,
 				GameMain.camera.position.y - fireVillage.getHeight()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - fireVillage.getWidth()*0.5f*0.65f);
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - fireVillage.getWidth()*0.5f*0.65f);
 		
 		waterVillage.setPosition(GameMain.camera.position.x - waterVillage.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - waterVillage.getWidth()*0.5f*0.43f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - waterVillage.getWidth()*0.5f*0.43f,
 				GameMain.camera.position.y - waterVillage.getHeight()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - waterVillage.getWidth()*0.5f*0.43f);
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - waterVillage.getWidth()*0.5f*0.43f);
 		
 		windVillage.setPosition(GameMain.camera.position.x - windVillage.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - windVillage.getWidth()*0.5f*0.8f,
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - windVillage.getWidth()*0.5f*0.8f,
 				GameMain.camera.position.y - windVillage.getHeight()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - windVillage.getWidth()*0.5f*0.39f);
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - windVillage.getWidth()*0.5f*0.39f);
 	}
 
 	// クリック時の処理
@@ -433,9 +433,9 @@ public class Pause {
 		// 小数点切り捨て前
 		/*
 		SbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.75f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*0.75f;
 		SbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.75f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.75f;
 		SRoundX = new BigDecimal(SbeforeRoundX);
 		SRoundY = new BigDecimal(SbeforeRoundY);
 		// 小数点第6位まで残す
@@ -445,9 +445,9 @@ public class Pause {
 		StartPosition.y = SAfterRoundY.floatValue();
 		
 		EbeforeRoundX = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.75f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*1.75f;
 		EbeforeRoundY = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.7f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.7f;
 		ERoundX = new BigDecimal(EbeforeRoundX);
 		ERoundY = new BigDecimal(EbeforeRoundY);
 		EAfterRoundX = ERoundX.setScale(6,BigDecimal.ROUND_DOWN);
@@ -465,9 +465,9 @@ public class Pause {
 		
 		// A
 		BezierARxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.85f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*0.85f;
 		BezierARyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.78f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.78f;
 		BezierARxResult = new BigDecimal(BezierARxd);
 		BezierARyResult = new BigDecimal(BezierARyd);
 		BezierARxf = BezierARxResult.setScale(6,BigDecimal.ROUND_DOWN);
@@ -480,9 +480,9 @@ public class Pause {
 		
 		// B
 		BezierBRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*2.9f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*2.9f;
 		BezierBRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.8f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.8f;
 		BezierBRxResult = new BigDecimal(BezierBRxd);
 		BezierBRyResult = new BigDecimal(BezierBRyd);
 		BezierBRxf = BezierBRxResult.setScale(6,BigDecimal.ROUND_DOWN);
@@ -492,9 +492,9 @@ public class Pause {
 		
 		// C
 		BezierCRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*0.9f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*0.9f;
 		BezierCRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.1f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.1f;
 		BezierCRxResult = new BigDecimal(BezierCRxd);
 		BezierCRyResult = new BigDecimal(BezierCRyd);
 		BezierCRxf = BezierCRxResult.setScale(6,BigDecimal.ROUND_DOWN);
@@ -504,9 +504,9 @@ public class Pause {
 		
 		// D
 		BezierDRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.625f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*1.625f;
 		BezierDRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.0f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.0f;
 		BezierDRxResult = new BigDecimal(BezierDRxd);
 		BezierDRyResult = new BigDecimal(BezierDRyd);
 		BezierDRxf = BezierDRxResult.setScale(6,BigDecimal.ROUND_DOWN);
@@ -516,9 +516,9 @@ public class Pause {
 		
 		// E
 		BezierERxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*3.5f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*3.5f;
 		BezierERyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*1.2f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*1.2f;
 		BezierERxResult = new BigDecimal(BezierERxd);
 		BezierERyResult = new BigDecimal(BezierERyd);
 		BezierERxf = BezierERxResult.setScale(6,BigDecimal.ROUND_DOWN);
@@ -528,9 +528,9 @@ public class Pause {
 		
 		// F
 		BezierFRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*1.8f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*1.8f;
 		BezierFRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.5f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*0.5f;
 		BezierFRxResult = new BigDecimal(BezierFRxd);
 		BezierFRyResult = new BigDecimal(BezierFRyd);
 		BezierFRxf = BezierFRxResult.setScale(6,BigDecimal.ROUND_DOWN);
@@ -540,9 +540,9 @@ public class Pause {
 		
 		// G
 		BezierGRxd = GameMain.camera.position.x - foot.getWidth()*0.5f
-				+ (ScrollNinja.window.x*0.5f*ScrollNinja.scale) - foot.getWidth()*0.5f*3.175f;
+				+ (GlobalParam.INSTANCE.CLIENT_WIDTH*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getWidth()*0.5f*3.175f;
 		BezierGRyd = GameMain.camera.position.y - foot.getHeight()*0.5f
-				+ (ScrollNinja.window.y*0.5f*ScrollNinja.scale) - foot.getHeight()*0.5f*0.75f;
+				+ (GlobalParam.INSTANCE.CLIENT_HEIGHT*0.5f*GlobalParam.INSTANCE.WORLD_SCALE) - foot.getHeight()*0.5f*0.75f;
 		BezierGRxResult = new BigDecimal(BezierGRxd);
 		BezierGRyResult = new BigDecimal(BezierGRyd);
 		BezierGRxf = BezierGRxResult.setScale(6,BigDecimal.ROUND_DOWN);

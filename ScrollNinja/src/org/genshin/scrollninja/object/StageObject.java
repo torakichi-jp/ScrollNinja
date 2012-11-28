@@ -4,7 +4,7 @@ package org.genshin.scrollninja.object;
 // インポート
 //========================================
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.item.Item;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
@@ -60,7 +60,7 @@ public class StageObject extends AbstractCollisionObject {
 			// TODO テクスチャとボディの位置関係がおかしい…
 			sprites.get(0).setOrigin(0, 0);
 			//sprite.get(0).setOrigin(sprite.get(0).getWidth() * 0.5f, sprite.get(0).getHeight() * 0.5f);
-			sprites.get(0).setScale(ScrollNinja.scale);
+			sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 			// 当たり判定読み込み
 			BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/old/stageObject.json"));
@@ -81,7 +81,7 @@ public class StageObject extends AbstractCollisionObject {
 			fd.friction		= 0;				// 摩擦
 			fd.restitution	= 0;				// 反発係数
 			
-			createFixtureFromFile(fd, "data/old/stageObject.json", "gravestone", texture.getWidth() * ScrollNinja.scale);
+			createFixtureFromFile(fd, "data/old/stageObject.json", "gravestone", texture.getWidth() * GlobalParam.INSTANCE.WORLD_SCALE);
 
 			break;
 

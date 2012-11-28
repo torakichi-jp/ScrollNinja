@@ -2,6 +2,10 @@
 
 <!-- グローバルパラメータ -->
 <GlobalParam>
+	<!-- クライアント領域のサイズ -->
+	<ClientWidth>1280</ClientWidth>
+	<ClientHeight>720</ClientHeight>
+	
 	<!-- 世界の最高速度（毎秒）　初期値：128.0 -->
 	<MaxWorldVelocity>12800.0</MaxWorldVelocity>
 	

@@ -59,7 +59,7 @@ public class Interface {
 		scrollAnimation = new Animation(5.0f, frame);
 		scroll = new Sprite(scrollAnimation.getKeyFrame(0, false));
 		scroll.setOrigin(scroll.getWidth() * 0.5f, scroll.getHeight() * 0.5f);
-		scroll.setScale(ScrollNinja.scale);
+		scroll.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		nowFrame = scrollAnimation.getKeyFrame(0, false);
 
@@ -67,25 +67,25 @@ public class Interface {
 		TextureRegion tmpRegion = new TextureRegion(texture, 0, 128, 512, 128);
 		hp = new Sprite(tmpRegion);
 		hp.setOrigin(hp.getWidth() * 0.5f, hp.getHeight() * 0.5f);
-		hp.setScale(ScrollNinja.scale);
+		hp.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 巻物の右端部分
 		tmpRegion = new TextureRegion(texture, 384, 0, 128, 128);
 		scrollRight = new Sprite(tmpRegion);
 		scrollRight.setOrigin(scrollRight.getWidth() * 0.5f, scrollRight.getHeight() * 0.5f);
-		scrollRight.setScale(ScrollNinja.scale);
+		scrollRight.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// ひょうたん
 		tmpRegion = new TextureRegion(texture, 0, 256, 128, 128);
 		hyoutan = new Sprite(tmpRegion);
 		hyoutan.setOrigin(hyoutan.getWidth() * 0.5f, hyoutan.getHeight() * 0.5f);
-		hyoutan.setScale(ScrollNinja.scale);
+		hyoutan.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// チャクラ
 		tmpRegion = new TextureRegion(texture, 128, 256, 128, 128);
 		chakra = new Sprite(tmpRegion);
 		chakra.setOrigin(chakra.getWidth() * 0.5f, chakra.getHeight() * 0.5f);
-		chakra.setScale(ScrollNinja.scale);
+		chakra.setScale(GlobalParam.INSTANCE.WORLD_SCALE);
 
 		// 最初の設定；
 		percentHP 			= 1;
@@ -107,15 +107,15 @@ public class Interface {
 	public void update() {
 		// 描画位置セット
 		Vector2 cameraPosition = new Vector2(GameMain.camera.position.x, GameMain.camera.position.y);
-		scroll.setPosition(cameraPosition.x - 64 - (ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 6.4f),
-						   cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
+		scroll.setPosition(cameraPosition.x - 64 - (GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE - 6.4f),
+						   cameraPosition.y - 64 + (GlobalParam.INSTANCE.CLIENT_HEIGHT * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE -6.4f));
 		hp.setPosition
-			(cameraPosition.x - 256 - (ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 25.6f) - transrateX,
-			 cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
+			(cameraPosition.x - 256 - (GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE - 25.6f) - transrateX,
+			 cameraPosition.y - 64 + (GlobalParam.INSTANCE.CLIENT_HEIGHT * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE -6.4f));
 		
 		scrollRight.setPosition(
-				cameraPosition.x - 64 -(ScrollNinja.window.x * 0.5f * ScrollNinja.scale - 6.4f) + 44.5f - transrateX,
-				 cameraPosition.y - 64 + (ScrollNinja.window.y * 0.5f * ScrollNinja.scale -6.4f));
+				cameraPosition.x - 64 -(GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE - 6.4f) + 44.5f - transrateX,
+				 cameraPosition.y - 64 + (GlobalParam.INSTANCE.CLIENT_HEIGHT * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE -6.4f));
 		/*
 		hyoutan.setPosition(scroll.getX() + 51.2f, scroll.getY());
 		chakra.setPosition(hyoutan.getX(), hyoutan.getY());

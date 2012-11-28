@@ -2,8 +2,8 @@ package org.genshin.scrollninja.object;
 
 import org.genshin.scrollninja.FileOperation;
 import org.genshin.scrollninja.GameMain;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.Mouse;
-import org.genshin.scrollninja.ScrollNinja;
 import org.genshin.scrollninja.StructObjectManager;
 
 import com.badlogic.gdx.Gdx;
@@ -114,27 +114,27 @@ public class StageEditor implements Screen, InputProcessor {
 	private void Move() {
 		GameMain.camera.position.set(position.x, position.y, 0);
 
-		if (GameMain.camera.position.x < -(BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
-			GameMain.camera.position.x = -(BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
+		if (GameMain.camera.position.x < -(BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f) * GlobalParam.INSTANCE.WORLD_SCALE) {
+			GameMain.camera.position.x = -(BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f) * GlobalParam.INSTANCE.WORLD_SCALE;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.A) ) {
 			position.x --;
 		}
-		if (GameMain.camera.position.x > (BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale) {
-			GameMain.camera.position.x = (BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - ScrollNinja.window.x * 0.5f) * ScrollNinja.scale;
+		if (GameMain.camera.position.x > (BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f) * GlobalParam.INSTANCE.WORLD_SCALE) {
+			GameMain.camera.position.x = (BackgroundManager.backgroundList.sprites.get(1).getWidth() * 0.5f - GlobalParam.INSTANCE.CLIENT_WIDTH * 0.5f) * GlobalParam.INSTANCE.WORLD_SCALE;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.D) ) {
 			position.x ++;
 		}
 
-		if (GameMain.camera.position.y < -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale) {
-			GameMain.camera.position.y = -(1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
+		if (GameMain.camera.position.y < -(1333 - GlobalParam.INSTANCE.CLIENT_HEIGHT) * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE) {
+			GameMain.camera.position.y = -(1333 - GlobalParam.INSTANCE.CLIENT_HEIGHT) * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.S) ) {
 			position.y --;
 		}
-		if (GameMain.camera.position.y > (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale) {
-			GameMain.camera.position.y = (1333 - ScrollNinja.window.y) * 0.5f * ScrollNinja.scale;
+		if (GameMain.camera.position.y > (1333 - GlobalParam.INSTANCE.CLIENT_HEIGHT) * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE) {
+			GameMain.camera.position.y = (1333 - GlobalParam.INSTANCE.CLIENT_HEIGHT) * 0.5f * GlobalParam.INSTANCE.WORLD_SCALE;
 		}
 		else if( Gdx.input.isKeyPressed(Keys.W) ) {
 			position.y ++;

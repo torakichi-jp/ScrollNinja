@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object;
 
 import org.genshin.scrollninja.GameMain;
-import org.genshin.scrollninja.ScrollNinja;
+import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.PlayerManager;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
@@ -59,7 +59,7 @@ public class Syuriken extends AbstractWeapon {
 		// スプライト反映
 		sprites.add(new Sprite(region));
 		sprites.get(0).setOrigin(sprites.get(0).getWidth() * 0.5f, sprites.get(0).getHeight() * 0.5f);
-		sprites.get(0).setScale(ScrollNinja.scale * 0.5f);
+		sprites.get(0).setScale(GlobalParam.INSTANCE.WORLD_SCALE * 0.5f);
 
 		// Body作成
 		BodyDef bd	= new BodyDef();

@@ -2,12 +2,9 @@ package org.genshin.scrollninja;
 
 import org.genshin.scrollninja.object.BackgroundManager;
 import org.genshin.scrollninja.object.Stage;
-import org.genshin.scrollninja.object.StageEditor;
 import org.genshin.scrollninja.object.StageManager;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -65,8 +62,8 @@ public class GameMain implements Screen{
 		world				= new World(new Vector2(0, GlobalParam.INSTANCE.GRAVITY), true);
 
 		// TODO 画面サイズによって数値を変更
-		camera				= new OrthographicCamera(ScrollNinja.window.x * ScrollNinja.scale,
-													 ScrollNinja.window.y * ScrollNinja.scale);
+		camera				= new OrthographicCamera(GlobalParam.INSTANCE.CLIENT_WIDTH * GlobalParam.INSTANCE.WORLD_SCALE,
+													 GlobalParam.INSTANCE.CLIENT_HEIGHT * GlobalParam.INSTANCE.WORLD_SCALE);
 		spriteBatch 		= new SpriteBatch();
 		stageNum			= num;
 		stage				= new Stage(stageNum);
@@ -101,19 +98,6 @@ public class GameMain implements Screen{
 		// ゲーム中
 		case GAME_RUNNING:
 			oldTime = newTime;
-
-			// TODO リリーズ時には削除orコメントアウト
-			if(Gdx.input.isKeyPressed(Keys.I)) {
-				StageEditor editor = new StageEditor();
-				scrollNinja.setScreen(editor);
-				editor.Init();
-			}
-
-			// 一時停止
-			if(Gdx.input.isKeyPressed(Keys.M)) {
-				pause = new Pause();
-				gameState = GAME_PAUSED;
-			}
 
 			StageManager.Update();
 			StageManager.Draw();
