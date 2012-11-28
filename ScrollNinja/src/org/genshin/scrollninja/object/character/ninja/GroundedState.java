@@ -8,10 +8,10 @@ package org.genshin.scrollninja.object.character.ninja;
  * @since		1.0
  * @version	1.0
  */
-class GroundedNinjaState extends AbstractNormalNinjaState
+class GroundedState extends AbstractNormalState
 {
 	@Override
-	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(PlayerNinja me, float deltaTime)
 	{
 		//---- 地面との衝突判定用タイマーを更新する。
 		--me.groundedTimer;
@@ -30,18 +30,18 @@ class GroundedNinjaState extends AbstractNormalNinjaState
 	}
 
 	@Override
-	protected NinjaStateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(PlayerNinja me)
 	{
 		//---- 足が地面から離れていれば空中状態へ
 		if( !me.isGrounded() )
 		{
-			return new AerialNinjaState();
+			return new AerialState();
 		}
 		
 		//---- 地上で鉤縄にぶら下がっている状態へ
 		if( me.kaginawa.isHangState() )
 		{
-			return new GroundedToKaginawaNinjaState();
+			return new GroundedToKaginawaState();
 		}
 		
 		//---- あとは基本クラスに任せる

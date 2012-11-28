@@ -10,10 +10,10 @@ import com.badlogic.gdx.math.Vector2;
  * @since		1.0
  * @version	1.0
  */
-class AerialNinjaState extends AbstractNormalNinjaState
+class AerialState extends AbstractNormalState
 {
 	@Override
-	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(PlayerNinja me, float deltaTime)
 	{
 		//---- 初回フレームに限り、地上フラグが残っているのでへし折る
 		if(firstFrame)
@@ -49,19 +49,19 @@ class AerialNinjaState extends AbstractNormalNinjaState
 	}
 
 	@Override
-	protected NinjaStateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(PlayerNinja me)
 	{
 		//---- 地面と接触したら地上状態へ
 		if( me.isGrounded() )
 		{
 			me.getFootFixture().setFriction(me.defaultFriction);
-			return new GroundedNinjaState();
+			return new GroundedState();
 		}
 		
 		//---- 鉤縄にぶら下がっている状態へ
 		if( me.kaginawa.isHangState() )
 		{
-			return new KaginawaHangNinjaState();
+			return new KaginawaHangState();
 		}
 		
 		//---- あとは基本クラスに任せる

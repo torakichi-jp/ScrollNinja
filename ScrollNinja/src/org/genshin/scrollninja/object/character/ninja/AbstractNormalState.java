@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
  * @since		1.0
  * @version	1.0
  */
-abstract class AbstractNormalNinjaState extends AbstractNinjaState
+abstract class AbstractNormalState extends AbstractState
 {
 	@Override
 	public void collisionTerrain(PlayerNinja me, Contact contact)
@@ -103,12 +103,12 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 	}
 
 	@Override
-	protected NinjaStateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(PlayerNinja me)
 	{
 		//---- 鉤縄が縮み始めたら、鉤縄が縮んでいる時の状態へ
 		if( me.kaginawa.isShrinkState() )
 		{
-			return new KaginawaShrinkNinjaState();
+			return new KaginawaShrinkState();
 		}
 		
 		//---- どれにも当てはまらなければ現状維持

@@ -9,10 +9,10 @@ import com.badlogic.gdx.math.Vector2;
  * @since		1.0
  * @version	1.0
  */
-abstract class AbstractKaginawaNinjaState extends AbstractNinjaState
+abstract class AbstractKaginawaState extends AbstractState
 {
 	@Override
-	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(PlayerNinja me, float deltaTime)
 	{
 		//---- 前方ベクトルを強制的にX軸にする。
 		me.frontDirection.set(Vector2.X);
@@ -40,7 +40,7 @@ abstract class AbstractKaginawaNinjaState extends AbstractNinjaState
 	}
 
 	@Override
-	protected NinjaStateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(PlayerNinja me)
 	{
 		//---- 通常の状態へ
 		if( me.kaginawa.isReleaseState() )
@@ -48,12 +48,12 @@ abstract class AbstractKaginawaNinjaState extends AbstractNinjaState
 			// 地上
 			if( me.isGrounded() )
 			{
-				return new GroundedNinjaState();
+				return new GroundedState();
 			}
 			// 空中
 			else
 			{
-				return new AerialNinjaState();
+				return new AerialState();
 			}
 		}
 		

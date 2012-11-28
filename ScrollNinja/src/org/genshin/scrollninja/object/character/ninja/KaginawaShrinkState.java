@@ -2,34 +2,25 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Fixture;
 
 /**
- * 鉤縄にぶら下がっている時の忍者の処理。<br>
+ * 鉤縄を縮めている時の忍者の処理。<br>
  * 忍者の状態に合わせた処理を実行し、必要に応じて別の状態に遷移させる。
  * @author kou
  * @since		1.0
  * @version	1.0
  */
-public class KaginawaHangNinjaState extends AbstractKaginawaNinjaState
+class KaginawaShrinkState extends AbstractKaginawaState
 {
-	@Override
-	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
-	{
-		//---- あとは基本クラスに任せる。
-		return super.update(me, deltaTime);
-	}
-	
 	@Override
 	public void collisionTerrain(PlayerNinja me, Contact contact)
 	{
-		//---- 衝突したのが下半身でなければ何もしない。
-		final Fixture footFixture = me.getFootFixture();
-		if(contact.getFixtureA() != footFixture && contact.getFixtureB() != footFixture)
+		//---- まだ地上にいる時はスルー
+		if( me.isGrounded() )
 			return;
 		
-		//---- 下半身が地面に衝突した場合、自動的に鉤縄を切断する。
-		me.kaginawa.release();
+		//---- 地面との接触フラグを立てる
+		collisionTerrain = true;
 	}
 	
 	@Override
@@ -51,10 +42,10 @@ public class KaginawaHangNinjaState extends AbstractKaginawaNinjaState
 		{
 			me.kaginawa.release();
 		}
-		// 鉤縄を縮める
-		else if( me.controller.isKaginawaShrink() )
+		// 鉤縄にぶら下がる
+		else if( me.controller.isKaginawaHang() )
 		{
-			me.kaginawa.shrink();
+			me.kaginawa.hang();
 		}
 		
 		//---- 忍者のアニメーションを設定する。
@@ -62,9 +53,9 @@ public class KaginawaHangNinjaState extends AbstractKaginawaNinjaState
 		me.setBodyAnimation("Kaginawa");
 		
 		// 下半身
-		final Vector2 ninjaDirection = me.controller.getDirection();
-		final Vector2 kaginawaDirection = me.kaginawa.getBody().getPosition().tmp().sub(me.getBody().getPosition());
-		if( (Vector2.Y.crs(ninjaDirection) < 0.0f) == (Vector2.Y.crs(kaginawaDirection) < 0.0f) )
+		final Vector2 direction = me.controller.getDirection();
+		final Vector2 velocity = me.getBody().getLinearVelocity();
+		if( (Vector2.Y.crs(direction) < 0.0f) == (Vector2.Y.crs(velocity) < 0.0f) )
 		{
 			me.setFootAnimation("KaginawaFront");
 		}
@@ -78,16 +69,24 @@ public class KaginawaHangNinjaState extends AbstractKaginawaNinjaState
 	}
 
 	@Override
-	protected NinjaStateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(PlayerNinja me)
 	{
-		//---- 鉤縄が縮んでいる状態へ
-		if( me.kaginawa.isShrinkState() )
+		//---- 地形に吸着する状態へ
+		if( collisionTerrain )
 		{
-			return new KaginawaShrinkNinjaState();
+			return new SnapTerrainState();
+		}
+		
+		//---- 鉤縄にぶら下がっている状態へ
+		if( me.kaginawa.isHangState() )
+		{
+			return new KaginawaHangState();
 		}
 		
 		//---- あとは基本クラスに任せる。
 		return super.getNextState(me);
 	}
-
+	
+	/** 地形と衝突したフラグ */
+	boolean collisionTerrain = false;
 }

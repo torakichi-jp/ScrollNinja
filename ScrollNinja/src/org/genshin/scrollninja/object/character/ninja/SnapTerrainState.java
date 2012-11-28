@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 
-class SnapTerrainNinjaState extends AbstractNinjaState
+class SnapTerrainState extends AbstractState
 {
 	@Override
 	public void collisionTerrain(PlayerNinja me, Contact contact)
@@ -52,7 +52,7 @@ class SnapTerrainNinjaState extends AbstractNinjaState
 	}
 
 	@Override
-	protected NinjaStateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(PlayerNinja me)
 	{
 		//---- 吸着処理が完了したら地上状態へ
 		if(snapComplete)
@@ -61,7 +61,7 @@ class SnapTerrainNinjaState extends AbstractNinjaState
 			{
 				me.updateMoveDirection();
 			}
-			return new GroundedNinjaState();
+			return new GroundedState();
 		}
 		
 		//---- どれにも当てはまらなければ現状維持

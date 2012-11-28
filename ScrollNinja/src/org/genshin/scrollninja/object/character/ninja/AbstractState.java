@@ -10,10 +10,10 @@ import com.badlogic.gdx.physics.box2d.Body;
  * @since		1.0
  * @version	1.0
  */
-abstract class AbstractNinjaState implements NinjaStateInterface
+abstract class AbstractState implements StateInterface
 {
 	@Override
-	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(PlayerNinja me, float deltaTime)
 	{
 		//---- 各種処理を実行する。
 		updateMove(me, deltaTime);		// 移動
@@ -146,5 +146,5 @@ abstract class AbstractNinjaState implements NinjaStateInterface
 	 * @param me		自身を示す忍者オブジェクト
 	 * @return			次の状態
 	 */
-	protected abstract NinjaStateInterface getNextState(PlayerNinja me);
+	protected abstract StateInterface getNextState(PlayerNinja me);
 }

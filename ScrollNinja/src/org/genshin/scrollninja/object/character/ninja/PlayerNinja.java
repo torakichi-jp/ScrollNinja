@@ -49,7 +49,7 @@ public class PlayerNinja extends AbstractCharacter {
 		worldGravity = world.getGravity().len();
 		defaultFriction = getFootFixture().getFriction();
 
-		state = new AerialNinjaState();
+		state = new AerialState();
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class PlayerNinja extends AbstractCharacter {
 	final float defaultFriction;
 	
 	/** 忍者の状態を管理するオブジェクト */
-	private NinjaStateInterface		state;
+	private StateInterface		state;
 	
 	
 	// TODO まだ触ってないソースとの互換性を保つためだけの実装。いずれ消し去る。
