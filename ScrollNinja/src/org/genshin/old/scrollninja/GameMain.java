@@ -92,9 +92,6 @@ public class GameMain implements Screen{
 	//************************************************************
 	@Override
 	public void render(float delta) {
-		GlobalParam.INSTANCE.frameCount++;
-		GlobalParam.INSTANCE.gameTime += delta;
-		
 		switch (gameState) {
 		// ゲーム中
 		case GAME_RUNNING:

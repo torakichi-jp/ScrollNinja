@@ -28,14 +28,18 @@ public class ScrollNinja extends Game
 	@Override
 	public void render()
 	{
+		//---- 基本クラスの処理を実行する。
+		super.render();
+		
+		//---- ゲーム内時間をカウントする。
+		GlobalParam.INSTANCE.frameCount++;
+		GlobalParam.INSTANCE.gameTime = Gdx.graphics.getDeltaTime();
+		
 		//---- [Esc] 入力でプログラムを終了する。
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE))
 		{
 			Gdx.app.exit();
 			return;
 		}
-		
-		//---- あとは基本クラスに任せる。
-		super.render();
 	}
 }
