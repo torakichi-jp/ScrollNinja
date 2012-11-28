@@ -15,8 +15,18 @@ class AerialNinjaState extends AbstractNormalNinjaState
 	@Override
 	public NinjaStateInterface update(PlayerNinja me, float deltaTime)
 	{
+		//---- 初回フレームに限り、地上フラグが残っているのでへし折る
+		if(firstFrame)
+		{
+			me.groundedTimer = 0;
+			firstFrame = false;
+		}
+		
 		//---- 前方ベクトルを強制的にX軸にする。
 		me.frontDirection.set(Vector2.X);
+		
+		//---- ジャンプ方向ベクトルを強制的にY軸にする。
+		me.jumpDirection.set(Vector2.Y);
 		
 		//---- 姿勢を起こす
 		nearRotate(me, 0.0f, 0.1f);
@@ -57,4 +67,7 @@ class AerialNinjaState extends AbstractNormalNinjaState
 		//---- あとは基本クラスに任せる
 		return super.getNextState(me);
 	}
+	
+	/** 初回フレームフラグ */
+	boolean firstFrame = true;
 }

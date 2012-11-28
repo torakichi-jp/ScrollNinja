@@ -29,23 +29,21 @@ abstract class AbstractNormalNinjaState extends AbstractNinjaState
 		me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
 		
 		// 前方ベクトルを設定
-		final boolean useWorldManifold = true;
-		if(useWorldManifold)
+		final Vector2 normal = contact.getWorldManifold().getNormal();
+		me.frontDirection.set(normal.y, -normal.x);
+		
+		// ジャンプ方向ベクトルを設定
+		if( Math.abs(me.frontDirection.x) > Math.abs(me.frontDirection.y) )
 		{
-			final Vector2 normal = contact.getWorldManifold().getNormal();
-			me.frontDirection.set(normal.y, -normal.x);
-
-			// キャラの角度を補正
-			nearRotate( me, (float)Math.toRadians(normal.angle() - 90.0f), 0.1f );
+			me.jumpDirection.set(0.0f, me.frontDirection.x<0.0f?-1.0f:1.0f);
 		}
 		else
 		{
-			final float angle = me.getBody().getAngle();
-			me.frontDirection.set( (float)Math.cos(angle), (float)Math.sin(angle) );
-			
-			// キャラの角度を補正
-			nearRotate( me, (float)Math.toRadians(contact.getWorldManifold().getNormal().angle() - 90.0f), 0.1f );
+			me.jumpDirection.set(me.frontDirection.y<0.0f?1.0f:-1.0f, 0.0f);
 		}
+
+		// キャラの角度を補正
+		nearRotate( me, (float)Math.toRadians(normal.angle()-90.0f), 0.1f );
 	}
 	
 	@Override

@@ -234,6 +234,9 @@ public class PlayerNinja extends AbstractCharacter {
 	/** 正面方向を表すベクトル */
 	final Vector2 frontDirection = new Vector2();
 	
+	/** ジャンプ方向を表すベクトル */
+	final Vector2 jumpDirection = new Vector2(Vector2.Y);
+	
 	/** 世界の重力の強さ */
 	final float worldGravity;
 	

@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import java.util.logging.Logger;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -102,11 +100,13 @@ abstract class AbstractNinjaState implements NinjaStateInterface
 	{
 		final Body body = me.getBody();
 		
-		// 一度Y方向の力を殺す
-		body.setLinearVelocity(body.getLinearVelocity().x, 0.0f);
+		// 一度ジャンプ方向の力を殺す
+		final Vector2 velocity = body.getLinearVelocity();
+		final float power = me.jumpDirection.dot(velocity);
+		body.setLinearVelocity(velocity.sub(me.jumpDirection.tmp().mul(power)));
 		
 		// ジャンプ力を与える
-		body.applyLinearImpulse(0.0f, NinjaParam.INSTANCE.JUMP_POWER, me.getPositionX(), me.getPositionY());
+		body.applyLinearImpulse(me.jumpDirection.x * NinjaParam.INSTANCE.JUMP_POWER, me.jumpDirection.y * NinjaParam.INSTANCE.JUMP_POWER, me.getPositionX(), me.getPositionY());
 		
 		// 地面との接触判定を消し飛ばす
 		me.groundedTimer = 0;
