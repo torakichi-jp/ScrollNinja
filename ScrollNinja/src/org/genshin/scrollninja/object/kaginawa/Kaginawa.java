@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.kaginawa;
 
-import java.util.logging.Logger;
-
 import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
@@ -18,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 
 /**
@@ -111,6 +110,15 @@ public class Kaginawa extends AbstractDynamicObject
 	}
 	
 	/**
+	 * ロープジョイントを使うフラグを設定する。
+	 * @param useRopeJoint		ロープジョイントを使うフラグ
+	 */
+	public void setUseRopeJoint(boolean useRopeJoint)
+	{
+		this.useRopeJoint = useRopeJoint;
+	}
+	
+	/**
 	 * 鉤縄が縮んでいる状態か調べる。
 	 * @return		鉤縄が縮んでいる状態の場合true
 	 */
@@ -190,6 +198,9 @@ public class Kaginawa extends AbstractDynamicObject
 	
 	/** 鉤縄の向き */
 	private final Vector2 direction = new Vector2();
+	
+	/** XXX あやしいフラグ（仮）　外部から指定するのは何ともメンドクサイので何とかならんかね。 */
+	boolean useRopeJoint = false;
 	
 	
 	/** 
@@ -360,14 +371,22 @@ public class Kaginawa extends AbstractDynamicObject
 				owner.setLinearVelocity(Vector2.Zero);
 				
 				// ジョイントを生成
-				// XXX 状況に合わせてRopeJointとDistanceJointを使い分けるかも？
-				RopeJointDef jd = new RopeJointDef();
-				jd.bodyA = owner;
-				jd.bodyB = kaginawa;
-				jd.localAnchorA.set(Vector2.Zero);
-				jd.localAnchorB.set(Vector2.Zero);
-				jd.maxLength = owner.getPosition().dst(kaginawa.getPosition());
-				me.joint = world.createJoint(jd);
+				if( me.useRopeJoint )
+				{
+					RopeJointDef jd = new RopeJointDef();
+					jd.bodyA = owner;
+					jd.bodyB = kaginawa;
+					jd.localAnchorA.set(Vector2.Zero);
+					jd.localAnchorB.set(Vector2.Zero);
+					jd.maxLength = KaginawaParam.INSTANCE.LENGTH;
+					me.joint = world.createJoint(jd);
+				}
+				else
+				{
+					DistanceJointDef jd = new DistanceJointDef();
+					jd.initialize(owner, kaginawa, owner.getPosition(), kaginawa.getPosition());
+					me.joint = world.createJoint(jd);
+				}
 			}
 
 			@Override

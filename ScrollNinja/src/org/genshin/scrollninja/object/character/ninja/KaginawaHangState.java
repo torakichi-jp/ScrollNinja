@@ -81,7 +81,7 @@ public class KaginawaHangState extends AbstractKaginawaState
 		//---- 鉤縄が縮んでいる状態へ
 		if( me.kaginawa.isShrinkState() )
 		{
-			return new KaginawaShrinkState();
+			return new KaginawaShrinkState(me);
 		}
 		
 		//---- あとは基本クラスに任せる。

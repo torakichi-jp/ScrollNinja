@@ -12,6 +12,16 @@ import com.badlogic.gdx.physics.box2d.Contact;
  */
 class KaginawaShrinkState extends AbstractKaginawaState
 {
+	/**
+	 * コンストラクタ
+	 * @param me		自身を示す忍者オブジェクト
+	 */
+	KaginawaShrinkState(PlayerNinja me)
+	{
+		//---- 鉤縄のロープジョイントフラグを叩き折っておく
+		me.kaginawa.setUseRopeJoint(false);
+	}
+	
 	@Override
 	public StateInterface update(PlayerNinja me, float deltaTime)
 	{

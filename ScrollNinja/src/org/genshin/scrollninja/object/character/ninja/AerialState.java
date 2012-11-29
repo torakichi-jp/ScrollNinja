@@ -19,6 +19,9 @@ class AerialState extends AbstractNormalState
 	 */
 	AerialState(PlayerNinja me)
 	{
+		//---- 鉤縄のロープジョイントフラグを叩き折っておく
+		me.kaginawa.setUseRopeJoint(false);
+		
 		//---- 地上フラグをへし折る
 		me.groundedTimer = 0;
 		
