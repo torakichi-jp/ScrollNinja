@@ -23,7 +23,7 @@ public class KaginawaHangState extends AbstractKaginawaState
 	public void collisionTerrain(PlayerNinja me, Contact contact)
 	{
 		//---- 衝突したのが下半身でなければ何もしない。
-		if( checkContactIsFoot(me, contact) )
+		if( !checkContactIsFoot(me, contact) )
 			return;
 		
 		//---- 下半身が地面に衝突した場合、自動的に鉤縄を切断する。
