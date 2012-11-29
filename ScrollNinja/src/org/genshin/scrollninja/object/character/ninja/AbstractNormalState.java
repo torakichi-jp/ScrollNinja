@@ -38,7 +38,7 @@ abstract class AbstractNormalState extends AbstractState
 		//---- 移動入力がなければアニメーションを待機状態に変更する。
 		else
 		{
-			me.setAnimation("Stay");
+			me.setAnimation(getStayAnimationName());
 		}
 	}
 	
@@ -66,5 +66,14 @@ abstract class AbstractNormalState extends AbstractState
 		
 		//---- どれにも当てはまらなければ現状維持
 		return this;
+	}
+	
+	/**
+	 * 待機状態のアニメーション名を取得する。
+	 * @return		待機状態のアニメーション名
+	 */
+	protected String getStayAnimationName()
+	{
+		return "Stay";
 	}
 }

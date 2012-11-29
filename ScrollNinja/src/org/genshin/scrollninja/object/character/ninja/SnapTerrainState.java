@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import java.util.logging.Logger;
-
 import org.genshin.scrollninja.GlobalParam;
 
 import com.badlogic.gdx.math.Vector2;

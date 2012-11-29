@@ -19,7 +19,7 @@ class GroundedState extends AbstractNormalState
 	 */
 	GroundedState(PlayerNinja me)
 	{
-		//---- 鉤縄のロープジョイントフラグを立てておく。
+		//---- 鉤縄のロープジョイントフラグを立てておく
 		me.kaginawa.setUseRopeJoint(true);
 		
 		//---- 摩擦をデフォルト値に設定する。

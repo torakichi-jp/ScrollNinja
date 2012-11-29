@@ -96,6 +96,12 @@ class AerialState extends AbstractNormalState
 		return super.getNextState(me);
 	}
 
+	@Override
+	protected String getStayAnimationName()
+	{
+		return "Jump";
+	}
+
 	/** 初回フレームフラグ */
 	boolean firstFrame = true;
 }

@@ -42,6 +42,11 @@
 				<FrameCount>6</FrameCount>
 				<Time>4</Time>
 			</Animation>
+			<!-- ジャンプアニメーション -->
+			<Animation>
+				<Name>Jump</Name>
+				<StartY>1</StartY>
+			</Animation>
 			<!-- 鉤縄状態時のアニメーション -->
 			<Animation>
 				<Name>Kaginawa</Name>
@@ -81,6 +86,11 @@
 				<StartY>0</StartY>
 				<FrameCount>6</FrameCount>
 				<Time>4</Time>
+			</Animation>
+			<!-- ジャンプアニメーション -->
+			<Animation>
+				<Name>Jump</Name>
+				<StartY>0</StartY>
 			</Animation>
 			<!-- 鉤縄状態時のアニメーション（前方向） -->
 			<Animation>
