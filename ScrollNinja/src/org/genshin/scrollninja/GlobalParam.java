@@ -1,5 +1,7 @@
 package org.genshin.scrollninja;
 
+import org.genshin.engine.manager.RenderableManager;
+import org.genshin.engine.manager.UpdatableManager;
 import org.genshin.scrollninja.utils.XMLFactory;
 
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -77,6 +79,12 @@ public enum GlobalParam
 	
 	/** スプライトパラメータを記述したXMLファイルのパス */
 	public final String SPRITE_PARAM_XML_FILE_NAME;
+	
+	/** 現在指定されている更新処理を管理するオブジェクト */
+	public UpdatableManager currentUpdatableManager = null;
+	
+	/** 現在指定されている描画処理を管理するオブジェクト */
+	public RenderableManager currentRenderableManager = null;
 	
 	/** ゲーム内時間（秒） */
 	public float gameTime = 0.0f;

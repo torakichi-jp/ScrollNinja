@@ -4,6 +4,8 @@ package org.genshin.old.scrollninja.object;
 
 import java.util.ArrayList;
 
+import org.genshin.engine.manager.RenderableManager;
+import org.genshin.engine.manager.UpdatableManager;
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.old.scrollninja.object.StageDataList.StageData;
 import org.genshin.old.scrollninja.object.item.Item;
@@ -29,6 +31,9 @@ public class Stage implements StageBase {
 	
 	private Cursor cursor;
 	private CameraTranslater cameraTranslater;
+
+	private final UpdatableManager updatableManager = new UpdatableManager();
+	private final RenderableManager renderableManager = new RenderableManager();
 	
 	private boolean prevInput;
 	private boolean renderDebug = false;
@@ -41,6 +46,9 @@ public class Stage implements StageBase {
 		renderer = new Box2DDebugRenderer();
 		
 		cursor = new Cursor(GameMain.camera, 2.0f * GlobalParam.INSTANCE.WORLD_SCALE);
+
+		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
+		GlobalParam.INSTANCE.currentRenderableManager = renderableManager;
 	}
 
 	//************************************************************
@@ -56,6 +64,7 @@ public class Stage implements StageBase {
 		ItemManager.Update(deltaTime);
 		cameraTranslater.update(deltaTime);
 		BackgroundManager.backgroundList.update(deltaTime);
+		updatableManager.update(deltaTime);
 
 		// TODO 今だけリポップ
 //		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
@@ -108,6 +117,7 @@ public class Stage implements StageBase {
 			EnemyManager.Draw();
 			EffectManager.Draw();
 			ItemManager.Draw();
+			renderableManager.render();
 			BackgroundManager.backgroundList.Draw(2);
 //			GameMain.playerInfo.Draw();
 			cursor.render();
