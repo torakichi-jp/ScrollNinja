@@ -16,10 +16,11 @@ public class PlayerManager {
 
 	/**
 	 * 更新
+	 * @param deltaTime TODO
 	 */
-	public static void Update() {
+	public static void Update(float deltaTime) {
 		for( int i = 0; i < playerList.size(); i ++) {
-			playerList.get(i).update();
+			playerList.get(i).update(deltaTime);
 		}
 	}
 

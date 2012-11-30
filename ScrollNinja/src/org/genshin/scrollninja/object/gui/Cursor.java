@@ -31,7 +31,7 @@ public class Cursor extends AbstractObject
 	}
 
 	@Override
-	public void update()
+	public void update(float deltaTime)
 	{
 		//---- 移動
 		position.x += Gdx.input.getDeltaX() * speed;

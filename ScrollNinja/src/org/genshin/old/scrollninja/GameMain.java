@@ -97,7 +97,7 @@ public class GameMain implements Screen{
 		case GAME_RUNNING:
 			oldTime = newTime;
 
-			StageManager.Update();
+			StageManager.Update(delta);
 			StageManager.Draw();
 			FPS();
 			break;

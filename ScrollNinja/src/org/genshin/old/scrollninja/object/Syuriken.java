@@ -112,7 +112,7 @@ public class Syuriken extends AbstractWeapon {
 	/**
 	 * 更新
 	 */
-	public void update() {
+	public void update(float deltaTime) {
 		// 手裏剣表示時間
 		timeCount -= 1;
 		// 回転

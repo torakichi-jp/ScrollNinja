@@ -20,12 +20,13 @@ public class EnemyManager {
 
 	/**
 	 * 更新
+	 * @param deltaTime TODO
 	 */
-	public static void Update() {
+	public static void Update(float deltaTime) {
 		for (int i = 0; i <enemyList.size(); i ++) {
 			// 存在しているなら更新
 			if (enemyList.get(i) != null)
-				enemyList.get(i).update();
+				enemyList.get(i).update(deltaTime);
 		}
 	}
 

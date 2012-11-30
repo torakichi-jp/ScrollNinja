@@ -19,11 +19,12 @@ public class ItemManager {
 
 	/**
 	 * 更新
+	 * @param deltaTime TODO
 	 */
-	public static void Update() {
+	public static void Update(float deltaTime) {
 		if (onigiriList != null) {
 			for( int i = 0; i < onigiriList.size(); i ++) {
-				onigiriList.get(i).update();
+				onigiriList.get(i).update(deltaTime);
 			}
 		}
 	}

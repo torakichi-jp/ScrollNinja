@@ -3,7 +3,7 @@ package org.genshin.old.scrollninja.object;
 public interface StageBase {
 
 	// 更新関数
-	public void Update();
+	public void Update(float deltaTime);
 
 	// 描画関数
 	public void Draw();

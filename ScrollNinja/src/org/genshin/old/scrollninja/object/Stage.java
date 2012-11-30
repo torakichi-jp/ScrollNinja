@@ -47,15 +47,15 @@ public class Stage implements StageBase {
 	// Update
 	// 更新処理まとめ
 	//************************************************************
-	public void Update() {
-		cursor.update();
+	public void Update(float deltaTime) {
+		cursor.update(deltaTime);
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
-		EnemyManager.Update();
-		WeaponManager.Update();
-		PlayerManager.Update();
-		ItemManager.Update();
-		updateCamera();
-		BackgroundManager.backgroundList.update();
+		EnemyManager.Update(deltaTime);
+		WeaponManager.Update(deltaTime);
+		PlayerManager.Update(deltaTime);
+		ItemManager.Update(deltaTime);
+		cameraTranslater.update(deltaTime);
+		BackgroundManager.backgroundList.update(deltaTime);
 
 		// TODO 今だけリポップ
 //		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
@@ -122,14 +122,6 @@ public class Stage implements StageBase {
 		 * ↑rendererの処理を前に持っていくと位置がずれることがあるので
 		 * 微調整が必要な場合は一度確認した方がよさそうです。
 		 */
-	}
-
-	//************************************************************
-	// updateCamera
-	// カメラ情報更新
-	//************************************************************
-	public void updateCamera() {
-		cameraTranslater.update();
 	}
 
 	//************************************************************

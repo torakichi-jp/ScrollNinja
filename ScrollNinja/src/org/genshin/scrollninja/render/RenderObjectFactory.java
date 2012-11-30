@@ -55,6 +55,7 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 		rootElement = rootElement.getChildByName("Sprite");
 		final int childCount = rootElement.getChildCount();
 		final float invWorldScale = GlobalParam.INSTANCE.INV_WORLD_SCALE;
+		final float invFPS = 1.0f / 60.0f;
 		for(int i = 0;  i < childCount;  ++i)
 		{
 			final Element childElement = rootElement.getChild(i);
@@ -70,7 +71,7 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 				tad.startIndex.x	= childElement.getInt("StartX", 0);
 				tad.startIndex.y	= childElement.getInt("StartY", 0);
 				tad.frameCount		= childElement.getInt("FrameCount", 1);
-				tad.time			= childElement.getInt("Time", 1) / 60.0f;
+				tad.time			= childElement.getInt("Time", 1) * invFPS;
 				tad.looping			= childElement.getBoolean("Looping", true);
 				
 				AnimationInterface animation = new TextureAnimation(tad);

@@ -32,7 +32,7 @@ public abstract class AbstractObject implements ObjectInterface
 	}
 
 	@Override
-	public void update()
+	public void update(float deltaTime)
 	{
 		/* 何もしない */
 	}
@@ -45,7 +45,7 @@ public abstract class AbstractObject implements ObjectInterface
 		{
 			for(RenderObjectInterface ro : renderObjects)
 			{
-				ro.update();
+				ro.update(1.0f/60.0f);
 				ro.render();
 			}
 		}

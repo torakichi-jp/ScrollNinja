@@ -83,7 +83,7 @@ public abstract class AbstractCollisionObject extends AbstractObject
 			{
 				ro.setPosition(position.x, position.y);
 				ro.setRotation(rotation);
-				ro.update();	// TODO updateはいずれUpdateManager的な奴に任せる。
+				ro.update(1.0f/60.0f);	// TODO updateはいずれUpdateManager的な奴に任せる。
 				ro.render();
 			}
 		}

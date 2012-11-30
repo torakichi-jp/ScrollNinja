@@ -118,7 +118,7 @@ public class Background extends AbstractCollisionObject {
 	/**************************************************
 	 * 更新処理
 	 ***************************************************/
-	public void update() {
+	public void update(float deltaTime) {
 		final Camera camera = GameMain.camera;
 		final Vector2 stageSize = stageData.size;
 		final int layerCount = stageData.layerData.size();

@@ -25,9 +25,9 @@ public class WeaponManager {
 	 */
 	private WeaponManager(){}
 
-	public static void Update() {
+	public static void Update(float deltaTime) {
 		for( int i = 0; i < katanaList.size(); i ++ ) {
-			katanaList.get(i).update();
+			katanaList.get(i).update(deltaTime);
 		}
 	}
 

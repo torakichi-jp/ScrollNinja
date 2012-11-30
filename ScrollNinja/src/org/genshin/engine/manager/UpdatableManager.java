@@ -23,7 +23,7 @@ public final class UpdatableManager extends AbstractProcessManager<Updatable>
 	@Override
 	protected void processOne(Updatable object)
 	{
-		object.update();
+		object.update(deltaTime);
 	}
 	
 	/** 経過時間 */

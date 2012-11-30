@@ -22,8 +22,8 @@ public class StageManager {
 	// Update
 	// 現在のステージの更新処理
 	//************************************************************
-	public static void Update() {
-		currentStage.Update();
+	public static void Update(float deltaTime) {
+		currentStage.Update(deltaTime);
 	}
 
 	//************************************************************

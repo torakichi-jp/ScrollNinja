@@ -26,7 +26,7 @@ public class CameraTranslater implements Updatable
 	}
 	
 	@Override
-	public void update()
+	public void update(float deltaTime)
 	{
 		//---- 目標座標を計算する。
 		float targetX = 0.0f;

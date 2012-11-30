@@ -74,7 +74,7 @@ public class Kaginawa extends AbstractDynamicObject
 	}
 
 	@Override
-	public void update()
+	public void update(float deltaTime)
 	{
 		state.update(this);
 	}

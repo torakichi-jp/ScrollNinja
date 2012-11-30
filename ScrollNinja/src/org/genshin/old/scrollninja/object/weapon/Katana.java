@@ -39,7 +39,7 @@ public class Katana extends AbstractWeapon {
 	/**
 	 * 更新
 	 */
-	public void update() {
+	public void update(float deltaTime) {
 		if( !use ) stateTime = 0; else stateTime ++;
 		if( stateTime % 18 == 0 ) use = false;
 

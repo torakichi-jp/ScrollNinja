@@ -109,7 +109,7 @@ public class Item extends AbstractCollisionObject {
 	// Update
 	// 更新処理まとめ
 	//************************************************************
-	public void update() {
+	public void update(float deltaTime) {
 		Body body = getBody();
 
 		survivalTime --;			// 生存時間減少

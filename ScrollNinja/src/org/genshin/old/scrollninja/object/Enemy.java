@@ -185,7 +185,7 @@ public class Enemy extends AbstractCharacter {
 	 * Update()
 	 * 更新処理まとめ
 	 **************************************************/
-	public void update() {
+	public void update(float deltaTime) {
 		if( deleteFlag ) {
 			// TODO 落とす種類の選択と確率も必要か
 			ItemManager.CreateItem(Item.ONIGIRI, position.x, position.y);
@@ -203,7 +203,7 @@ public class Enemy extends AbstractCharacter {
 		if (syuriken != null) {
 			for (int i = 0; i < syuriken.size(); i++) {
 				if (syuriken.get(i).GetUseFlag())
-					syuriken.get(i).update();
+					syuriken.get(i).update(deltaTime);
 				else {
 					syuriken.get(i).dispose();
 					syuriken.remove(i);
@@ -213,7 +213,7 @@ public class Enemy extends AbstractCharacter {
 
 		// 武器更新
 		if (weapon != null)
-			weapon.update();
+			weapon.update(deltaTime);
 
 		// アニメーション更新
 		nowFrame = animation.getKeyFrame(stateTime, true);

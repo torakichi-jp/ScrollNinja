@@ -10,8 +10,8 @@ public interface Updatable
 {
 	/**
 	 * 更新処理を実行する。
-	 * TODO 引数にdeltaTimeを追加したい。
-	 * XXX 場合によってはprotected化するのもアリ？
+	 * @param deltaTime TODO
+	 * @param deltaTime		経過時間
 	 */
-	public void update();
+	public void update(float deltaTime);
 }

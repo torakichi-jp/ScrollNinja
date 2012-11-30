@@ -18,10 +18,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class AbstractRenderObject implements RenderObjectInterface
 {
 	@Override
-	public void update()
+	public void update(float deltaTime)
 	{
-		final float deltaTime = 1.0f/60.0f;
-		
 		if( currentAnimation != null )
 		{
 			animationTime += deltaTime;

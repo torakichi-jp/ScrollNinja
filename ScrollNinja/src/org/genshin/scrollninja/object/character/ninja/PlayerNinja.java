@@ -55,10 +55,8 @@ public class PlayerNinja extends AbstractCharacter {
 	/**
 	 * 更新処理
 	 */
-	public void update()
+	public void update(float deltaTime)
 	{
-		final float deltaTime = 1.0f/60.0f;
-		
 		// 操作状態を更新
 		controller.update();
 
@@ -66,7 +64,7 @@ public class PlayerNinja extends AbstractCharacter {
 		state = state.update(this, deltaTime);
 		
 		// 鉤縄を更新
-		kaginawa.update();
+		kaginawa.update(deltaTime);
 	}
 	
 	@Override
