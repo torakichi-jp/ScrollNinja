@@ -19,8 +19,6 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	 */
 	public AbstractPlayerNinjaController()
 	{
-		inputHelpers = new InputHelperInterface[InputType.values().length];
-		
 		initialize();
 	}
 
@@ -63,6 +61,12 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	public final boolean isDash()
 	{
 		return inputHelpers[InputType.DASH.ordinal()].isPress();
+	}
+
+	@Override
+	public boolean isDashStart()
+	{
+		return inputHelpers[InputType.DASH.ordinal()].isTrigger();
 	}
 
 	@Override
@@ -172,7 +176,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	}
 	
 	/** 入力補助オブジェクト */
-	private InputHelperInterface inputHelpers[];
+	private final InputHelperInterface inputHelpers[] = new InputHelperInterface[InputType.values().length];
 	
 	/** 忍者の向き */
 	private final Vector2 direction = new Vector2();

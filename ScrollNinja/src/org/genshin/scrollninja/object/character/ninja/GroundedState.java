@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.object.effect.DashSmokeEffect;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 
@@ -78,6 +80,22 @@ class GroundedState extends AbstractNormalState
 		{
 			nearRotate( me, (float)Math.toRadians(normalAngle-90.0f), rotateTime );
 		}
+	}
+
+	@Override
+	protected void updateMove(PlayerNinja me, float deltaTime)
+	{
+		//---- エフェクトを生成する。
+		final float movePower = me.controller.getMovePower();
+		if(		me.controller.isDashStart() && movePower != 0.0f
+			||	me.controller.isMoveStart() && me.controller.isDash()	)
+		{
+			if(movePower != 0.0f)
+				new DashSmokeEffect(me.getPositionX(), me.getPositionY(), movePower > 0.0f);
+		}
+		
+		//---- 基本クラスの処理を実行する。
+		super.updateMove(me, deltaTime);
 	}
 
 	@Override

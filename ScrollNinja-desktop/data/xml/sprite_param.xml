@@ -117,7 +117,7 @@
 			<Texture>
 				<FilePath>weapon/kaginawa_anchor.png</FilePath>
 			</Texture>
-			<OriginX>-16</OriginX>
+			<OriginX>-16.0</OriginX>
 		</Sprite>
 	</KaginawaAnchor>
 	
@@ -127,9 +127,29 @@
 			<Texture>
 				<FilePath>weapon/kaginawa_rope.png</FilePath>
 			</Texture>
-			<OriginX>-32</OriginX>
+			<OriginX>-32.0</OriginX>
 		</Sprite>
 	</KaginawaRope>
+	
+	<!-- ダッシュ時の煙エフェクト -->
+	<DashSmoke>
+		<Sprite>
+			<Texture>
+				<FilePath>effect/dash_smoke.png</FilePath>
+			</Texture>
+			<OriginX>-48.0</OriginX>
+		</Sprite>
+	</DashSmoke>
+	
+	<!-- ジャンプ時の煙エフェクト -->
+	<JumpSmoke>
+		<Sprite>
+			<Texture>
+				<FilePath>effect/jump_smoke.png</FilePath>
+			</Texture>
+			<OriginY>-24.0</OriginY>
+		</Sprite>
+	</JumpSmoke>
 	
 	<!-- カンペ（コピペ用。ゲーム中では使わない） -->
 	<CunningPaper>

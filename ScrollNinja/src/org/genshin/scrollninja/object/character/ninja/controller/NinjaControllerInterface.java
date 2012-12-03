@@ -43,6 +43,12 @@ public interface NinjaControllerInterface
 	boolean isDash();
 	
 	/**
+	 * ダッシュの開始操作状態を取得する。
+	 * @return	ダッシュの開始操作がある場合はtrue
+	 */
+	boolean isDashStart();
+	
+	/**
 	 * ジャンプの操作状態を取得する。
 	 * @return	ジャンプの操作がある場合はtrue
 	 */

@@ -16,6 +16,13 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
  */
 public class KaginawaReleaseEffect extends AbstractEffect
 {
+	/**
+	 * コンストラクタ
+	 * @param renderObjects		鉤縄の描画オブジェクト
+	 * @param positionX			X座標
+	 * @param positionY			Y座標
+	 * @param degrees			回転（度）
+	 */
 	public KaginawaReleaseEffect(ArrayList<RenderObjectInterface> renderObjects, float positionX, float positionY, float degrees)
 	{
 		//---- 描画オブジェクトの状態をコピーする。
@@ -33,20 +40,6 @@ public class KaginawaReleaseEffect extends AbstractEffect
 		//---- 各種パラメータ設定
 		setVelocityInterpolation(0.0f, -100.0f*GlobalParam.INSTANCE.WORLD_SCALE, 0.0f, 0.0f);
 		setColorInterpolation(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
-		
-	}
-
-	@Override
-	public void update(float deltaTime)
-	{
-		super.update(deltaTime);
-	}
-
-	@Override
-	public void render()
-	{
-		// TODO Auto-generated method stub
-		super.render();
 	}
 
 	@Override

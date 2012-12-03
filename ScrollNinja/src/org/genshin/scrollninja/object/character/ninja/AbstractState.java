@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -121,6 +123,10 @@ abstract class AbstractState implements StateInterface
 		
 		// 地面との接触判定を消し飛ばす
 		me.groundedTimer = 0;
+		
+		//---- エフェクトを生成する。
+		final Vector2 position = body.getPosition();
+		new JumpSmokeEffect(position.x, position.y);
 	}
 	
 	/**
