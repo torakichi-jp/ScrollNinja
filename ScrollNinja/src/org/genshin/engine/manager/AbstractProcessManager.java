@@ -1,5 +1,6 @@
 package org.genshin.engine.manager;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,13 +70,19 @@ public abstract class AbstractProcessManager<T>
 	 */
 	protected void process()
 	{
+		// TODO ひとまず仮実装。最終的にはprocessOneの戻り値を見てremoveさせる予定。
 		for(Map.Entry<Integer, List<T>> itEntry:objects.entrySet())
 		{
 			for(T object:itEntry.getValue())
 			{
-				processOne(object);
+				processList.add(object);
 			}
 		}
+		for(T object:processList)
+		{
+			processOne(object);
+		}
+		processList.clear();
 	}
 	
 	/**
@@ -86,4 +93,6 @@ public abstract class AbstractProcessManager<T>
 
 	/** 管理オブジェクトを格納するマップ */
 	private final Map<Integer, List<T>> objects = new TreeMap<Integer, List<T>>();
+	
+	private final List<T> processList = new ArrayList<T>(100);
 }

@@ -145,6 +145,9 @@
 				<Width>64</Width>
 				<Height>64</Height>
 			</Texture>
+			<!-- スプライトのローカル座標　省略時：0.0 -->
+			<X>0.0</X>
+			<Y>0.0</Y>
 			<!-- スプライトの大きさ　省略時：テクスチャに合わせる -->
 			<Width>64.0</Width>
 			<Height>64.0</Height>

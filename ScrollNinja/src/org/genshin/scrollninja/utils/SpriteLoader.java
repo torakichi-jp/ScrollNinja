@@ -27,6 +27,8 @@ public class SpriteLoader
 		
 		xmlElement		= xmlElement.getChildByName("Sprite");
 		textureLoader	= new TextureLoader(xmlElement.getChildByName("Texture"));
+		x				= xmlElement.getFloat("X", 0.0f) * worldScale;
+		y				= xmlElement.getFloat("Y", 0.0f) * worldScale;
 		width			= xmlElement.getFloat("Width", 0.0f) * worldScale;
 		height			= xmlElement.getFloat("Height", 0.0f) * worldScale;
 		originX			= xmlElement.getFloat("OriginX", 0.0f) * worldScale;
@@ -45,7 +47,7 @@ public class SpriteLoader
 		final float w = width == 0.0f ? sprite.getWidth() * worldScale : width;
 		final float h = height == 0.0f ? sprite.getHeight() * worldScale : height;
 		
-		sprite.setSize(w, h);
+		sprite.setBounds(x, y, w, h);
 		sprite.setOrigin(sprite.getWidth()*0.5f+originX, sprite.getHeight()*0.5f+originY);
 		
 		return sprite;
@@ -53,6 +55,12 @@ public class SpriteLoader
 	
 	/** テクスチャローダ */
 	private final TextureLoader textureLoader;
+	
+	/** スプライトのX座標 */
+	private final float x;
+	
+	/** スプライトのY座標 */
+	private final float y;
 	
 	/** スプライトの横幅 */
 	private final float width;

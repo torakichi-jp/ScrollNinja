@@ -4,6 +4,7 @@ import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
+import org.genshin.scrollninja.object.effect.KaginawaReleaseEffect;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
@@ -92,7 +93,7 @@ public class Kaginawa extends AbstractDynamicObject
 		final float len = direction.len();
 		
 		ropeSprite.setSize(len, ropeSprite.getHeight());
-		ropeSprite.setRotation(direction.angle());
+		ropeSprite.setRotation(direction.angle() - (float)Math.toDegrees(getBody().getAngle()));
 		ropeSprite.setRegion(0, 0, (int)(len*GlobalParam.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
 		
 		super.render();
@@ -170,7 +171,8 @@ public class Kaginawa extends AbstractDynamicObject
 	{
 		CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(KaginawaParam.INSTANCE.COLLISION_RADIUS);
-
+		circleShape.setPosition(new Vector2(16.0f * GlobalParam.INSTANCE.WORLD_SCALE, 0.0f));
+		
 		FixtureDef fd	= super.createFixtureDef();
 		fd.isSensor		= true;			// XXX センサーフラグ。いずれはFilterに代わる予定。
 		fd.shape		= circleShape;
@@ -268,12 +270,8 @@ public class Kaginawa extends AbstractDynamicObject
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
 				kaginawa.setLinearVelocity(direction.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, direction.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
-				kaginawa.setTransform(owner.getPosition(), 0.0f);
+				kaginawa.setTransform(owner.getPosition(), (float)Math.toRadians(direction.angle()));
 				kaginawa.setActive(true);
-				
-				// XXX 仮
-				Sprite anchor = me.getAnchorRenderObject().getSprite();
-				anchor.setRotation(direction.angle());
 				
 				// 持ち主を初期化
 			}
@@ -284,12 +282,8 @@ public class Kaginawa extends AbstractDynamicObject
 				Body kaginawa	= me.getBody();
 				Body owner		= me.owner;
 				
-				// 縄の長さが限界に達したらぶら下がりん。
-				Vector2 kaginawaPos = kaginawa.getPosition();
-				Vector2 ownerPos = owner.getPosition();
-				Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
-				
-				if(direction.len2() > KaginawaParam.INSTANCE.LENGTH*KaginawaParam.INSTANCE.LENGTH)
+				// 縄の長さが限界に達したら、鉤縄を窓から投げ捨てろ！
+				if(kaginawa.getPosition().dst2(owner.getPosition()) > KaginawaParam.INSTANCE.LENGTH*KaginawaParam.INSTANCE.LENGTH)
 				{
 					release(me);
 				}
@@ -452,7 +446,8 @@ public class Kaginawa extends AbstractDynamicObject
 					me.joint = null;
 				}
 				
-				// TODO 鉤縄を離した時のエフェクト的なものを発生させる。
+				//---- エフェクトを発生させる。
+				new KaginawaReleaseEffect(me.getRenderObjects(), me.getPositionX(), me.getPositionY(), (float)Math.toDegrees(kaginawa.getAngle()));
 			}
 
 			@Override
