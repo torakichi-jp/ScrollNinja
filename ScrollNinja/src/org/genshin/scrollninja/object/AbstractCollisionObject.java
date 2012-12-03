@@ -81,10 +81,14 @@ public abstract class AbstractCollisionObject extends AbstractObject
 			
 			for( RenderObjectInterface ro : getRenderObjects() )
 			{
-				ro.setPosition(position.x, position.y);
-				ro.setRotation(rotation);
+				ro.translate(position.x, position.y);
+				ro.rotate(rotation);
+				
 				ro.update(1.0f/60.0f);	// TODO updateはいずれUpdateManager的な奴に任せる。
 				ro.render();
+				
+				ro.translate(-position.x, -position.y);
+				ro.rotate(-rotation);
 			}
 		}
 		else

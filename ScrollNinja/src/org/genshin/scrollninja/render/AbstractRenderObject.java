@@ -18,9 +18,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class AbstractRenderObject implements RenderObjectInterface
 {
 	@Override
-	public RenderObjectInterface clone()
+	public void translate(float x, float y)
 	{
-		return null;
+		sprite.translate(x, y);
+	}
+
+	@Override
+	public void rotate(float degrees)
+	{
+		sprite.rotate(degrees);
 	}
 
 	@Override
@@ -37,7 +43,11 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	public void render()
 	{
 		final SpriteBatch spriteBatch = GameMain.spriteBatch;
+		final float originX = sprite.getOriginX();
+		final float originY = sprite.getOriginY();
+		sprite.translate(-originX, -originY);
 		sprite.draw(spriteBatch);
+		sprite.translate(originX, originY);
 	}
 	
 	@Override
@@ -60,7 +70,7 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	@Override
 	public void setPosition(float x, float y)
 	{
-		sprite.setPosition(x - sprite.getOriginX(), y - sprite.getOriginY());
+		sprite.setPosition(x, y);
 	}
 
 	@Override
@@ -102,13 +112,13 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	@Override
 	public float getPositionX()
 	{
-		return sprite.getX() + sprite.getOriginX();
+		return sprite.getX();
 	}
 
 	@Override
 	public float getPositionY()
 	{
-		return sprite.getY() + sprite.getOriginY();
+		return sprite.getY();
 	}
 
 	@Override

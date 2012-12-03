@@ -2,7 +2,6 @@ package org.genshin.scrollninja.object.kaginawa;
 
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.utils.FixtureDefLoader;
-import org.genshin.scrollninja.utils.SpriteLoader;
 import org.genshin.scrollninja.utils.XMLFactory;
 
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -43,18 +42,6 @@ enum KaginawaParam
 			// XXX 仮
 			COLLISION_RADIUS	= rootElement.getChildByName("FixtureDef").getChildByName("CircleShape").getFloat("Radius") * worldScale;
 		}
-		
-		//---- スプライト関連
-		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.SPRITE_PARAM_XML_FILE_NAME);
-			rootElement = rootElement.getChildByName("Kaginawa");
-			
-			// 鉤
-			ANCHOR_SPRITE_LOADER = new SpriteLoader(rootElement.getChildByName("Anchor"));
-
-			// 縄
-			ROPE_SPRITE_LOADER = new SpriteLoader(rootElement.getChildByName("Rope"));
-		}
 	}
 	
 	
@@ -72,10 +59,4 @@ enum KaginawaParam
 	
 	/** Fixtureの定義情報 */
 	final FixtureDefLoader FIXTURE_DEF_LOADER;
-
-	/** 鉤のスプライトの定義情報 */
-	final SpriteLoader ANCHOR_SPRITE_LOADER;
-	
-	/** 縄のスプライトの定義情報 */
-	final SpriteLoader ROPE_SPRITE_LOADER;
 }

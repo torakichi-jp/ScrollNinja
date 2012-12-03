@@ -4,6 +4,8 @@ import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
+import org.genshin.scrollninja.render.RenderObjectFactory;
+import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -86,12 +88,12 @@ public class Kaginawa extends AbstractDynamicObject
 		final Vector2 kaginawaPosition = getBody().getPosition();
 		final Vector2 ownerPosition = owner.getPosition();
 		final Vector2 direction = ownerPosition.sub(kaginawaPosition);
-		final Sprite rope = sprites.get(0);
+		final Sprite ropeSprite = getRopeRenderObject().getSprite();
 		final float len = direction.len();
 		
-		rope.setSize(len, rope.getHeight());
-		rope.setRotation(direction.angle());
-		rope.setRegion(0, 0, (int)(len*GlobalParam.INSTANCE.INV_WORLD_SCALE), rope.getRegionHeight());
+		ropeSprite.setSize(len, ropeSprite.getHeight());
+		ropeSprite.setRotation(direction.angle());
+		ropeSprite.setRegion(0, 0, (int)(len*GlobalParam.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
 		
 		super.render();
 	}
@@ -148,11 +150,11 @@ public class Kaginawa extends AbstractDynamicObject
 	@Override
 	protected void initializeSprite()
 	{
-		final Sprite ropeSprite = KaginawaParam.INSTANCE.ROPE_SPRITE_LOADER.create();
-		ropeSprite.getTexture().setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+		final RenderObjectInterface ropeRenderObject = RenderObjectFactory.getInstance().get("KaginawaRope");
+		ropeRenderObject.getSprite().getTexture().setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		
-		this.sprites.add(ropeSprite);
-		this.sprites.add(KaginawaParam.INSTANCE.ANCHOR_SPRITE_LOADER.create());
+		addRenderObject( ropeRenderObject );
+		addRenderObject( RenderObjectFactory.getInstance().get("KaginawaAnchor") );
 	}
 	
 	@Override
@@ -179,12 +181,30 @@ public class Kaginawa extends AbstractDynamicObject
 	 * 状態を変更する。
 	 * @param next	次の状態
 	 */
-	private void changeState(State next)
+	void changeState(State next)
 	{
 		assert next!=null;
 		
 		state = next;
 		state.initialize(this);
+	}
+	
+	/**
+	 * 縄の描画オブジェクトを取得する。
+	 * @return		縄の描画オブジェクト
+	 */
+	RenderObjectInterface getRopeRenderObject()
+	{
+		return getRenderObject(0);
+	}
+	
+	/**
+	 * 鉤の描画オブジェクトを取得する。
+	 * @return		鉤の描画オブジェクト
+	 */
+	RenderObjectInterface getAnchorRenderObject()
+	{
+		return getRenderObject(1);
 	}
 
 	/** 鉤縄の持ち主 */
@@ -252,7 +272,7 @@ public class Kaginawa extends AbstractDynamicObject
 				kaginawa.setActive(true);
 				
 				// XXX 仮
-				Sprite anchor = me.sprites.get(1);
+				Sprite anchor = me.getAnchorRenderObject().getSprite();
 				anchor.setRotation(direction.angle());
 				
 				// 持ち主を初期化

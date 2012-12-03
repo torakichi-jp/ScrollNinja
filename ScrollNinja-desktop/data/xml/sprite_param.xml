@@ -20,7 +20,8 @@
 				<Height>64</Height>
 			</Texture>
 			<OriginY>-8.0</OriginY>
-			<!-- 待機アニメーション -->
+			<!-- 待機アニメーション -->iginY();
+		sprite.translate(originX, originY);
 			<Animation>
 				<Name>Stay</Name>
 				<StartX>4</StartX>
@@ -110,27 +111,25 @@
 		</Sprite>
 	</NinjaFoot>
 	
-	<!-- 鉤縄 -->
-	<Kaginawa>
-		<!-- 鉤 -->
-		<Anchor>
-			<Sprite>
-				<Texture>
-					<FilePath>weapon/kaginawa_anchor.png</FilePath>
-				</Texture>
-				<OriginX>-16</OriginX>
-			</Sprite>
-		</Anchor>
-		<!-- 縄 -->
-		<Rope>
-			<Sprite>
-				<Texture>
-					<FilePath>weapon/kaginawa_rope.png</FilePath>
-				</Texture>
-				<OriginX>-32</OriginX>
-			</Sprite>
-		</Rope>
-	</Kaginawa>
+	<!-- 鉤縄の鉤 -->
+	<KaginawaAnchor>
+		<Sprite>
+			<Texture>
+				<FilePath>weapon/kaginawa_anchor.png</FilePath>
+			</Texture>
+			<OriginX>-16</OriginX>
+		</Sprite>
+	</KaginawaAnchor>
+	
+	<!-- 鉤縄の縄 -->
+	<KaginawaRope>
+		<Sprite>
+			<Texture>
+				<FilePath>weapon/kaginawa_rope.png</FilePath>
+			</Texture>
+			<OriginX>-32</OriginX>
+		</Sprite>
+	</KaginawaRope>
 	
 	<!-- カンペ（コピペ用。ゲーム中では使わない） -->
 	<CunningPaper>

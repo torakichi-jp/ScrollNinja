@@ -5,8 +5,27 @@ import org.genshin.engine.system.Updatable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+/**
+ * 描画オブジェクトのインタフェース
+ * @author kou
+ * @since		1.0
+ * @version	1.0
+ */
 public interface RenderObjectInterface extends Updatable, Renderable
 {
+	/**
+	 * 描画オブジェクトを移動させる。
+	 * @param x		X座標の移動量
+	 * @param y		Y座標の移動量
+	 */
+	public void translate(float x, float y);
+	
+	/**
+	 * 描画オブジェクトを回転させる。
+	 * @param degrees		回転量（度）
+	 */
+	public void rotate(float degrees);
+	
 	/**
 	 * アニメーションを設定する。
 	 * @param name		アニメーションの名前
