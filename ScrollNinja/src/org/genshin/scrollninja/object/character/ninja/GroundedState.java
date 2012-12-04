@@ -86,12 +86,12 @@ class GroundedState extends AbstractNormalState
 	protected void updateMove(PlayerNinja me, float deltaTime)
 	{
 		//---- エフェクトを生成する。
-		final float movePower = me.controller.getMovePower();
+		final float movePower = me.controller.getMovePower() * me.moveDirection;
 		if(		me.controller.isDashStart() && movePower != 0.0f
 			||	me.controller.isMoveStart() && me.controller.isDash()	)
 		{
 			if(movePower != 0.0f)
-				new DashSmokeEffect(me.getPositionX(), me.getPositionY(), movePower > 0.0f);
+				new DashSmokeEffect(me.getPositionX(), me.getPositionY(), me.frontDirection.angle(), movePower > 0.0f);
 		}
 		
 		//---- 基本クラスの処理を実行する。
