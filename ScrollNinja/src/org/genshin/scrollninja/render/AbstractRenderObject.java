@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.render;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.render.animation.AnimationInterface;
@@ -145,7 +145,7 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	{
 		if(animations == null)
 		{
-			animations = new TreeMap<String, AnimationInterface>();
+			animations = new HashMap<String, AnimationInterface>();
 		}
 		animations.put(name, animation);
 	}

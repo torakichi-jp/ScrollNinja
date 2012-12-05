@@ -1,11 +1,14 @@
 package org.genshin.old.scrollninja;
 
+import java.util.logging.Logger;
+
 import org.genshin.old.scrollninja.object.BackgroundManager;
 import org.genshin.old.scrollninja.object.Stage;
 import org.genshin.old.scrollninja.object.StageManager;
 import org.genshin.scrollninja.GlobalParam;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -77,7 +80,7 @@ public class GameMain implements Screen{
 		gameState = GAME_RUNNING;
 		pauseState = PAUSE_INIT;
 	}
-
+	
 	//************************************************************
 	// Get
 	// ゲッターまとめ
@@ -177,7 +180,33 @@ public class GameMain implements Screen{
 	}
 
 	@Override
-	public void resize(int width, int height) {}
+	public void resize(int width, int height)
+	{
+		//---- アスペクト比を計算する
+		final float windowAspectRatio = (float)width / height;
+		final float viewportAspectRatio = camera.viewportWidth / camera.viewportHeight;
+		
+		//---- アスペクト比が等しくない場合、ビューポートを調整する
+		if( Math.abs(windowAspectRatio - viewportAspectRatio) > 1.0e-6 )
+		{
+			int newWidth = width;
+			int newHeight = height;
+			
+			// ウィンドウの横幅が広い
+			if(windowAspectRatio > viewportAspectRatio)
+			{
+				newWidth = (int)(height * viewportAspectRatio);
+			}
+			// ウィンドウの縦幅が広い
+			else
+			{
+				newHeight = (int)(width / viewportAspectRatio);
+			}
+			
+			// ビューポートを設定する
+			Gdx.gl.glViewport((width-newWidth)/2, (height-newHeight)/2, newWidth, newHeight);
+		}
+	}
 
 	@Override
 	public void show() {}

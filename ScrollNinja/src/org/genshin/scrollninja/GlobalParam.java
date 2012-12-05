@@ -1,9 +1,12 @@
 package org.genshin.scrollninja;
 
+import java.io.IOException;
+
 import org.genshin.engine.manager.RenderableManager;
 import org.genshin.engine.manager.UpdatableManager;
-import org.genshin.scrollninja.utils.XMLFactory;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
@@ -22,11 +25,21 @@ public enum GlobalParam
 	 */
 	private GlobalParam()
 	{
-		Element rootElement = XMLFactory.getInstance().get("data/xml/global_param.xml");
+		final XmlReader xmlReader = new XmlReader();
+		Element rootElement = null;
+		try
+		{
+			rootElement = xmlReader.parse(new FileHandle("data/xml/global_param.xml"));
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
-		//---- クライアント領域のサイズ
+		//---- クライアント領域のサイズなど
 		CLIENT_WIDTH = rootElement.getInt("ClientWidth", 640);
 		CLIENT_HEIGHT = rootElement.getInt("ClientHeight", 480);
+		FULLSCREEN = rootElement.getBoolean("Fullscreen", false);
 		
 		//---- 宇宙の法則
 		// 世界の単位
@@ -52,6 +65,9 @@ public enum GlobalParam
 
 	/** クライアント領域の縦幅 */
 	public final int CLIENT_HEIGHT;
+	
+	/** フルスクリーンフラグ */
+	public final boolean FULLSCREEN;
 	
 	/** 世界の単位 */
 	public final float WORLD_SCALE;

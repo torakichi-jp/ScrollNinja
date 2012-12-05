@@ -2,9 +2,12 @@
 
 <!-- グローバルパラメータ -->
 <GlobalParam>
-	<!-- クライアント領域のサイズ -->
+	<!-- クライアント領域の解像度 -->
 	<ClientWidth>1280</ClientWidth>
 	<ClientHeight>720</ClientHeight>
+	
+	<!-- フルスクリーンフラグ -->
+	<Fullscreen>false</Fullscreen>
 	
 	<!-- 世界の最高速度（毎秒）　初期値：128.0 -->
 	<MaxWorldVelocity>12800.0</MaxWorldVelocity>
