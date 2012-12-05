@@ -2,88 +2,84 @@ package org.genshin.scrollninja;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
+import org.genshin.old.scrollninja.GameMain;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.GL10;
 
-public class ScrollNinja extends Game {
-	public static Vector2 window;
-
-	// 定数　画面解像度
-	/*
-	public static final int XGA = 0;	// 4:3
-	public static final int HD = 1;		// 16:9
-	public static final int SXGA = 2;	// 5:4
-	public static final int WUXGA = 3;	// 16:10
-	*/
-
-	public static int aspectRatio;					// アスペクト比
-	public static boolean FULL_SCREEN = false;		// フルスクリーンかどうか
-	public static float scale;						// カメラ、画像の縮小サイズ
+/**
+ * ScrollNinja エントリポイント
+ * @author インターン生
+ * @author kou
+ * @since		1.0
+ * @version	1.0
+ */
+public class ScrollNinja extends Game
+{
+	@Override
+	public void create()
+	{
+		//---- 画面のクリアカラーを設定する。
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		
+		//---- 初期スクリーンを設定する。
+		setScreen(new GameMain(this, 0));
+	}
 
 	@Override
-	public void create() {
-		/**
-			事前に初期設定が必要ならここで
-			セーブデータとか読み込むのも多分ここ
-		*/
-		// ウインドウサイズ取得
-		getWindowSize();
-		// アスペクト比計算
-		//calculateAspectRatio();
-		// TODO 画面比によってスケーリング変えれる？
-		scale = 0.1f;
+	public void render()
+	{
+		//---- 画面をクリアする
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		//---- 基本クラスの処理を実行する。
+		super.render();
+		
+		//---- ゲーム内時間をカウントする。
+		GlobalParam.INSTANCE.frameCount++;
+		GlobalParam.INSTANCE.gameTime = Gdx.graphics.getDeltaTime();
+		
+		//---- [Alt] + [Enter] 入力でフルスクリーン切り替え（仮）
+		final boolean input = Gdx.input.isKeyPressed(Keys.ENTER);
+		if( Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT) )
+		{
+			if(!prevInput && input)
+			{
+				int newWidth = GlobalParam.INSTANCE.CLIENT_WIDTH;
+				int newHeight = GlobalParam.INSTANCE.CLIENT_HEIGHT;
+				final boolean newFullscreen = !Gdx.graphics.isFullscreen();
+				
+				if( newFullscreen )
+				{
+					final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+					newWidth = d.width;
+					newHeight = d.height;
+				}
+				
+				Gdx.graphics.setDisplayMode(newWidth, newHeight, newFullscreen);
+				getScreen().resize(newWidth, newHeight);
 
-		// TODO リリース時にはメニュー画面から開始する。
-		//setScreen(new MainMenu(this));	// メインメニュー読み込み
-		setScreen(new GameMain(this, 0));	// ゲームメイン読み込み
-	}
-
-	// ウインドウサイズ取得
-	public void getWindowSize() {
-		window = new Vector2();
-
-		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-
-		// ゲームのサイズ
-		window.x = 1280;
-		window.y = 720;
-
-		// TODO リリース時にはフルスクリーンか選ばせる。もしくはオプションか何かで設定したモードで起動する。
-		int message = JOptionPane.NO_OPTION;
-		//JOptionPane.showConfirmDialog(null, "フルスクリーンで起動しますか？", "test", JOptionPane.YES_NO_OPTION);
-		if(message == JOptionPane.OK_OPTION) {
-			// 自分のPCのウインドウサイズ
-			Gdx.graphics.setDisplayMode((int)d.getWidth(), (int)d.getHeight(), true);
+				if(Gdx.input.isCursorCatched())
+				{
+					Gdx.input.setCursorCatched(false);
+					Gdx.input.setCursorCatched(true);
+				}
+			}
+		}
+		prevInput = input;
+		
+		//---- [Esc] 入力でプログラムを終了する。
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE))
+		{
+			Gdx.app.exit();
+			return;
 		}
 	}
-
-	// アスペクト比計算
-	/*
-	public void calculateAspectRatio() {
-		// TODO スケールサイズは後で調整
-		if (window.x * 3 == window.y * 4) {
-			aspectRatio = XGA;
-			scale = 0.1f;
-		} else if (window.x * 9 == window.y * 16) {
-			aspectRatio = HD;
-			scale = 0.1f;
-		} else if (window.x * 5 == window.y * 4) {
-			aspectRatio = SXGA;
-			scale = 0.1f;
-		} else {//(window.x * 5 == window.y * 8)
-			aspectRatio = WUXGA;
-			scale = 0.1f;
-		}
-	}
-	*/
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		getScreen().dispose();
-	}
+	
+	/** 仮。 */
+	private boolean prevInput = false;
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- オブジェクト関連の設定 -->
+<ObjectParam>
+	<!-- 忍者 -->
+	<Ninja>
+		<!-- 走りの加速度（毎秒） -->
+		<RunAccel>2000.0</RunAccel>
+		<!-- 走りの最高速度（毎秒） -->
+		<RunMaxVelocity>200.0</RunMaxVelocity>
+		<!-- ダッシュの加速度（毎秒） -->
+		<DashAccel>4000.0</DashAccel>
+		<!-- 走りの最高速度　（毎秒） -->
+		<DashMaxVelocity>400.0</DashMaxVelocity>
+		<!-- ジャンプ力 -->
+		<JumpPower>500.0f</JumpPower>
+		<!-- 空中でジャンプできる回数 -->
+		<AerialJumpCount>1</AerialJumpCount>
+		<!-- ジャンプ以外で足が地面から離れた時に地面判定をし続ける時間　単位：フレーム数 -->
+		<GroundedJudgeTime>10</GroundedJudgeTime>
+	</Ninja>
+	
+	<!-- 鉤縄 -->
+	<Kaginawa>
+		<!-- 伸びる速度 -->
+		<SlackVelocity>2100.0</SlackVelocity>
+		<!-- 縮む速度 -->
+		<ShrinkVelocity>700.0</ShrinkVelocity>
+		<!-- 鉤縄の長さ -->
+		<Length>600.0</Length>
+	</Kaginawa>
+</ObjectParam>
+
