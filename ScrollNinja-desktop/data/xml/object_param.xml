@@ -18,6 +18,8 @@
 		<AerialJumpCount>1</AerialJumpCount>
 		<!-- ジャンプ以外で足が地面から離れた時に地面判定をし続ける時間　単位：フレーム数 -->
 		<GroundedJudgeTime>10</GroundedJudgeTime>
+		<!-- 天井への吸着状態を解除する時に加える力 -->
+		<LeaveSnapCeilingPower>200.0f</LeaveSnapCeilingPower>
 	</Ninja>
 	
 	<!-- 鉤縄 -->

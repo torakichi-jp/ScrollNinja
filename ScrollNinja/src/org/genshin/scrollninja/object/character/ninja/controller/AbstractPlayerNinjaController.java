@@ -82,7 +82,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	}
 
 	@Override
-	public boolean isLeaveSnap()
+	public boolean isLeaveSnapCeiling()
 	{
 		return isKaginawaRelease() || isAerialJump();
 	}

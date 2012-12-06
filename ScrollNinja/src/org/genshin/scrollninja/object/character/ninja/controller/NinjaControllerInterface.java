@@ -64,7 +64,7 @@ public interface NinjaControllerInterface
 	 * 天井への吸着をやめる操作状態を取得する。
 	 * @return		天井への吸着をやめる操作がある場合はtrue
 	 */
-	boolean isLeaveSnap();
+	boolean isLeaveSnapCeiling();
 	
 	/**
 	 * 攻撃の操作状態を取得する。
