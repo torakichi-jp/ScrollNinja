@@ -104,6 +104,12 @@ class GroundedState extends AbstractNormalState
 		if( me.controller.isJump() || isSnapCeiling(me) && me.controller.isLeaveSnap() )
 		{
 			jump(me);
+			
+			// 天井に吸着していた場合は、進行方向を逆転させる
+			if(isSnapCeiling(me))
+			{
+				me.moveDirection = -me.moveDirection;
+			}
 		}
 	}
 
