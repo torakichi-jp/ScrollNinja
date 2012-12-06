@@ -1,8 +1,6 @@
 package org.genshin.scrollninja;
 
 import java.awt.Dimension;
-import java.awt.DisplayMode;
-import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;

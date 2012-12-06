@@ -2,13 +2,13 @@ package org.genshin.scrollninja;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.logging.Logger;
 
 import org.genshin.old.scrollninja.GameMain;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 
 /**
@@ -39,38 +39,12 @@ public class ScrollNinja extends Game
 		//---- 基本クラスの処理を実行する。
 		super.render();
 		
+		//---- 状態別の処理を実行する。
+		state.invoke(this, Gdx.graphics.getDeltaTime());
+		
 		//---- ゲーム内時間をカウントする。
 		GlobalParam.INSTANCE.frameCount++;
 		GlobalParam.INSTANCE.gameTime = Gdx.graphics.getDeltaTime();
-		
-		//---- [Alt] + [Enter] 入力でフルスクリーン切り替え（仮）
-		final boolean input = Gdx.input.isKeyPressed(Keys.ENTER);
-		if( Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT) )
-		{
-			if(!prevInput && input)
-			{
-				int newWidth = GlobalParam.INSTANCE.CLIENT_WIDTH;
-				int newHeight = GlobalParam.INSTANCE.CLIENT_HEIGHT;
-				final boolean newFullscreen = !Gdx.graphics.isFullscreen();
-				
-				if( newFullscreen )
-				{
-					final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-					newWidth = d.width;
-					newHeight = d.height;
-				}
-				
-				Gdx.graphics.setDisplayMode(newWidth, newHeight, newFullscreen);
-				getScreen().resize(newWidth, newHeight);
-
-				if(Gdx.input.isCursorCatched())
-				{
-					Gdx.input.setCursorCatched(false);
-					Gdx.input.setCursorCatched(true);
-				}
-			}
-		}
-		prevInput = input;
 		
 		//---- [Esc] 入力でプログラムを終了する。
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE))
@@ -80,6 +54,111 @@ public class ScrollNinja extends Game
 		}
 	}
 	
-	/** 仮。 */
-	private boolean prevInput = false;
+	/**
+	 * 状態を変更する。
+	 * @param newState	新しい状態
+	 */
+	private void changeState(State newState)
+	{
+		if(state != newState)
+		{
+			state = newState;
+			state.initialize();
+		}
+	}
+	
+	/** ゲームの状態 */
+	private State state = State.MAIN;
+	
+	
+	/**
+	 * 状態管理
+	 */
+	private enum State
+	{
+		/** メイン状態 */
+		MAIN
+		{
+			@Override
+			void initialize()
+			{
+				prevInput = false;
+			}
+			
+			@Override
+			void invoke(ScrollNinja me, float deltaTime)
+			{
+				//---- [Alt] + [Enter] 入力でフルスクリーン切り替え（仮）
+				final boolean input = Gdx.input.isKeyPressed(Keys.ENTER);
+				if( Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT) )
+				{
+					if(!prevInput && input)
+					{
+						int newWidth = GlobalParam.INSTANCE.CLIENT_WIDTH;
+						int newHeight = GlobalParam.INSTANCE.CLIENT_HEIGHT;
+						final boolean newFullscreen = !Gdx.graphics.isFullscreen();
+						
+						if( newFullscreen )
+						{
+							final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+							newWidth = d.width;
+							newHeight = d.height;
+						}
+						
+						Gdx.graphics.setDisplayMode(newWidth, newHeight, newFullscreen);
+						
+						final Screen screen = me.getScreen();
+						screen.resize(newWidth, newHeight);
+						screen.pause();
+						
+						me.changeState(SWITCH_FULLSCREEN);
+					}
+				}
+				prevInput = input;
+			}
+			
+			/** 仮。 */
+			private boolean prevInput;
+		},
+		
+		/** フルスクリーンの切り替え状態 */
+		SWITCH_FULLSCREEN
+		{
+			@Override
+			void initialize()
+			{
+				timer = 0.3f;
+			}
+			
+			@Override
+			void invoke(ScrollNinja me, float deltaTime)
+			{
+				if(Gdx.input.isCursorCatched())
+				{
+					if( (timer -= deltaTime) > 0.0f )
+						return;
+					Gdx.input.setCursorCatched(false);
+					Gdx.input.setCursorCatched(true);
+				}
+				me.getScreen().resume();
+				me.changeState(State.MAIN);
+			}
+			
+			/** タイマー */
+			float timer;
+		}
+		;
+		
+		/**
+		 * 初期化する。
+		 */
+		abstract void initialize();
+		
+		/**
+		 * 処理を実行する。
+		 * @param me			自身を示すオブジェクト
+		 * @param deltaTime		経過時間
+		 */
+		abstract void invoke(ScrollNinja me, float deltaTime);
+	}
 }

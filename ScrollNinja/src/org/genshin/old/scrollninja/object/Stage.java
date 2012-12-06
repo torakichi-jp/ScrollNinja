@@ -17,7 +17,6 @@ import org.genshin.scrollninja.render.CameraTranslater;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Stage implements StageBase {
@@ -84,7 +83,7 @@ public class Stage implements StageBase {
 		
 		
 		// TODO 最終的には消すハズ
-		if( Gdx.input.isKeyPressed(Keys.H) )
+		if( Gdx.input.isKeyPressed(Keys.NUM_0) )
 		{
 			if(!prevInput)
 			{
@@ -103,10 +102,6 @@ public class Stage implements StageBase {
 	// 描画処理まとめ
 	//************************************************************
 	public void Draw() {
-		// 全部クリア
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
 		GameMain.spriteBatch.begin();											// 描画開始
 		{
