@@ -112,7 +112,7 @@ public class Background extends AbstractCollisionObject {
 
 		// ボディ作成
 		createBody(GameMain.world, bd);
-		createFixtureFromFile(fd, stageData.collisionData.fileName, stageData.collisionData.bodyName, sprites.get(MAIN).getWidth());
+		createFixtureFromFile(fd, stageData.collisionData.fileName, stageData.collisionData.bodyName, stageData.size.x);
 	}
 
 	/**************************************************

@@ -107,13 +107,17 @@ public class Stage implements StageBase {
 		{
 			BackgroundManager.backgroundList.Draw(0);
 			BackgroundManager.backgroundList.Draw(1);
+			BackgroundManager.backgroundList.Draw(2);
+			BackgroundManager.backgroundList.Draw(4);
+			BackgroundManager.backgroundList.Draw(3);
 			StageObjectManager.Draw();
 			renderableManager.render();
 			PlayerManager.Draw();
 			EnemyManager.Draw();
 			EffectManager.Draw();
 			ItemManager.Draw();
-			BackgroundManager.backgroundList.Draw(2);
+			BackgroundManager.backgroundList.Draw(5);
+			BackgroundManager.backgroundList.Draw(6);
 //			GameMain.playerInfo.Draw();
 			cursor.render();
 		}
