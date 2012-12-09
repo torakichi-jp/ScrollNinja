@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 
@@ -83,6 +85,7 @@ class AerialState extends AbstractNormalState
 		//---- 地面と接触したら地上状態へ
 		if( me.isGrounded() )
 		{
+			new JumpSmokeEffect(me.getPositionX(), me.getPositionY());
 			return new GroundedState(me);
 		}
 		

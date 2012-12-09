@@ -147,7 +147,7 @@
 			<Texture>
 				<FilePath>effect/jump_smoke.png</FilePath>
 			</Texture>
-			<OriginY>-24.0</OriginY>
+			<OriginY>8.0</OriginY>
 		</Sprite>
 	</JumpSmoke>
 	
