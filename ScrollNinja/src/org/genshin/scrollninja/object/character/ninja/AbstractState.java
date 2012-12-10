@@ -114,8 +114,10 @@ abstract class AbstractState implements StateInterface
 		setAxisImpulse(me, me.jumpDirection, NinjaParam.INSTANCE.JUMP_POWER);
 		
 		//---- エフェクトを生成する。
-		final Vector2 position = me.getBody().getPosition();
-		new JumpSmokeEffect(position.x, position.y);
+		final Body body = me.getBody();
+		final Vector2 position = body.getPosition();
+		final float rotation = (float)Math.toDegrees(body.getAngle());
+		new JumpSmokeEffect(position.x, position.y, rotation);
 	}
 	
 	/**
@@ -127,8 +129,10 @@ abstract class AbstractState implements StateInterface
 		setAxisImpulse(me, me.jumpDirection, NinjaParam.INSTANCE.LEAVE_SNAP_CEILING_POWER);
 		
 		//---- エフェクトを生成する。
-		final Vector2 position = me.getBody().getPosition();
-		new JumpSmokeEffect(position.x, position.y);
+		final Body body = me.getBody();
+		final Vector2 position = body.getPosition();
+		final float rotation = (float)Math.toDegrees(body.getAngle());
+		new JumpSmokeEffect(position.x, position.y, rotation);
 	}
 	
 	/**

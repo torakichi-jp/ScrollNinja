@@ -85,7 +85,7 @@ class AerialState extends AbstractNormalState
 		//---- 地面と接触したら地上状態へ
 		if( me.isGrounded() )
 		{
-			new JumpSmokeEffect(me.getPositionX(), me.getPositionY());
+			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), 0.0f);
 			return new GroundedState(me);
 		}
 		
