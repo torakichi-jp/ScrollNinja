@@ -10,6 +10,7 @@ import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
+import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -65,6 +66,12 @@ public class PlayerNinja extends AbstractCharacter {
 		
 		// 鉤縄を更新
 		kaginawa.update(deltaTime);
+		
+		//---- デバッグ文字列
+		DebugString.add("");
+		DebugString.add("Ninja State : " + state.getClass().getSimpleName());
+		DebugString.add("Ninja Position : " + getPositionX() + ", " + getPositionY());
+		DebugString.add("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
 	}
 	
 	@Override

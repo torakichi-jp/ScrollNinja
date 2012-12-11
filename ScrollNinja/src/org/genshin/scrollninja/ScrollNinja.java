@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import org.genshin.old.scrollninja.GameMain;
+import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -38,6 +39,11 @@ public class ScrollNinja extends Game
 		
 		//---- 基本クラスの処理を実行する。
 		super.render();
+		
+		//---- デバッグ文字列を描画する。
+		DebugString.render();
+		DebugString.add("Frame Count : " + GlobalParam.INSTANCE.frameCount);
+		DebugString.add("FPS : " + Gdx.graphics.getFramesPerSecond());
 		
 		//---- 状態別の処理を実行する。
 		state.invoke(this, Gdx.graphics.getDeltaTime());
