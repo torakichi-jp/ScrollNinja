@@ -67,6 +67,9 @@ public class PlayerNinja extends AbstractCharacter {
 		// 鉤縄を更新
 		kaginawa.update(deltaTime);
 		
+		//---- 残像を付けてみる。
+//		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), (float)Math.toDegrees(getBody().getAngle()));
+		
 		//---- デバッグ文字列
 		DebugString.add("");
 		DebugString.add("Ninja State : " + state.getClass().getSimpleName());

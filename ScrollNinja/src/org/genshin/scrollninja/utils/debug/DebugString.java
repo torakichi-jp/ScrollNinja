@@ -13,11 +13,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public final class DebugString
 {
 	/**
+	 * 初期化する。
+	 * @param enabled	有効フラグ
+	 */
+	public static final void initialize(boolean enabled)
+	{
+		if( debugFontImpl == null )
+			debugFontImpl = enabled ? new DebugFontImpl() : new NullDebugFontImpl();
+	}
+	
+	/**
 	 * デバッグフォントを描画する。
 	 */
 	public static final void render()
 	{
-		createInstance();
 		debugFontImpl.render();
 	}
 	
@@ -27,17 +36,7 @@ public final class DebugString
 	 */
 	public static final void add(String str)
 	{
-		createInstance();
 		debugFontImpl.add(str);
-	}
-	
-	/**
-	 * インスタンスを生成する。
-	 */
-	private static void createInstance()
-	{
-		if( debugFontImpl == null )
-			debugFontImpl = new DebugFontImpl();
 	}
 	
 	/** 実装オブジェクト */

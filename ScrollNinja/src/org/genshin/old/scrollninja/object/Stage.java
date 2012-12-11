@@ -14,6 +14,7 @@ import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.render.CameraTranslater;
+import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -55,6 +56,9 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update(float deltaTime) {
+		DebugString.add("Update Count : " + updatableManager.getCount());
+		DebugString.add("Render Count : " + renderableManager.getCount());
+		
 		cursor.update(deltaTime);
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update(deltaTime);

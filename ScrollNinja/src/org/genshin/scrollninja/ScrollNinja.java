@@ -24,6 +24,9 @@ public class ScrollNinja extends Game
 	@Override
 	public void create()
 	{
+		//---- デバッグ文字列の初期化
+		DebugString.initialize(true);
+		
 		//---- 画面のクリアカラーを設定する。
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
