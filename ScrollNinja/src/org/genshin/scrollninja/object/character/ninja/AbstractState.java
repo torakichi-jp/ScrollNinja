@@ -111,22 +111,50 @@ abstract class AbstractState implements StateInterface
 	 */
 	protected final void jump(PlayerNinja me)
 	{
+		setAxisImpulse(me, me.jumpDirection, NinjaParam.INSTANCE.JUMP_POWER);
+		
+		//---- エフェクトを生成する。
+		final Body body = me.getBody();
+		final Vector2 position = body.getPosition();
+		final float rotation = (float)Math.toDegrees(body.getAngle());
+		new JumpSmokeEffect(position.x, position.y, rotation);
+	}
+	
+	/**
+	 * 天井への吸着を解除する処理を実行する。
+	 * @param me			自身を示す忍者オブジェクト
+	 */
+	protected final void leaveSnapCeiling(PlayerNinja me)
+	{
+		setAxisImpulse(me, me.jumpDirection, NinjaParam.INSTANCE.LEAVE_SNAP_CEILING_POWER);
+		
+		//---- エフェクトを生成する。
+		final Body body = me.getBody();
+		final Vector2 position = body.getPosition();
+		final float rotation = (float)Math.toDegrees(body.getAngle());
+		new JumpSmokeEffect(position.x, position.y, rotation);
+	}
+	
+	/**
+	 * 任意軸方向の速度を殺してから衝撃を与える。
+	 * @param me			自身を示す忍者オブジェクト
+	 * @param axis			軸（正規化済）
+	 * @param impulse		衝撃
+	 */
+	private final void setAxisImpulse(PlayerNinja me, Vector2 axis, float impulse)
+	{
 		final Body body = me.getBody();
 		
 		// 一度ジャンプ方向の力を殺す
 		final Vector2 velocity = body.getLinearVelocity();
-		final float power = me.jumpDirection.dot(velocity);
-		body.setLinearVelocity(velocity.sub(me.jumpDirection.tmp().mul(power)));
+		final float power = axis.dot(velocity);
+		body.setLinearVelocity(velocity.sub(axis.tmp().mul(power)));
 		
 		// ジャンプ力を与える
-		body.applyLinearImpulse(me.jumpDirection.x * NinjaParam.INSTANCE.JUMP_POWER, me.jumpDirection.y * NinjaParam.INSTANCE.JUMP_POWER, me.getPositionX(), me.getPositionY());
+		body.applyLinearImpulse(axis.x * impulse, axis.y * impulse, me.getPositionX(), me.getPositionY());
 		
 		// 地面との接触判定を消し飛ばす
 		me.groundedTimer = 0;
-		
-		//---- エフェクトを生成する。
-		final Vector2 position = body.getPosition();
-		new JumpSmokeEffect(position.x, position.y);
 	}
 	
 	/**

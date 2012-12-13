@@ -85,6 +85,9 @@ class GroundedState extends AbstractNormalState
 	@Override
 	protected void updateMove(PlayerNinja me, float deltaTime)
 	{
+		//---- 基本クラスの処理を実行する。
+		super.updateMove(me, deltaTime);
+		
 		//---- エフェクトを生成する。
 		final float movePower = me.controller.getMovePower() * me.moveDirection;
 		if(		me.controller.isDashStart() && movePower != 0.0f
@@ -93,15 +96,21 @@ class GroundedState extends AbstractNormalState
 			if(movePower != 0.0f)
 				new DashSmokeEffect(me.getPositionX(), me.getPositionY(), me.frontDirection.angle(), movePower > 0.0f);
 		}
-		
-		//---- 基本クラスの処理を実行する。
-		super.updateMove(me, deltaTime);
 	}
 
 	@Override
 	protected void updateJump(PlayerNinja me)
 	{
-		if( me.controller.isJump() || isSnapCeiling(me) && me.controller.isLeaveSnap() )
+		if( isSnapCeiling(me) )
+		{
+			if( me.controller.isLeaveSnapCeiling() )
+			{
+				// 天井に吸着していた場合は、進行方向を逆転させる
+				me.moveDirection = -me.moveDirection;
+				leaveSnapCeiling(me);
+			}
+		}
+		else if( me.controller.isJump() )
 		{
 			jump(me);
 		}

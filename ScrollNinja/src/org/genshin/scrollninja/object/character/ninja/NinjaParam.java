@@ -41,6 +41,9 @@ enum NinjaParam
 			JUMP_POWER			= rootElement.getFloat("JumpPower") * worldScale;
 			AERIAL_JUMP_COUNT	= rootElement.getInt("AerialJumpCount");
 			GROUNDED_JUDGE_TIME	= rootElement.getInt("GroundedJudgeTime");
+
+			// 天井への吸着を解除する時の力
+			LEAVE_SNAP_CEILING_POWER	= rootElement.getFloat("LeaveSnapCeilingPower") * worldScale;
 		}
 		
 		//---- 衝突関連
@@ -67,6 +70,9 @@ enum NinjaParam
 	
 	/** ダッシュの最高速度 */
 	final float DASH_MAX_VELOCITY;
+	
+	/** 天井への吸着をやめる時に発生する力 */
+	final float LEAVE_SNAP_CEILING_POWER;
 	
 	/** ジャンプ力 */
 	final float JUMP_POWER;

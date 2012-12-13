@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.genshin.engine.manager.RenderableManager;
 import org.genshin.engine.manager.UpdatableManager;
 
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -29,7 +30,8 @@ public enum GlobalParam
 		Element rootElement = null;
 		try
 		{
-			rootElement = xmlReader.parse(new FileHandle("data/xml/global_param.xml"));
+			final class InternalFileHandle extends FileHandle { InternalFileHandle(String fileName) { super(fileName, FileType.Internal); } }
+			rootElement = xmlReader.parse(new InternalFileHandle("data/xml/global_param.xml"));
 		}
 		catch (IOException e)
 		{

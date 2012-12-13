@@ -1,7 +1,5 @@
 package org.genshin.old.scrollninja;
 
-import java.util.logging.Logger;
-
 import org.genshin.old.scrollninja.object.BackgroundManager;
 import org.genshin.old.scrollninja.object.Stage;
 import org.genshin.old.scrollninja.object.StageManager;
@@ -28,32 +26,16 @@ import com.badlogic.gdx.physics.box2d.World;
 // 初期化処理は今はコンストラクタでやってますがあとで追加していきます。
 
 public class GameMain implements Screen{
-	private Game						scrollNinja;
-	private Stage 						stage;			// ステージ
+	private Game							scrollNinja;
+	private Stage 							stage;			// ステージ
 	public static World					world;			// ワールド
-	public static OrthographicCamera	camera;			// カメラ
-	public static SpriteBatch			spriteBatch;	// スプライトバッチ
-//	public static Interface 			playerInfo;		// インターフェース
-	public static Pause					pause;			// ポーズ
+	public static OrthographicCamera		camera;			// カメラ
+	public static SpriteBatch				spriteBatch;	// スプライトバッチ
 
 	private int							stageNum;		// ステージナンバー
-	private int							fps 		= 60;
-	private long 						error 		= 0;
-	private long						idealSleep	= (1000 << 16) / fps;
-	private long						newTime		= System.currentTimeMillis() << 16;
-	private long						oldTime;
-	private long						sleepTime	= idealSleep - (newTime - oldTime) - error; // 休止できる時間
-
-	// ゲームの状態
-	public static int gameState;
-	public final static int GAME_RUNNING	= 0;	// ゲーム中
-	public final static int GAME_PAUSED	= 1;	// 一時停止中
-	public final static int GO_TO_MENU		= 9;	// メニュー画面へ
 	
-	// ポーズの状態
-	public static int pauseState;
-	public final static int PAUSE_INIT   = 0;
-	public final static int PAUSE_UPDATE = 1;
+	private boolean paused = false;
+	
 	
 	/**
 	 * コンストラクタ
@@ -71,14 +53,10 @@ public class GameMain implements Screen{
 		spriteBatch 		= new SpriteBatch();
 		stageNum			= num;
 		stage				= new Stage(stageNum);
-//		playerInfo			= new Interface();
 
 		BackgroundManager.CreateBackground(stageNum, true);
 		StageManager.ChangeStage(stage);
 		StageManager.GetNowStage().Init();
-
-		gameState = GAME_RUNNING;
-		pauseState = PAUSE_INIT;
 	}
 	
 	//************************************************************
@@ -95,88 +73,11 @@ public class GameMain implements Screen{
 	//************************************************************
 	@Override
 	public void render(float delta) {
-		switch (gameState) {
-		// ゲーム中
-		case GAME_RUNNING:
-			oldTime = newTime;
-
+		if(!paused)
+		{
 			StageManager.Update(delta);
-			StageManager.Draw();
-			FPS();
-			break;
-		// ゲーム一時停止
-		case GAME_PAUSED:
-			switch(pauseState) {
-			case PAUSE_INIT:
-				InitPause();
-				break;
-			case PAUSE_UPDATE:
-				updatePause();
-				DrawPause();
-				break;
-			}
-			break;
-		// メインメニューへ戻る
-		case GO_TO_MENU:
-			stage.dispose();
-			scrollNinja.setScreen(new MainMenu(scrollNinja));
-			break;
 		}
-	}
-
-	//************************************************************
-	// FPS
-	// FPS処理。汚いので関数化
-	//************************************************************
-	public void FPS() {
-		newTime = System.currentTimeMillis() << 16;
-		if (sleepTime < 0x20000) sleepTime = 0x20000; // 最低でも2msは休止
-		oldTime = newTime;
-		try {
-			Thread.sleep(sleepTime >> 16);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} // 休止
-		newTime = System.currentTimeMillis() << 16;
-		error = newTime - oldTime - sleepTime; // 休止時間の誤差
-	}
-
-	/**
-	 * updatePause
-	 * ゲーム一時停止中の更新
-	 */
-	public void updatePause() {
-		pause.update();
-
-		if(pause.GetgotoMainFlag()) {
-			pause.SetgotoMainFlag(false);
-			gameState = GAME_RUNNING;
-			pauseState = PAUSE_INIT;
-		}
-
-		if(pause.GetgotoTitleFlag()) {
-			pause.SetgotoTitleFlag(false);
-			gameState = GO_TO_MENU;
-			pauseState = PAUSE_INIT;
-
-		}
-	}
-
-	/**
-	 * DrawPause
-	 * ゲーム一時停止中の描画
-	 */
-	public void DrawPause() {
-		pause.draw();
-	}
-	
-	/*
-	 * InitPause
-	 * キャラクターの描画位置初期化
-	 * */
-	public void InitPause() {
-		pause.Init();
-		pauseState = PAUSE_UPDATE;
+		StageManager.Draw();
 	}
 
 	@Override
@@ -215,13 +116,16 @@ public class GameMain implements Screen{
 	public void hide() {}
 
 	@Override
-	public void pause() {
-		if (gameState == GAME_RUNNING)
-			gameState = GAME_PAUSED;
+	public void pause()
+	{
+		paused = true;
 	}
 
 	@Override
-	public void resume() {}
+	public void resume()
+	{
+		paused = false;
+	}
 
 	@Override
 	public void dispose() {

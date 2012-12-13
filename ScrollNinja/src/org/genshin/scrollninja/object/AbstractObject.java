@@ -29,6 +29,7 @@ public abstract class AbstractObject implements ObjectInterface
 	public void dispose()
 	{
 		sprites.clear();
+		renderObjects.clear();
 	}
 
 	@Override

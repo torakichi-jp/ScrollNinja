@@ -14,10 +14,10 @@ import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.render.CameraTranslater;
+import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Stage implements StageBase {
@@ -56,6 +56,9 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update(float deltaTime) {
+		DebugString.add("Update Count : " + updatableManager.getCount());
+		DebugString.add("Render Count : " + renderableManager.getCount());
+		
 		cursor.update(deltaTime);
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
 		EnemyManager.Update(deltaTime);
@@ -84,7 +87,7 @@ public class Stage implements StageBase {
 		
 		
 		// TODO 最終的には消すハズ
-		if( Gdx.input.isKeyPressed(Keys.H) )
+		if( Gdx.input.isKeyPressed(Keys.NUM_0) )
 		{
 			if(!prevInput)
 			{
@@ -103,22 +106,22 @@ public class Stage implements StageBase {
 	// 描画処理まとめ
 	//************************************************************
 	public void Draw() {
-		// 全部クリア
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
 		GameMain.spriteBatch.setProjectionMatrix(GameMain.camera.combined);		// プロジェクション行列のセット
 		GameMain.spriteBatch.begin();											// 描画開始
 		{
 			BackgroundManager.backgroundList.Draw(0);
 			BackgroundManager.backgroundList.Draw(1);
+			BackgroundManager.backgroundList.Draw(2);
+			BackgroundManager.backgroundList.Draw(4);
+			BackgroundManager.backgroundList.Draw(3);
 			StageObjectManager.Draw();
 			renderableManager.render();
 			PlayerManager.Draw();
 			EnemyManager.Draw();
 			EffectManager.Draw();
 			ItemManager.Draw();
-			BackgroundManager.backgroundList.Draw(2);
+			BackgroundManager.backgroundList.Draw(5);
+			BackgroundManager.backgroundList.Draw(6);
 //			GameMain.playerInfo.Draw();
 			cursor.render();
 		}

@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -65,6 +66,7 @@ class SnapTerrainState extends AbstractState
 			{
 				me.updateMoveDirection();
 			}
+			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), me.frontDirection.angle());
 			return new GroundedState(me);
 		}
 		

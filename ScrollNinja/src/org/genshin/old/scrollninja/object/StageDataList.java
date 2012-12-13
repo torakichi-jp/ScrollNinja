@@ -17,7 +17,7 @@ public class StageDataList {
 			final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
 			
 			// ステージ０設定
-			data.size.set(4096.0f * worldScale, 2668.0f * worldScale);
+			data.size.set(3840.0f * worldScale, 2500.0f * worldScale);
 			data.startPosition.set(data.size.x * 0.5f, data.size.y * 0.5f);
 			
 			data.collisionData.fileName = "data/stages/test.json";
@@ -41,11 +41,39 @@ public class StageDataList {
 			
 			{
 				StageData.LayerData layer = data.new LayerData();
-				layer.scale = 0.5f;
+				layer.scale = 1920.0f / 3840.0f;
 				
 				StageData.LayerData.BGData bg = layer.new BGData();
-				bg.textureFileName = "data/textures/stage/test_far.png";
+				bg.textureFileName = "data/textures/stage/test_far_03.png";
 				bg.size.set(4096.0f * worldScale, 4096.0f * worldScale);
+				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
+				layer.bgData.add(bg);
+				
+				data.layerData.add(layer);
+			}
+			
+			{
+				StageData.LayerData layer = data.new LayerData();
+				layer.scale = 2560.0f / 3840.0f;
+				final float scale = 3840.0f / 2560.0f;
+				
+				StageData.LayerData.BGData bg = layer.new BGData();
+				bg.textureFileName = "data/textures/stage/test_far_02.png";
+				bg.size.set(4096.0f * worldScale * scale, 2048.0f * worldScale * scale);
+				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
+				layer.bgData.add(bg);
+				
+				data.layerData.add(layer);
+			}
+			
+			{
+				StageData.LayerData layer = data.new LayerData();
+				layer.scale = 2700.0f / 3840.0f;
+				final float scale = 3840.0f / 2700.0f;
+				
+				StageData.LayerData.BGData bg = layer.new BGData();
+				bg.textureFileName = "data/textures/stage/test_far_01.png";
+				bg.size.set(4096.0f * worldScale * scale, 2048.0f * worldScale * scale);
 				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
 				layer.bgData.add(bg);
 				
@@ -67,10 +95,37 @@ public class StageDataList {
 			
 			{
 				StageData.LayerData layer = data.new LayerData();
+				layer.scale = 1.0f;
+				
+				StageData.LayerData.BGData bg = layer.new BGData();
+				bg.textureFileName = "data/textures/stage/test_near_01.png";
+				bg.size.set(4096.0f * worldScale, 4096.0f * worldScale);
+				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
+				layer.bgData.add(bg);
+				
+				data.layerData.add(layer);
+			}
+			
+			{
+				StageData.LayerData layer = data.new LayerData();
+				layer.scale = 3920.0f / 3840.0f;
+				final float scale = 3840.0f / 3920.0f;
+				
+				StageData.LayerData.BGData bg = layer.new BGData();
+				bg.textureFileName = "data/textures/stage/test_near_02.png";
+				bg.size.set(4096.0f * worldScale * scale, 4096.0f * worldScale * scale);
+				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
+				layer.bgData.add(bg);
+				
+				data.layerData.add(layer);
+			}
+			
+			{
+				StageData.LayerData layer = data.new LayerData();
 				layer.scale = 4.0f;
 				
 				StageData.LayerData.BGData bg = layer.new BGData();
-				bg.textureFileName = "data/textures/stage/test_near.png";
+				bg.textureFileName = "data/textures/stage/test_near_03.png";
 				bg.size.set(4096.0f * worldScale, 512.0f * worldScale);
 				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
 				layer.bgData.add(bg);

@@ -35,6 +35,7 @@ public abstract class AbstractProcessManager<T>
 		
 		//---- 対応する処理優先度のリストにオブジェクトを追加する。
 		list.add(object);
+		objectCount++;
 	}
 	
 	/**
@@ -51,7 +52,8 @@ public abstract class AbstractProcessManager<T>
 			return;
 		
 		//---- リストからオブジェクトを削除する。
-		list.remove(object);
+		if(list.remove(object))
+			objectCount--;
 	}
 	
 	/**
@@ -63,6 +65,16 @@ public abstract class AbstractProcessManager<T>
 		{
 			list.clear();
 		}
+		objectCount = 0;
+	}
+	
+	/**
+	 * 管理オブジェクトの数を取得する。
+	 * @return		管理オブジェクトの数
+	 */
+	public int getCount()
+	{
+		return objectCount;
 	}
 	
 	/**
@@ -91,8 +103,13 @@ public abstract class AbstractProcessManager<T>
 	 */
 	protected abstract void processOne(T object);
 
+	
 	/** 管理オブジェクトを格納するマップ */
 	private final Map<Integer, List<T>> objects = new TreeMap<Integer, List<T>>();
 	
+	/** 管理オブジェクトの数 */
+	private int objectCount = 0;
+	
+	/** 実行用のリスト（仮実装） */
 	private final List<T> processList = new ArrayList<T>(100);
 }
