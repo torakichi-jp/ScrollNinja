@@ -56,8 +56,8 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update(float deltaTime) {
-		DebugString.add("Update Count : " + updatableManager.getCount());
-		DebugString.add("Render Count : " + renderableManager.getCount());
+		DebugString.add("Update Count : " + updatableManager.size());
+		DebugString.add("Render Count : " + renderableManager.size());
 		
 		cursor.update(deltaTime);
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
