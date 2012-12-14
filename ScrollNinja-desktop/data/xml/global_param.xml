@@ -13,7 +13,7 @@
 	<MaxWorldVelocity>12800.0</MaxWorldVelocity>
 	
 	<!-- 重力加速度（毎秒）　初期値：1000.0 -->
-	<Gravity>1000.0</Gravity>
+	<Gravity>800.0</Gravity>
 	
 	<!-- XMLファイルを格納するディレクトリ -->
 	<XMLDirectoryPath>data/xml/</XMLDirectoryPath>

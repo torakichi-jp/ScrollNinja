@@ -35,10 +35,11 @@ public class AfterimageEffect extends AbstractEffect
 		}
 
 		//---- 各種パラメータ設定
-		final float r = 0.0f;
-		final float g = 0.0f;
+		final float r = 0.3f;
+		final float g = 0.3f;
 		final float b = 0.0f;
-		setColorInterpolation(r, g, b, 1.0f, r, g, b, 0.0f);
+		final float startA = 0.5f;
+		setColorInterpolation(r, g, b, startA, r, g, b, 0.0f);
 	}
 
 	@Override
