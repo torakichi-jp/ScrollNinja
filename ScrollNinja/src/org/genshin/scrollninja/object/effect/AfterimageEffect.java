@@ -38,7 +38,7 @@ public class AfterimageEffect extends AbstractEffect
 		final float r = 0.3f;
 		final float g = 0.3f;
 		final float b = 0.0f;
-		final float startA = 0.5f;
+		final float startA = 0.7f;
 		setColorInterpolation(r, g, b, startA, r, g, b, 0.0f);
 	}
 

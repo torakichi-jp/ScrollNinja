@@ -103,7 +103,7 @@ public class Background extends AbstractCollisionObject {
 		
 		// 透明度（仮）
 		Sprite sprite = sprites.get(6);
-		sprite.setColor(1.0f, 1.0f, 1.0f, 0.2f);
+		sprite.setColor(1.0f, 1.0f, 1.0f, 0.25f);
 		sprite.getTexture().setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 		sprite.setRegion(0.0f, 0.0f, 8.0f, 8.0f);
 //		sprites.get(8).setColor(1.0f, 1.0f, 1.0f, 0.5f);

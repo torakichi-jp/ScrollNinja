@@ -14,10 +14,16 @@ import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.render.CameraTranslater;
+import org.genshin.scrollninja.utils.TextureFactory;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Stage implements StageBase {
@@ -37,6 +43,13 @@ public class Stage implements StageBase {
 	
 	private boolean prevInput;
 	private boolean renderDebug = false;
+	
+	private Sprite screenEdgeSprite = null;
+	private final Matrix4 tmpMatrix = new Matrix4(); 
+
+//	private Sprite screenNoiseSprite = null;
+	private Sprite logoSprite = null;
+	private final SpriteBatch spriteBatch = new SpriteBatch(50);
 
 	// コンストラクタ
 	public Stage(int num){
@@ -46,6 +59,18 @@ public class Stage implements StageBase {
 		renderer = new Box2DDebugRenderer();
 		
 		cursor = new Cursor(GameMain.camera, 2.0f * GlobalParam.INSTANCE.WORLD_SCALE);
+		
+		// 超　仮
+		{
+			final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+			screenEdgeSprite = new Sprite( TextureFactory.getInstance().get("data/textures/gui/screen_edge.png") );
+//			screenNoiseSprite = new Sprite( TextureFactory.getInstance().get("data/textures/gui/screen_noise.png") );
+			logoSprite = new Sprite( TextureFactory.getInstance().get("data/textures/logo_alpha.png") );
+//			screenNoiseSprite.setSize(screenNoiseSprite.getWidth()*worldScale, screenNoiseSprite.getHeight()*worldScale);
+			logoSprite.setSize(logoSprite.getWidth()*worldScale, logoSprite.getHeight()*worldScale);
+			spriteBatch.setBlendFunction(GL10.GL_ZERO, GL10.GL_SRC_COLOR);
+			tmpMatrix.setToOrtho2D(0, 0, 1280, 720);
+		}
 
 		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
 		GlobalParam.INSTANCE.currentRenderableManager = renderableManager;
@@ -126,8 +151,19 @@ public class Stage implements StageBase {
 			BackgroundManager.backgroundList.Draw(8);
 //			GameMain.playerInfo.Draw();
 			cursor.render();
+			
+			GameMain.spriteBatch.setProjectionMatrix(tmpMatrix);
+			screenEdgeSprite.draw(GameMain.spriteBatch);
 		}
 		GameMain.spriteBatch.end();										// 描画終了
+
+		final Camera camera = GameMain.camera;
+		spriteBatch.setProjectionMatrix(camera.combined);
+		logoSprite.setPosition(camera.position.x + camera.viewportWidth * 0.5f - logoSprite.getWidth(), camera.position.y - camera.viewportHeight * 0.5f);
+		spriteBatch.begin();
+//		screenNoiseSprite.draw(spriteBatch);
+		logoSprite.draw(spriteBatch);
+		spriteBatch.end();
 
 		// TODO リリース前にこの処理をクリア直後に持ってくる
 		if(renderDebug)	renderer.render(GameMain.world, GameMain.camera.combined);
