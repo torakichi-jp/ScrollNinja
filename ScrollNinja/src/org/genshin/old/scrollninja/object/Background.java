@@ -16,6 +16,7 @@ import org.genshin.scrollninja.utils.TextureFactory;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -46,6 +47,8 @@ public class Background extends AbstractCollisionObject {
 	// 変数宣言
 	private int				stageNum;		// ステージ番号
 	private StageData 		stageData;		// ステージのデータ
+	
+	private final Vector2 lightAnimVelocity = new Vector2(-0.0005f, -0.0005f);
 
 	/**
 	 *  コンストラクタ
@@ -97,6 +100,13 @@ public class Background extends AbstractCollisionObject {
 				sprites.add(sprite);
 			}
 		}
+		
+		// 透明度（仮）
+		Sprite sprite = sprites.get(6);
+		sprite.setColor(1.0f, 1.0f, 1.0f, 0.2f);
+		sprite.getTexture().setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+		sprite.setRegion(0.0f, 0.0f, 8.0f, 8.0f);
+//		sprites.get(8).setColor(1.0f, 1.0f, 1.0f, 0.5f);
 	}
 
 	/**************************************************
@@ -137,6 +147,12 @@ public class Background extends AbstractCollisionObject {
 				cameraYRatio * stageSize.y * (1.0f - layerScale) + bgPosition.y * layerScale
 			);
 		}
+		
+		final Sprite sprite = sprites.get(6);
+		sprite.setU(sprite.getU() + lightAnimVelocity.x);
+		sprite.setU2(sprite.getU2() + lightAnimVelocity.x);
+		sprite.setV(sprite.getV() + lightAnimVelocity.y);
+		sprite.setV2(sprite.getV2() + lightAnimVelocity.y);
 	}
 
 	@Override

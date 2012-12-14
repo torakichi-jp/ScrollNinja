@@ -112,8 +112,8 @@ public class Stage implements StageBase {
 			BackgroundManager.backgroundList.Draw(0);
 			BackgroundManager.backgroundList.Draw(1);
 			BackgroundManager.backgroundList.Draw(2);
-			BackgroundManager.backgroundList.Draw(4);
 			BackgroundManager.backgroundList.Draw(3);
+			BackgroundManager.backgroundList.Draw(4);
 			StageObjectManager.Draw();
 			renderableManager.render();
 			PlayerManager.Draw();
@@ -122,6 +122,8 @@ public class Stage implements StageBase {
 			ItemManager.Draw();
 			BackgroundManager.backgroundList.Draw(5);
 			BackgroundManager.backgroundList.Draw(6);
+			BackgroundManager.backgroundList.Draw(7);
+			BackgroundManager.backgroundList.Draw(8);
 //			GameMain.playerInfo.Draw();
 			cursor.render();
 		}
