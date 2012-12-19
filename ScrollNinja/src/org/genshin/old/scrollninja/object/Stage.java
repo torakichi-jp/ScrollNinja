@@ -49,7 +49,11 @@ public class Stage implements StageBase {
 
 //	private Sprite screenNoiseSprite = null;
 	private Sprite logoSprite = null;
+	private Sprite miniInputGuideSprite = null;
+	private Sprite fullInputGuideSprite = null;
 	private final SpriteBatch spriteBatch = new SpriteBatch(50);
+	private boolean prevInputF1 = false;
+	private boolean renderFullInputGuide = false;
 
 	// コンストラクタ
 	public Stage(int num){
@@ -64,12 +68,11 @@ public class Stage implements StageBase {
 		{
 			final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
 			screenEdgeSprite = new Sprite( TextureFactory.getInstance().get("data/textures/gui/screen_edge.png") );
-//			screenNoiseSprite = new Sprite( TextureFactory.getInstance().get("data/textures/gui/screen_noise.png") );
-			logoSprite = new Sprite( TextureFactory.getInstance().get("data/textures/logo_alpha.png") );
-//			screenNoiseSprite.setSize(screenNoiseSprite.getWidth()*worldScale, screenNoiseSprite.getHeight()*worldScale);
-			logoSprite.setSize(logoSprite.getWidth()*worldScale, logoSprite.getHeight()*worldScale);
-			spriteBatch.setBlendFunction(GL10.GL_ZERO, GL10.GL_SRC_COLOR);
-			tmpMatrix.setToOrtho2D(0, 0, 1280, 720);
+			logoSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/logo.png") );
+			miniInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_mini.png") );
+			fullInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_full.png") );
+			logoSprite.setPosition(1280.0f - logoSprite.getWidth(), 0.0f);
+			spriteBatch.setProjectionMatrix( tmpMatrix.setToOrtho2D(0, 0, 1280, 720) );
 		}
 
 		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
@@ -124,6 +127,19 @@ public class Stage implements StageBase {
 		{
 			prevInput = false;
 		}
+		
+		if( Gdx.input.isKeyPressed(Keys.F1) )
+		{
+			if(!prevInputF1)
+			{
+				renderFullInputGuide = !renderFullInputGuide;
+			}
+			prevInputF1 = true;
+		}
+		else
+		{
+			prevInputF1 = false;
+		}
 	}
 
 	//************************************************************
@@ -157,12 +173,10 @@ public class Stage implements StageBase {
 		}
 		GameMain.spriteBatch.end();										// 描画終了
 
-		final Camera camera = GameMain.camera;
-		spriteBatch.setProjectionMatrix(camera.combined);
-		logoSprite.setPosition(camera.position.x + camera.viewportWidth * 0.5f - logoSprite.getWidth(), camera.position.y - camera.viewportHeight * 0.5f);
 		spriteBatch.begin();
-//		screenNoiseSprite.draw(spriteBatch);
 		logoSprite.draw(spriteBatch);
+		miniInputGuideSprite.draw(spriteBatch);
+		if(renderFullInputGuide)	fullInputGuideSprite.draw(spriteBatch);
 		spriteBatch.end();
 
 		// TODO リリース前にこの処理をクリア直後に持ってくる

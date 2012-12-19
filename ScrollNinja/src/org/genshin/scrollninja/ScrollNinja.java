@@ -26,7 +26,7 @@ public class ScrollNinja extends Game
 	public void create()
 	{
 		//---- デバッグ文字列の初期化
-		DebugString.initialize(true);
+		DebugString.initialize(false);
 		
 		//---- アイコンを設定する。
 		final Pixmap[] pixmaps = { new Pixmap(Gdx.files.internal("data/textures/scrollninja.png")) };
