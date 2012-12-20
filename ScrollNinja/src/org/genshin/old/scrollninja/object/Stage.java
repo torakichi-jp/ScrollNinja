@@ -14,10 +14,16 @@ import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.render.CameraTranslater;
+import org.genshin.scrollninja.utils.TextureFactory;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class Stage implements StageBase {
@@ -37,6 +43,17 @@ public class Stage implements StageBase {
 	
 	private boolean prevInput;
 	private boolean renderDebug = false;
+	
+	private Sprite screenEdgeSprite = null;
+	private final Matrix4 tmpMatrix = new Matrix4(); 
+
+//	private Sprite screenNoiseSprite = null;
+	private Sprite logoSprite = null;
+	private Sprite miniInputGuideSprite = null;
+	private Sprite fullInputGuideSprite = null;
+	private final SpriteBatch spriteBatch = new SpriteBatch(50);
+	private boolean prevInputF1 = false;
+	private boolean renderFullInputGuide = false;
 
 	// コンストラクタ
 	public Stage(int num){
@@ -46,6 +63,17 @@ public class Stage implements StageBase {
 		renderer = new Box2DDebugRenderer();
 		
 		cursor = new Cursor(GameMain.camera, 2.0f * GlobalParam.INSTANCE.WORLD_SCALE);
+		
+		// 超　仮
+		{
+			final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+			screenEdgeSprite = new Sprite( TextureFactory.getInstance().get("data/textures/gui/screen_edge.png") );
+			logoSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/logo.png") );
+			miniInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_mini.png") );
+			fullInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_full.png") );
+			logoSprite.setPosition(1280.0f - logoSprite.getWidth(), 0.0f);
+			spriteBatch.setProjectionMatrix( tmpMatrix.setToOrtho2D(0, 0, 1280, 720) );
+		}
 
 		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
 		GlobalParam.INSTANCE.currentRenderableManager = renderableManager;
@@ -56,8 +84,8 @@ public class Stage implements StageBase {
 	// 更新処理まとめ
 	//************************************************************
 	public void Update(float deltaTime) {
-		DebugString.add("Update Count : " + updatableManager.getCount());
-		DebugString.add("Render Count : " + renderableManager.getCount());
+		DebugString.add("Update Count : " + updatableManager.size());
+		DebugString.add("Render Count : " + renderableManager.size());
 		
 		cursor.update(deltaTime);
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
@@ -99,6 +127,19 @@ public class Stage implements StageBase {
 		{
 			prevInput = false;
 		}
+		
+		if( Gdx.input.isKeyPressed(Keys.F1) )
+		{
+			if(!prevInputF1)
+			{
+				renderFullInputGuide = !renderFullInputGuide;
+			}
+			prevInputF1 = true;
+		}
+		else
+		{
+			prevInputF1 = false;
+		}
 	}
 
 	//************************************************************
@@ -112,8 +153,8 @@ public class Stage implements StageBase {
 			BackgroundManager.backgroundList.Draw(0);
 			BackgroundManager.backgroundList.Draw(1);
 			BackgroundManager.backgroundList.Draw(2);
-			BackgroundManager.backgroundList.Draw(4);
 			BackgroundManager.backgroundList.Draw(3);
+			BackgroundManager.backgroundList.Draw(4);
 			StageObjectManager.Draw();
 			renderableManager.render();
 			PlayerManager.Draw();
@@ -122,10 +163,21 @@ public class Stage implements StageBase {
 			ItemManager.Draw();
 			BackgroundManager.backgroundList.Draw(5);
 			BackgroundManager.backgroundList.Draw(6);
+			BackgroundManager.backgroundList.Draw(7);
+			BackgroundManager.backgroundList.Draw(8);
 //			GameMain.playerInfo.Draw();
 			cursor.render();
+			
+			GameMain.spriteBatch.setProjectionMatrix(tmpMatrix);
+			screenEdgeSprite.draw(GameMain.spriteBatch);
 		}
 		GameMain.spriteBatch.end();										// 描画終了
+
+		spriteBatch.begin();
+		logoSprite.draw(spriteBatch);
+		miniInputGuideSprite.draw(spriteBatch);
+		if(renderFullInputGuide)	fullInputGuideSprite.draw(spriteBatch);
+		spriteBatch.end();
 
 		// TODO リリース前にこの処理をクリア直後に持ってくる
 		if(renderDebug)	renderer.render(GameMain.world, GameMain.camera.combined);

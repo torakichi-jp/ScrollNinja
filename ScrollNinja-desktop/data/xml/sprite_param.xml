@@ -117,7 +117,9 @@
 			<Texture>
 				<FilePath>weapon/kaginawa_anchor.png</FilePath>
 			</Texture>
-			<OriginX>-16.0</OriginX>
+			<Width>16.0</Width>
+			<Height>16.0</Height>
+			<OriginX>-8.0</OriginX>
 		</Sprite>
 	</KaginawaAnchor>
 	

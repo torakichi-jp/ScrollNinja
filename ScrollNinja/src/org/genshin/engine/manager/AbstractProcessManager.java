@@ -72,7 +72,7 @@ public abstract class AbstractProcessManager<T>
 	 * 管理オブジェクトの数を取得する。
 	 * @return		管理オブジェクトの数
 	 */
-	public int getCount()
+	public int size()
 	{
 		return objectCount;
 	}

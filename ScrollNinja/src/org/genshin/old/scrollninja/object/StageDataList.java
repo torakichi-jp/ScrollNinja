@@ -85,7 +85,7 @@ public class StageDataList {
 				layer.scale = 1.0f;
 				
 				StageData.LayerData.BGData bg = layer.new BGData();
-				bg.textureFileName = "data/textures/stage/test_main.png";
+				bg.textureFileName = "data/textures/stage/test_near_01.png";
 				bg.size.set(4096.0f * worldScale, 4096.0f * worldScale);
 				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
 				layer.bgData.add(bg);
@@ -98,7 +98,7 @@ public class StageDataList {
 				layer.scale = 1.0f;
 				
 				StageData.LayerData.BGData bg = layer.new BGData();
-				bg.textureFileName = "data/textures/stage/test_near_01.png";
+				bg.textureFileName = "data/textures/stage/test_main.png";
 				bg.size.set(4096.0f * worldScale, 4096.0f * worldScale);
 				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
 				layer.bgData.add(bg);
@@ -122,11 +122,37 @@ public class StageDataList {
 			
 			{
 				StageData.LayerData layer = data.new LayerData();
+				layer.scale = 2.0f;
+				
+				StageData.LayerData.BGData bg = layer.new BGData();
+				bg.textureFileName = "data/textures/stage/test_light_01.png";
+				bg.size.set(4096.0f * worldScale, 4096.0f * worldScale);
+				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
+				layer.bgData.add(bg);
+				
+				data.layerData.add(layer);
+			}
+			
+			{
+				StageData.LayerData layer = data.new LayerData();
 				layer.scale = 4.0f;
 				
 				StageData.LayerData.BGData bg = layer.new BGData();
 				bg.textureFileName = "data/textures/stage/test_near_03.png";
 				bg.size.set(4096.0f * worldScale, 512.0f * worldScale);
+				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
+				layer.bgData.add(bg);
+				
+				data.layerData.add(layer);
+			}
+			
+			{
+				StageData.LayerData layer = data.new LayerData();
+				layer.scale = 4096.0f / 3840.0f * 4.0f;
+				
+				StageData.LayerData.BGData bg = layer.new BGData();
+				bg.textureFileName = "data/textures/stage/test_light_02.png";
+				bg.size.set(4096.0f * worldScale, 4096.0f * worldScale);
 				bg.position.set(0.0f * worldScale, 0.0f * worldScale);
 				layer.bgData.add(bg);
 				

@@ -6,6 +6,7 @@ import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.controller.DefaultPlayerNinjaController;
 import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
+import org.genshin.scrollninja.object.effect.AfterimageEffect;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.render.RenderObjectFactory;
@@ -68,7 +69,7 @@ public class PlayerNinja extends AbstractCharacter {
 		kaginawa.update(deltaTime);
 		
 		//---- 残像を付けてみる。
-//		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), (float)Math.toDegrees(getBody().getAngle()));
+		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), (float)Math.toDegrees(getBody().getAngle()));
 		
 		//---- デバッグ文字列
 		DebugString.add("");
