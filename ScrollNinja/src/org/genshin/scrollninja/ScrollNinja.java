@@ -29,7 +29,11 @@ public class ScrollNinja extends Game
 		DebugString.initialize(false);
 		
 		//---- アイコンを設定する。
-		final Pixmap[] pixmaps = { new Pixmap(Gdx.files.internal("data/textures/scrollninja.png")) };
+		final Pixmap[] pixmaps = {
+			new Pixmap(Gdx.files.internal("data/textures/icon/128.png")),
+			new Pixmap(Gdx.files.internal("data/textures/icon/32.png")),
+			new Pixmap(Gdx.files.internal("data/textures/icon/16.png")),
+		};
 		Gdx.graphics.setIcon(pixmaps);
 		
 		//---- 画面のクリアカラーを設定する。
