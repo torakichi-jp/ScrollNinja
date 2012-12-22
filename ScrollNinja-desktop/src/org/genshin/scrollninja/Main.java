@@ -3,6 +3,8 @@ package org.genshin.scrollninja;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import org.genshin.scrollninja.packaging.PackageUpdate;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -12,6 +14,10 @@ public class Main {
 		cfg.title = "Scroll Ninja";
 		cfg.useGL20 = false;
 		cfg.resizable = false;
+		
+		//Check for updates [更新を確認]
+		PackageUpdate update = new PackageUpdate();
+		update.CheckForUpdates("http://files.genshin.org/ScrollNinja/package/info.json");
 		
 		if(GlobalParam.INSTANCE.FULLSCREEN)
 		{
