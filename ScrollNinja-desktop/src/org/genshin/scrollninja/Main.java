@@ -15,10 +15,6 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.resizable = false;
 		
-		//Check for updates [更新を確認]
-		PackageUpdate update = new PackageUpdate();
-		update.CheckForUpdates("http://files.genshin.org/ScrollNinja/package/info.json");
-		
 		if(GlobalParam.INSTANCE.FULLSCREEN)
 		{
 			final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -31,6 +27,10 @@ public class Main {
 			cfg.width = GlobalParam.INSTANCE.CLIENT_WIDTH;
 			cfg.height = GlobalParam.INSTANCE.CLIENT_HEIGHT;
 		}
+		
+		//Check for updates [更新を確認]
+		PackageUpdate update = new PackageUpdate();
+		update.CheckForUpdates("http://files.genshin.org/ScrollNinja/data/package.json");
 
 		new LwjglApplication(new ScrollNinja(), cfg);
 	}

@@ -9,6 +9,6 @@ public class PackageInfo {
 		String md5;
 	}
 	
-	String releaseVersion;
-	ArrayList<AssetInfo> assets;
+	public String version;
+	public ArrayList<AssetInfo> assets;
 }

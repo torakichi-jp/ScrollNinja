@@ -1,9 +1,11 @@
 package org.genshin.scrollninja.packaging;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -11,8 +13,11 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.badlogic.gdx.Gdx;
 import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;;
+import com.fasterxml.jackson.databind.*;
+
+import com.badlogic.gdx.Application;
 
 public class PackageUpdate {
 	private PackageInfo remotePackageInfo;
@@ -38,15 +43,21 @@ public class PackageUpdate {
 			connection = fileURL.openConnection();
 			inputStream = (InputStream) connection.getInputStream();
 			
-			/*JsonFactory jFactory = new JsonFactory();
-			JsonParser jParser = jFactory.createJsonParser(inputStream.toString());*/
+			BufferedReader streamReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8")); 
+			StringBuilder responseStrBuilder = new StringBuilder();
+
+			String inputStr;
+			while ((inputStr = streamReader.readLine()) != null)
+				responseStrBuilder.append(inputStr);
+			
+			String streamContent = responseStrBuilder.toString();
 			
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.readValue(inputStream.toString(), PackageInfo.class);
+			mapper.readValue(streamContent, PackageInfo.class);
+			System.out.println(streamContent);
 			
 			inputStream.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

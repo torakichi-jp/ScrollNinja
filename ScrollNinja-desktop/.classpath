@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/gdx-natives.jar"/>
 	<classpathentry kind="lib" path="/ScrollNinja/libs/jackson-core-2.1.2.jar"/>
 	<classpathentry kind="lib" path="/ScrollNinja/libs/jackson-databind-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/ScrollNinja/libs/jackson-annotations-2.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
