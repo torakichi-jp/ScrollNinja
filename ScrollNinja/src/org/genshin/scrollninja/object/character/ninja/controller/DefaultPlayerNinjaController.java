@@ -4,6 +4,8 @@
 package org.genshin.scrollninja.object.character.ninja.controller;
 
 import org.genshin.scrollninja.object.ObjectInterface;
+import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
+import org.genshin.scrollninja.utils.input.MouseInputHelper;
 
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -30,13 +32,13 @@ public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
 	@Override
 	protected final void initialize()
 	{
-		registKey(InputType.LEFT, Keys.A);
-		registKey(InputType.RIGHT, Keys.D);
-		registKey(InputType.DASH, Keys.SHIFT_LEFT);
-		registKey(InputType.JUMP, Keys.W);
-		registMouse(InputType.ATTACK, Buttons.LEFT);
-		registMouse(InputType.KAGINAWA, Buttons.RIGHT);
-		registKey(InputType.KAGINAWA_RELEASE, Keys.S);
+		registInputHelper(InputType.LEFT, new KeyboardInputHelper(Keys.A));
+		registInputHelper(InputType.RIGHT, new KeyboardInputHelper(Keys.D));
+		registInputHelper(InputType.DASH, new KeyboardInputHelper(Keys.SHIFT_LEFT));
+		registInputHelper(InputType.JUMP, new KeyboardInputHelper(Keys.W));
+		registInputHelper(InputType.ATTACK, new MouseInputHelper(Buttons.LEFT));
+		registInputHelper(InputType.KAGINAWA, new MouseInputHelper(Buttons.RIGHT));
+		registInputHelper(InputType.KAGINAWA_RELEASE, new KeyboardInputHelper(Keys.S));
 	}
 	
 

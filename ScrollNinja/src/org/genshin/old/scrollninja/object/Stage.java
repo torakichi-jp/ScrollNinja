@@ -16,11 +16,11 @@ import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.render.CameraTranslater;
 import org.genshin.scrollninja.utils.TextureFactory;
 import org.genshin.scrollninja.utils.debug.DebugString;
+import org.genshin.scrollninja.utils.input.InputHelperInterface;
+import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
@@ -41,18 +41,17 @@ public class Stage implements StageBase {
 	private final UpdatableManager updatableManager = new UpdatableManager();
 	private final RenderableManager renderableManager = new RenderableManager();
 	
-	private boolean prevInput;
+	private final InputHelperInterface switchDebugInput = new KeyboardInputHelper(Keys.NUM_0);
 	private boolean renderDebug = false;
 	
 	private Sprite screenEdgeSprite = null;
 	private final Matrix4 tmpMatrix = new Matrix4(); 
 
-//	private Sprite screenNoiseSprite = null;
 	private Sprite logoSprite = null;
 	private Sprite miniInputGuideSprite = null;
 	private Sprite fullInputGuideSprite = null;
 	private final SpriteBatch spriteBatch = new SpriteBatch(50);
-	private boolean prevInputF1 = false;
+	private final InputHelperInterface switchHelpInput = new KeyboardInputHelper(Keys.F1);
 	private boolean renderFullInputGuide = false;
 
 	// コンストラクタ
@@ -115,30 +114,16 @@ public class Stage implements StageBase {
 		
 		
 		// TODO 最終的には消すハズ
-		if( Gdx.input.isKeyPressed(Keys.NUM_0) )
+		switchDebugInput.update();
+		if( switchDebugInput.isTrigger() )
 		{
-			if(!prevInput)
-			{
-				renderDebug = !renderDebug;
-			}
-			prevInput = true;
-		}
-		else
-		{
-			prevInput = false;
+			renderDebug = !renderDebug;
 		}
 		
-		if( Gdx.input.isKeyPressed(Keys.F1) )
+		switchHelpInput.update();
+		if( switchHelpInput.isTrigger() )
 		{
-			if(!prevInputF1)
-			{
-				renderFullInputGuide = !renderFullInputGuide;
-			}
-			prevInputF1 = true;
-		}
-		else
-		{
-			prevInputF1 = false;
+			renderFullInputGuide = !renderFullInputGuide;
 		}
 	}
 

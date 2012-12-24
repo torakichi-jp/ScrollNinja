@@ -1,6 +1,8 @@
 package org.genshin.scrollninja.screen;
 
-import com.badlogic.gdx.Gdx;
+import org.genshin.scrollninja.utils.input.InputHelperInterface;
+import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
+
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
@@ -16,10 +18,9 @@ public abstract class AbstractDebugScreen extends AbstractScreen
 	public void render(float delta)
 	{
 		//---- 描画フラグの切り替え
-		final boolean nowInput = Gdx.input.isKeyPressed(Keys.NUM_0);
-		if( !prevInput && nowInput )
+		switchDebugInput.update();
+		if( switchDebugInput.isTrigger() )
 			renderEnabled = !renderEnabled;
-		prevInput = nowInput;
 		
 		//---- メイン描画
 		super.render(delta);
@@ -29,8 +30,8 @@ public abstract class AbstractDebugScreen extends AbstractScreen
 			box2dDebugRenderer.render(getWorld(), getCamera().combined);
 	}
 	
-	/** 前回の入力情報 */
-	private boolean prevInput = false;
+	/** デバッグ表示の切り替え入力用 */
+	private final InputHelperInterface switchDebugInput = new KeyboardInputHelper(Keys.NUM_0);
 	
 	/** Box2Dの衝突判定オブジェクトを描画するためのレンダラ  */
 	private static final Box2DDebugRenderer box2dDebugRenderer = new Box2DDebugRenderer();

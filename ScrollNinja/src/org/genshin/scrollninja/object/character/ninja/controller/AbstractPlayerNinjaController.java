@@ -3,7 +3,8 @@
  */
 package org.genshin.scrollninja.object.character.ninja.controller;
 
-import com.badlogic.gdx.Gdx;
+import org.genshin.scrollninja.utils.input.InputHelperInterface;
+
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -138,25 +139,13 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	}
 	
 	/**
-	 * キーボード入力を登録する。
-	 * @param inputType		行動の種類
-	 * @param key			キーコード(com.badlogic.gdx.Input.Keys)
-	 * @see com.badlogic.gdx.Input.Keys
+	 * 入力を補助するオブジェクトを登録する。
+	 * @param inputType			行動の種類
+	 * @param inputHelper		入力を補助するオブジェクト
 	 */
-	protected final void registKey(InputType inputType, int key)
+	protected final void registInputHelper(InputType inputType, InputHelperInterface inputHelper)
 	{
-		inputHelpers[inputType.ordinal()] = new KeyboardInputHelper(key);
-	}
-	
-	/**
-	 * マウス入力を登録する。
-	 * @param inputType		行動の種類
-	 * @param mouse			マウスコード(com.badlogic.gdx.Input.Buttons)
-	 * @see com.badlogic.gdx.Input.Buttons
-	 */
-	protected final void registMouse(InputType inputType, int mouse)
-	{
-		inputHelpers[inputType.ordinal()] = new MouseInputHelper(mouse);
+		inputHelpers[inputType.ordinal()] = inputHelper;
 	}
 	
 
@@ -180,120 +169,4 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	
 	/** 忍者の向き */
 	private final Vector2 direction = new Vector2();
-	
-	
-	
-	/** 
-	 * 入力補助インタフェース
-	 */
-	private interface InputHelperInterface
-	{
-		/**
-		 * 入力状態を更新する。
-		 */
-		void update();
-		
-		/**
-		 * プレス入力を取得する。
-		 * @return	プレス入力
-		 */
-		boolean isPress();
-
-		/**
-		 * トリガ入力を取得する。
-		 * @return	トリガ入力
-		 */
-		boolean isTrigger();
-
-		/**
-		 * リリース入力を取得する。
-		 * @return	リリース入力
-		 */
-		boolean isRelease();
-	}
-	
-	/** 
-	 * 入力補助基本クラス
-	 */
-	private abstract class AbstractInputHelper implements InputHelperInterface
-	{
-		/**
-		 * 入力状態を更新する。
-		 * @param newInput		新しい入力状態
-		 */
-		protected final void update(boolean newInput)
-		{
-			prev = now;
-			now = newInput;
-		}
-
-		@Override
-		public final boolean isPress()
-		{
-			return now;
-		}
-
-		@Override
-		public final boolean isTrigger()
-		{
-			return !prev && now;
-		}
-
-		@Override
-		public final boolean isRelease()
-		{
-			return prev && !now;
-		}
-		
-		/** 入力状態 */
-		protected boolean prev, now;
-	}
-	
-	/** 
-	 * キーボード入力補助クラス
-	 */
-	private final class KeyboardInputHelper extends AbstractInputHelper
-	{
-		/**
-		 * コンストラクタ
-		 * @param key		キーコード
-		 */
-		public KeyboardInputHelper(int key)
-		{
-			this.key = key;
-		}
-		
-		@Override
-		public final void update()
-		{
-			update(Gdx.input.isKeyPressed(key));
-		}
-
-		/** キーコード */
-		private final int key;
-	}
-	
-	/** 
-	 * マウス入力補助クラス
-	 */
-	private final class MouseInputHelper extends AbstractInputHelper
-	{
-		/**
-		 * コンストラクタ
-		 * @param button		ボタンコード
-		 */
-		public MouseInputHelper(int button)
-		{
-			this.button = button;
-		}
-
-		@Override
-		public final void update()
-		{
-			update(Gdx.input.isButtonPressed(button));
-		}
-
-		/** ボタンコード */
-		private final int button;
-	}
 }

@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.utils.debug.DebugString;
+import org.genshin.scrollninja.utils.input.InputHelperInterface;
+import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -100,17 +102,17 @@ public class ScrollNinja extends Game
 			@Override
 			void initialize()
 			{
-				prevInput = false;
+				/** 何もしない */
 			}
 			
 			@Override
 			void invoke(ScrollNinja me, float deltaTime)
 			{
 				//---- [Alt] + [Enter] 入力でフルスクリーン切り替え（仮）
-				final boolean input = Gdx.input.isKeyPressed(Keys.ENTER);
+				inputHelper.update();
 				if( Gdx.input.isKeyPressed(Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Keys.ALT_RIGHT) )
 				{
-					if(!prevInput && input)
+					if(inputHelper.isTrigger())
 					{
 						int newWidth = GlobalParam.INSTANCE.CLIENT_WIDTH;
 						int newHeight = GlobalParam.INSTANCE.CLIENT_HEIGHT;
@@ -132,11 +134,10 @@ public class ScrollNinja extends Game
 						me.changeState(SWITCH_FULLSCREEN);
 					}
 				}
-				prevInput = input;
 			}
 			
 			/** 仮。 */
-			private boolean prevInput;
+			private final InputHelperInterface inputHelper = new KeyboardInputHelper(Keys.ENTER);
 		},
 		
 		/** フルスクリーンの切り替え状態 */

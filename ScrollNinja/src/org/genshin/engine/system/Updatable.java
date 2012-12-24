@@ -10,7 +10,6 @@ public interface Updatable
 {
 	/**
 	 * 更新処理を実行する。
-	 * @param deltaTime TODO
 	 * @param deltaTime		経過時間
 	 */
 	public void update(float deltaTime);
