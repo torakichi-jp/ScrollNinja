@@ -35,9 +35,6 @@ public class PackageUpdate {
 
 		try {
 			URL fileURL;
-			byte[] buf;
-			int ByteRead = 0;
-			int ByteWritten = 0;
 			fileURL = new URL(address);
 
 			connection = fileURL.openConnection();
