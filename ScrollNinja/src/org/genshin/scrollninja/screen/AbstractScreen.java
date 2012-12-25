@@ -2,12 +2,14 @@ package org.genshin.scrollninja.screen;
 
 import org.genshin.engine.manager.RenderableManager;
 import org.genshin.engine.manager.UpdatableManager;
+import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.gui.Cursor;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -45,7 +47,11 @@ public abstract class AbstractScreen implements Screen
 		}
 		
 		//---- 描画処理を実行する。
+		GameMain.spriteBatch = spriteBatch;
+		spriteBatch.setProjectionMatrix(camera.combined);
+		spriteBatch.begin();
 		renderableManager.render();
+		spriteBatch.end();
 	}
 
 	@Override
@@ -139,9 +145,13 @@ public abstract class AbstractScreen implements Screen
 	 */
 	private final void setCurrentScreen()
 	{
-		
+		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
+		GlobalParam.INSTANCE.currentRenderableManager = renderableManager;
 	}
 	
+	
+	// FIXME 仮
+	private final SpriteBatch spriteBatch = new SpriteBatch();
 	
 	/** 世界オブジェクト */
 	private final World world = new World(new Vector2(0, GlobalParam.INSTANCE.GRAVITY), true);

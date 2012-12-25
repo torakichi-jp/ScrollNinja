@@ -1,23 +1,13 @@
 package org.genshin.scrollninja.packaging;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
-
-import com.badlogic.gdx.Application;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PackageUpdate {
 	private PackageInfo remotePackageInfo;
