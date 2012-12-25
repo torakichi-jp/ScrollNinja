@@ -6,10 +6,7 @@ package org.genshin.old.scrollninja.object;
 import java.util.ArrayList;
 
 import org.genshin.old.scrollninja.GameMain;
-import org.genshin.old.scrollninja.MainMenu;
 import org.genshin.old.scrollninja.object.StageDataList.StageData;
-import org.genshin.old.scrollninja.object.item.Item;
-import org.genshin.old.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.utils.TextureFactory;
@@ -63,17 +60,6 @@ public class Background extends AbstractCollisionObject {
 		// MainMenuではcreateしない
 		if (createFlag)
 			createBody();
-	}
-
-	/**************************************************
-	 * @Override
-	 * @param i		スプライト番号
-	 * @param flag	MainMenuで描画するにはこれが必要
-	 *
-	 * 描画処理
-	 ***************************************************/
-	public void Draw(int i, boolean flag) {
-		sprites.get(i).draw(MainMenu.spriteBatch);
 	}
 
 	/**************************************************
@@ -164,21 +150,6 @@ public class Background extends AbstractCollisionObject {
 	public void notifyCollision(PlayerNinja obj, Contact contact) {
 
 	}
-
-	@Override
-	public void notifyCollision(Enemy obj, Contact contact){}
-
-	@Override
-	public void notifyCollision(Effect obj, Contact contact){}
-
-	@Override
-	public void notifyCollision(Item obj, Contact contact){}
-
-	@Override
-	public void notifyCollision(StageObject obj, Contact contact){}
-
-	@Override
-	public void notifyCollision(AbstractWeapon obj, Contact contact){}
 
 	//************************************************************
 	// Get

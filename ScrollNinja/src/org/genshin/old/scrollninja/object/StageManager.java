@@ -13,7 +13,6 @@ package org.genshin.old.scrollninja.object;
 //***** モノステート *****/
 public class StageManager {
 	private static StageBase	currentStage;		// 現在のステージ
-	private static StageBase	nextStage;			// 次のステージ
 
 	// コンストラクタ
 	private StageManager(){}

@@ -4,11 +4,6 @@ import java.util.ArrayList;
 
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.old.scrollninja.object.Background;
-import org.genshin.old.scrollninja.object.Effect;
-import org.genshin.old.scrollninja.object.Enemy;
-import org.genshin.old.scrollninja.object.StageObject;
-import org.genshin.old.scrollninja.object.item.Item;
-import org.genshin.old.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.render.RenderObjectInterface;
@@ -150,57 +145,6 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	 * @param contact	衝突情報
 	 */
 	public void notifyCollision(PlayerNinja obj, Contact contact)
-	{
-		/* 何もしない */
-	}
-
-	/**
-	 * 敵との衝突を通知する。
-	 * @param obj		衝突したオブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void notifyCollision(Enemy obj, Contact contact)
-	{
-		/* 何もしない */
-	}
-
-	/**
-	 * エフェクトとの衝突を通知する。
-	 * XXX 「エフェクトと衝突する」って捉え方はなんかおかしい気がする
-	 * @param obj		衝突したオブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void notifyCollision(Effect obj, Contact contact)
-	{
-		/* 何もしない */
-	}
-
-	/**
-	 * アイテムとの衝突を通知する。
-	 * @param obj		衝突したオブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void notifyCollision(Item obj, Contact contact)
-	{
-		/* 何もしない */
-	}
-
-	/**
-	 * ステージオブジェクトとの衝突を通知する。
-	 * @param obj			衝突したオブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void notifyCollision(StageObject obj, Contact contact)
-	{
-		/* 何もしない */
-	}
-
-	/**
-	 * 武器との衝突を通知する。
-	 * @param obj		衝突したオブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void notifyCollision(AbstractWeapon obj, Contact contact)
 	{
 		/* 何もしない */
 	}

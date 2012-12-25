@@ -2,14 +2,10 @@
 
 package org.genshin.old.scrollninja.object;
 
-import java.util.ArrayList;
-
 import org.genshin.engine.manager.RenderableManager;
 import org.genshin.engine.manager.UpdatableManager;
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.old.scrollninja.object.StageDataList.StageData;
-import org.genshin.old.scrollninja.object.item.Item;
-import org.genshin.old.scrollninja.object.weapon.WeaponManager;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
@@ -29,8 +25,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 public class Stage implements StageBase {
 
 	private Box2DDebugRenderer		renderer;		//
-	private ArrayList<Item>			popItems;		//
-	private ArrayList<Enemy>		popEnemys;		//
 
 	private int						stageNum;		// ステージナンバー
 	private StageData	 			stageData;		// ステージのデータ
@@ -65,7 +59,6 @@ public class Stage implements StageBase {
 		
 		// 超　仮
 		{
-			final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
 			screenEdgeSprite = new Sprite( TextureFactory.getInstance().get("data/textures/gui/screen_edge.png") );
 			logoSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/logo.png") );
 			miniInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_mini.png") );
@@ -88,29 +81,10 @@ public class Stage implements StageBase {
 		
 		cursor.update(deltaTime);
 		CollisionDetector.HitTest();			// これ最初にやってほしいかも？
-		EnemyManager.Update(deltaTime);
-		WeaponManager.Update(deltaTime);
 		PlayerManager.Update(deltaTime);
-		ItemManager.Update(deltaTime);
 		cameraTranslater.update(deltaTime);
 		BackgroundManager.backgroundList.update(deltaTime);
 		updatableManager.update(deltaTime);
-
-		// TODO 今だけリポップ
-//		if (EnemyManager.enemyList.get(0) == null && EnemyManager.enemyList.get(1) == null) {
-//			EffectManager.enemyEffectList = new ArrayList<Effect>();
-//			EnemyManager.dispose();
-//		}
-//
-//		// TODO 今だけリポップ
-//		if( EnemyManager.enemyList.size() == 0) {
-//			for(StageData.EnemyData enemy : stageData.enemyData)
-//			{
-//				EnemyManager.CreateEnemy(enemy.type, enemy.position);
-//			}
-//		}
-
-//		GameMain.playerInfo.update();
 		
 		
 		// TODO 最終的には消すハズ
@@ -140,12 +114,8 @@ public class Stage implements StageBase {
 			BackgroundManager.backgroundList.Draw(2);
 			BackgroundManager.backgroundList.Draw(3);
 			BackgroundManager.backgroundList.Draw(4);
-			StageObjectManager.Draw();
 			renderableManager.render();
 			PlayerManager.Draw();
-			EnemyManager.Draw();
-			EffectManager.Draw();
-			ItemManager.Draw();
 			BackgroundManager.backgroundList.Draw(5);
 			BackgroundManager.backgroundList.Draw(6);
 			BackgroundManager.backgroundList.Draw(7);
@@ -215,12 +185,6 @@ public class Stage implements StageBase {
 	@Override
 	public void Init() {
 		PlayerManager.CreatePlayer(stageData.startPosition, cursor);
-		// TODO 後でステージオブジェクトリスト追加
-//		StageObjectManager.CreateStageObject(StageObject.ROCK, 200.0f, 38.0f);
-		for(StageData.EnemyData enemy : stageData.enemyData)
-		{
-			EnemyManager.CreateEnemy(enemy.type, enemy.position);
-		}
 		
 		cameraTranslater = new CameraTranslater(GameMain.camera);
 		cameraTranslater.addTargetObject(cursor);
@@ -240,13 +204,8 @@ public class Stage implements StageBase {
 	 * TODO 検証不足につき他で不具合が出るかも…
 	 **************************************************/
 	public void dispose() {
-		EffectManager.dispose();
-		WeaponManager.dispose();
 		PlayerManager.dispose();
-		EnemyManager.dispose();
 		BackgroundManager.dispose();
-		ItemManager.dispose();
-		StageObjectManager.dispose();
 
 		renderer.dispose();
 	}
