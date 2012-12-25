@@ -7,4 +7,5 @@ ScrollNinja.jar
 doc/
 bin/
 ScrollNinja-html/.gwt/.gwt-log
+ScrollNinja-android/gen
 ScrollNinja-android/gen/org/genshin/scrollninja/BuildConfig.java

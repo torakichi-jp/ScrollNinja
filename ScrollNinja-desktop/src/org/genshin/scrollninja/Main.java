@@ -3,6 +3,8 @@ package org.genshin.scrollninja;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import org.genshin.scrollninja.packaging.PackageUpdate;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -25,6 +27,10 @@ public class Main {
 			cfg.width = GlobalParam.INSTANCE.CLIENT_WIDTH;
 			cfg.height = GlobalParam.INSTANCE.CLIENT_HEIGHT;
 		}
+		
+		//Check for updates [更新を確認]
+		PackageUpdate update = new PackageUpdate();
+		update.CheckForUpdates("http://files.genshin.org/ScrollNinja/data/package.json");
 
 		new LwjglApplication(new ScrollNinja(), cfg);
 	}
