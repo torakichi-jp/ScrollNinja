@@ -1,6 +1,5 @@
-package org.genshin.engine.manager;
+package org.genshin.engine.system;
 
-import org.genshin.engine.system.Updatable;
 
 /**
  * 更新オブジェクトを一括管理する。

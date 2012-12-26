@@ -2,7 +2,7 @@ package org.genshin.scrollninja.utils;
 
 import java.io.IOException;
 
-import org.genshin.engine.factory.AbstractFlyweightFactory;
+import org.genshin.engine.system.factory.AbstractFlyweightFactory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.XmlReader;

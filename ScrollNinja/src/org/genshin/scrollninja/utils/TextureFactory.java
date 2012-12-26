@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.utils;
 
-import org.genshin.engine.factory.AbstractFlyweightFactory;
+import org.genshin.engine.system.factory.AbstractFlyweightFactory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;

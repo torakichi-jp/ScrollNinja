@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.render;
 
-import org.genshin.engine.factory.FactoryInterface;
+import org.genshin.engine.system.factory.FactoryInterface;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.render.animation.AnimationInterface;
 import org.genshin.scrollninja.render.animation.TextureAnimation;

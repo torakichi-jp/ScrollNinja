@@ -1,4 +1,4 @@
-package org.genshin.engine.factory;
+package org.genshin.engine.system.factory;
 
 /**
  * オブジェクトを生成するインタフェース。

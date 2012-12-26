@@ -1,6 +1,6 @@
-package org.genshin.engine.manager;
+package org.genshin.engine.system;
 
-import org.genshin.engine.system.Renderable;
+
 
 /**
  * 描画オブジェクトを一括管理する。

@@ -1,4 +1,4 @@
-package org.genshin.engine.factory;
+package org.genshin.engine.system.factory;
 
 import java.util.HashMap;
 import java.util.Map;

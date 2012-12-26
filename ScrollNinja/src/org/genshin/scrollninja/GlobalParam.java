@@ -2,8 +2,8 @@ package org.genshin.scrollninja;
 
 import java.io.IOException;
 
-import org.genshin.engine.manager.RenderableManager;
-import org.genshin.engine.manager.UpdatableManager;
+import org.genshin.engine.system.RenderableManager;
+import org.genshin.engine.system.UpdatableManager;
 
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.files.FileHandle;

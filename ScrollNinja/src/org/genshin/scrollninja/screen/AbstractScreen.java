@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.screen;
 
-import org.genshin.engine.manager.RenderableManager;
-import org.genshin.engine.manager.UpdatableManager;
+import org.genshin.engine.system.RenderableManager;
+import org.genshin.engine.system.UpdatableManager;
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.GlobalParam;
 import org.genshin.scrollninja.object.gui.Cursor;
