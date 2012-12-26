@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.old.scrollninja.object.Background;
+import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.render.RenderObjectInterface;
@@ -121,6 +122,12 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	{
 		return body.getPosition().y;
 	}
+	
+	@Override
+	public float getRotation()
+	{
+		return (float)Math.toDegrees(body.getAngle());
+	}
 
 	/**
 	 * 衝突を振り分ける。
@@ -155,6 +162,16 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	 * @param contact	衝突情報
 	 */
 	public void notifyCollision(Kaginawa obj, Contact contact)
+	{
+		/* 何もしない */
+	}
+	
+	/**
+	 * 攻撃との衝突を通知する。
+	 * @param attack		衝突した攻撃オブジェクト
+	 * @param contact		衝突情報
+	 */
+	public void notifyCollision(AbstractAttack attack, Contact contact)
 	{
 		/* 何もしない */
 	}

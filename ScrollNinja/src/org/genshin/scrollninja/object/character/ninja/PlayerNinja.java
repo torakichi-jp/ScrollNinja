@@ -9,6 +9,7 @@ import org.genshin.scrollninja.object.character.ninja.controller.NinjaController
 import org.genshin.scrollninja.object.effect.AfterimageEffect;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
+import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 import org.genshin.scrollninja.utils.debug.DebugString;
@@ -46,6 +47,7 @@ public class PlayerNinja extends AbstractCharacter {
 		// フィールドの初期化
 		controller = new DefaultPlayerNinjaController(this, cursor);
 		kaginawa = new Kaginawa(world, getBody());
+		sword = new SwordWeapon(this);
 		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
 		groundedTimer = 0;
 		worldGravity = world.getGravity().len();
@@ -70,6 +72,17 @@ public class PlayerNinja extends AbstractCharacter {
 		
 		//---- 残像を付けてみる。
 		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), (float)Math.toDegrees(getBody().getAngle()));
+		
+		//---- 刀を振ってみる。
+//		if( controller.isAttack() )
+//		{
+//			sword.attack(1.0f, 0.0f);
+//			this.getBodyRenderObject().setAnimation("AttackSword");
+//		}
+//		if(this.getBodyRenderObject().isAnimationFinished())
+//		{
+//			this.getBodyRenderObject().setAnimation("Stay");
+//		}
 		
 		//---- デバッグ文字列
 		DebugString.add("");
@@ -120,6 +133,7 @@ public class PlayerNinja extends AbstractCharacter {
 		BodyDef bd = super.createBodyDef();
 		bd.fixedRotation = true;		// 回転しない
 		bd.gravityScale = 0.0f;			// 重力は独自に与える
+		bd.gravityScale = 0.0f;
 		return bd;
 	}
 
@@ -237,6 +251,9 @@ public class PlayerNinja extends AbstractCharacter {
 	/** 鉤縄オブジェクト */
 	Kaginawa	kaginawa;
 	
+	/** 刀系の武器オブジェクト */
+	SwordWeapon sword;
+	
 	/** 空中でジャンプできる残り回数 */
 	int	restAerialJumpCount;
 	
@@ -260,11 +277,4 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	/** 忍者の状態を管理するオブジェクト */
 	private StateInterface		state;
-	
-	
-	// TODO まだ触ってないソースとの互換性を保つためだけの実装。いずれ消し去る。
-	public int GetChakra(){ return 1; }
-	public int GetMaxChakra(){ return 1; }
-	public int GetMaxHP() { return 1;}
-	public float GetHP() { return 1; }
 }

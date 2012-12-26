@@ -20,8 +20,7 @@
 				<Height>64</Height>
 			</Texture>
 			<OriginY>-8.0</OriginY>
-			<!-- 待機アニメーション -->iginY();
-		sprite.translate(originX, originY);
+			<!-- 待機アニメーション -->
 			<Animation>
 				<Name>Stay</Name>
 				<StartX>4</StartX>
@@ -54,6 +53,14 @@
 				<StartY>5</StartY>
 				<FrameCount>4</FrameCount>
 				<Time>6</Time>
+			</Animation>
+			<!-- 刀の攻撃時のアニメーション -->
+			<Animation>
+				<Name>AttackSword</Name>
+				<StartY>7</StartY>
+				<FrameCount>5</FrameCount>
+				<Time>3</Time>
+				<Looping>false</Looping>
 			</Animation>
 		</Sprite>
 	</NinjaBody>
@@ -152,6 +159,26 @@
 			<OriginY>8.0</OriginY>
 		</Sprite>
 	</JumpSmoke>
+	
+	<!-- 斬撃エフェクト -->
+	<SlashEffect>
+		<Sprite>
+			<Texture>
+				<FilePath>effect/slash.png</FilePath>
+				<Width>128</Width>
+				<Height>128</Height>
+			</Texture>
+			<OriginX>25.0</OriginX>
+			<OriginY>-17.0</OriginY>
+			<!-- アニメーション -->
+			<Animation>
+				<Name>Slash</Name>
+				<FrameCount>5</FrameCount>
+				<Time>3</Time>
+				<Looping>false</Looping>
+			</Animation>
+		</Sprite>
+	</SlashEffect>
 	
 	<!-- カンペ（コピペ用。ゲーム中では使わない） -->
 	<CunningPaper>

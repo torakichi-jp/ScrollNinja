@@ -89,6 +89,19 @@ public abstract class AbstractObject implements ObjectInterface
 		}
 	}
 	
+	@Override
+	public float getRotation()
+	{
+		if( !renderObjects.isEmpty() )
+		{
+			return renderObjects.get(0).getRotation();
+		}
+		else
+		{
+			return sprites.get(0).getRotation();
+		}
+	}
+	
 	/**
 	 * スプライト反転フラグを設定する。
 	 * @param x		x方向の反転フラグ

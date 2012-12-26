@@ -18,7 +18,7 @@ public class JumpSmokeEffect extends AbstractEffect
 	 * コンストラクタ
 	 * @param positionX		X座標
 	 * @param positionY		Y座標
-	 * @param degrees TODO
+	 * @param degrees		角度（度）
 	 */
 	public JumpSmokeEffect(float positionX, float positionY, float degrees)
 	{

@@ -91,7 +91,7 @@ public abstract class AbstractPlayerNinjaController implements NinjaControllerIn
 	@Override
 	public final boolean isAttack()
 	{
-		return inputHelpers[InputType.ATTACK.ordinal()].isPress();
+		return inputHelpers[InputType.ATTACK.ordinal()].isTrigger();
 	}
 
 	@Override
