@@ -15,7 +15,7 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.resizable = false;
 		
-		if(GlobalParam.INSTANCE.FULLSCREEN)
+		if(GlobalDefine.INSTANCE.FULLSCREEN)
 		{
 			final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 			cfg.width = d.width;
@@ -24,8 +24,8 @@ public class Main {
 		}
 		else
 		{
-			cfg.width = GlobalParam.INSTANCE.CLIENT_WIDTH;
-			cfg.height = GlobalParam.INSTANCE.CLIENT_HEIGHT;
+			cfg.width = GlobalDefine.INSTANCE.CLIENT_WIDTH;
+			cfg.height = GlobalDefine.INSTANCE.CLIENT_HEIGHT;
 		}
 		
 		//Check for updates [更新を確認]

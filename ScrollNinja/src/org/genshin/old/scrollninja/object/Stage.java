@@ -6,7 +6,8 @@ import org.genshin.engine.system.RenderableManager;
 import org.genshin.engine.system.UpdatableManager;
 import org.genshin.old.scrollninja.GameMain;
 import org.genshin.old.scrollninja.object.StageDataList.StageData;
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.Global;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.render.CameraTranslater;
@@ -55,7 +56,7 @@ public class Stage implements StageBase {
 
 		renderer = new Box2DDebugRenderer();
 		
-		cursor = new Cursor(GameMain.camera, 2.0f * GlobalParam.INSTANCE.WORLD_SCALE);
+		cursor = new Cursor(GameMain.camera, 2.0f * GlobalDefine.INSTANCE.WORLD_SCALE);
 		
 		// 超　仮
 		{
@@ -67,8 +68,8 @@ public class Stage implements StageBase {
 			spriteBatch.setProjectionMatrix( tmpMatrix.setToOrtho2D(0, 0, 1280, 720) );
 		}
 
-		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
-		GlobalParam.INSTANCE.currentRenderableManager = renderableManager;
+		Global.currentUpdatableManager = updatableManager;
+		Global.currentRenderableManager = renderableManager;
 	}
 
 	//************************************************************

@@ -2,7 +2,7 @@ package org.genshin.scrollninja.object.effect;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
@@ -38,7 +38,7 @@ public class KaginawaReleaseEffect extends AbstractEffect
 		}
 
 		//---- 各種パラメータ設定
-		setVelocityInterpolation(0.0f, -100.0f*GlobalParam.INSTANCE.WORLD_SCALE, 0.0f, 0.0f);
+		setVelocityInterpolation(0.0f, -100.0f*GlobalDefine.INSTANCE.WORLD_SCALE, 0.0f, 0.0f);
 		setColorInterpolation(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);
 	}
 

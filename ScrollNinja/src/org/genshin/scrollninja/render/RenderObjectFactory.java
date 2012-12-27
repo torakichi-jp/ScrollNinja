@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.render;
 
 import org.genshin.engine.system.factory.FactoryInterface;
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.render.animation.AnimationInterface;
 import org.genshin.scrollninja.render.animation.TextureAnimation;
 import org.genshin.scrollninja.render.animation.TextureAnimationDef;
@@ -40,7 +40,7 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 	public RenderObjectInterface get(String key)
 	{
 		//---- TODO 仮。いずれもっと効率的な実装にすること。
-		Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.SPRITE_PARAM_XML_FILE_NAME);
+		Element rootElement = XMLFactory.getInstance().get(GlobalDefine.INSTANCE.XML_DIRECTORY_PATH + GlobalDefine.INSTANCE.SPRITE_PARAM_XML_FILE_NAME);
 		rootElement = rootElement.getChildByName(key);
 
 		// 描画オブジェクト生成
@@ -54,7 +54,7 @@ public final class RenderObjectFactory implements FactoryInterface<RenderObjectI
 		// アニメーション生成
 		rootElement = rootElement.getChildByName("Sprite");
 		final int childCount = rootElement.getChildCount();
-		final float invWorldScale = GlobalParam.INSTANCE.INV_WORLD_SCALE;
+		final float invWorldScale = GlobalDefine.INSTANCE.INV_WORLD_SCALE;
 		final float invFPS = 1.0f / 60.0f;
 		for(int i = 0;  i < childCount;  ++i)
 		{

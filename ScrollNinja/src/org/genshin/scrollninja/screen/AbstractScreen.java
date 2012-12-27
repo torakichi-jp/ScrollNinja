@@ -3,7 +3,8 @@ package org.genshin.scrollninja.screen;
 import org.genshin.engine.system.RenderableManager;
 import org.genshin.engine.system.UpdatableManager;
 import org.genshin.old.scrollninja.GameMain;
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.Global;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.gui.Cursor;
 
 import com.badlogic.gdx.Screen;
@@ -145,8 +146,8 @@ public abstract class AbstractScreen implements Screen
 	 */
 	private final void setCurrentScreen()
 	{
-		GlobalParam.INSTANCE.currentUpdatableManager = updatableManager;
-		GlobalParam.INSTANCE.currentRenderableManager = renderableManager;
+		Global.currentUpdatableManager = updatableManager;
+		Global.currentRenderableManager = renderableManager;
 	}
 	
 	
@@ -154,10 +155,10 @@ public abstract class AbstractScreen implements Screen
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	
 	/** 世界オブジェクト */
-	private final World world = new World(new Vector2(0, GlobalParam.INSTANCE.GRAVITY), true);
+	private final World world = new World(new Vector2(0, GlobalDefine.INSTANCE.GRAVITY), true);
 	
 	/** カメラオブジェクト */
-	private final Camera camera = new OrthographicCamera(GlobalParam.INSTANCE.CLIENT_WIDTH * GlobalParam.INSTANCE.WORLD_SCALE, GlobalParam.INSTANCE.CLIENT_HEIGHT * GlobalParam.INSTANCE.WORLD_SCALE);
+	private final Camera camera = new OrthographicCamera(GlobalDefine.INSTANCE.CLIENT_WIDTH * GlobalDefine.INSTANCE.WORLD_SCALE, GlobalDefine.INSTANCE.CLIENT_HEIGHT * GlobalDefine.INSTANCE.WORLD_SCALE);
 	
 	/** 更新管理オブジェクト */
 	private final UpdatableManager updatableManager = new UpdatableManager();

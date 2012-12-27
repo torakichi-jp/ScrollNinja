@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.utils;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,7 +23,7 @@ public class SpriteLoader
 	{
 		assert xmlElement != null;
 		
-		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 		
 		xmlElement		= xmlElement.getChildByName("Sprite");
 		textureLoader	= new TextureLoader(xmlElement.getChildByName("Texture"));
@@ -43,7 +43,7 @@ public class SpriteLoader
 	{
 		final Sprite sprite = new Sprite(textureLoader.create());
 
-		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 		final float w = width == 0.0f ? sprite.getWidth() * worldScale : width;
 		final float h = height == 0.0f ? sprite.getHeight() * worldScale : height;
 		
@@ -89,7 +89,7 @@ public class SpriteLoader
 		{
 			assert xmlElement != null;
 			
-			filePath	= GlobalParam.INSTANCE.TEXTURE_DIRECTORY_PATH + xmlElement.get("FilePath");
+			filePath	= GlobalDefine.INSTANCE.TEXTURE_DIRECTORY_PATH + xmlElement.get("FilePath");
 			x			= xmlElement.getInt("X", 0);
 			y			= xmlElement.getInt("Y", 0);
 			width		= xmlElement.getInt("Width", 0);

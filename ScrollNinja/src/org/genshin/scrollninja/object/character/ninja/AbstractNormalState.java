@@ -25,13 +25,13 @@ abstract class AbstractNormalState extends AbstractState
 			// ダッシュ
 			if( me.controller.isDash() )
 			{
-				move(me, movePower, NinjaParam.INSTANCE.DASH_ACCEL, NinjaParam.INSTANCE.DASH_MAX_VELOCITY);
+				move(me, movePower, NinjaDefine.INSTANCE.DASH_ACCEL, NinjaDefine.INSTANCE.DASH_MAX_VELOCITY);
 				me.setAnimation("Dash");
 			}
 			// 走り
 			else
 			{
-				move(me, movePower, NinjaParam.INSTANCE.RUN_ACCEL, NinjaParam.INSTANCE.RUN_MAX_VELOCITY);
+				move(me, movePower, NinjaDefine.INSTANCE.RUN_ACCEL, NinjaDefine.INSTANCE.RUN_MAX_VELOCITY);
 				me.setAnimation("Run");
 			}
 		}

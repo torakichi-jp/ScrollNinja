@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.object.effect;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
@@ -22,10 +22,10 @@ public abstract class AbstractEffect extends AbstractObject
 	public AbstractEffect()
 	{
 		//---- 更新処理を管理するオブジェクトに追加する。
-		GlobalParam.INSTANCE.currentUpdatableManager.add(this, getUpdatePriority());
+		Global.currentUpdatableManager.add(this, getUpdatePriority());
 		
 		//---- 描画処理を管理するオブジェクトに追加する。
-		GlobalParam.INSTANCE.currentRenderableManager.add(this, getRenderPriority());
+		Global.currentRenderableManager.add(this, getRenderPriority());
 		
 		//---- フィールドを初期化する。
 		life = getLife();
@@ -35,10 +35,10 @@ public abstract class AbstractEffect extends AbstractObject
 	public void dispose()
 	{
 		//---- 更新処理を管理するオブジェクトから削除する。
-		GlobalParam.INSTANCE.currentUpdatableManager.remove(this, getUpdatePriority());
+		Global.currentUpdatableManager.remove(this, getUpdatePriority());
 
 		//---- 描画処理を管理するオブジェクトから削除する。
-		GlobalParam.INSTANCE.currentRenderableManager.remove(this, getRenderPriority());
+		Global.currentRenderableManager.remove(this, getRenderPriority());
 		
 		//---- 基本クラスの破棄もしておく。
 		super.dispose();

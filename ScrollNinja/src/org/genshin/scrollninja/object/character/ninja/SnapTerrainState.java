@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
 
 import com.badlogic.gdx.math.Vector2;
@@ -18,7 +18,7 @@ class SnapTerrainState extends AbstractState
 		if( checkContactIsFoot(me, contact) )
 		{
 			final Body body = me.getBody();
-			final float safeVelocity = 200.0f * GlobalParam.INSTANCE.WORLD_SCALE;
+			final float safeVelocity = 200.0f * GlobalDefine.INSTANCE.WORLD_SCALE;
 			
 			if(body.getLinearVelocity().len2() < safeVelocity * safeVelocity)
 			{
@@ -27,7 +27,7 @@ class SnapTerrainState extends AbstractState
 				body.setLinearVelocity(Vector2.Zero);
 				
 				//---- 地上フラグを立てておく。
-				me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
+				me.groundedTimer = NinjaDefine.INSTANCE.GROUNDED_JUDGE_TIME;
 				
 				//---- 前方ベクトルを設定しておく。
 				me.frontDirection.set(normal.y, -normal.x);

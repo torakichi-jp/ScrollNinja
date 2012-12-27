@@ -47,10 +47,10 @@ class GroundedState extends AbstractNormalState
 		
 		//---- 衝突したのが下半身なら地面に立っている時の処理を加える。
 		// 空中ジャンプのカウント初期化
-		me.restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
+		me.restAerialJumpCount = NinjaDefine.INSTANCE.AERIAL_JUMP_COUNT;
 		
 		// 地面との衝突判定用タイマー初期化
-		me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
+		me.groundedTimer = NinjaDefine.INSTANCE.GROUNDED_JUDGE_TIME;
 		
 		// 前方ベクトルを設定
 		final Vector2 normal = contact.getWorldManifold().getNormal();

@@ -2,7 +2,7 @@ package org.genshin.old.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,7 +14,7 @@ public class StageDataList {
 		StageData data = new StageDataList().new StageData();
 
 		if (stageNum == 0) {
-			final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+			final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 			
 			// ステージ０設定
 			data.size.set(3840.0f * worldScale, 2500.0f * worldScale);

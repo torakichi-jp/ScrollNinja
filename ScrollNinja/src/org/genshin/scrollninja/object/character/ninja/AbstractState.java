@@ -111,7 +111,7 @@ abstract class AbstractState implements StateInterface
 	 */
 	protected final void jump(PlayerNinja me)
 	{
-		setAxisImpulse(me, me.jumpDirection, NinjaParam.INSTANCE.JUMP_POWER);
+		setAxisImpulse(me, me.jumpDirection, NinjaDefine.INSTANCE.JUMP_POWER);
 		
 		//---- エフェクトを生成する。
 		final Body body = me.getBody();
@@ -126,7 +126,7 @@ abstract class AbstractState implements StateInterface
 	 */
 	protected final void leaveSnapCeiling(PlayerNinja me)
 	{
-		setAxisImpulse(me, me.jumpDirection, NinjaParam.INSTANCE.LEAVE_SNAP_CEILING_POWER);
+		setAxisImpulse(me, me.jumpDirection, NinjaDefine.INSTANCE.LEAVE_SNAP_CEILING_POWER);
 		
 		//---- エフェクトを生成する。
 		final Body body = me.getBody();

@@ -56,15 +56,15 @@ public class ScrollNinja extends Game
 		
 		//---- デバッグ文字列を描画する。
 		DebugString.render();
-		DebugString.add("Frame Count : " + GlobalParam.INSTANCE.frameCount);
+		DebugString.add("Frame Count : " + Global.frameCount);
 		DebugString.add("FPS : " + Gdx.graphics.getFramesPerSecond());
 		
 		//---- 状態別の処理を実行する。
 		state.invoke(this, Gdx.graphics.getDeltaTime());
 		
 		//---- ゲーム内時間をカウントする。
-		GlobalParam.INSTANCE.frameCount++;
-		GlobalParam.INSTANCE.gameTime = Gdx.graphics.getDeltaTime();
+		Global.frameCount++;
+		Global.gameTime = Gdx.graphics.getDeltaTime();
 		
 		//---- [Esc] 入力でプログラムを終了する。
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE))
@@ -114,8 +114,8 @@ public class ScrollNinja extends Game
 				{
 					if(inputHelper.isTrigger())
 					{
-						int newWidth = GlobalParam.INSTANCE.CLIENT_WIDTH;
-						int newHeight = GlobalParam.INSTANCE.CLIENT_HEIGHT;
+						int newWidth = GlobalDefine.INSTANCE.CLIENT_WIDTH;
+						int newHeight = GlobalDefine.INSTANCE.CLIENT_HEIGHT;
 						final boolean newFullscreen = !Gdx.graphics.isFullscreen();
 						
 						if( newFullscreen )

@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.utils.FixtureDefLoader;
 import org.genshin.scrollninja.utils.XMLFactory;
 
@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.XmlReader.Element;
  * @since		1.0
  * @version	1.0
  */
-enum NinjaParam
+enum NinjaDefine
 {
 	/** シングルトンインスタンス */
 	INSTANCE;
@@ -20,13 +20,13 @@ enum NinjaParam
 	/**
 	 * コンストラクタ
 	 */
-	private NinjaParam()
+	private NinjaDefine()
 	{
-		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 		
 		//---- 忍者の挙動関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.OBJECT_PARAM_XML_FILE_NAME);
+			Element rootElement = XMLFactory.getInstance().get(GlobalDefine.INSTANCE.XML_DIRECTORY_PATH + GlobalDefine.INSTANCE.OBJECT_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Ninja");
 			
 			// 走り
@@ -48,7 +48,7 @@ enum NinjaParam
 		
 		//---- 衝突関連
 		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalParam.INSTANCE.XML_DIRECTORY_PATH + GlobalParam.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
+			Element rootElement = XMLFactory.getInstance().get(GlobalDefine.INSTANCE.XML_DIRECTORY_PATH + GlobalDefine.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
 			rootElement = rootElement.getChildByName("Ninja");
 			
 			// 上半身

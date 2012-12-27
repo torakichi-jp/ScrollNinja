@@ -66,7 +66,7 @@ class AerialState extends AbstractNormalState
 		
 		//---- 地面と接触した時の処理を加える。
 		// 地面との衝突判定用タイマー初期化
-		me.groundedTimer = NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME;
+		me.groundedTimer = NinjaDefine.INSTANCE.GROUNDED_JUDGE_TIME;
 	}
 	
 	@Override

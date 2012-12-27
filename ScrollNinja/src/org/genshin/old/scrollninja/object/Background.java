@@ -104,7 +104,7 @@ public class Background extends AbstractCollisionObject {
 		bd.type		= BodyType.StaticBody;		// 動かない物体
 
 		// ボディ設定
-		FixtureDef fd	= TerrainParam.INSTANCE.FIXTURE_DEF_LOADER.createFixtureDef();
+		FixtureDef fd	= TerrainDefine.INSTANCE.FIXTURE_DEF_LOADER.createFixtureDef();
 
 		// ボディ作成
 		createBody(GameMain.world, bd);

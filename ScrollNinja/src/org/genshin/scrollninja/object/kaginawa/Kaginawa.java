@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object.kaginawa;
 
 import org.genshin.old.scrollninja.object.Background;
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
 import org.genshin.scrollninja.object.effect.KaginawaReleaseEffect;
@@ -94,7 +94,7 @@ public class Kaginawa extends AbstractDynamicObject
 		
 		ropeSprite.setSize(len, ropeSprite.getHeight());
 		ropeSprite.setRotation(direction.angle() - (float)Math.toDegrees(getBody().getAngle()));
-		ropeSprite.setRegion(0, 0, (int)(len*GlobalParam.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
+		ropeSprite.setRegion(0, 0, (int)(len*GlobalDefine.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
 		
 		super.render();
 	}
@@ -170,8 +170,8 @@ public class Kaginawa extends AbstractDynamicObject
 	protected FixtureDef createFixtureDef()
 	{
 		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(KaginawaParam.INSTANCE.COLLISION_RADIUS);
-		circleShape.setPosition(new Vector2(16.0f * GlobalParam.INSTANCE.WORLD_SCALE, 0.0f));
+		circleShape.setRadius(KaginawaDefine.INSTANCE.COLLISION_RADIUS);
+		circleShape.setPosition(new Vector2(16.0f * GlobalDefine.INSTANCE.WORLD_SCALE, 0.0f));
 		
 		FixtureDef fd	= super.createFixtureDef();
 		fd.isSensor		= true;			// XXX センサーフラグ。いずれはFilterに代わる予定。
@@ -269,7 +269,7 @@ public class Kaginawa extends AbstractDynamicObject
 				
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
-				kaginawa.setLinearVelocity(direction.x*KaginawaParam.INSTANCE.SLACK_VELOCITY, direction.y*KaginawaParam.INSTANCE.SLACK_VELOCITY);
+				kaginawa.setLinearVelocity(direction.x*KaginawaDefine.INSTANCE.SLACK_VELOCITY, direction.y*KaginawaDefine.INSTANCE.SLACK_VELOCITY);
 				kaginawa.setTransform(owner.getPosition(), (float)Math.toRadians(direction.angle()));
 				kaginawa.setActive(true);
 				
@@ -283,7 +283,7 @@ public class Kaginawa extends AbstractDynamicObject
 				Body owner		= me.owner;
 				
 				// 縄の長さが限界に達したら、鉤縄を窓から投げ捨てろ！
-				if(kaginawa.getPosition().dst2(owner.getPosition()) > KaginawaParam.INSTANCE.LENGTH*KaginawaParam.INSTANCE.LENGTH)
+				if(kaginawa.getPosition().dst2(owner.getPosition()) > KaginawaDefine.INSTANCE.LENGTH*KaginawaDefine.INSTANCE.LENGTH)
 				{
 					release(me);
 				}
@@ -344,7 +344,7 @@ public class Kaginawa extends AbstractDynamicObject
 				Vector2 ownerPos = owner.getPosition();
 				Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
 				float len2 = direction.len2();
-				direction.nor().mul(KaginawaParam.INSTANCE.SHRINK_VELOCITY);
+				direction.nor().mul(KaginawaDefine.INSTANCE.SHRINK_VELOCITY);
 	
 				owner.setLinearVelocity(direction);
 			}
@@ -392,7 +392,7 @@ public class Kaginawa extends AbstractDynamicObject
 					jd.bodyB = kaginawa;
 					jd.localAnchorA.set(Vector2.Zero);
 					jd.localAnchorB.set(Vector2.Zero);
-					jd.maxLength = KaginawaParam.INSTANCE.LENGTH;
+					jd.maxLength = KaginawaDefine.INSTANCE.LENGTH;
 					me.joint = world.createJoint(jd);
 				}
 				else

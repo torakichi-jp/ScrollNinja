@@ -3,7 +3,7 @@ package org.genshin.old.scrollninja;
 import org.genshin.old.scrollninja.object.BackgroundManager;
 import org.genshin.old.scrollninja.object.Stage;
 import org.genshin.old.scrollninja.object.StageManager;
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -45,11 +45,11 @@ public class GameMain implements Screen{
 	public GameMain(Game game, int num) {
 		scrollNinja		= game;
 		// TODO 重力は調整必要あり
-		world				= new World(new Vector2(0, GlobalParam.INSTANCE.GRAVITY), true);
+		world				= new World(new Vector2(0, GlobalDefine.INSTANCE.GRAVITY), true);
 
 		// TODO 画面サイズによって数値を変更
-		camera				= new OrthographicCamera(GlobalParam.INSTANCE.CLIENT_WIDTH * GlobalParam.INSTANCE.WORLD_SCALE,
-													 GlobalParam.INSTANCE.CLIENT_HEIGHT * GlobalParam.INSTANCE.WORLD_SCALE);
+		camera				= new OrthographicCamera(GlobalDefine.INSTANCE.CLIENT_WIDTH * GlobalDefine.INSTANCE.WORLD_SCALE,
+													 GlobalDefine.INSTANCE.CLIENT_HEIGHT * GlobalDefine.INSTANCE.WORLD_SCALE);
 		spriteBatch 		= new SpriteBatch();
 		stageNum			= num;
 		stage				= new Stage(stageNum);

@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.old.scrollninja.object.Background;
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.controller.DefaultPlayerNinjaController;
@@ -48,7 +48,7 @@ public class PlayerNinja extends AbstractCharacter {
 		controller = new DefaultPlayerNinjaController(this, cursor);
 		kaginawa = new Kaginawa(world, getBody());
 		sword = new SwordWeapon(this);
-		restAerialJumpCount = NinjaParam.INSTANCE.AERIAL_JUMP_COUNT;
+		restAerialJumpCount = NinjaDefine.INSTANCE.AERIAL_JUMP_COUNT;
 		groundedTimer = 0;
 		worldGravity = world.getGravity().len();
 		defaultFriction = getFootFixture().getFriction();
@@ -140,10 +140,10 @@ public class PlayerNinja extends AbstractCharacter {
 	@Override
 	protected void initializeFixture()
 	{
-		final float worldScale = GlobalParam.INSTANCE.WORLD_SCALE;
+		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 		
 		// 下半身
-		FixtureDef ffd = NinjaParam.INSTANCE.FOOT_FIXTURE_DEF_LOADER.createFixtureDef();
+		FixtureDef ffd = NinjaDefine.INSTANCE.FOOT_FIXTURE_DEF_LOADER.createFixtureDef();
 		CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(15.0f * worldScale);
 		ffd.shape = circleShape;
@@ -152,7 +152,7 @@ public class PlayerNinja extends AbstractCharacter {
 		circleShape.dispose();
 		
 		// 上半身
-		FixtureDef bfd = NinjaParam.INSTANCE.BODY_FIXTURE_DEF_LOADER.createFixtureDef();
+		FixtureDef bfd = NinjaDefine.INSTANCE.BODY_FIXTURE_DEF_LOADER.createFixtureDef();
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(16.0f * worldScale, 16.0f * worldScale, new Vector2(0.0f * worldScale, 16.0f * worldScale), 0.0f);
 		bfd.shape = polygonShape;
@@ -166,7 +166,7 @@ public class PlayerNinja extends AbstractCharacter {
 	 */
 	void updateMoveDirection()
 	{
-		if(groundedTimer < NinjaParam.INSTANCE.GROUNDED_JUDGE_TIME-1 || frontDirection.x >= 0.0f)
+		if(groundedTimer < NinjaDefine.INSTANCE.GROUNDED_JUDGE_TIME-1 || frontDirection.x >= 0.0f)
 			moveDirection = 1.0f;
 		else
 			moveDirection = -1.0f;

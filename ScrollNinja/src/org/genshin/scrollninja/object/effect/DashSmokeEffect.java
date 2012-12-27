@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.object.effect;
 
-import org.genshin.scrollninja.GlobalParam;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
@@ -34,7 +34,7 @@ public class DashSmokeEffect extends AbstractEffect
 		
 		//---- 各種パラメータ設定
 		final Vector2 direction = Vector2.tmp.set( (flip?-1.0f:1.0f) * 300.0f, 100.0f );
-		direction.mul(GlobalParam.INSTANCE.WORLD_SCALE);
+		direction.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
 		direction.rotate(degrees);
 		setVelocityInterpolation(direction.x, direction.y, 0.0f, 0.0f);
 		setColorInterpolation(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f);

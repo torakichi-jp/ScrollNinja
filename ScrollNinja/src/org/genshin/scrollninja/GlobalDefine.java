@@ -2,21 +2,18 @@ package org.genshin.scrollninja;
 
 import java.io.IOException;
 
-import org.genshin.engine.system.RenderableManager;
-import org.genshin.engine.system.UpdatableManager;
-
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
 /**
- * プロジェクト全体で共有するパラメータ
+ * プロジェクト全体で使用する定数
  * @author kou
  * @since		1.0
  * @version	1.0
  */
-public enum GlobalParam
+public enum GlobalDefine
 {
 	/** シングルトンインスタンス */
 	INSTANCE;
@@ -24,7 +21,7 @@ public enum GlobalParam
 	/**
 	 * コンストラクタ
 	 */
-	private GlobalParam()
+	private GlobalDefine()
 	{
 		final XmlReader xmlReader = new XmlReader();
 		Element rootElement = null;
@@ -97,16 +94,4 @@ public enum GlobalParam
 	
 	/** スプライトパラメータを記述したXMLファイルのパス */
 	public final String SPRITE_PARAM_XML_FILE_NAME;
-	
-	/** 現在指定されている更新処理を管理するオブジェクト */
-	public UpdatableManager currentUpdatableManager = null;
-	
-	/** 現在指定されている描画処理を管理するオブジェクト */
-	public RenderableManager currentRenderableManager = null;
-	
-	/** ゲーム内時間（秒） */
-	public float gameTime = 0.0f;
-	
-	/** ゲーム内時間（フレーム数） */
-	public int frameCount = 0;
 }
