@@ -19,6 +19,9 @@ public final class Global
 	/** 現在指定されている描画処理を管理するオブジェクト */
 	public static RenderableManager currentRenderableManager = null;
 	
+	/** 現在指定されているスプライトバッチオブジェクト */
+	public static SpriteBatch currentSpriteBatch = null;
+	
 	/** ゲーム内時間（秒） */
 	public static float gameTime = 0.0f;
 	

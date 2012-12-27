@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 
-public final class XMLFactory extends AbstractFlyweightFactory<Element, String>
+public final class XMLFactory extends AbstractFlyweightFactory<String, Element>
 {
 	/**
 	 * コンストラクタ

@@ -10,15 +10,15 @@ import java.util.Map;
  * @since		1.0
  * @version	1.0
  *
- * @param <ReturnType>		生成するオブジェクトの型
- * @param <KeyType>			オブジェクトを判別するための識別子
+ * @param <K>	オブジェクトを判別するための識別子
+ * @param <V>	生成するオブジェクトの型
  */
-public abstract class AbstractFlyweightFactory<ReturnType, KeyType> implements FactoryInterface<ReturnType, KeyType>
+public abstract class AbstractFlyweightFactory<K, V> implements FactoryInterface<K, V>
 {
 	@Override
-	public final ReturnType get(KeyType key)
+	public final V get(K key)
 	{
-		ReturnType result = objects.get(key);
+		V result = objects.get(key);
 		if(result == null)
 		{
 			result = create(key);
@@ -32,8 +32,8 @@ public abstract class AbstractFlyweightFactory<ReturnType, KeyType> implements F
 	 * @param key	オブジェクトの識別子
 	 * @return		新しいオブジェクト
 	 */
-	protected abstract ReturnType create(KeyType key);
+	protected abstract V create(K key);
 	
 	/** 管理オブジェクトのマップ */
-	private final Map<KeyType, ReturnType> objects = new HashMap<KeyType, ReturnType>();
+	private final Map<K, V> objects = new HashMap<K, V>();
 }

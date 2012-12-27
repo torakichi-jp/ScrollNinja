@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
  * @since		1.0
  * @version	1.0
  */
-public final class TextureFactory extends AbstractFlyweightFactory<Texture, String>
+public final class TextureFactory extends AbstractFlyweightFactory<String, Texture>
 {
 	/**
 	 * コンストラクタ

@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.XmlReader.Element;
  * @since		1.0
  * @version	1.0
  */
-public final class RenderObjectFactory implements FactoryInterface<RenderObjectInterface, String>
+public final class RenderObjectFactory implements FactoryInterface<String, RenderObjectInterface>
 {
 	/**
 	 * コンストラクタ

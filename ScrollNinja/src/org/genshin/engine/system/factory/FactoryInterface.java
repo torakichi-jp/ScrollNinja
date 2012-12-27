@@ -6,15 +6,15 @@ package org.genshin.engine.system.factory;
  * @since		1.0
  * @version	1.0
  *
- * @param <ReturnType>		生成するオブジェクトの型
- * @param <KeyType>			オブジェクトを判別するための識別子
+ * @param <K>	オブジェクトを判別するための識別子
+ * @param <V>	生成するオブジェクトの型
  */
-public interface FactoryInterface<ReturnType, KeyType>
+public interface FactoryInterface<K, V>
 {
 	/**
 	 * オブジェクトを取得する。
 	 * @param key	オブジェクトの識別子
 	 * @return		オブジェクト
 	 */
-	public ReturnType get(KeyType key);
+	public V get(K key);
 }
