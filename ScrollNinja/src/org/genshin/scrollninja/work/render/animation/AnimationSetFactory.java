@@ -9,6 +9,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * アニメーションセットの生成を管理するクラス
+ * @author kou
+ * @since		1.0
+ * @version		1.0
+ */
 public class AnimationSetFactory extends AbstractFlyweightFactory<String, AnimationSet>
 {
 	/**
@@ -32,25 +38,18 @@ public class AnimationSetFactory extends AbstractFlyweightFactory<String, Animat
 	protected AnimationSet create(String key)
 	{
 		AnimationSetDef animationSetDef = null;
-		ObjectMapper objectMapper = new ObjectMapper();
+		final ObjectMapper objectMapper = new ObjectMapper();
 		try
 		{
 			animationSetDef = objectMapper.readValue(Gdx.files.internal(key).file(), AnimationSetDef.class);
-		} catch (JsonParseException e)
-		{
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (JsonMappingException e)
-		{
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
 		}
+		catch (JsonParseException e)	{ e.printStackTrace(); }
+		catch (JsonMappingException e)	{ e.printStackTrace(); }
+		catch (IOException e)			{ e.printStackTrace(); }
+		
 		animationSetDef.test();
-		return null;
+		
+		return null;	//new AnimationSet(animationSetDef);
 	}
 	
 	

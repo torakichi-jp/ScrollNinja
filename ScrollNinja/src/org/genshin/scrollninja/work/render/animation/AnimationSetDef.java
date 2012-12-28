@@ -2,6 +2,12 @@ package org.genshin.scrollninja.work.render.animation;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * アニメーションセットの初期化用定義
+ * @author kou
+ * @since		1.0
+ * @version		1.0
+ */
 class AnimationSetDef
 {
 	public void test()

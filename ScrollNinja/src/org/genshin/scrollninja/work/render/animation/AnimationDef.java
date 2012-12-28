@@ -4,6 +4,12 @@ import java.awt.Point;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * アニメーションの初期化用定義
+ * @author kou
+ * @since		1.0
+ * @version		1.0
+ */
 class AnimationDef
 {
 	public String texture;
