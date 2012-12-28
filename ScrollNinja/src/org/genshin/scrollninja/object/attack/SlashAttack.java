@@ -11,16 +11,16 @@ public class SlashAttack extends AbstractAttack
 	}
 	
 	@Override
-	public void fire(float degrees, boolean flip)
+	public void fire()
 	{
 		//---- エフェクトを発生させる。
-		new SlashEffect(owner.getPositionX(), owner.getPositionY(), degrees, flip);
+		new SlashEffect(owner);
 	}
 
 	@Override
 	public boolean isSleep()
 	{
-		return false;
+		return true;
 	}
 	
 	

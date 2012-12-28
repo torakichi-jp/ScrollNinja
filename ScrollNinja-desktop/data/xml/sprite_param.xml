@@ -58,7 +58,7 @@
 			<Animation>
 				<Name>AttackSword</Name>
 				<StartY>7</StartY>
-				<FrameCount>5</FrameCount>
+				<FrameCount>7</FrameCount>
 				<Time>3</Time>
 				<Looping>false</Looping>
 			</Animation>
@@ -173,7 +173,7 @@
 			<!-- アニメーション -->
 			<Animation>
 				<Name>Slash</Name>
-				<FrameCount>5</FrameCount>
+				<FrameCount>7</FrameCount>
 				<Time>3</Time>
 				<Looping>false</Looping>
 			</Animation>

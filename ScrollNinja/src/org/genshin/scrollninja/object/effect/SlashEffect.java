@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.effect;
 
+import org.genshin.engine.system.PostureInterface;
+import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
@@ -13,21 +15,11 @@ public class SlashEffect extends AbstractEffect
 {
 	/**
 	 * コンストラクタ
-	 * @param positionX		X座標
-	 * @param positionY		Y座標
-	 * @param degrees		回転（度）
-	 * @param flip			反転フラグ
+	 * @param owner		所有者
 	 */
-	public SlashEffect(float positionX, float positionY, float degrees, boolean flip)
+	public SlashEffect(PostureInterface owner)
 	{
-		//---- 座標設定
-		for(RenderObjectInterface ro : getRenderObjects())
-		{
-			ro.setPosition(positionX, positionY);
-			ro.setRotation(degrees);
-		}
-		
-		flip(flip, false);
+		this.owner = (PlayerNinja)owner;
 	}
 	
 	@Override
@@ -44,6 +36,13 @@ public class SlashEffect extends AbstractEffect
 	public void render()
 	{
 		//---- 所有者に追従する。
+		for(RenderObjectInterface ro : getRenderObjects())
+		{
+			ro.setPosition(owner.getPositionX(), owner.getPositionY());
+			ro.setRotation(owner.getRotation());
+		}
+		
+		flip(owner.isFlip(), false);
 		
 		super.render();
 	}
@@ -61,4 +60,7 @@ public class SlashEffect extends AbstractEffect
 	{
 		return 2;
 	}
+	
+	/** 所有者 */
+	private final PlayerNinja owner;
 }

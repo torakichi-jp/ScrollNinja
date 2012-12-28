@@ -19,15 +19,17 @@ public class SwordWeapon extends AbstractWeapon
 	public SwordWeapon(PostureInterface owner)
 	{
 		super(owner);
+		attack = new SlashAttack(owner);
 	}
 
 	@Override
-	public void attack(float degrees, boolean flip)
+	public void attack()
 	{
 		//---- 攻撃を実行する。
-		attack.fire(degrees, flip);
+		if(attack.isSleep())
+			attack.fire();
 	}
 	
 	/** 攻撃オブジェクト */
-	private final AttackInterface attack = new SlashAttack(this);
+	private final AttackInterface attack;
 }

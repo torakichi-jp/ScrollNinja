@@ -15,7 +15,6 @@ import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -85,15 +84,10 @@ public class PlayerNinja extends AbstractCharacter {
 		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), (float)Math.toDegrees(getBody().getAngle()));
 		
 		//---- 刀を振ってみる。
-		if( controller.isAttack() )
+		if( controller.isAttack() && getBodyRenderObject().isAnimationLooping() )
 		{
-			sword.attack(getBody().getAngle() * MathUtils.radiansToDegrees, flip);
+			sword.attack();
 			getBodyRenderObject().setAnimation("AttackSword");
-			getBodyRenderObject().setAnimationTime(0.0f);
-		}
-		else if(getBodyRenderObject().isAnimationFinished())
-		{
-			getBodyRenderObject().setAnimation("Stay");
 		}
 		
 		//---- デバッグ文字列
@@ -126,6 +120,15 @@ public class PlayerNinja extends AbstractCharacter {
 	public void notifyCollision(Background obj, Contact contact)
 	{
 		state.collisionTerrain(this, contact);
+	}
+	
+	/**
+	 * 反転フラグを取得する。
+	 * @return		反転フラグ
+	 */
+	public boolean isFlip()
+	{
+		return flip;
 	}
 	
 	@Override
