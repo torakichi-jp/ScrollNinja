@@ -2,8 +2,6 @@ package org.genshin.scrollninja.work.render.animation;
 
 import java.awt.Point;
 
-import com.badlogic.gdx.math.Vector2;
-
 /**
  * アニメーションの初期化用定義
  * @author kou

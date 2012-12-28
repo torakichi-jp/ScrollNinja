@@ -11,10 +11,10 @@ public class SlashAttack extends AbstractAttack
 	}
 	
 	@Override
-	public void fire()
+	public void fire(float degrees, boolean flip)
 	{
 		//---- エフェクトを発生させる。
-		new SlashEffect(owner.getPositionX(), owner.getPositionY(), 0.0f);
+		new SlashEffect(owner.getPositionX(), owner.getPositionY(), degrees, flip);
 	}
 
 	@Override

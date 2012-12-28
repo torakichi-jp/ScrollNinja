@@ -22,10 +22,10 @@ public class SwordWeapon extends AbstractWeapon
 	}
 
 	@Override
-	public void attack(float directionX, float directionY)
+	public void attack(float degrees, boolean flip)
 	{
 		//---- 攻撃を実行する。
-		attack.fire();
+		attack.fire(degrees, flip);
 	}
 	
 	/** 攻撃オブジェクト */

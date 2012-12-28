@@ -16,8 +16,9 @@ public class SlashEffect extends AbstractEffect
 	 * @param positionX		X座標
 	 * @param positionY		Y座標
 	 * @param degrees		回転（度）
+	 * @param flip			反転フラグ
 	 */
-	public SlashEffect(float positionX, float positionY, float degrees)
+	public SlashEffect(float positionX, float positionY, float degrees, boolean flip)
 	{
 		//---- 座標設定
 		for(RenderObjectInterface ro : getRenderObjects())
@@ -25,6 +26,8 @@ public class SlashEffect extends AbstractEffect
 			ro.setPosition(positionX, positionY);
 			ro.setRotation(degrees);
 		}
+		
+		flip(flip, false);
 	}
 	
 	@Override
@@ -38,10 +41,24 @@ public class SlashEffect extends AbstractEffect
 	}
 
 	@Override
+	public void render()
+	{
+		//---- 所有者に追従する。
+		
+		super.render();
+	}
+
+	@Override
 	protected void initializeSprite()
 	{
 		RenderObjectInterface renderObject = RenderObjectFactory.getInstance().get("SlashEffect");
 		addRenderObject(renderObject);
 		renderObject.setAnimation("Slash");
+	}
+
+	@Override
+	protected int getRenderPriority()
+	{
+		return 2;
 	}
 }

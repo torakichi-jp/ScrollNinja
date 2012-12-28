@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
-import org.genshin.scrollninja.utils.TextureFactory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;

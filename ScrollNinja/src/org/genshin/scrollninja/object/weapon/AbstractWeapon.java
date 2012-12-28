@@ -22,10 +22,10 @@ public abstract class AbstractWeapon implements ObjectInterface
 	
 	/**
 	 * 攻撃する。
-	 * @param directionX	攻撃する方向X
-	 * @param directionY	攻撃する方向Y
+	 * @param degrees	回転（度）
+	 * @param flip		反転フラグ
 	 */
-	public abstract void attack(float directionX, float directionY);
+	public abstract void attack(float degrees, boolean flip);
 	
 	@Override
 	public void dispose()

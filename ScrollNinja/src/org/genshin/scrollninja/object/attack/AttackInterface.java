@@ -10,8 +10,10 @@ public interface AttackInterface
 {
 	/**
 	 * 攻撃を実行する。
+	 * @param degrees	角度（度）
+	 * @param flip		反転フラグ
 	 */
-	public void fire();
+	public void fire(float degrees, boolean flip);
 	
 	/**
 	 * 待機状態か調べる。

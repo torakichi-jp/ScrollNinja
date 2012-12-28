@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.old.scrollninja.object.Background;
+import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
@@ -14,6 +15,7 @@ import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -54,6 +56,9 @@ public class PlayerNinja extends AbstractCharacter {
 		defaultFriction = getFootFixture().getFriction();
 
 		state = new AerialState(this);
+		
+		// 描画登録（仮）
+		Global.currentRenderableManager.add(this, 1);
 	}
 
 	/**
@@ -70,19 +75,26 @@ public class PlayerNinja extends AbstractCharacter {
 		// 鉤縄を更新
 		kaginawa.update(deltaTime);
 		
+		//---- 左右の反転フラグを設定する。
+		final Vector2 direction = controller.getDirection();
+		final float angle = getBody().getAngle();
+		final Vector2 upDirection = new Vector2(-(float)Math.sin(angle), (float)Math.cos(angle));
+		flip = upDirection.crs(direction) < 0.0f;
+		
 		//---- 残像を付けてみる。
 		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), (float)Math.toDegrees(getBody().getAngle()));
 		
 		//---- 刀を振ってみる。
-//		if( controller.isAttack() )
-//		{
-//			sword.attack(1.0f, 0.0f);
-//			this.getBodyRenderObject().setAnimation("AttackSword");
-//		}
-//		if(this.getBodyRenderObject().isAnimationFinished())
-//		{
-//			this.getBodyRenderObject().setAnimation("Stay");
-//		}
+		if( controller.isAttack() )
+		{
+			sword.attack(getBody().getAngle() * MathUtils.radiansToDegrees, flip);
+			getBodyRenderObject().setAnimation("AttackSword");
+			getBodyRenderObject().setAnimationTime(0.0f);
+		}
+		else if(getBodyRenderObject().isAnimationFinished())
+		{
+			getBodyRenderObject().setAnimation("Stay");
+		}
 		
 		//---- デバッグ文字列
 		DebugString.add("");
@@ -95,10 +107,7 @@ public class PlayerNinja extends AbstractCharacter {
 	public void render()
 	{
 		//---- 描画時の左右反転フラグを設定する。
-		final Vector2 direction = controller.getDirection();
-		final float angle = getBody().getAngle();
-		final Vector2 upDirection = new Vector2(-(float)Math.sin(angle), (float)Math.cos(angle));
-		flip(upDirection.crs(direction) < 0.0f, false);
+		flip(flip, false);
 		
 		//---- 鉤縄を描画する。
 		kaginawa.render();
@@ -133,7 +142,6 @@ public class PlayerNinja extends AbstractCharacter {
 		BodyDef bd = super.createBodyDef();
 		bd.fixedRotation = true;		// 回転しない
 		bd.gravityScale = 0.0f;			// 重力は独自に与える
-		bd.gravityScale = 0.0f;
 		return bd;
 	}
 
@@ -277,4 +285,7 @@ public class PlayerNinja extends AbstractCharacter {
 	
 	/** 忍者の状態を管理するオブジェクト */
 	private StateInterface		state;
+	
+	/** 左右を反転するフラグ */
+	private boolean flip = false;
 }

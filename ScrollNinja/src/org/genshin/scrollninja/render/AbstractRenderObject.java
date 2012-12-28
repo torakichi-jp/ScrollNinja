@@ -56,8 +56,11 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 		AnimationInterface nextAnimation = animations.get(name);
 		if( currentAnimation != nextAnimation )
 		{
-			currentAnimation = nextAnimation;
-			animationTime = 0.0f;
+			if(currentAnimation == null || currentAnimation.isLooping() || currentAnimation.isFinished(animationTime))
+			{
+				currentAnimation = nextAnimation;
+				animationTime = 0.0f;
+			}
 		}
 	}
 	
