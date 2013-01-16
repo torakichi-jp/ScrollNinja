@@ -13,12 +13,27 @@ public class AnimationSet
 {
 	/**
 	 * コンストラクタ
+	 * @param animationSetDef アニメーションセットの初期化用定義
 	 */
-	void AnimationSet()
+	public AnimationSet(AnimationSetDef animationSetDef)
 	{
-		
+		for(AnimationPair animationPair : animationSetDef.animations)
+		{
+			animationPair.animation.uvSize = animationSetDef.uvSize;
+			animations.put(animationPair.name, new AnimationWrapper(animationPair.animation));
+		}
+	}
+	
+	/**
+	 * アニメーションを取得する。
+	 * @param animationName		取得するアニメーションの名前
+	 * @return		指定した名前のアニメーションオブジェクト
+	 */
+	public AnimationWrapper getAnimation(String animationName)
+	{
+		return animations.get(animationName);
 	}
 	
 	/** アニメーションのマップ */
-	private final Map<String, Animation> animations = new HashMap<String, Animation>();
+	private final Map<String, AnimationWrapper> animations = new HashMap<String, AnimationWrapper>();
 }

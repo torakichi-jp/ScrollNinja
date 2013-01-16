@@ -7,6 +7,7 @@ import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
+import org.genshin.scrollninja.work.render.AnimationRenderObject;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -43,6 +44,9 @@ public class ScrollNinja extends Game
 		
 		//---- 初期スクリーンを設定する。
 		setScreen(new GameMain(this, 0));
+//		setScreen(new GameScreen());
+		
+		new AnimationRenderObject("data/jsons/render_object/slash_sprite.json", "data/jsons/render_object/slash_animation.json", null);
 	}
 
 	@Override

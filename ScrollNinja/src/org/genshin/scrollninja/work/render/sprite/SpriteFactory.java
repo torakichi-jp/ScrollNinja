@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
+import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.utils.TextureFactory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -59,10 +62,33 @@ public class SpriteFactory extends AbstractFlyweightFactory<String, Sprite>
 				return null;
 		}
 		
+		//---- スプライト定義の補完
+		final Texture texture = TextureFactory.getInstance().get(spriteDef.texture);
+		
+		// UVマップの横幅、縦幅が0の場合はテクスチャのサイズに合わせる。
+		if(spriteDef.uv.width == 0)
+			spriteDef.uv.width = texture.getWidth();
+		if(spriteDef.uv.height == 0)
+			spriteDef.uv.height = texture.getHeight();
+		
+		// スプライトのサイズが0の場合はUVマップのサイズに合わせる。
+		if(spriteDef.size.x == 0.0f)
+			spriteDef.size.x = spriteDef.uv.width;
+		if(spriteDef.size.y == 0.0f)
+			spriteDef.size.y = spriteDef.uv.height;
+		
+		// 世界のスケールを押し付けておく。
+		spriteDef.position.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+		spriteDef.size.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+		spriteDef.origin.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+		
 		//---- スプライトを生成する。
 		final Sprite sprite = new Sprite();
 		
-//		sprite.setTexture( TextureFactory.getInstance().get(spriteDef.texturePath) );
+		sprite.setTexture( texture );
+		sprite.setRegion(spriteDef.uv.x, spriteDef.uv.y, spriteDef.uv.width, spriteDef.uv.height);
+		sprite.setBounds(spriteDef.size.x * -0.5f + spriteDef.position.x, spriteDef.size.y * -0.5f + spriteDef.position.y, spriteDef.size.x, spriteDef.size.y);
+		sprite.setOrigin(spriteDef.origin.x, spriteDef.origin.y);
 		
 		return sprite;
 	}

@@ -38,18 +38,24 @@ public class AnimationSetFactory extends AbstractFlyweightFactory<String, Animat
 	protected AnimationSet create(String key)
 	{
 		AnimationSetDef animationSetDef = null;
-		final ObjectMapper objectMapper = new ObjectMapper();
-		try
+		
+		//---- アニメーションセットの定義を読み込む。
 		{
-			animationSetDef = objectMapper.readValue(Gdx.files.internal(key).file(), AnimationSetDef.class);
+			final ObjectMapper objectMapper = new ObjectMapper();
+			try
+			{
+					animationSetDef = objectMapper.readValue(Gdx.files.internal(key).file(), AnimationSetDef.class);
+			}
+			catch (JsonParseException e)	{ e.printStackTrace(); }
+			catch (JsonMappingException e)	{ e.printStackTrace(); }
+			catch (IOException e)			{ e.printStackTrace(); }
+			
+			// 読み込み失敗
+			if(animationSetDef == null)
+				return null;
 		}
-		catch (JsonParseException e)	{ e.printStackTrace(); }
-		catch (JsonMappingException e)	{ e.printStackTrace(); }
-		catch (IOException e)			{ e.printStackTrace(); }
 		
-		animationSetDef.test();
-		
-		return null;	//new AnimationSet(animationSetDef);
+		return new AnimationSet(animationSetDef);
 	}
 	
 	

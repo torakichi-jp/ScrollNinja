@@ -1,0 +1,21 @@
+{
+    "texture": "data/textures/dummy.png",
+    "uv": {
+        "x": 0,
+        "y": 0,
+        "width": 128,
+        "height": 128
+    },
+    "position": {
+        "x": 0,
+        "y": 0
+    },
+    "size": {
+        "x": 0,
+        "y": 0
+    },
+    "origin": {
+        "x": 25,
+        "y": -17
+    }
+}

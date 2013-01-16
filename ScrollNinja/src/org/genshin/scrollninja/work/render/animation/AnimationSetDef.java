@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.work.render.animation;
 
-import com.badlogic.gdx.math.Vector2;
+import java.awt.Point;
 
 /**
  * アニメーションセットの初期化用定義
@@ -10,25 +10,19 @@ import com.badlogic.gdx.math.Vector2;
  */
 class AnimationSetDef
 {
-	public void test()
-	{
-		System.out.println("size = " + size);
-		System.out.println("origin = " + origin);
-		
-		for(int i = 0;  i < animations.length;  ++i)
-		{
-			final AnimationDef animation = animations[i];
-			System.out.println("animations[" + i + "]:");
-			System.out.println("\ttexture = " + animation.texture);
-			System.out.println("\tname = " + animation.name);
-			System.out.println("\tcount = " + animation.count);
-			System.out.println("\tstart = " + animation.start);
-			System.out.println("\ttime = " + animation.time);
-			System.out.println("\tlooping = " + animation.looping);
-		}
-	}
+	/** UVマップの大きさ */
+	public Point uvSize;
 	
-	public Vector2 size;
-	public Vector2 origin;
-	public AnimationDef[] animations;
+	/** アニメーションの初期化用定義配列 */
+	public AnimationPair[] animations;
+	
+}
+
+class AnimationPair
+{
+	/** アニメーションの名前 */
+	public String name;
+	
+	/** アニメーションの初期化用定義 */
+	public AnimationDef animation;
 }

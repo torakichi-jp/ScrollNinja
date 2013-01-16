@@ -1,0 +1,21 @@
+{
+    "texture": "data/textures/gui/cursor.png",
+    "uv": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+    },
+    "position": {
+        "x": 0,
+        "y": 0
+    },
+    "size": {
+        "x": 0,
+        "y": 0
+    },
+    "origin": {
+        "x": 0,
+        "y": 0
+    }
+}

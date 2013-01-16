@@ -4,6 +4,7 @@ import org.genshin.engine.system.Disposable;
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.engine.system.Renderable;
 import org.genshin.scrollninja.Global;
+import org.genshin.scrollninja.work.render.sprite.SpriteFactory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,8 +27,23 @@ public class RenderObject implements Renderable, Disposable
 	 */
 	public RenderObject(String spriteName, PostureInterface posture)
 	{
-		sprite = null;	// SpriteFactory.get(spriteName); 
+		sprite = SpriteFactory.getInstance().get(spriteName); 
 		this.posture = posture;
+	}
+	
+	/**
+	 * コピーコンストラクタ
+	 * @param src		コピー元となるオブジェクト
+	 */
+	public RenderObject(RenderObject src)
+	{
+		if(getClass() != src.getClass())
+		{
+			System.out.println("なんかちがうかも？");
+		}
+		
+		sprite = src.sprite;
+		posture = src.posture;
 	}
 
 	@Override
@@ -55,8 +71,10 @@ public class RenderObject implements Renderable, Disposable
 
 	/**
 	 * スプライトを取得する。
-	 * @return		スプライト
+	 * @return			スプライト
+	 * @deprecated		スプライトを直接いじるのは最終手段。基本的には使わない。
 	 */
+	@Deprecated
 	public final Sprite getSprite()
 	{
 		return sprite;

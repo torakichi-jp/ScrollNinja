@@ -1,0 +1,26 @@
+{
+    "uvSize": {
+        "x": 16,
+        "y": 16
+    },
+    "animations": [
+        {
+            "name": "Hoge",
+            "animation": {
+                "texture": "data/textures/effect/dummy.png",
+                "start": {
+                    "x": 0,
+                    "y": 0
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "time": 3,
+                "looping": true
+            }
+        }
+    ]
+}

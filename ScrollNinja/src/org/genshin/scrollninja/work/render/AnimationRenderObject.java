@@ -2,6 +2,11 @@ package org.genshin.scrollninja.work.render;
 
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.engine.system.Updatable;
+import org.genshin.scrollninja.work.render.animation.AnimationSet;
+import org.genshin.scrollninja.work.render.animation.AnimationSetFactory;
+import org.genshin.scrollninja.work.render.animation.AnimationWrapper;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class AnimationRenderObject extends RenderObject implements Updatable
 {
@@ -15,7 +20,22 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	{
 		super(spriteName, posture);
 		
-		animationSet = null;	// AnimationSetFactory.get(animationSetName);
+		animationSet = AnimationSetFactory.getInstance().get(animationSetName);
+	}
+	
+	/**
+	 * コピーコンストラクタ
+	 * @param src		コピー元となるオブジェクト
+	 */
+	public AnimationRenderObject(AnimationRenderObject src)
+	{
+		super(src);
+		
+		animationSet = src.animationSet;
+		currentAnimation = src.currentAnimation;
+		timer = src.timer;
+		speedRatio = src.speedRatio;
+		paused = src.paused;
 	}
 
 	@Override
@@ -39,7 +59,13 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	public void render()
 	{
 		//---- アニメーションを反映する。
-		// currentAnimation.apply(getSprite(), timer);
+		if(currentAnimation != null)
+		{
+			@SuppressWarnings("deprecation")
+			final Sprite sprite = getSprite();
+			
+			sprite.setRegion(currentAnimation.getKeyFrame(timer));
+		}
 		
 		//---- 描画処理
 		super.render();
@@ -67,7 +93,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 */
 	public void setAnimation(String animationName)
 	{
-		// currentAnimation = animationSet.getAnimation(animationName);
+		currentAnimation = animationSet.getAnimation(animationName);
 		timer = 0.0f;
 	}
 	
@@ -122,7 +148,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 */
 	public boolean isAnimationFinished()
 	{
-		return false;	// currentAnimation.isFinished();
+		return currentAnimation.isAnimationFinished(timer);
 	}
 	
 	/**
@@ -131,15 +157,15 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 */
 	public boolean isAnimationLooping()
 	{
-		return false;	// currentAnimation.isLooping();
+		return false;		//currentAnimation
 	}
 	
 	
 	/** アニメーションセット */
-	private Object animationSet;
+	private AnimationSet animationSet;
 	
 	/** 現在のアニメーション */
-	private Object currentAnimation;
+	private AnimationWrapper currentAnimation;
 	
 	/** アニメーションタイマー */
 	private float timer = 0.0f;
