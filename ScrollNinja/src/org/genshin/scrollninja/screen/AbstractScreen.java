@@ -1,12 +1,12 @@
 package org.genshin.scrollninja.screen;
 
-import org.genshin.engine.system.RenderableManager;
-import org.genshin.engine.system.UpdatableManager;
-import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.object.gui.Cursor;
+import org.genshin.scrollninja.work.object.ObjectManager;
+import org.genshin.scrollninja.work.object.gui.Cursor;
+import org.genshin.scrollninja.work.render.RenderManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -41,24 +41,47 @@ public abstract class AbstractScreen implements Screen
 		if( !isPaused() )
 		{
 			// オブジェクトの更新処理
-			updatableManager.update(delta);
+			objectManager.update(delta);
 			
 			// 世界の更新処理
 			world.step(delta, 20, 20);
 		}
 		
 		//---- 描画処理を実行する。
-		GameMain.spriteBatch = spriteBatch;
+		final SpriteBatch spriteBatch = Global.spriteBatch;
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
-		renderableManager.render();
+		renderManager.render();
 		spriteBatch.end();
 	}
 
 	@Override
 	public final void resize(int width, int height)
 	{
-		// TODO Auto-generated method stub
+		//---- アスペクト比を計算する
+		final float windowAspectRatio = (float)width / height;
+		final float viewportAspectRatio = camera.viewportWidth / camera.viewportHeight;
+		
+		//---- アスペクト比が等しくない場合、ビューポートを調整する
+		if( Math.abs(windowAspectRatio - viewportAspectRatio) > 1.0e-6 )
+		{
+			int newWidth = width;
+			int newHeight = height;
+			
+			// ウィンドウの横幅が広い
+			if(windowAspectRatio > viewportAspectRatio)
+			{
+				newWidth = (int)(height * viewportAspectRatio);
+			}
+			// ウィンドウの縦幅が広い
+			else
+			{
+				newHeight = (int)(width / viewportAspectRatio);
+			}
+			
+			// ビューポートを設定する
+			Gdx.gl.glViewport((width-newWidth)/2, (height-newHeight)/2, newWidth, newHeight);
+		}
 	}
 
 	@Override
@@ -90,10 +113,10 @@ public abstract class AbstractScreen implements Screen
 	public void dispose()
 	{
 		//---- 更新管理オブジェクトを空にする。
-		updatableManager.clear();
+		objectManager.clear();
 		
 		//---- 描画管理オブジェクトを空にする。
-		renderableManager.clear();
+		renderManager.clear();
 		
 		//---- 世界オブジェクトを破棄する。
 		world.dispose();
@@ -146,13 +169,11 @@ public abstract class AbstractScreen implements Screen
 	 */
 	private final void setCurrentScreen()
 	{
-		Global.currentUpdatableManager = updatableManager;
-		Global.currentRenderableManager = renderableManager;
+		Global.objectManager = objectManager;
+		Global.renderManager = renderManager;
+		Global.camera = camera;
 	}
 	
-	
-	// FIXME 仮
-	private final SpriteBatch spriteBatch = new SpriteBatch();
 	
 	/** 世界オブジェクト */
 	private final World world = new World(new Vector2(0, GlobalDefine.INSTANCE.GRAVITY), true);
@@ -161,10 +182,10 @@ public abstract class AbstractScreen implements Screen
 	private final Camera camera = new OrthographicCamera(GlobalDefine.INSTANCE.CLIENT_WIDTH * GlobalDefine.INSTANCE.WORLD_SCALE, GlobalDefine.INSTANCE.CLIENT_HEIGHT * GlobalDefine.INSTANCE.WORLD_SCALE);
 	
 	/** 更新管理オブジェクト */
-	private final UpdatableManager updatableManager = new UpdatableManager();
+	private final ObjectManager objectManager = new ObjectManager();
 	
 	/** 描画管理オブジェクト */
-	private final RenderableManager renderableManager = new RenderableManager();
+	private final RenderManager renderManager = new RenderManager();
 	
 	/** カーソルオブジェクト */
 	private final Cursor cursor;

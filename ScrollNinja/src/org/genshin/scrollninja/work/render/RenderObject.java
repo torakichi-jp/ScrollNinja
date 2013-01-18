@@ -4,6 +4,7 @@ import org.genshin.engine.system.Disposable;
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.engine.system.Renderable;
 import org.genshin.scrollninja.Global;
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.render.sprite.SpriteFactory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,11 +25,27 @@ public class RenderObject implements Renderable, Disposable
 	 * コンストラクタ
 	 * @param spriteName		スプライト名
 	 * @param posture			位置情報
+	 * @param depth				深度（値が大きいものを手前に描画する）
+	 */
+	public RenderObject(String spriteName, PostureInterface posture, int depth)
+	{
+		//---- フィールドを初期化する。
+		sprite = SpriteFactory.getInstance().get(spriteName);
+		this.posture = posture;
+		this.depth = depth;
+		
+		//---- 描画管理オブジェクトに自身を追加する。
+		Global.renderManager.add(this, this.depth);
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param spriteName		スプライト名
+	 * @param posture			位置情報
 	 */
 	public RenderObject(String spriteName, PostureInterface posture)
 	{
-		sprite = SpriteFactory.getInstance().get(spriteName); 
-		this.posture = posture;
+		this(spriteName, posture, GlobalDefine.RenderDepth.DEFAULT);
 	}
 	
 	/**
@@ -42,21 +59,30 @@ public class RenderObject implements Renderable, Disposable
 			System.out.println("なんかちがうかも？");
 		}
 		
+		//---- フィールドをコピーする。
 		sprite = src.sprite;
 		posture = src.posture;
+		depth = src.depth;
+		
+		//---- 描画管理オブジェクトに自身を追加する。
+		Global.renderManager.add(this, depth);
 	}
 
 	@Override
 	public void dispose()
 	{
+		//---- フィールドを破棄する。
 		sprite = null;
 		posture = null;
+		
+		//---- 描画管理オブジェクトから自身を削除する。
+		Global.renderManager.remove(this, depth);
 	}
 
 	@Override
 	public void render()
 	{
-		final SpriteBatch sb = Global.currentSpriteBatch;
+		final SpriteBatch sb = Global.spriteBatch;
 		
 		//---- 位置情報を反映する。
 		sb.setTransformMatrix(
@@ -91,6 +117,9 @@ public class RenderObject implements Renderable, Disposable
 	
 	/** 位置情報 */
 	private PostureInterface	posture;
+	
+	/** 深度（値が大きいものを手前に描画する） */
+	private int	depth;
 	
 	/** 作業用マトリクス */
 	private static final Matrix4	transform	= new Matrix4();

@@ -94,4 +94,29 @@ public enum GlobalDefine
 	
 	/** スプライトパラメータを記述したXMLファイルのパス */
 	public final String SPRITE_PARAM_XML_FILE_NAME;
+
+
+	/**
+	 * 更新処理の優先順位
+	 */
+	public class UpdatePriority
+	{
+		/** デフォルト */
+		public static final int DEFAULT		= 0;
+		
+		/** アニメーション */
+		public static final int ANIMATION		= 9999;
+	}
+
+	/**
+	 * 描画処理の優先順位
+	 */
+	public class RenderDepth
+	{
+		/** デフォルト */
+		public static final int DEFAULT = 0;
+		
+		/** マウスカーソル */
+		public static final int CURSOR = 9999;
+	}
 }

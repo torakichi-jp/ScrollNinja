@@ -1,0 +1,21 @@
+{
+    "texture": "data/textures/effect/jump_smoke.png",
+    "uv": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+    },
+    "position": {
+        "x": -8,
+        "y": 0
+    },
+    "size": {
+        "x": 0,
+        "y": 0
+    },
+    "origin": {
+        "x": 8,
+        "y": 0
+    }
+}

@@ -3,11 +3,10 @@ package org.genshin.scrollninja;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import org.genshin.old.scrollninja.GameMain;
+import org.genshin.scrollninja.screen.GameScreen;
 import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
-import org.genshin.scrollninja.work.render.AnimationRenderObject;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -29,7 +28,7 @@ public class ScrollNinja extends Game
 	public void create()
 	{
 		//---- デバッグ文字列の初期化
-		DebugString.initialize(false);
+		DebugString.initialize(true);
 		
 		//---- アイコンを設定する。
 		final Pixmap[] pixmaps = {
@@ -43,10 +42,8 @@ public class ScrollNinja extends Game
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		//---- 初期スクリーンを設定する。
-		setScreen(new GameMain(this, 0));
-//		setScreen(new GameScreen());
-		
-		new AnimationRenderObject("data/jsons/render_object/slash_sprite.json", "data/jsons/render_object/slash_animation.json", null);
+//		setScreen(new GameMain(this, 0));
+		setScreen(new GameScreen());
 	}
 
 	@Override

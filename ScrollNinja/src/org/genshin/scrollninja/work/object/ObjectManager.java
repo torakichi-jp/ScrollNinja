@@ -1,5 +1,6 @@
-package org.genshin.engine.system;
+package org.genshin.scrollninja.work.object;
 
+import org.genshin.engine.system.NewAbstractProcessManager;
 
 
 
@@ -9,7 +10,7 @@ package org.genshin.engine.system;
  * @since		1.0
  * @version	1.0
  */
-public final class UpdatableManager extends AbstractProcessManager<Updatable>
+public final class ObjectManager extends NewAbstractProcessManager<UpdateObjectInterface>
 {
 	/**
 	 * 処理優先度順に更新処理を実行する。
@@ -22,9 +23,12 @@ public final class UpdatableManager extends AbstractProcessManager<Updatable>
 	}
 
 	@Override
-	protected void processOne(Updatable object)
+	protected ProcessResult processOne(UpdateObjectInterface object)
 	{
+		if(object.isDisposed())
+			return ProcessResult.REMOVE;
 		object.update(deltaTime);
+		return ProcessResult.SURVIVE;
 	}
 	
 	/** 経過時間 */

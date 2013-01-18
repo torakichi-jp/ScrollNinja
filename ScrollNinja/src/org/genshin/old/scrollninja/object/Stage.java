@@ -39,15 +39,17 @@ public class Stage implements StageBase {
 	private final InputHelperInterface switchDebugInput = new KeyboardInputHelper(Keys.NUM_0);
 	private boolean renderDebug = false;
 	
-	private Sprite screenEdgeSprite = null;
+	private final Sprite screenEdgeSprite;
 	private final Matrix4 tmpMatrix = new Matrix4(); 
 
-	private Sprite logoSprite = null;
-	private Sprite miniInputGuideSprite = null;
-	private Sprite fullInputGuideSprite = null;
+	private final Sprite logoSprite;
+	private final Sprite miniInputGuideSprite;
+	private final Sprite fullInputGuideSprite;
 	private final SpriteBatch spriteBatch = new SpriteBatch(50);
 	private final InputHelperInterface switchHelpInput = new KeyboardInputHelper(Keys.F1);
 	private boolean renderFullInputGuide = false;
+	
+	private final Sprite uiSprite;
 
 	// コンストラクタ
 	public Stage(int num){
@@ -64,7 +66,10 @@ public class Stage implements StageBase {
 			logoSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/logo.png") );
 			miniInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_mini.png") );
 			fullInputGuideSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/input_guide_full.png") );
-			logoSprite.setPosition(1280.0f - logoSprite.getWidth(), 0.0f);
+			uiSprite = new Sprite( TextureFactory.getInstance().get("data/textures/alpha/ui.png") );
+			logoSprite.setPosition(1280.0f - logoSprite.getWidth(), 720.0f - logoSprite.getHeight());
+			final float uiMargin = 30.0f;
+			uiSprite.setPosition(1280.0f - uiSprite.getWidth() - uiMargin, 0.0f + uiMargin);
 			spriteBatch.setProjectionMatrix( tmpMatrix.setToOrtho2D(0, 0, 1280, 720) );
 		}
 
@@ -130,6 +135,7 @@ public class Stage implements StageBase {
 		GameMain.spriteBatch.end();										// 描画終了
 
 		spriteBatch.begin();
+		uiSprite.draw(spriteBatch);
 		logoSprite.draw(spriteBatch);
 		miniInputGuideSprite.draw(spriteBatch);
 		if(renderFullInputGuide)	fullInputGuideSprite.draw(spriteBatch);

@@ -7,7 +7,7 @@
         {
             "name": "Hoge",
             "animation": {
-                "texture": "data/textures/effect/dummy.png",
+                "texture": "data/textures/dummy.png",
                 "start": {
                     "x": 0,
                     "y": 0

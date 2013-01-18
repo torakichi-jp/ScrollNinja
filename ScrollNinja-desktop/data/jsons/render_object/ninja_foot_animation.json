@@ -1,0 +1,117 @@
+{
+    "uvSize": {
+        "x": 64,
+        "y": 64
+    },
+    "animations": [
+        {
+            "name": "Stay",
+            "animation": {
+                "texture": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 0,
+                    "y": 3
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "time": 6,
+                "looping": true
+            }
+        },
+        {
+            "name": "Run",
+            "animation": {
+                "texture": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 0,
+                    "y": 0
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "time": 6,
+                "looping": true
+            }
+        },
+        {
+            "name": "Dash",
+            "animation": {
+                "texture": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 0,
+                    "y": 0
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "time": 4,
+                "looping": true
+            }
+        },
+        {
+            "name": "Jump",
+            "animation": {
+                "texture": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 0,
+                    "y": 0
+                },
+                "frames": [
+                    0
+                ],
+                "time": 6,
+                "looping": true
+            }
+        },
+        {
+            "name": "KaginawaFront",
+            "animation": {
+                "texture": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 0,
+                    "y": 6
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "time": 6,
+                "looping": true
+            }
+        },
+        {
+            "name": "KaginawaBack",
+            "animation": {
+                "texture": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 4,
+                    "y": 6
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "time": 6,
+                "looping": true
+            }
+        }
+    ]
+}

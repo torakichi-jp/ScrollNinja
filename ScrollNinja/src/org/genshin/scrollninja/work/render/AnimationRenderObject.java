@@ -1,15 +1,34 @@
 package org.genshin.scrollninja.work.render;
 
 import org.genshin.engine.system.PostureInterface;
-import org.genshin.engine.system.Updatable;
+import org.genshin.scrollninja.Global;
+import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.work.object.UpdateObjectInterface;
 import org.genshin.scrollninja.work.render.animation.AnimationSet;
 import org.genshin.scrollninja.work.render.animation.AnimationSetFactory;
 import org.genshin.scrollninja.work.render.animation.AnimationWrapper;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class AnimationRenderObject extends RenderObject implements Updatable
+public class AnimationRenderObject extends RenderObject implements UpdateObjectInterface
 {
+	/**
+	 * コンストラクタ
+	 * @param spriteName		スプライト名
+	 * @param animationSetName	アニメーションセット名
+	 * @param posture			位置情報
+	 * @param depth				深度（値が大きいものを手前に描画する）
+	 */
+	public AnimationRenderObject(String spriteName, String animationSetName, PostureInterface posture, int depth)
+	{
+		super(spriteName, posture, depth);
+		
+		animationSet = AnimationSetFactory.getInstance().get(animationSetName);
+		
+		//---- 更新管理オブジェクトに自身を追加する。
+		Global.objectManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
+	}
+	
 	/**
 	 * コンストラクタ
 	 * @param spriteName		スプライト名
@@ -18,9 +37,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 */
 	public AnimationRenderObject(String spriteName, String animationSetName, PostureInterface posture)
 	{
-		super(spriteName, posture);
-		
-		animationSet = AnimationSetFactory.getInstance().get(animationSetName);
+		this(spriteName, animationSetName, posture, GlobalDefine.RenderDepth.DEFAULT);
 	}
 	
 	/**
@@ -31,20 +48,28 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	{
 		super(src);
 		
+		//---- フィールドをコピーする。
 		animationSet = src.animationSet;
 		currentAnimation = src.currentAnimation;
 		timer = src.timer;
 		speedRatio = src.speedRatio;
 		paused = src.paused;
+
+		//---- 更新管理オブジェクトに自身を追加する。
+		Global.objectManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 
 	@Override
 	public void dispose()
 	{
-		//---- 自身の破棄
+		//---- フィールドを破棄する。
 		animationSet = null;
+		currentAnimation = null;
 		
-		//---- 基本クラスの破棄
+		//---- 更新管理オブジェクトから自身を削除する。
+		Global.objectManager.remove(this, GlobalDefine.UpdatePriority.ANIMATION);
+		
+		//---- 基本クラスの破棄処理を実行する。
 		super.dispose();
 	}
 
@@ -157,7 +182,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 */
 	public boolean isAnimationLooping()
 	{
-		return false;		//currentAnimation
+		return currentAnimation.isAnimationLooping();
 	}
 	
 	

@@ -1,6 +1,6 @@
 package org.genshin.engine.system;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +14,7 @@ import java.util.TreeMap;
  *
  * @param <T>		管理するオブジェクトの型
  */
-@Deprecated
-public abstract class AbstractProcessManager<T>
+public abstract class NewAbstractProcessManager<T>
 {
 	/**
 	 * 管理するオブジェクトを追加する。
@@ -86,23 +85,23 @@ public abstract class AbstractProcessManager<T>
 		// TODO ひとまず仮実装。最終的にはprocessOneの戻り値を見てremoveさせる予定。
 		for(Map.Entry<Integer, List<T>> entry:objects.entrySet())
 		{
-			for(T object:entry.getValue())
+			final Iterator<T> it = entry.getValue().iterator();
+			while(it.hasNext())
 			{
-				processList.add(object);
+				if(processOne(it.next()) == ProcessResult.REMOVE)
+				{
+					it.remove();
+				}
 			}
 		}
-		for(T object:processList)
-		{
-			processOne(object);
-		}
-		processList.clear();
 	}
 	
 	/**
 	 * 1つのオブジェクトの処理を実行する。
 	 * @param object	処理を実行するオブジェクト
+	 * @return		処理の結果
 	 */
-	protected abstract void processOne(T object);
+	protected abstract ProcessResult processOne(T object);
 
 	
 	/** 管理オブジェクトを格納するマップ */
@@ -111,6 +110,16 @@ public abstract class AbstractProcessManager<T>
 	/** 管理オブジェクトの数 */
 	private int objectCount = 0;
 	
-	/** 実行用のリスト（仮実装） */
-	private final List<T> processList = new ArrayList<T>(100);
+	
+	/**
+	 * 処理の結果
+	 */
+	protected enum ProcessResult
+	{
+		/** 管理オブジェクトに残る */
+		SURVIVE,
+		
+		/** 管理オブジェクトから外れる */
+		REMOVE
+	}
 }
