@@ -10,7 +10,7 @@ import org.genshin.engine.system.NewAbstractProcessManager;
  * @since		1.0
  * @version	1.0
  */
-public class RenderManager extends NewAbstractProcessManager<RenderObject>
+public class RenderManager extends NewAbstractProcessManager<RenderObjectInterface>
 {
 	/**
 	 * 描画処理を実行する。
@@ -21,7 +21,7 @@ public class RenderManager extends NewAbstractProcessManager<RenderObject>
 	}
 
 	@Override
-	protected ProcessResult processOne(RenderObject object)
+	protected ProcessResult processOne(RenderObjectInterface object)
 	{
 		if(object.isDisposed())
 			return ProcessResult.REMOVE;

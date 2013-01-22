@@ -25,23 +25,23 @@ class SpriteDef
 	
 	/** スプライトの中心座標 */
 	public Vector2 origin;
+}
+
+
+/**
+ * UVマップクラス
+ */
+class UVMap
+{
+	/** テクスチャ上でのX座標 */
+	public int x;
 	
+	/** テクスチャ上でのY座標 */
+	public int y;
 	
-	/**
-	 * UVマップクラス
-	 */
-	public class UVMap
-	{
-		/** テクスチャ上でのX座標 */
-		public int x;
-		
-		/** テクスチャ上でのY座標 */
-		public int y;
-		
-		/** テクスチャ上での横幅 */
-		public int width;
-		
-		/** テクスチャ上での縦幅 */
-		public int height;
-	}
+	/** テクスチャ上での横幅 */
+	public int width;
+	
+	/** テクスチャ上での縦幅 */
+	public int height;
 }

@@ -17,13 +17,13 @@ public abstract class AbstractGUI extends AbstractObject
 	@Override
 	public float getPositionX()
 	{
-		return screenPosition.x * GlobalDefine.INSTANCE.INV_WORLD_SCALE;
+		return screenPosition.x * GlobalDefine.INSTANCE.WORLD_SCALE - Global.camera.viewportWidth * 0.5f;
 	}
 
 	@Override
 	public float getPositionY()
 	{
-		return screenPosition.y * GlobalDefine.INSTANCE.INV_WORLD_SCALE;
+		return Global.camera.viewportHeight * 0.5f - screenPosition.y * GlobalDefine.INSTANCE.WORLD_SCALE;
 	}
 
 	@Override

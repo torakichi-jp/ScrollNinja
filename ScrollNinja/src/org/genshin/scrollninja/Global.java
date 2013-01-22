@@ -2,7 +2,7 @@ package org.genshin.scrollninja;
 
 import org.genshin.engine.system.RenderableManager;
 import org.genshin.engine.system.UpdatableManager;
-import org.genshin.scrollninja.work.object.ObjectManager;
+import org.genshin.scrollninja.work.object.UpdateManager;
 import org.genshin.scrollninja.work.render.RenderManager;
 
 import com.badlogic.gdx.graphics.Camera;
@@ -25,7 +25,7 @@ public final class Global
 	public static RenderableManager currentRenderableManager = null;
 
 	/** 現在指定されている更新処理を管理するオブジェクト */
-	public static ObjectManager objectManager = null;
+	public static UpdateManager updateManager = null;
 	
 	/** 現在指定されている描画処理を管理するオブジェクト */
 	public static RenderManager renderManager = null;

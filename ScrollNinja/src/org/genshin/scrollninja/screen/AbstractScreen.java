@@ -2,7 +2,7 @@ package org.genshin.scrollninja.screen;
 
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.work.object.ObjectManager;
+import org.genshin.scrollninja.work.object.UpdateManager;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 import org.genshin.scrollninja.work.render.RenderManager;
 
@@ -169,7 +169,7 @@ public abstract class AbstractScreen implements Screen
 	 */
 	private final void setCurrentScreen()
 	{
-		Global.objectManager = objectManager;
+		Global.updateManager = objectManager;
 		Global.renderManager = renderManager;
 		Global.camera = camera;
 	}
@@ -182,7 +182,7 @@ public abstract class AbstractScreen implements Screen
 	private final Camera camera = new OrthographicCamera(GlobalDefine.INSTANCE.CLIENT_WIDTH * GlobalDefine.INSTANCE.WORLD_SCALE, GlobalDefine.INSTANCE.CLIENT_HEIGHT * GlobalDefine.INSTANCE.WORLD_SCALE);
 	
 	/** 更新管理オブジェクト */
-	private final ObjectManager objectManager = new ObjectManager();
+	private final UpdateManager objectManager = new UpdateManager();
 	
 	/** 描画管理オブジェクト */
 	private final RenderManager renderManager = new RenderManager();

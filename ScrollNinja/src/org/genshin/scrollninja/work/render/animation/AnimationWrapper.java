@@ -17,7 +17,7 @@ public class AnimationWrapper
 	 * コンストラクタ
 	 * @param animationDef		アニメーションの初期化用定義
 	 */
-	public AnimationWrapper(AnimationDef animationDef)
+	AnimationWrapper(AnimationDef animationDef)
 	{
 		//---- ループフラグ設定
 		looping = animationDef.looping;

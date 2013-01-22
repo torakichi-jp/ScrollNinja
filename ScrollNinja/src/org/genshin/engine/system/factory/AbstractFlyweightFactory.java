@@ -26,13 +26,31 @@ public abstract class AbstractFlyweightFactory<K, V> implements FactoryInterface
 		}
 		return result;
 	}
-
+	
+	/**
+	 * 管理オブジェクトを全て削除する。
+	 */
+	public void clear()
+	{
+		objects.clear();
+	}
+	
+	/**
+	 * 管理オブジェクトの数を取得する。
+	 * @return		管理オブジェクトの数
+	 */
+	public int size()
+	{
+		return objects.size();
+	}
+	
 	/**
 	 * 新しいオブジェクトを生成する。
 	 * @param key	オブジェクトの識別子
 	 * @return		新しいオブジェクト
 	 */
 	protected abstract V create(K key);
+	
 	
 	/** 管理オブジェクトのマップ */
 	private final Map<K, V> objects = new HashMap<K, V>();

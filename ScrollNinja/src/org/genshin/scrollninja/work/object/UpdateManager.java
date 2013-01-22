@@ -10,7 +10,7 @@ import org.genshin.engine.system.NewAbstractProcessManager;
  * @since		1.0
  * @version	1.0
  */
-public final class ObjectManager extends NewAbstractProcessManager<UpdateObjectInterface>
+public final class UpdateManager extends NewAbstractProcessManager<UpdateObjectInterface>
 {
 	/**
 	 * 処理優先度順に更新処理を実行する。

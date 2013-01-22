@@ -1,16 +1,12 @@
 package org.genshin.scrollninja.work.render;
 
-import org.genshin.engine.system.Disposable;
 import org.genshin.engine.system.PostureInterface;
-import org.genshin.engine.system.Renderable;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.render.sprite.SpriteFactory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
 
 
 /**
@@ -19,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
  * @since		1.0
  * @version		1.0
  */
-public class RenderObject implements Renderable, Disposable
+public class RenderObject implements RenderObjectInterface
 {
 	/**
 	 * コンストラクタ
@@ -83,16 +79,20 @@ public class RenderObject implements Renderable, Disposable
 	public void render()
 	{
 		final SpriteBatch sb = Global.spriteBatch;
+		final float x = posture.getPositionX();
+		final float y = posture.getPositionY();
+		final float rotation = posture.getRotation();
 		
 		//---- 位置情報を反映する。
-		sb.setTransformMatrix(
-			transform
-				.setToRotation(Vector3.Z, posture.getRotation())
-				.translate(posture.getPositionX(), posture.getPositionY(), 0.0f)
-		);
+		sprite.translate(x, y);
+		sprite.rotate(rotation);
 		
 		//---- 描画する。
 		sprite.draw(sb);
+		
+		//---- 位置情報を元に戻す。
+		sprite.translate(-x, -y);
+		sprite.rotate(-rotation);
 	}
 
 	/**
@@ -120,7 +120,4 @@ public class RenderObject implements Renderable, Disposable
 	
 	/** 深度（値が大きいものを手前に描画する） */
 	private int	depth;
-	
-	/** 作業用マトリクス */
-	private static final Matrix4	transform	= new Matrix4();
 }

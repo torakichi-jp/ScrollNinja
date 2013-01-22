@@ -1,5 +1,6 @@
 package org.genshin.scrollninja.screen;
 
+import org.genshin.scrollninja.work.collision.CollisionObject;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 
 import com.badlogic.gdx.physics.box2d.World;
@@ -16,10 +17,14 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 	 * コンストラクタ
 	 */
 	public GameScreen()
-	{
+	{		
 		final World world = getWorld();
+
+		//---- 衝突判定の実験場
+		CollisionObject co = new CollisionObject("data/jsons/collision/ninja.json", world, null);
 		
-		//---- カーソル
+		
+//		//---- カーソル
 //		Cursor cursor = getCursor();
 //
 //		Global.currentUpdatableManager.add(cursor, 0);

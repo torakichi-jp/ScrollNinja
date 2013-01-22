@@ -26,7 +26,7 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 		animationSet = AnimationSetFactory.getInstance().get(animationSetName);
 		
 		//---- 更新管理オブジェクトに自身を追加する。
-		Global.objectManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
+		Global.updateManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 		paused = src.paused;
 
 		//---- 更新管理オブジェクトに自身を追加する。
-		Global.objectManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
+		Global.updateManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 		currentAnimation = null;
 		
 		//---- 更新管理オブジェクトから自身を削除する。
-		Global.objectManager.remove(this, GlobalDefine.UpdatePriority.ANIMATION);
+		Global.updateManager.remove(this, GlobalDefine.UpdatePriority.ANIMATION);
 		
 		//---- 基本クラスの破棄処理を実行する。
 		super.dispose();

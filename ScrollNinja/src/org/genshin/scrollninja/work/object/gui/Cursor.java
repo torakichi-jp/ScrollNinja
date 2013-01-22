@@ -1,6 +1,5 @@
 package org.genshin.scrollninja.work.object.gui;
 
-import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.render.RenderObject;
 
@@ -21,7 +20,7 @@ public class Cursor extends AbstractGUI
 	 */
 	public Cursor(float speed)
 	{
-		renderObject = new RenderObject("data/jsons/render_object/cursor_sprite.json", this, GlobalDefine.RenderDepth.CURSOR);
+		renderObject = new RenderObject("data/jsons/render/cursor_sprite.json", this, GlobalDefine.RenderDepth.CURSOR);
 		
 		//---- OSのマウスカーソルを非表示
 		Gdx.input.setCursorCatched(true);
@@ -48,24 +47,16 @@ public class Cursor extends AbstractGUI
 		float targetY = getScreenPositionY() + Gdx.input.getDeltaY() * speed;
 		
 		//---- 移動範囲を画面内に制限する。
-		final float halfScreenWidth = getScreenWidth() * 0.5f;
-		final float halfScreenHeight = getScreenHeight() * 0.5f;
+		final float screenWidth = getScreenWidth();
+		final float screenHeight = getScreenHeight();
+
+		targetX = Math.max(targetX, 0.0f);
+		targetX = Math.min(targetX, screenWidth);
+		targetY = Math.max(targetY, 0.0f);
+		targetY = Math.min(targetY, screenHeight);
 		
 		//---- 座標を反映する。
-		setScreenPosition(0.0f, 0.0f);
-		
-//		//---- 移動
-//		position.x += Gdx.input.getDeltaX() * speed;
-//		position.y -= Gdx.input.getDeltaY() * speed;
-//
-//		//---- 範囲制限
-//		final float halfWidth = camera.viewportWidth * 0.5f;
-//		final float halfHeight = camera.viewportHeight * 0.5f;
-//		if( Math.abs(position.x) > halfWidth )	position.x = Math.signum(position.x) * halfWidth;
-//		if( Math.abs(position.y) > halfHeight )	position.y = Math.signum(position.y) * halfHeight;
-//		
-//		//---- 適用
-//		getRenderObject(0).setPosition(camera.position.x + position.x, camera.position.y + position.y);
+		setScreenPosition(targetX, targetY);
 	}
 	
 	@Override

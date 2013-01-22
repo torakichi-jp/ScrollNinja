@@ -15,7 +15,7 @@ public class AnimationSet
 	 * コンストラクタ
 	 * @param animationSetDef アニメーションセットの初期化用定義
 	 */
-	public AnimationSet(AnimationSetDef animationSetDef)
+	AnimationSet(AnimationSetDef animationSetDef)
 	{
 		for(AnimationPair animationPair : animationSetDef.animations)
 		{

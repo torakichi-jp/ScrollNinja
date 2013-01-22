@@ -1,0 +1,49 @@
+{
+    "body": {
+        "isDynamic": true,
+        "isBullet": true,
+        "isFixedRotation": true
+    },
+    "fixtures": [
+        {
+            "name": "CircleTemplate",
+            "density": 0,
+            "friction": 0.2,
+            "restitution": 0,
+            "isSensor": false,
+            "circle": {
+                "radius": 1,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "filter": {
+                "category": "Hoge",
+                "ignoreCategories": [
+                    "Hoge"
+                ]
+            }
+        },
+        {
+            "name": "PolygonTemplate",
+            "density": 0,
+            "friction": 0.2,
+            "restitution": 0,
+            "isSensor": false,
+            "circle": {
+                "radius": 1,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "filter": {
+                "category": "Hoge",
+                "ignoreCategories": [
+                    "Hoge"
+                ]
+            }
+        }
+    ]
+}
