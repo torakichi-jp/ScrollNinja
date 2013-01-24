@@ -1,10 +1,12 @@
 package org.genshin.scrollninja.work.collision;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.genshin.scrollninja.GlobalDefine;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -36,6 +38,8 @@ public class CollisionDef implements Json.Serializable
 	@Override
 	public void read(Json json, OrderedMap<String, Object> jsonData)
 	{
+		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
+		
 		//---- BodyDef
 		{
 			final OrderedMap<String, Object> bodyMap = json.readValue("body", OrderedMap.class, jsonData);
@@ -46,12 +50,15 @@ public class CollisionDef implements Json.Serializable
 		}
 		
 		//---- FixtureDefs
+		if(jsonData.containsKey("fixtures"))
 		{
-			final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 			final Array<OrderedMap<String, Object>> fixtureMaps = json.readValue("fixtures", Array.class, jsonData);
 			for(OrderedMap<String, Object> fixtureMap : fixtureMaps)
 			{
 				final FixtureDef fixtureDef = new FixtureDef();
+				
+				//---- Shape以外
+				readFixtureDef(json, fixtureMap, fixtureDef);
 				
 				//---- Shape
 				{
@@ -89,38 +96,66 @@ public class CollisionDef implements Json.Serializable
 						
 						fixtureDef.shape = shape;
 					}
-					// BodyEditor
-					else if( fixtureMap.containsKey("bodyEditor") )
-					{
-						final OrderedMap<String, Object> shapeMap = json.readValue("bodyEditor", OrderedMap.class, fixtureMap);
-					}
 				}
-				
-				//---- Filter
-				{
-					final OrderedMap<String, Object> filterMap = json.readValue("filter", OrderedMap.class, fixtureMap);
-					final Array<String> ignoreCategories = json.readValue("ignoreCategories", Array.class, filterMap);
-					final CategoryBitsFactory cbFactory = CategoryBitsFactory.getInstance();
-					final Filter filter = fixtureDef.filter;
-					
-					filter.categoryBits = cbFactory.get(json.readValue("category", String.class, filterMap));
-					
-					for(String ignoreCategory : ignoreCategories)
-					{
-						filter.maskBits &= ~cbFactory.get(ignoreCategory);
-					}
-				}
-
-				//---- Other Fields
-				fixtureDef.density = json.readValue("density", Float.class, fixtureMap);
-				fixtureDef.friction = json.readValue("friction", Float.class, fixtureMap);
-				fixtureDef.restitution = json.readValue("restitution", Float.class, fixtureMap);
-				fixtureDef.isSensor = json.readValue("isSensor", Boolean.class, fixtureMap);
 				
 				//---- マップに登録
 				fixtureDefs.put(json.readValue("name", String.class, fixtureMap), fixtureDef);
 			}
 		}
+		
+		//---- BodyEditorFixtureDefs
+		if(jsonData.containsKey("bodyEditorFixtures"))
+		{
+			final Array<OrderedMap<String, Object>> bodyEditorFixtureMaps = json.readValue("bodyEditorFixtures", Array.class, jsonData);
+			bodyEditorFixtureDefs.ensureCapacity(bodyEditorFixtureMaps.size);
+			
+			for(OrderedMap<String, Object> bodyEditorFixtureMap : bodyEditorFixtureMaps)
+			{
+				final BodyEditorFixtureDef bodyEditorFixtureDef = new BodyEditorFixtureDef();
+				final String path = json.readValue("path", String.class, bodyEditorFixtureMap);
+				final Array<OrderedMap<String, Object>> fixtureMaps = json.readValue("fixtures", Array.class, bodyEditorFixtureMap);
+				
+				bodyEditorFixtureDef.jsonString = Gdx.files.internal(path).readString();
+				bodyEditorFixtureDef.fixtureDefPairs.ensureCapacity(fixtureMaps.size);
+				for(OrderedMap<String, Object> fixtureMap : fixtureMaps)
+				{
+					final FixtureDefPair fixtureDefPair = new FixtureDefPair();
+					
+					readFixtureDef(json, fixtureMap, fixtureDefPair.fixtureDef);
+
+					fixtureDefPair.name = json.readValue("name", String.class, fixtureMap);
+					fixtureDefPair.scale = json.readValue("scale", Float.class, fixtureMap);	
+					
+					bodyEditorFixtureDef.fixtureDefPairs.add(fixtureDefPair);
+				}
+				
+				bodyEditorFixtureDefs.add(bodyEditorFixtureDef);
+			}
+		}
+	}
+	
+	private void readFixtureDef(Json json, OrderedMap<String, Object> fixtureMap, FixtureDef outFixtureDef)
+	{
+		//---- Filter
+		{
+			final OrderedMap<String, Object> filterMap = json.readValue("filter", OrderedMap.class, fixtureMap);
+			final Array<String> ignoreCategories = json.readValue("ignoreCategories", Array.class, filterMap);
+			final CategoryBitsFactory cbFactory = CategoryBitsFactory.getInstance();
+			final Filter filter = outFixtureDef.filter;
+			
+			filter.categoryBits = cbFactory.get(json.readValue("category", String.class, filterMap));
+			
+			for(String ignoreCategory : ignoreCategories)
+			{
+				filter.maskBits &= ~cbFactory.get(ignoreCategory);
+			}
+		}
+
+		//---- Other Fields
+		outFixtureDef.density = json.readValue("density", Float.class, fixtureMap);
+		outFixtureDef.friction = json.readValue("friction", Float.class, fixtureMap);
+		outFixtureDef.restitution = json.readValue("restitution", Float.class, fixtureMap);
+		outFixtureDef.isSensor = json.readValue("isSensor", Boolean.class, fixtureMap);
 	}
 	
 	/** Bodyの初期化用定義 */
@@ -128,4 +163,30 @@ public class CollisionDef implements Json.Serializable
 	
 	/** Fixtureの初期化用定義のマップ */
 	public final Map<String, FixtureDef> fixtureDefs = new HashMap<String, FixtureDef>();
+	
+	/** BodyEditorを使ったFixtureの初期化用定義の配列 */
+	public final ArrayList<BodyEditorFixtureDef> bodyEditorFixtureDefs = new ArrayList<BodyEditorFixtureDef>(1);
+	
+	
+	/**
+	 * BodyEditorで出力したJsonファイルからFixtureを生成する際の初期化用定義
+	 */
+	public class BodyEditorFixtureDef
+	{
+		/** Jsonファイルのテキストデータ */
+		public String jsonString;
+		
+		/**  */
+		public final ArrayList<FixtureDefPair> fixtureDefPairs = new ArrayList<FixtureDefPair>(1);
+	}
+	
+	/**
+	 * 
+	 */
+	public class FixtureDefPair
+	{
+		public String name;
+		public float scale;
+		public FixtureDef fixtureDef;
+	}
 }

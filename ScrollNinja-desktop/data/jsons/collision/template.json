@@ -49,5 +49,26 @@
                 ]
             }
         }
+    ],
+    "bodyEditorFixtures": [
+        {
+            "path": "data/hoge.json",
+            "fixtures": [
+                {
+                    "name": "Hoge",
+                    "scale": 1,
+                    "density": 0,
+                    "friction": 0.2,
+                    "restitution": 0,
+                    "isSensor": false,
+                    "filter": {
+                        "category": "Hoge",
+                        "ignoreCategories": [
+                            "Hoge"
+                        ]
+                    }
+                }
+            ]
+        }
     ]
 }
