@@ -94,29 +94,59 @@ public enum GlobalDefine
 	
 	/** スプライトパラメータを記述したXMLファイルのパス */
 	public final String SPRITE_PARAM_XML_FILE_NAME;
+	
+	
+	/**
+	 * 優先順位の基本クラス
+	 */
+	private static abstract class AbstractPriority
+	{
+		/**
+		 * 次の優先度を取得する。
+		 * @return		次の優先度
+		 */
+		protected static int getNextPriority()
+		{
+			return tmp += 100;
+		}
 
-
+		/** 優先順位を計算するための作業用変数 */
+		private static int tmp = 0;
+	}
+	
 	/**
 	 * 更新処理の優先順位
 	 */
-	public class UpdatePriority
+	public static class UpdatePriority extends AbstractPriority
 	{
 		/** デフォルト */
-		public static final int DEFAULT		= 0;
+		public static final int DEFAULT		= getNextPriority();
+		
+		/** 背景オブジェクト */
+		public static final int BACKGROUND	= getNextPriority();
 		
 		/** アニメーション */
-		public static final int ANIMATION		= 9999;
+		public static final int ANIMATION		= getNextPriority();
 	}
 
 	/**
 	 * 描画処理の優先順位
 	 */
-	public class RenderDepth
+	public static class RenderDepth extends AbstractPriority
 	{
+		/** 遠景 */
+		public static final int FAR_BACKGROUND	= getNextPriority();
+
+		/** 忍者 */
+		public static final int NINJA				= getNextPriority();
+		
 		/** デフォルト */
-		public static final int DEFAULT = 0;
+		public static final int DEFAULT			= getNextPriority();
+		
+		/** 近景 */
+		public static final int NEAR_BACKGROUND	= getNextPriority();
 		
 		/** マウスカーソル */
-		public static final int CURSOR = 9999;
+		public static final int CURSOR			= getNextPriority();
 	}
 }

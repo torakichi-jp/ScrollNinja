@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.screen;
 
-import org.genshin.scrollninja.work.collision.CollisionObject;
+import org.genshin.scrollninja.stage.Stage;
+import org.genshin.scrollninja.stage.StageInterface;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 
 import com.badlogic.gdx.physics.box2d.World;
@@ -20,8 +21,8 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 	{		
 		final World world = getWorld();
 
-		//---- 衝突判定の実験場
-		CollisionObject co = new CollisionObject("data/jsons/collision/ninja.json", world, null);
+		//---- ステージを生成する。
+		stage = new Stage(world, "data/jsons/stage/stage_test.json");
 		
 		
 //		//---- カーソル
@@ -56,5 +57,5 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 	
 	
 	/** ステージオブジェクト */
-//	private final StageInterface stage;
+	private final StageInterface stage;
 }

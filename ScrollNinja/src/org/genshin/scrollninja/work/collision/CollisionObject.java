@@ -48,6 +48,10 @@ public class CollisionObject implements Disposable
 		//---- Bodyオブジェクトを破棄する。
 		if(body != null)
 		{
+			for(Fixture fixture : body.getFixtureList())
+			{
+				body.destroyFixture(fixture);
+			}
 			body.getWorld().destroyBody(body);
 			body = null;
 		}

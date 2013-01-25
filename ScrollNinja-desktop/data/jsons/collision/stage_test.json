@@ -1,0 +1,74 @@
+{
+    "body": {
+        "isDynamic": true,
+        "isBullet": true,
+        "isFixedRotation": true
+    },
+    "fixtures": [
+        {
+            "name": "CircleTemplate",
+            "density": 0,
+            "friction": 0.2,
+            "restitution": 0,
+            "isSensor": false,
+            "circle": {
+                "radius": 1,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "filter": {
+                "category": "Hoge",
+                "ignoreCategories": [
+                    "Hoge"
+                ]
+            }
+        },
+        {
+            "name": "RectangleTemplate",
+            "density": 0,
+            "friction": 0.2,
+            "restitution": 0,
+            "isSensor": false,
+            "rectangle": {
+                "offset": {
+                    "x": 0,
+                    "y": 0
+                },
+                "size": {
+                    "x": 0,
+                    "y": 0
+                },
+                "degrees": 0
+            },
+            "filter": {
+                "category": "Hoge",
+                "ignoreCategories": [
+                    "Hoge"
+                ]
+            }
+        }
+    ],
+    "bodyEditorFixtures": [
+        {
+            "path": "data/hoge.json",
+            "fixtures": [
+                {
+                    "name": "Hoge",
+                    "scale": 1,
+                    "density": 0,
+                    "friction": 0.2,
+                    "restitution": 0,
+                    "isSensor": false,
+                    "filter": {
+                        "category": "Hoge",
+                        "ignoreCategories": [
+                            "Hoge"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

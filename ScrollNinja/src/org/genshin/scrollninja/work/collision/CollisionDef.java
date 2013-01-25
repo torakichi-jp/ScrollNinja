@@ -124,7 +124,9 @@ public class CollisionDef implements Json.Serializable
 					readFixtureDef(json, fixtureMap, fixtureDefPair.fixtureDef);
 
 					fixtureDefPair.name = json.readValue("name", String.class, fixtureMap);
-					fixtureDefPair.scale = json.readValue("scale", Float.class, fixtureMap);	
+					fixtureDefPair.scale = json.readValue("scale", Float.class, fixtureMap);
+					
+					fixtureDefPair.scale *= worldScale;
 					
 					bodyEditorFixtureDef.fixtureDefPairs.add(fixtureDefPair);
 				}

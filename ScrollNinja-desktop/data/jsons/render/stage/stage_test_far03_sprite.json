@@ -1,0 +1,21 @@
+{
+    "texture": "data/textures/stage/test_far_02.png",
+    "uv": {
+        "x": 381,
+        "y": 1596,
+        "width": 2560,
+        "height": 1667
+    },
+    "position": {
+        "x": 0,
+        "y": 0
+    },
+    "size": {
+        "x": 3840,
+        "y": 2500
+    },
+    "origin": {
+        "x": 0,
+        "y": 0
+    }
+}
