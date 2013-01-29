@@ -3,7 +3,7 @@
         "x": 128,
         "y": 128
     },
-    "animations": [
+    "textureAnimations": [
         {
             "name": "Slash",
             "animation": {

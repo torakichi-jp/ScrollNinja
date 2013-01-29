@@ -4,9 +4,9 @@ import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.object.UpdateObjectInterface;
+import org.genshin.scrollninja.work.render.animation.AnimationInterface;
 import org.genshin.scrollninja.work.render.animation.AnimationSet;
 import org.genshin.scrollninja.work.render.animation.AnimationSetFactory;
-import org.genshin.scrollninja.work.render.animation.AnimationWrapper;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -190,7 +190,7 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 	private AnimationSet animationSet;
 	
 	/** 現在のアニメーション */
-	private AnimationWrapper currentAnimation;
+	private AnimationInterface currentAnimation;
 	
 	/** アニメーションタイマー */
 	private float timer = 0.0f;

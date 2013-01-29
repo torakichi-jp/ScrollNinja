@@ -26,7 +26,7 @@ public class ScrollNinja extends Game
 {
 	@Override
 	public void create()
-	{
+	{	
 		//---- デバッグ文字列の初期化
 		DebugString.initialize(true);
 		

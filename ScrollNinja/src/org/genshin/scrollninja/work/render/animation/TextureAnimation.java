@@ -6,18 +6,18 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * アニメーションのラッパークラス
+ * テクスチャアニメーション
  * @author kou
  * @since		1.0
  * @version	1.0
  */
-public class AnimationWrapper
+public class TextureAnimation implements AnimationInterface
 {
 	/**
 	 * コンストラクタ
-	 * @param animationDef		アニメーションの初期化用定義
+	 * @param animationDef		テクスチャアニメーションの初期化用定義
 	 */
-	AnimationWrapper(AnimationDef animationDef)
+	public TextureAnimation(TextureAnimationDef animationDef)
 	{
 		//---- ループフラグ設定
 		looping = animationDef.looping;
@@ -39,30 +39,19 @@ public class AnimationWrapper
 		animation.setPlayMode(looping ? Animation.LOOP : Animation.NORMAL);
 	}
 	
-	/**
-	 * キーフレームを取得する。
-	 * @param stateTime		時間
-	 * @return		指定した時間のキーフレーム
-	 */
+	@Override
 	public TextureRegion getKeyFrame(float stateTime)
 	{
 		return animation.getKeyFrame(stateTime);
 	}
 	
-	/**
-	 * アニメーションが終了しているか調べる。
-	 * @param stateTime		時間
-	 * @return		指定した時間の時点でアニメーションが終了している場合はtrue
-	 */
+	@Override
 	public boolean isAnimationFinished(float stateTime)
 	{
 		return animation.isAnimationFinished(stateTime);
 	}
 	
-	/**
-	 * アニメーションがループするか調べる。
-	 * @return		アニメーションがループする場合はtrue
-	 */
+	@Override
 	public boolean isAnimationLooping()
 	{
 		return looping;

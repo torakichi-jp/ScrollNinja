@@ -17,10 +17,10 @@ public class AnimationSet
 	 */
 	AnimationSet(AnimationSetDef animationSetDef)
 	{
-		for(AnimationPair animationPair : animationSetDef.animations)
+		for(TextureAnimationPair animationPair : animationSetDef.animations)
 		{
 			animationPair.animation.uvSize = animationSetDef.uvSize;
-			animations.put(animationPair.name, new AnimationWrapper(animationPair.animation));
+			animations.put(animationPair.name, new TextureAnimation(animationPair.animation));
 		}
 	}
 	
@@ -29,11 +29,11 @@ public class AnimationSet
 	 * @param animationName		取得するアニメーションの名前
 	 * @return		指定した名前のアニメーションオブジェクト
 	 */
-	public AnimationWrapper getAnimation(String animationName)
+	public AnimationInterface getAnimation(String animationName)
 	{
 		return animations.get(animationName);
 	}
 	
 	/** アニメーションのマップ */
-	private final Map<String, AnimationWrapper> animations = new HashMap<String, AnimationWrapper>();
+	private final Map<String, TextureAnimation> animations = new HashMap<String, TextureAnimation>();
 }

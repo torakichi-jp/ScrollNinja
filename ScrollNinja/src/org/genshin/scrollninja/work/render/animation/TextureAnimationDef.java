@@ -3,12 +3,12 @@ package org.genshin.scrollninja.work.render.animation;
 import java.awt.Point;
 
 /**
- * アニメーションの初期化用定義
+ * テクスチャアニメーションの初期化用定義
  * @author kou
  * @since		1.0
  * @version		1.0
  */
-class AnimationDef
+class TextureAnimationDef
 {
 	/** テクスチャのパス */
 	public String texture;

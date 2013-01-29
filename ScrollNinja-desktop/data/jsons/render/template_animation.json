@@ -3,7 +3,7 @@
         "x": 16,
         "y": 16
     },
-    "animations": [
+    "textureAnimations": [
         {
             "name": "Hoge",
             "animation": {
@@ -19,6 +19,24 @@
                     3
                 ],
                 "time": 3,
+                "looping": true
+            }
+        }
+    ],
+    "uvScrollAnimations": [
+        {
+            "name": "Piyo",
+            "animation": {
+                "texture": "data/textures/dummy.png",
+                "start": {
+                    "x": 0,
+                    "y": 0
+                },
+                "end": {
+                    "x": 0,
+                    "y": 0
+                },
+                "scrollSpeed": 60,
                 "looping": true
             }
         }

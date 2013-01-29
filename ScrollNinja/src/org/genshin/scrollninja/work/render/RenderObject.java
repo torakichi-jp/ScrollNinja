@@ -7,6 +7,7 @@ import org.genshin.scrollninja.work.render.sprite.SpriteFactory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 
 /**
@@ -82,17 +83,59 @@ public class RenderObject implements RenderObjectInterface
 		final float x = posture.getPositionX();
 		final float y = posture.getPositionY();
 		final float rotation = posture.getRotation();
+		final float oldScaleX = sprite.getScaleX();
+		final float oldScaleY = sprite.getScaleY();
 		
-		//---- 位置情報を反映する。
+		//---- 座標、回転、拡縮率を反映する。
 		sprite.translate(x, y);
 		sprite.rotate(rotation);
+		sprite.setScale(oldScaleX * scale.x, oldScaleY * scale.y);
 		
 		//---- 描画する。
 		sprite.draw(sb);
 		
-		//---- 位置情報を元に戻す。
+		//---- 座標、回転、拡縮率を元に戻す。
 		sprite.translate(-x, -y);
 		sprite.rotate(-rotation);
+		sprite.setScale(oldScaleX, oldScaleY);
+	}
+	
+	/**
+	 * 拡縮率を設定する。
+	 * @param scaleXY	拡縮率
+	 */
+	public void setScale(float scaleXY)
+	{
+		setScale(scaleXY, scaleXY);
+	}
+	
+	/**
+	 * 拡縮率を設定する。
+	 * @param scaleX	X方向の拡縮率
+	 * @param scaleY	Y方向の拡縮率
+	 */
+	public void setScale(float scaleX, float scaleY)
+	{
+		scale.x = scaleX;
+		scale.y = scaleY;
+	}
+	
+	/**
+	 * X軸方向の拡縮率を取得する。
+	 * @return		X軸方向の拡縮率
+	 */
+	public float getScaleX()
+	{
+		return scale.x;
+	}
+	
+	/**
+	 * Y軸方向の拡縮率を取得する。
+	 * @return		Y軸方向の拡縮率
+	 */
+	public float getScaleY()
+	{
+		return scale.y;
 	}
 
 	/**
@@ -120,4 +163,7 @@ public class RenderObject implements RenderObjectInterface
 	
 	/** 深度（値が大きいものを手前に描画する） */
 	private int	depth;
+	
+	/** 拡縮率 */
+	private final Vector2 scale = new Vector2(1.0f, 1.0f);
 }

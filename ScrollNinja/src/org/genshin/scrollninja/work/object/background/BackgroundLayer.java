@@ -55,8 +55,10 @@ public class BackgroundLayer extends AbstractBackground
 	 */
 	public void createBackground(String spriteFilePath, Vector2 position)
 	{
-		final PostureInterface posture = new BackgroundPosture(position, 0.0f);
+		final PostureInterface posture = new BackgroundPosture(position.mul(scale), 0.0f);
 		final RenderObject renderObject = new RenderObject(spriteFilePath, posture, renderDepth);
+		
+		renderObject.setScale(scale);
 		backgrounds.add(renderObject);
 	}
 	

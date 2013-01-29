@@ -13,16 +13,15 @@ class AnimationSetDef
 	/** UVマップの大きさ */
 	public Point uvSize;
 	
-	/** アニメーションの初期化用定義配列 */
-	public AnimationPair[] animations;
-	
+	/** テクスチャアニメーションの初期化用定義配列 */
+	public TextureAnimationPair[] animations;
 }
 
-class AnimationPair
+class TextureAnimationPair
 {
 	/** アニメーションの名前 */
 	public String name;
 	
 	/** アニメーションの初期化用定義 */
-	public AnimationDef animation;
+	public TextureAnimationDef animation;
 }
