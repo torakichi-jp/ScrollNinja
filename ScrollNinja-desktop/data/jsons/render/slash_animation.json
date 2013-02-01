@@ -7,7 +7,7 @@
         {
             "name": "Slash",
             "animation": {
-                "texture": "data/textures/effect/slash.png",
+                "textureFilePath": "data/textures/effect/slash.png",
                 "start": {
                     "x": 0,
                     "y": 0

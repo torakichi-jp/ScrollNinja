@@ -46,6 +46,12 @@ class BackgroundDef
 	/** スプライトを定義したファイルのパス */
 	public 	String spriteFilePath;
 	
+	/** アニメーションを定義したファイルのパス */
+	public String animationFilePath;
+	
+	/** 再生するアニメーションの名前 */
+	public String animationName;
+	
 	/** 背景オブジェクトの座標 */
 	public Vector2 position;
 }

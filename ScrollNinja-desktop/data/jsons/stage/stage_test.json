@@ -88,6 +88,8 @@
             "backgrounds": [
                 {
                     "spriteFilePath": "data/jsons/render/stage/stage_test_near02_sprite.json",
+                    "animationFilePath": "data/jsons/render/stage/stage_test_near02_animation.json",
+                    "animationName": "UVScroll",
                     "position": {
                         "x": 0,
                         "y": 0

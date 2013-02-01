@@ -15,27 +15,27 @@ public class TextureAnimation implements AnimationInterface
 {
 	/**
 	 * コンストラクタ
-	 * @param animationDef		テクスチャアニメーションの初期化用定義
+	 * @param def		テクスチャアニメーションの初期化用定義
 	 */
-	public TextureAnimation(TextureAnimationDef animationDef)
+	public TextureAnimation(TextureAnimationDef def)
 	{
 		//---- ループフラグ設定
-		looping = animationDef.looping;
+		looping = def.looping;
 		
 		//---- アニメーション生成
-		final int frameCount = animationDef.frames.length;
+		final int frameCount = def.frames.length;
 		final TextureRegion[] textureRegions = new TextureRegion[frameCount];
 		
 		for(int i = 0;  i < frameCount;  ++i)
 		{
 			textureRegions[i] = new TextureRegion(
-				TextureFactory.getInstance().get(animationDef.texture),
-				(animationDef.start.x + animationDef.frames[i]) * animationDef.uvSize.x, animationDef.start.y * animationDef.uvSize.y,
-				animationDef.uvSize.x, animationDef.uvSize.y
+				TextureFactory.getInstance().get(def.textureFilePath),
+				(def.start.x + def.frames[i]) * def.uvSize.x, def.start.y * def.uvSize.y,
+				def.uvSize.x, def.uvSize.y
 			);
 		}
 		
-		animation = new Animation(animationDef.time / 60.0f, textureRegions);
+		animation = new Animation(def.time / 60.0f, textureRegions);
 		animation.setPlayMode(looping ? Animation.LOOP : Animation.NORMAL);
 	}
 	

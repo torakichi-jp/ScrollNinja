@@ -64,7 +64,7 @@ public class SpriteFactory extends AbstractFlyweightFactory<String, Sprite>
 		}
 		
 		//---- スプライト定義の補完
-		final Texture texture = TextureFactory.getInstance().get(spriteDef.texture);
+		final Texture texture = TextureFactory.getInstance().get(spriteDef.textureFilePath);
 		
 		// UVマップの横幅、縦幅が0の場合はテクスチャのサイズに合わせる。
 		if(spriteDef.uv.width == 0)

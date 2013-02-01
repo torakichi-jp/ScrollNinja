@@ -11,7 +11,7 @@ import java.awt.Point;
 class TextureAnimationDef
 {
 	/** テクスチャのパス */
-	public String texture;
+	public String textureFilePath;
 	
 	/** UVマップの大きさ */
 	public Point uvSize;

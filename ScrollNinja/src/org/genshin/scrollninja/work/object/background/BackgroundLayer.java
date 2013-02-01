@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.Global;
+import org.genshin.scrollninja.work.render.AnimationRenderObject;
 import org.genshin.scrollninja.work.render.RenderObject;
 
 import com.badlogic.gdx.graphics.Camera;
@@ -58,6 +59,23 @@ public class BackgroundLayer extends AbstractBackground
 		final PostureInterface posture = new BackgroundPosture(position.mul(scale), 0.0f);
 		final RenderObject renderObject = new RenderObject(spriteFilePath, posture, renderDepth);
 		
+		renderObject.setScale(scale);
+		backgrounds.add(renderObject);
+	}
+	
+	/**
+	 * アニメーション付きの背景オブジェクトを生成する。
+	 * @param spriteFilePath			スプライトの定義ファイルのパス
+	 * @param animationSetFilePath		アニメーションセットの定義ファイルのパス
+	 * @param animationName				再生するアニメーションの名前
+	 * @param position					座標
+	 */
+	public void createBackground(String spriteFilePath, String animationSetFilePath, String animationName, Vector2 position)
+	{
+		final PostureInterface posture = new BackgroundPosture(position.mul(scale), 0.0f);
+		final AnimationRenderObject renderObject = new AnimationRenderObject(spriteFilePath, animationSetFilePath, posture, renderDepth);
+		
+		renderObject.setAnimation(animationName);
 		renderObject.setScale(scale);
 		backgrounds.add(renderObject);
 	}

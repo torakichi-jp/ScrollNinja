@@ -13,14 +13,28 @@ public class AnimationSet
 {
 	/**
 	 * コンストラクタ
-	 * @param animationSetDef アニメーションセットの初期化用定義
+	 * @param def アニメーションセットの初期化用定義
 	 */
-	AnimationSet(AnimationSetDef animationSetDef)
+	AnimationSet(AnimationSetDef def)
 	{
-		for(TextureAnimationPair animationPair : animationSetDef.animations)
+		//---- テクスチャアニメーション
+		if(def.textureAnimations != null)
 		{
-			animationPair.animation.uvSize = animationSetDef.uvSize;
-			animations.put(animationPair.name, new TextureAnimation(animationPair.animation));
+			for(TextureAnimationPair animationPair : def.textureAnimations)
+			{
+				animationPair.animation.uvSize = def.uvSize;
+				animations.put(animationPair.name, new TextureAnimation(animationPair.animation));
+			}
+		}
+		
+		//---- UVスクロールアニメーション
+		if(def.uvScrollAnimations != null)
+		{
+			for(UVScrollAnimationPair animationPair : def.uvScrollAnimations)
+			{
+				animationPair.animation.uvSize = def.uvSize;
+				animations.put(animationPair.name, new UVScrollAnimation(animationPair.animation));
+			}
 		}
 	}
 	
@@ -34,6 +48,7 @@ public class AnimationSet
 		return animations.get(animationName);
 	}
 	
+	
 	/** アニメーションのマップ */
-	private final Map<String, TextureAnimation> animations = new HashMap<String, TextureAnimation>();
+	private final Map<String, AnimationInterface> animations = new HashMap<String, AnimationInterface>();
 }

@@ -52,7 +52,7 @@
     ],
     "bodyEditorFixtures": [
         {
-            "path": "data/hoge.json",
+            "filePath": "data/hoge_bodyeditor.json",
             "fixtures": [
                 {
                     "name": "Hoge",

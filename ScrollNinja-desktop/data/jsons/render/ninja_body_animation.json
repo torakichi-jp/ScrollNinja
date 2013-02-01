@@ -7,7 +7,7 @@
         {
             "name": "Stay",
             "animation": {
-                "texture": "data/textures/ninja/ninja.png",
+                "textureFilePath": "data/textures/ninja/ninja.png",
                 "start": {
                     "x": 4,
                     "y": 3
@@ -25,7 +25,7 @@
         {
             "name": "Run",
             "animation": {
-                "texture": "data/textures/ninja/ninja.png",
+                "textureFilePath": "data/textures/ninja/ninja.png",
                 "start": {
                     "x": 0,
                     "y": 1
@@ -45,7 +45,7 @@
         {
             "name": "Dash",
             "animation": {
-                "texture": "data/textures/ninja/ninja.png",
+                "textureFilePath": "data/textures/ninja/ninja.png",
                 "start": {
                     "x": 0,
                     "y": 2
@@ -65,7 +65,7 @@
         {
             "name": "Jump",
             "animation": {
-                "texture": "data/textures/ninja/ninja.png",
+                "textureFilePath": "data/textures/ninja/ninja.png",
                 "start": {
                     "x": 0,
                     "y": 1
@@ -80,7 +80,7 @@
         {
             "name": "SwordAttack",
             "animation": {
-                "texture": "data/textures/ninja/ninja_attack.png",
+                "textureFilePath": "data/textures/ninja/ninja_attack.png",
                 "start": {
                     "x": 0,
                     "y": 0

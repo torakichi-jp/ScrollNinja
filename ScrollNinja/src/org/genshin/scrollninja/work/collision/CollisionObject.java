@@ -10,6 +10,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Json;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 衝突判定オブジェクト
@@ -19,9 +22,15 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class CollisionObject implements Disposable
 {
-	public CollisionObject(String collisionName, World world, AbstractCollisionCallback collisionCallback)
+	/**
+	 * コンストラクタ
+	 * @param collisionFilePath		衝突判定の定義ファイルのパス
+	 * @param world					所属する世界オブジェクト
+	 * @param collisionCallback		衝突処理の呼び出しに使用するコールバックオブジェクト
+	 */
+	public CollisionObject(String collisionFilePath, World world, AbstractCollisionCallback collisionCallback)
 	{
-		final CollisionDef collisionDef = CollisionDefFactory.getInstance().get(collisionName);
+		final CollisionDef collisionDef = CollisionDefFactory.getInstance().get(collisionFilePath);
 		
 		body = world.createBody(collisionDef.bodyDef);
 		body.setUserData(collisionCallback);
@@ -29,6 +38,24 @@ public class CollisionObject implements Disposable
 		for(Entry<String, FixtureDef> entry : collisionDef.fixtureDefs.entrySet())
 		{
 			fixtures.put(entry.getKey(), body.createFixture(entry.getValue()));
+		}
+		
+		// てすとー
+		boolean libgdx = true;
+		Json json = new Json();
+		if(libgdx)
+		{
+			System.out.println(json.prettyPrint(collisionDef));
+		}
+		else
+		{
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+			try
+			{
+				System.out.println(json.prettyPrint(objectMapper.writeValueAsString(collisionDef)));
+			}
+			catch (JsonProcessingException e) { e.printStackTrace(); }
 		}
 	}
 	

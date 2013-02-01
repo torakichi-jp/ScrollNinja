@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/gui/cursor.png",
+    "textureFilePath": "data/textures/gui/cursor.png",
     "uv": {
         "x": 0,
         "y": 0,

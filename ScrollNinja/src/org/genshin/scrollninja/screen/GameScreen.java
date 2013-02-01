@@ -61,7 +61,7 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 	@Override
 	protected Cursor createCursor()
 	{
-		return new Cursor(2.0f);
+		return null;//new Cursor(2.0f);
 	}
 	
 	

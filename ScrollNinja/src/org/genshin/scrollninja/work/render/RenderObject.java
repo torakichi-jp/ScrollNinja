@@ -20,14 +20,14 @@ public class RenderObject implements RenderObjectInterface
 {
 	/**
 	 * コンストラクタ
-	 * @param spriteName		スプライト名
+	 * @param spriteFilePath	スプライトの定義ファイルのパス
 	 * @param posture			位置情報
 	 * @param depth				深度（値が大きいものを手前に描画する）
 	 */
-	public RenderObject(String spriteName, PostureInterface posture, int depth)
+	public RenderObject(String spriteFilePath, PostureInterface posture, int depth)
 	{
 		//---- フィールドを初期化する。
-		sprite = SpriteFactory.getInstance().get(spriteName);
+		sprite = SpriteFactory.getInstance().get(spriteFilePath);
 		this.posture = posture;
 		this.depth = depth;
 		

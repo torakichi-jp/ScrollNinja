@@ -14,7 +14,10 @@ class AnimationSetDef
 	public Point uvSize;
 	
 	/** テクスチャアニメーションの初期化用定義配列 */
-	public TextureAnimationPair[] animations;
+	public TextureAnimationPair[] textureAnimations;
+	
+	/** UVスクロールアニメーションの初期化用定義配列 */
+	public UVScrollAnimationPair[] uvScrollAnimations;
 }
 
 class TextureAnimationPair
@@ -24,4 +27,13 @@ class TextureAnimationPair
 	
 	/** アニメーションの初期化用定義 */
 	public TextureAnimationDef animation;
+}
+
+class UVScrollAnimationPair
+{
+	/** アニメーションの名前 */
+	public String name;
+	
+	/** アニメーションの初期化用定義 */
+	public UVScrollAnimationDef animation;
 }

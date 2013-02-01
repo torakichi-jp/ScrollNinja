@@ -104,7 +104,11 @@ public class Stage implements StageInterface
 			final BackgroundLayer backgroundLayer = new BackgroundLayer(backgroundLayerDef.scale, renderDepth);
 			for(BackgroundDef backgroundDef : backgroundLayerDef.backgrounds)
 			{
-				backgroundLayer.createBackground(backgroundDef.spriteFilePath, backgroundDef.position.mul(GlobalDefine.INSTANCE.WORLD_SCALE));
+				backgroundDef.position.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+				if(backgroundDef.animationFilePath == null)
+					backgroundLayer.createBackground(backgroundDef.spriteFilePath, backgroundDef.position);
+				else
+					backgroundLayer.createBackground(backgroundDef.spriteFilePath, backgroundDef.animationFilePath, backgroundDef.animationName, backgroundDef.position);
 			}
 			backgroundLayers.add(backgroundLayer);
 		}

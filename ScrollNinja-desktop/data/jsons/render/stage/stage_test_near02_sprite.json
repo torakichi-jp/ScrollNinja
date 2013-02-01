@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/stage/test_light_01.png",
+    "textureFilePath": "data/textures/stage/test_light_01.png",
     "uv": {
         "x": 0,
         "y": 0,

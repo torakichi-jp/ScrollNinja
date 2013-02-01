@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/weapon/kaginawa_anchor.png",
+    "textureFilePath": "data/textures/weapon/kaginawa_anchor.png",
     "uv": {
         "x": 0,
         "y": 0,

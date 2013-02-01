@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/dummy.png",
+    "textureFilePath": "data/textures/dummy.png",
     "uv": {
         "x": 0,
         "y": 0,

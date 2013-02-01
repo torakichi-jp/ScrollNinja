@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/effect/dash_smoke.png",
+    "textureFilePath": "data/textures/effect/dash_smoke.png",
     "uv": {
         "x": 0,
         "y": 0,

@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/weapon/kaginawa_rope.png",
+    "textureFilePath": "data/textures/weapon/kaginawa_rope.png",
     "uv": {
         "x": 0,
         "y": 0,

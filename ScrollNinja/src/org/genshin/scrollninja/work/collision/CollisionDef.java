@@ -32,6 +32,7 @@ public class CollisionDef implements Json.Serializable
 	public void write(Json json)
 	{
 		/* 今回は必要ないので、何もしない */
+		json.writeFields(this);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -112,7 +113,7 @@ public class CollisionDef implements Json.Serializable
 			for(OrderedMap<String, Object> bodyEditorFixtureMap : bodyEditorFixtureMaps)
 			{
 				final BodyEditorFixtureDef bodyEditorFixtureDef = new BodyEditorFixtureDef();
-				final String path = json.readValue("path", String.class, bodyEditorFixtureMap);
+				final String path = json.readValue("filePath", String.class, bodyEditorFixtureMap);
 				final Array<OrderedMap<String, Object>> fixtureMaps = json.readValue("fixtures", Array.class, bodyEditorFixtureMap);
 				
 				bodyEditorFixtureDef.jsonString = Gdx.files.internal(path).readString();

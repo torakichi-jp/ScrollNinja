@@ -14,16 +14,16 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 {
 	/**
 	 * コンストラクタ
-	 * @param spriteName		スプライト名
-	 * @param animationSetName	アニメーションセット名
-	 * @param posture			位置情報
-	 * @param depth				深度（値が大きいものを手前に描画する）
+	 * @param spriteFilePath		スプライトの定義ファイルのパス
+	 * @param animationSetFilePath	アニメーションセットの定義ファイルのパス
+	 * @param posture				位置情報
+	 * @param depth					深度（値が大きいものを手前に描画する）
 	 */
-	public AnimationRenderObject(String spriteName, String animationSetName, PostureInterface posture, int depth)
+	public AnimationRenderObject(String spriteFilePath, String animationSetFilePath, PostureInterface posture, int depth)
 	{
-		super(spriteName, posture, depth);
+		super(spriteFilePath, posture, depth);
 		
-		animationSet = AnimationSetFactory.getInstance().get(animationSetName);
+		animationSet = AnimationSetFactory.getInstance().get(animationSetFilePath);
 		
 		//---- 更新管理オブジェクトに自身を追加する。
 		Global.updateManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);

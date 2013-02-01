@@ -7,7 +7,7 @@
         {
             "name": "Hoge",
             "animation": {
-                "texture": "data/textures/dummy.png",
+                "textureFilePath": "data/textures/dummy.png",
                 "start": {
                     "x": 0,
                     "y": 0
@@ -27,7 +27,7 @@
         {
             "name": "Piyo",
             "animation": {
-                "texture": "data/textures/dummy.png",
+                "textureFilePath": "data/textures/dummy.png",
                 "start": {
                     "x": 0,
                     "y": 0
@@ -36,7 +36,7 @@
                     "x": 0,
                     "y": 0
                 },
-                "scrollSpeed": 60,
+                "time": 60,
                 "looping": true
             }
         }

@@ -1,5 +1,5 @@
 {
-    "texture": "data/textures/stage/test_far_03.png",
+    "textureFilePath": "data/textures/stage/test_far_03.png",
     "uv": {
         "x": 0,
         "y": 798,
