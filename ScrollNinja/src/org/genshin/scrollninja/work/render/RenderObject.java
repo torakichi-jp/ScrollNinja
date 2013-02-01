@@ -5,6 +5,7 @@ import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.render.sprite.SpriteFactory;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -85,19 +86,24 @@ public class RenderObject implements RenderObjectInterface
 		final float rotation = posture.getRotation();
 		final float oldScaleX = sprite.getScaleX();
 		final float oldScaleY = sprite.getScaleY();
+		final Color spriteColor = sprite.getColor();
+		tmpColor.set(spriteColor);
+		spriteColor.mul(color);
 		
-		//---- 座標、回転、拡縮率を反映する。
+		//---- 座標、回転、拡縮率、色を反映する。
 		sprite.translate(x, y);
 		sprite.rotate(rotation);
 		sprite.setScale(oldScaleX * scale.x, oldScaleY * scale.y);
+		sprite.setColor(spriteColor);
 		
 		//---- 描画する。
 		sprite.draw(sb);
 		
-		//---- 座標、回転、拡縮率を元に戻す。
+		//---- 座標、回転、拡縮率、色を元に戻す。
 		sprite.translate(-x, -y);
 		sprite.rotate(-rotation);
 		sprite.setScale(oldScaleX, oldScaleY);
+		sprite.setColor(tmpColor);
 	}
 	
 	/**
@@ -166,4 +172,10 @@ public class RenderObject implements RenderObjectInterface
 	
 	/** 拡縮率 */
 	private final Vector2 scale = new Vector2(1.0f, 1.0f);
+	
+	/** 色 */
+	private final Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+	
+	/** 作業用の色オブジェクト */
+	private static final Color tmpColor = new Color();
 }
