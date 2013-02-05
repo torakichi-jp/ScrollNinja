@@ -51,32 +51,38 @@ public class BackgroundLayer extends AbstractBackground
 
 	/**
 	 * 背景オブジェクトを生成する。
-	 * @param spriteFilePath		スプライトの定義ファイルのパス
-	 * @param position				座標
+	 * @param def		背景オブジェクトの初期化用定義
 	 */
-	public void createBackground(String spriteFilePath, Vector2 position)
+	public void createBackground(BackgroundDef def)
 	{
+		//---- 位置情報
 		final PostureInterface posture = new BackgroundPosture(position.mul(scale), 0.0f);
-		final RenderObject renderObject = new RenderObject(spriteFilePath, posture, renderDepth);
+		RenderObject renderObject = null;
 		
-		renderObject.setScale(scale);
-		backgrounds.add(renderObject);
-	}
-	
-	/**
-	 * アニメーション付きの背景オブジェクトを生成する。
-	 * @param spriteFilePath			スプライトの定義ファイルのパス
-	 * @param animationSetFilePath		アニメーションセットの定義ファイルのパス
-	 * @param animationName				再生するアニメーションの名前
-	 * @param position					座標
-	 */
-	public void createBackground(String spriteFilePath, String animationSetFilePath, String animationName, Vector2 position)
-	{
-		final PostureInterface posture = new BackgroundPosture(position.mul(scale), 0.0f);
-		final AnimationRenderObject renderObject = new AnimationRenderObject(spriteFilePath, animationSetFilePath, posture, renderDepth);
+		//---- 描画オブジェクト生成
+		// アニメーションあり
+		if(def.animationFilePath != null)
+		{
+			final AnimationRenderObject ro = new AnimationRenderObject(def.spriteFilePath, def.animationFilePath, posture, renderDepth);
+			ro.setAnimation(def.animationName);
+			renderObject = ro;
+		}
+		// アニメーションなし
+		else
+		{
+			renderObject = new RenderObject(def.spriteFilePath, posture, renderDepth);
+		}
 		
-		renderObject.setAnimation(animationName);
+		// 色適用
+		if(def.color != null)
+		{
+			renderObject.setColor(def.color);
+		}
+		
+		// スケール適用
 		renderObject.setScale(scale);
+		
+		// 管理オブジェクトに追加
 		backgrounds.add(renderObject);
 	}
 	

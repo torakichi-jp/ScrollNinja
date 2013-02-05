@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.stage;
 
+import org.genshin.scrollninja.work.object.background.BackgroundDef;
+
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -36,22 +38,4 @@ class BackgroundLayerDef
 	
 	/** 背景オブジェクトの初期化用定義の配列 */
 	public BackgroundDef[] backgrounds;
-}
-
-/**
- * 背景オブジェクトの初期化用定義クラス
- */
-class BackgroundDef
-{
-	/** スプライトを定義したファイルのパス */
-	public 	String spriteFilePath;
-	
-	/** アニメーションを定義したファイルのパス */
-	public String animationFilePath;
-	
-	/** 再生するアニメーションの名前 */
-	public String animationName;
-	
-	/** 背景オブジェクトの座標 */
-	public Vector2 position;
 }

@@ -127,6 +127,41 @@ public class RenderObject implements RenderObjectInterface
 	}
 	
 	/**
+	 * 色を設定する。（0.0 <= n <= 1.0）
+	 * @param r		赤
+	 * @param g		緑
+	 * @param b		青
+	 * @param a		透明度
+	 */
+	public void setColor(float r, float g, float b, float a)
+	{
+		color.set(r, g, b, a);
+		color.clamp();
+	}
+	
+	/**
+	 * 色を設定する。（0 <= n <= 255）
+	 * @param r		赤
+	 * @param g		緑
+	 * @param b		青
+	 * @param a		透明度
+	 */
+	public void setColor(int r, int g, int b, int a)
+	{
+		final float inv = 1.0f / 255.0f;
+		setColor(r*inv, g*inv, b*inv, a*inv);
+	}
+	
+	/**
+	 * 色を設定する。
+	 * @param color		色
+	 */
+	public void setColor(Color color)
+	{
+		this.color.set(color);
+	}
+	
+	/**
 	 * X軸方向の拡縮率を取得する。
 	 * @return		X軸方向の拡縮率
 	 */

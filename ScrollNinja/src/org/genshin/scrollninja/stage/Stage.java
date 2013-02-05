@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.work.object.background.BackgroundDef;
 import org.genshin.scrollninja.work.object.background.BackgroundLayer;
 
 import com.badlogic.gdx.Gdx;
@@ -105,10 +106,7 @@ public class Stage implements StageInterface
 			for(BackgroundDef backgroundDef : backgroundLayerDef.backgrounds)
 			{
 				backgroundDef.position.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
-				if(backgroundDef.animationFilePath == null)
-					backgroundLayer.createBackground(backgroundDef.spriteFilePath, backgroundDef.position);
-				else
-					backgroundLayer.createBackground(backgroundDef.spriteFilePath, backgroundDef.animationFilePath, backgroundDef.animationName, backgroundDef.position);
+				backgroundLayer.createBackground(backgroundDef);
 			}
 			backgroundLayers.add(backgroundLayer);
 		}
