@@ -22,7 +22,8 @@ public class AnimationSet
 		{
 			for(TextureAnimationPair animationPair : def.textureAnimations)
 			{
-				animationPair.animation.uvSize = def.uvSize;
+				if(animationPair.animation.uvSize == null)
+					animationPair.animation.uvSize = def.uvSize;
 				animations.put(animationPair.name, new TextureAnimation(animationPair.animation));
 			}
 		}
@@ -32,7 +33,8 @@ public class AnimationSet
 		{
 			for(UVScrollAnimationPair animationPair : def.uvScrollAnimations)
 			{
-				animationPair.animation.uvSize = def.uvSize;
+				if(animationPair.animation.uvSize == null)
+					animationPair.animation.uvSize = def.uvSize;
 				animations.put(animationPair.name, new UVScrollAnimation(animationPair.animation));
 			}
 		}

@@ -55,8 +55,15 @@ public class BackgroundLayer extends AbstractBackground
 	 */
 	public void createBackground(BackgroundDef def)
 	{
+		//---- エラーチェック
+		if(def.spriteFilePath == null)
+			return;
+		
+		if(def.position == null)
+			def.position = Vector2.Zero;
+		
 		//---- 位置情報
-		final PostureInterface posture = new BackgroundPosture(position.mul(scale), 0.0f);
+		final PostureInterface posture = new BackgroundPosture(def.position.mul(scale), 0.0f);
 		RenderObject renderObject = null;
 		
 		//---- 描画オブジェクト生成

@@ -41,6 +41,7 @@ public class Stage implements StageInterface
 		catch (JsonMappingException e) { e.printStackTrace(); }
 		catch (IOException e) { e.printStackTrace(); }
 		
+		// エラーチェック
 		if(stageDef == null)
 		{
 			size = null;
@@ -100,15 +101,28 @@ public class Stage implements StageInterface
 	 */
 	private void createBackgroundLayers(BackgroundLayerDef[] backgroundLayerDefs, int renderDepth)
 	{
+		//---- エラーチェック
+		if(backgroundLayerDefs == null)
+			return;
+		
+		//---- 背景レイヤー、背景オブジェクトを生成する
 		for(BackgroundLayerDef backgroundLayerDef : backgroundLayerDefs)
 		{
+			// エラーチェック
+			if(backgroundLayerDef.backgrounds == null)
+				continue;
+			
+			// 背景レイヤー生成
 			final BackgroundLayer backgroundLayer = new BackgroundLayer(backgroundLayerDef.scale, renderDepth);
+			backgroundLayers.add(backgroundLayer);
+			
+			// 背景オブジェクト生成
 			for(BackgroundDef backgroundDef : backgroundLayerDef.backgrounds)
 			{
-				backgroundDef.position.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+				if(backgroundDef.position != null)
+					backgroundDef.position.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
 				backgroundLayer.createBackground(backgroundDef);
 			}
-			backgroundLayers.add(backgroundLayer);
 		}
 	}
 	

@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,6 +66,16 @@ public class SpriteFactory extends AbstractFlyweightFactory<String, Sprite>
 		
 		//---- スプライト定義の補完
 		final Texture texture = TextureFactory.getInstance().get(spriteDef.textureFilePath);
+		
+		// 値がnullだった場合の補完
+		if(spriteDef.uv == null)
+			spriteDef.uv = new UVMap();
+		if(spriteDef.size == null)
+			spriteDef.size = new Vector2();
+		if(spriteDef.position == null)
+			spriteDef.position = Vector2.Zero;
+		if(spriteDef.origin == null)
+			spriteDef.origin = new Vector2();
 		
 		// UVマップの横幅、縦幅が0の場合はテクスチャのサイズに合わせる。
 		if(spriteDef.uv.width == 0)

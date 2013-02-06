@@ -42,9 +42,10 @@ public class CollisionDef implements Json.Serializable
 		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
 		
 		//---- BodyDef
+		if(jsonData.containsKey("body"))
 		{
 			final OrderedMap<String, Object> bodyMap = json.readValue("body", OrderedMap.class, jsonData);
-
+			
 			bodyDef.type = json.readValue("isDynamic", Boolean.class, bodyMap) ? BodyType.DynamicBody : BodyType.StaticBody;
 			bodyDef.bullet = json.readValue("isBullet", Boolean.class, bodyMap);
 			bodyDef.fixedRotation = json.readValue("isFixedRotation", Boolean.class, bodyMap);
@@ -137,6 +138,8 @@ public class CollisionDef implements Json.Serializable
 		}
 	}
 	
+
+	@SuppressWarnings("unchecked")
 	private void readFixtureDef(Json json, OrderedMap<String, Object> fixtureMap, FixtureDef outFixtureDef)
 	{
 		//---- Filter

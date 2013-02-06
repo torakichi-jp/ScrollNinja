@@ -4,7 +4,6 @@ import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.render.RenderObject;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * マウスカーソル
@@ -71,7 +70,4 @@ public class Cursor extends AbstractGUI
 	
 	/** カーソルの移動速度 */
 	private final float speed;
-	
-	/** カーソルのスクリーン座標 */
-	private final Vector2 position = new Vector2(Vector2.Zero);
 }
