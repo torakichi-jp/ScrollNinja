@@ -119,6 +119,9 @@ public enum GlobalDefine
 	 */
 	public static class UpdatePriority extends AbstractPriority
 	{
+		/** 入力 */
+		public static final int INPUT			= getNextPriority();
+		
 		/** デフォルト */
 		public static final int DEFAULT		= getNextPriority();
 		

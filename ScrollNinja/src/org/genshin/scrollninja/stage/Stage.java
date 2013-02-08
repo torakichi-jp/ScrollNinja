@@ -89,15 +89,13 @@ public class Stage implements StageInterface
 	@Override
 	public Vector2 getSize()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return size;
 	}
 
 	@Override
 	public Vector2 getStartPosition()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return startPosition;
 	}
 	
 	/**

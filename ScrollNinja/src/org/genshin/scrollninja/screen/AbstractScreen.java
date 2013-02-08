@@ -2,6 +2,7 @@ package org.genshin.scrollninja.screen;
 
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.object.UpdateManager;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 import org.genshin.scrollninja.work.render.RenderManager;
@@ -46,6 +47,11 @@ public abstract class AbstractScreen implements Screen
 			// 世界の更新処理
 			world.step(delta, 20, 20);
 		}
+		
+		//---- カメラを更新する。
+		camera.update();
+		DebugString.add("Camera Position 1: " + camera.position.x + ", " + camera.position.y);
+		DebugString.add("Camera Position 2: " + Global.camera.position.x + ", " + Global.camera.position.y);
 		
 		//---- 描画処理を実行する。
 		final SpriteBatch spriteBatch = Global.spriteBatch;

@@ -2,7 +2,9 @@ package org.genshin.scrollninja.screen;
 
 import org.genshin.scrollninja.stage.Stage;
 import org.genshin.scrollninja.stage.StageInterface;
+import org.genshin.scrollninja.work.object.TestObject;
 import org.genshin.scrollninja.work.object.gui.Cursor;
+import org.genshin.scrollninja.work.object.utils.CameraTranslater;
 
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -24,15 +26,7 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 		//---- ステージを生成する。
 		stage = new Stage(world, "data/jsons/stage/stage_test.json");
 		
-//		//---- カーソル
-//		Cursor cursor = getCursor();
-//
-//		Global.currentUpdatableManager.add(cursor, 0);
-//		Global.currentRenderableManager.add(cursor, 0);
-//		
-//		//---- ステージを生成する。
-//		stage = new Stage(world);
-//		
+		
 //		//---- 忍者を生成する。
 //		AbstractObject player = new PlayerNinja(world, stage.getStartPosition(), getCursor());
 //		
@@ -40,7 +34,8 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 //		Global.currentRenderableManager.add(player, 0);
 //		
 //		//---- カメラの追従設定
-//		final CameraTranslater cameraTranslater = new CameraTranslater(getCamera());
+		final CameraTranslater cameraTranslater = new CameraTranslater();
+		cameraTranslater.addTargetObject(new TestObject(stage.getSize().tmp().mul(0.5f)));
 //		cameraTranslater.addTargetObject(getCursor());
 //		cameraTranslater.addTargetObject(player);
 //		cameraTranslater.setTranslateArea(0.0f, 0.0f, 38.4f, 25.0f);

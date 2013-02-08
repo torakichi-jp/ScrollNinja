@@ -46,7 +46,7 @@ public class BackgroundLayer extends AbstractBackground
 	{
 		final Camera camera = Global.camera;
 		// TODO カメラに合わせて座標を調整する。
-		position.set(camera.position.x, camera.position.y);
+//		position.set(camera.position.x, camera.position.y);
 	}
 
 	/**
