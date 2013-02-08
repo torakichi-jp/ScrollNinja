@@ -1,7 +1,7 @@
 {
     "body": {
-        "isDynamic": true,
-        "isBullet": true,
+        "isDynamic": false,
+        "isBullet": false,
         "isFixedRotation": true
     },
     "bodyEditorFixtures": [

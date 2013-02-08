@@ -4,7 +4,6 @@ import org.genshin.scrollninja.stage.Stage;
 import org.genshin.scrollninja.stage.StageInterface;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -13,15 +12,6 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-class Hoge
-{
-	public Vector2 position;
-	public Object test;
-}
-class Test
-{
-	public int test;
-}
 public class GameScreen extends AbstractDebugScreen		// FIXME リリース時はAbstractScreenを継承する。
 {
 	/**
@@ -61,7 +51,7 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 	@Override
 	protected Cursor createCursor()
 	{
-		return null;//new Cursor(2.0f);
+		return new Cursor(2.0f);
 	}
 	
 	

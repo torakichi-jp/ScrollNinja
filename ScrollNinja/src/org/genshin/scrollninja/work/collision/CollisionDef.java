@@ -122,6 +122,7 @@ public class CollisionDef implements Json.Serializable
 				for(OrderedMap<String, Object> fixtureMap : fixtureMaps)
 				{
 					final FixtureDefPair fixtureDefPair = new FixtureDefPair();
+					fixtureDefPair.fixtureDef = new FixtureDef();
 					
 					readFixtureDef(json, fixtureMap, fixtureDefPair.fixtureDef);
 

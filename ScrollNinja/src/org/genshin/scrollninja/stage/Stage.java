@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.object.background.BackgroundDef;
 import org.genshin.scrollninja.work.object.background.BackgroundLayer;
+import org.genshin.scrollninja.work.object.terrain.Terrain;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -46,6 +47,7 @@ public class Stage implements StageInterface
 		{
 			size = null;
 			startPosition = null;
+			terrain = null;
 			return;
 		}
 		
@@ -54,7 +56,7 @@ public class Stage implements StageInterface
 		startPosition = stageDef.startPosition.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
 		
 		//---- 地形オブジェクトを生成する。
-		//stageDef.collisionFilePath
+		terrain = new Terrain(stageDef.collisionFilePath, world);
 		
 		//---- 描画オブジェクトを生成する。
 		createBackgroundLayers(stageDef.farLayers, GlobalDefine.RenderDepth.FAR_BACKGROUND);
@@ -65,6 +67,10 @@ public class Stage implements StageInterface
 	public void dispose()
 	{
 		//---- 地形オブジェクトを破棄する。
+		if(terrain != null)
+		{
+			terrain.dispose();
+		}
 		
 		//---- 背景レイヤーを破棄する。
 		for(BackgroundLayer backgroundLayer : backgroundLayers)
@@ -132,6 +138,9 @@ public class Stage implements StageInterface
 	
 	/** プレイヤーの初期座標 */
 	private final Vector2 startPosition;
+	
+	/** 地形オブジェクト */
+	private final Terrain terrain;
 	
 	/** 背景レイヤーの配列 */
 	private final ArrayList<BackgroundLayer> backgroundLayers = new ArrayList<BackgroundLayer>();
