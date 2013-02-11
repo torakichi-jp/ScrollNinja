@@ -20,11 +20,13 @@ public class BackgroundLayer extends AbstractBackground
 {
 	/**
 	 * コンストラクタ
+	 * @param stageSize		ステージの大きさ
 	 * @param scale			背景レイヤーの倍率
 	 * @param renderDepth	描画処理の優先順位
 	 */
-	public BackgroundLayer(float scale, int renderDepth)
+	public BackgroundLayer(Vector2 stageSize, float scale, int renderDepth)
 	{
+		this.stageSize.set(stageSize);
 		this.scale = scale;
 		this.renderDepth = renderDepth;
 	}
@@ -44,9 +46,18 @@ public class BackgroundLayer extends AbstractBackground
 	@Override
 	public void update(float deltaTime)
 	{
+		//---- 計算式の変形メモ
+		// X = cameraX / ((stageW - viewportW) / 2) * ((stageW - stageW * scale) / 2)
+		//   = cameraX /  (stageW - viewportW) * 2  *  (stageW - stageW * scale) / 2
+		//   = cameraX /  (stageW - viewportW)      *  (stageW - stageW * scale)
+		//   = cameraX /  (stageW - viewportW)      *  stageW * (1 - scale)
+		
+		//---- カメラに合わせて座標を調整する。
 		final Camera camera = Global.camera;
-		// TODO カメラに合わせて座標を調整する。
-//		position.set(camera.position.x, camera.position.y);
+		position.set(
+			camera.position.x / (stageSize.x - camera.viewportWidth)  * stageSize.x * (1.0f - scale),
+			camera.position.y / (stageSize.y - camera.viewportHeight) * stageSize.y * (1.0f - scale)
+		);
 	}
 
 	/**
@@ -119,6 +130,9 @@ public class BackgroundLayer extends AbstractBackground
 	
 	/** 座標 */
 	private final Vector2 position = new Vector2();
+	
+	/** ステージの大きさ */
+	private final Vector2 stageSize = new Vector2();
 	
 	/** 背景レイヤーの倍率 */
 	private final float scale;

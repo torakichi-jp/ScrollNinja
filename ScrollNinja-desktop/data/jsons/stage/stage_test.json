@@ -4,8 +4,8 @@
         "y": 2500
     },
     "startPosition": {
-        "x": 1920,
-        "y": 1250
+        "x": 0,
+        "y": 0
     },
     "collisionFilePath": "data/jsons/collision/stage_test.json",
     "farLayers": [
@@ -91,8 +91,8 @@
                     "animationFilePath": "data/jsons/render/stage/stage_test_near02_animation.json",
                     "animationName": "UVScroll",
                     "position": {
-                        "x": 0,
-                        "y": 0
+                        "x": 1920,
+                        "y": 1250
                     },
                     "color": {
                         "r": 1,
@@ -110,7 +110,7 @@
                     "spriteFilePath": "data/jsons/render/stage/stage_test_near03_sprite.json",
                     "position": {
                         "x": 0,
-                        "y": 0
+                        "y": -1010
                     }
                 }
             ]

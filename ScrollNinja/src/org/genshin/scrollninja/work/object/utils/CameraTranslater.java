@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.object.AbstractObject;
 
 import com.badlogic.gdx.graphics.Camera;
@@ -76,10 +75,10 @@ public class CameraTranslater extends AbstractObject
 			targetPosition.add(object.getPositionX(), object.getPositionY());
 		}
 		targetPosition.mul(1.0f/targetObjects.size());
-		DebugString.add("Target Position: " + targetPosition);
 		
 		//---- 座標を適用する。
 		final Camera camera = Global.camera;
+		
 		camera.translate(
 			(targetPosition.x - camera.position.x) * interporation,
 			(targetPosition.y - camera.position.y) * interporation,
@@ -91,6 +90,7 @@ public class CameraTranslater extends AbstractObject
 		final float right		= translateArea.x + translateArea.width;
 		final float top		= translateArea.y;
 		final float bottom		= translateArea.y + translateArea.height;
+		
 		// X
 		if( camera.position.x > right )
 		{

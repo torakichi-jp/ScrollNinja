@@ -6,6 +6,7 @@ import org.genshin.scrollninja.work.object.TestObject;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 import org.genshin.scrollninja.work.object.utils.CameraTranslater;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -26,7 +27,6 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 		//---- ステージを生成する。
 		stage = new Stage(world, "data/jsons/stage/stage_test.json");
 		
-		
 //		//---- 忍者を生成する。
 //		AbstractObject player = new PlayerNinja(world, stage.getStartPosition(), getCursor());
 //		
@@ -35,12 +35,12 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 //		
 //		//---- カメラの追従設定
 		final CameraTranslater cameraTranslater = new CameraTranslater();
-		cameraTranslater.addTargetObject(new TestObject(stage.getSize().tmp().mul(0.5f)));
+		final Vector2 stageSize = stage.getSize();
+		cameraTranslater.addTargetObject(new TestObject(stage.getStartPosition()));
 //		cameraTranslater.addTargetObject(getCursor());
 //		cameraTranslater.addTargetObject(player);
-//		cameraTranslater.setTranslateArea(0.0f, 0.0f, 38.4f, 25.0f);
-//
-//		Global.currentUpdatableManager.add(cameraTranslater, 0);
+//		cameraTranslater.setTranslateArea(0.0f, 0.0f, stageSize.x, stageSize.y);
+		cameraTranslater.setTranslateArea(-stageSize.x * 0.5f, -stageSize.y * 0.5f, stageSize.x, stageSize.y);
 	}
 
 	@Override

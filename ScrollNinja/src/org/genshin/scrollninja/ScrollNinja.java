@@ -3,6 +3,7 @@ package org.genshin.scrollninja;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import org.genshin.old.scrollninja.GameMain;
 import org.genshin.scrollninja.screen.GameScreen;
 import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
@@ -42,8 +43,15 @@ public class ScrollNinja extends Game
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		//---- 初期スクリーンを設定する。
-//		setScreen(new GameMain(this, 0));
-		setScreen(new GameScreen());
+		final boolean useOld = false;
+		if(useOld)
+		{
+			setScreen(new GameMain(this, 0));
+		}
+		else
+		{
+			setScreen(new GameScreen());
+		}
 	}
 
 	@Override

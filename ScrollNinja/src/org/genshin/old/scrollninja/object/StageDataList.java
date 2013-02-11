@@ -20,8 +20,8 @@ public class StageDataList {
 			data.size.set(3840.0f * worldScale, 2500.0f * worldScale);
 			data.startPosition.set(data.size.x * 0.5f, data.size.y * 0.5f);
 			
-			data.collisionData.fileName = "data/stages/test.json";
-			data.collisionData.bodyName = "bgTest";
+			data.collisionData.fileName = "data/jsons/collision/stage_test_bodyeditor.json";
+			data.collisionData.bodyName = "terrain";
 			
 //			{
 //				StageData.EnemyData enemy = data.new EnemyData();

@@ -117,7 +117,7 @@ public class Stage implements StageInterface
 				continue;
 			
 			// 背景レイヤー生成
-			final BackgroundLayer backgroundLayer = new BackgroundLayer(backgroundLayerDef.scale, renderDepth);
+			final BackgroundLayer backgroundLayer = new BackgroundLayer(size, backgroundLayerDef.scale, renderDepth);
 			backgroundLayers.add(backgroundLayer);
 			
 			// 背景オブジェクト生成
