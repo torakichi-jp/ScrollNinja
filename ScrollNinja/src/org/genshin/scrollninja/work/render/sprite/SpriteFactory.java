@@ -1,6 +1,5 @@
 package org.genshin.scrollninja.work.render.sprite;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
@@ -8,6 +7,7 @@ import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.utils.TextureFactory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -49,11 +49,10 @@ public class SpriteFactory extends AbstractFlyweightFactory<String, Sprite>
 		//---- スプライトの定義を読み込む
 		{
 			final ObjectMapper objectMapper = new ObjectMapper();
-			final File source = Gdx.files.internal(key).file();
 			
 			try
 			{
-				spriteDef = objectMapper.readValue(source, SpriteDef.class);
+				spriteDef = objectMapper.readValue(Gdx.files.internal(key).read(), SpriteDef.class);
 			}
 			catch (JsonParseException e)	{ e.printStackTrace(); }
 			catch (JsonMappingException e)	{ e.printStackTrace(); }

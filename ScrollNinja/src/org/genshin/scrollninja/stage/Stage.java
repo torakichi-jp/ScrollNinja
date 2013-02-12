@@ -34,9 +34,10 @@ public class Stage implements StageInterface
 		//---- ステージの初期化用定義をファイルから読み込む
 		final ObjectMapper objectMapper = new ObjectMapper();
 		StageDef stageDef = null;
+		
 		try
 		{
-			stageDef = objectMapper.readValue(Gdx.files.internal(stageDefFile).file(), StageDef.class);
+			stageDef = objectMapper.readValue(Gdx.files.internal(stageDefFile).read(), StageDef.class);
 		}
 		catch (JsonParseException e) { e.printStackTrace(); }
 		catch (JsonMappingException e) { e.printStackTrace(); }
