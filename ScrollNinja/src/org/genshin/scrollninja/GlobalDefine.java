@@ -3,6 +3,7 @@ package org.genshin.scrollninja;
 import java.io.IOException;
 
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -27,8 +28,15 @@ public enum GlobalDefine
 		Element rootElement = null;
 		try
 		{
-			final class InternalFileHandle extends FileHandle { InternalFileHandle(String fileName) { super(fileName, FileType.Internal); } }
-			rootElement = xmlReader.parse(new InternalFileHandle("data/xml/global_param.xml"));
+			if( Gdx.files == null )
+			{
+				final class InternalFileHandle extends FileHandle { InternalFileHandle(String fileName) { super(fileName, FileType.Internal); } }
+				rootElement = xmlReader.parse(new InternalFileHandle("data/xml/global_param.xml"));
+			}
+			else
+			{
+				rootElement = xmlReader.parse(Gdx.files.internal("data/xml/global_param.xml"));
+			}
 		}
 		catch (IOException e)
 		{

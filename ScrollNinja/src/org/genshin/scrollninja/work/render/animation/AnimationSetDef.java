@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.work.render.animation;
 
-import java.awt.Point;
+import org.genshin.engine.utils.Point;
 
 /**
  * アニメーションセットの初期化用定義

@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.render.animation;
 
-import java.awt.Point;
+import org.genshin.engine.utils.Point;
 
 import com.badlogic.gdx.graphics.Texture;
 

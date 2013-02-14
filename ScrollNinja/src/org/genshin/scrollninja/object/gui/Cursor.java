@@ -3,7 +3,6 @@ package org.genshin.scrollninja.object.gui;
 import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 
@@ -23,7 +22,7 @@ public class Cursor extends AbstractObject
 	public Cursor(Camera camera, float speed)
 	{
 		//---- OSのマウスカーソルを非表示
-		Gdx.input.setCursorCatched(true);
+		//Gdx.input.setCursorCatched(true);
 		
 		//---- フィールド初期化
 		this.camera = camera;
@@ -33,18 +32,21 @@ public class Cursor extends AbstractObject
 	@Override
 	public void update(float deltaTime)
 	{
-		//---- 移動
-		position.x += Gdx.input.getDeltaX() * speed;
-		position.y -= Gdx.input.getDeltaY() * speed;
-
-		//---- 範囲制限
-		final float halfWidth = camera.viewportWidth * 0.5f;
-		final float halfHeight = camera.viewportHeight * 0.5f;
-		if( Math.abs(position.x) > halfWidth )	position.x = Math.signum(position.x) * halfWidth;
-		if( Math.abs(position.y) > halfHeight )	position.y = Math.signum(position.y) * halfHeight;
+//		//---- 移動
+//		position.x += Gdx.input.getDeltaX() * speed;
+//		position.y -= Gdx.input.getDeltaY() * speed;
+//
+//		//---- 範囲制限
+//		final float halfWidth = camera.viewportWidth * 0.5f;
+//		final float halfHeight = camera.viewportHeight * 0.5f;
+//		if( Math.abs(position.x) > halfWidth )	position.x = Math.signum(position.x) * halfWidth;
+//		if( Math.abs(position.y) > halfHeight )	position.y = Math.signum(position.y) * halfHeight;
+//		
+//		//---- 適用
+//		getRenderObject(0).setPosition(camera.position.x + position.x, camera.position.y + position.y);
 		
-		//---- 適用
-		getRenderObject(0).setPosition(camera.position.x + position.x, camera.position.y + position.y);
+		getRenderObject(0).setPosition(camera.position.x, camera.position.y);
+		
 	}
 
 	@Override

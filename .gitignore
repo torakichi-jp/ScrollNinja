@@ -8,4 +8,4 @@ doc/
 bin/
 ScrollNinja-html/.gwt/.gwt-log
 ScrollNinja-html/gwt-unit-Cache/
-ScrollNinja-android/gen/org/genshin/scrollninja/BuildConfig.java
+ScrollNinja-android/gen/

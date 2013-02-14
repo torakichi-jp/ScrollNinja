@@ -27,9 +27,9 @@ public class ScrollNinja extends Game
 {
 	@Override
 	public void create()
-	{	
+	{
 		//---- デバッグ文字列の初期化
-		DebugString.initialize(true);
+		DebugString.initialize(false);
 		
 		//---- アイコンを設定する。
 		final Pixmap[] pixmaps = {
@@ -43,7 +43,7 @@ public class ScrollNinja extends Game
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		
 		//---- 初期スクリーンを設定する。
-		final boolean useOld = false;
+		final boolean useOld = true;
 		if(useOld)
 		{
 			setScreen(new GameMain(this, 0));

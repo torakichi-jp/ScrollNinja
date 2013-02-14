@@ -5,7 +5,7 @@ import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
-import org.genshin.scrollninja.object.character.ninja.controller.DefaultPlayerNinjaController;
+import org.genshin.scrollninja.object.character.ninja.controller.AndroidNinjaController;
 import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.effect.AfterimageEffect;
 import org.genshin.scrollninja.object.gui.Cursor;
@@ -46,7 +46,8 @@ public class PlayerNinja extends AbstractCharacter {
 		getBody().setTransform(position, 0.0f);
 		
 		// フィールドの初期化
-		controller = new DefaultPlayerNinjaController(this, cursor);
+//		controller = new DefaultPlayerNinjaController(this, cursor);
+		controller = new AndroidNinjaController(this, cursor);
 		kaginawa = new Kaginawa(world, getBody());
 		sword = new SwordWeapon(this);
 		restAerialJumpCount = NinjaDefine.INSTANCE.AERIAL_JUMP_COUNT;

@@ -6,7 +6,7 @@
 	<Cursor>
 		<Sprite>
 			<Texture>
-				<FilePath>gui/cursor.png</FilePath>
+				<FilePath>transparent.png</FilePath>
 			</Texture>
 		</Sprite>
 	</Cursor>
