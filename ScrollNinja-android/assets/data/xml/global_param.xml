@@ -3,8 +3,8 @@
 <!-- グローバルパラメータ -->
 <GlobalParam>
 	<!-- クライアント領域の解像度 -->
-	<ClientWidth>800</ClientWidth>
-	<ClientHeight>450</ClientHeight>
+	<ClientWidth>1280</ClientWidth>
+	<ClientHeight>720</ClientHeight>
 	
 	<!-- フルスクリーンフラグ -->
 	<Fullscreen>false</Fullscreen>
