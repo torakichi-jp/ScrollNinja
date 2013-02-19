@@ -2,8 +2,7 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.old.scrollninja.GameMain;
-import org.genshin.old.scrollninja.object.Background;
+import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
@@ -89,7 +88,7 @@ public abstract class AbstractCollisionObject extends AbstractObject
 		}
 		else
 		{
-			final SpriteBatch spriteBatch = GameMain.spriteBatch;
+			final SpriteBatch spriteBatch = Global.spriteBatch;
 			final Vector2 pos = body.getPosition();
 			final float rot = (float) Math.toDegrees(body.getAngle());
 	
@@ -136,15 +135,15 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	 */
 	abstract public void dispatchCollision(AbstractCollisionObject object, Contact contact);
 
-	/**
-	 * 背景との衝突を通知する。
-	 * @param obj		衝突したオブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void notifyCollision(Background obj, Contact contact)
-	{
-		/* 何もしない */
-	}
+//	/**
+//	 * 背景との衝突を通知する。
+//	 * @param obj		衝突したオブジェクト
+//	 * @param contact	衝突情報
+//	 */
+//	public void notifyCollision(Background obj, Contact contact)
+//	{
+//		/* 何もしない */
+//	}
 
 	/**
 	 * プレイヤーとの衝突を通知する。

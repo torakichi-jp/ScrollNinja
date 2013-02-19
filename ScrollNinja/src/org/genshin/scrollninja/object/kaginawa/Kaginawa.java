@@ -1,6 +1,5 @@
 package org.genshin.scrollninja.object.kaginawa;
 
-import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
 import org.genshin.scrollninja.object.AbstractDynamicObject;
@@ -105,12 +104,12 @@ public class Kaginawa extends AbstractDynamicObject
 		object.notifyCollision(this, contact);
 	}
 
-	@Override
-	public void notifyCollision(Background obj, Contact contact)
-	{
-		// TODO 鉤縄の衝突処理とか。
-		state.collision(this);
-	}
+//	@Override
+//	public void notifyCollision(Background obj, Contact contact)
+//	{
+//		// TODO 鉤縄の衝突処理とか。
+//		state.collision(this);
+//	}
 	
 	/**
 	 * ロープジョイントを使うフラグを設定する。

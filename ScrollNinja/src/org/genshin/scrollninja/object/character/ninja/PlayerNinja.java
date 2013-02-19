@@ -1,6 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import org.genshin.old.scrollninja.object.Background;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.AbstractCollisionObject;
@@ -116,11 +115,11 @@ public class PlayerNinja extends AbstractCharacter {
 		object.notifyCollision(this, contact);
 	}
 	
-	@Override
-	public void notifyCollision(Background obj, Contact contact)
-	{
-		state.collisionTerrain(this, contact);
-	}
+//	@Override
+//	public void notifyCollision(Background obj, Contact contact)
+//	{
+//		state.collisionTerrain(this, contact);
+//	}
 	
 	/**
 	 * 反転フラグを取得する。

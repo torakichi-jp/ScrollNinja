@@ -3,7 +3,7 @@ package org.genshin.scrollninja.render;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.genshin.old.scrollninja.GameMain;
+import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.render.animation.AnimationInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -42,7 +42,7 @@ public abstract class AbstractRenderObject implements RenderObjectInterface
 	@Override
 	public void render()
 	{
-		final SpriteBatch spriteBatch = GameMain.spriteBatch;
+		final SpriteBatch spriteBatch = Global.spriteBatch;
 		final float originX = sprite.getOriginX();
 		final float originY = sprite.getOriginY();
 		sprite.translate(-originX, -originY);

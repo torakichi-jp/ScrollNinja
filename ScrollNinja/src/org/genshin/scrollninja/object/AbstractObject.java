@@ -2,7 +2,7 @@ package org.genshin.scrollninja.object;
 
 import java.util.ArrayList;
 
-import org.genshin.old.scrollninja.GameMain;
+import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -52,7 +52,7 @@ public abstract class AbstractObject implements ObjectInterface
 		}
 		else
 		{
-			final SpriteBatch spriteBatch = GameMain.spriteBatch;
+			final SpriteBatch spriteBatch = Global.spriteBatch;
 			final int count = sprites.size();
 			for (int i = 0; i < count; ++i)
 			{
