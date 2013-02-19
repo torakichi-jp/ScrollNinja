@@ -57,7 +57,7 @@ public class Stage implements StageInterface
 		startPosition = stageDef.startPosition.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
 		
 		//---- 地形オブジェクトを生成する。
-		terrain = new Terrain(stageDef.collisionFilePath, world);
+		terrain = new Terrain(stageDef.collisionFilePath, world, Vector2.tmp.set(-size.x * 0.5f, -size.y * 0.5f));
 		
 		//---- 描画オブジェクトを生成する。
 		createBackgroundLayers(stageDef.farLayers, GlobalDefine.RenderDepth.FAR_BACKGROUND);
