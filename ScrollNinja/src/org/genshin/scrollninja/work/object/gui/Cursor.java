@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.work.object.gui;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.render.RenderObject;
 
 import com.badlogic.gdx.Gdx;
@@ -23,6 +24,9 @@ public class Cursor extends AbstractGUI
 		
 		//---- OSのマウスカーソルを非表示
 		Gdx.input.setCursorCatched(true);
+		
+		//---- 初期座標は中央にしよう。
+		setScreenPosition(GlobalDefine.INSTANCE.CLIENT_WIDTH * 0.5f, GlobalDefine.INSTANCE.CLIENT_HEIGHT * 0.5f);
 		
 		//---- フィールド初期化
 		this.speed = speed;
