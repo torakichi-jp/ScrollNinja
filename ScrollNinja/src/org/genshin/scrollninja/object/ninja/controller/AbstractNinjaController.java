@@ -1,30 +1,30 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.character.ninja.controller;
+package org.genshin.scrollninja.object.ninja.controller;
 
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * プレイヤーが操作する忍者の操作状態を管理するオブジェクトの基本クラス。
+ * 忍者の操作状態を管理するオブジェクトの基本クラス。
  * @author	kou
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractPlayerNinjaController implements NinjaControllerInterface
+public abstract class AbstractNinjaController implements NinjaControllerInterface
 {
 	/**
 	 * コンストラクタ
 	 */
-	public AbstractPlayerNinjaController()
+	public AbstractNinjaController()
 	{
 		initialize();
 	}
 
 	@Override
-	public final void update()
+	public final void update(float deltaTime)
 	{
 		//---- 入力情報を更新する。
 		for(int i = 0;  i < inputHelpers.length;  ++i)

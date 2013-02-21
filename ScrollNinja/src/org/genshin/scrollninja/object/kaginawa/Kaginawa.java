@@ -9,6 +9,7 @@ import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -92,7 +93,7 @@ public class Kaginawa extends AbstractDynamicObject
 		final float len = direction.len();
 		
 		ropeSprite.setSize(len, ropeSprite.getHeight());
-		ropeSprite.setRotation(direction.angle() - (float)Math.toDegrees(getBody().getAngle()));
+		ropeSprite.setRotation(direction.angle() - getBody().getAngle() * MathUtils.radiansToDegrees);
 		ropeSprite.setRegion(0, 0, (int)(len*GlobalDefine.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
 		
 		super.render();
@@ -269,7 +270,7 @@ public class Kaginawa extends AbstractDynamicObject
 				// 鉤縄を初期化
 				kaginawa.setType(BodyType.DynamicBody);
 				kaginawa.setLinearVelocity(direction.x*KaginawaDefine.INSTANCE.SLACK_VELOCITY, direction.y*KaginawaDefine.INSTANCE.SLACK_VELOCITY);
-				kaginawa.setTransform(owner.getPosition(), (float)Math.toRadians(direction.angle()));
+				kaginawa.setTransform(owner.getPosition(), direction.angle() * MathUtils.degreesToRadians);
 				kaginawa.setActive(true);
 				
 				// 持ち主を初期化
@@ -446,7 +447,7 @@ public class Kaginawa extends AbstractDynamicObject
 				}
 				
 				//---- エフェクトを発生させる。
-				new KaginawaReleaseEffect(me.getRenderObjects(), me.getPositionX(), me.getPositionY(), (float)Math.toDegrees(kaginawa.getAngle()));
+				new KaginawaReleaseEffect(me.getRenderObjects(), me.getPositionX(), me.getPositionY(), kaginawa.getAngle() * MathUtils.radiansToDegrees);
 			}
 
 			@Override

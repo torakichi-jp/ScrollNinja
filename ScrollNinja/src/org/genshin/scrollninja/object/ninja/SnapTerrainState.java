@@ -1,8 +1,9 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -10,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 class SnapTerrainState extends AbstractState
 {
 	@Override
-	public void collisionTerrain(PlayerNinja me, Contact contact)
+	public void collisionTerrain(AbstractNinja me, Contact contact)
 	{
 		final Vector2 normal = contact.getWorldManifold().getNormal();
 		
@@ -35,29 +36,29 @@ class SnapTerrainState extends AbstractState
 		}
 
 		//---- キャラの角度を補正
-		nearRotate( me, (float)Math.toRadians(normal.angle() - 90.0f), 0.1f );
+		nearRotate( me, (normal.angle() - 90.0f) * MathUtils.degreesToRadians, 0.1f );
 	}
 
 	@Override
-	protected void updateMove(PlayerNinja me, float deltaTime)
+	protected void updateMove(AbstractNinja me, float deltaTime)
 	{
 		// なにもしない
 	}
 
 	@Override
-	protected void updateJump(PlayerNinja me)
+	protected void updateJump(AbstractNinja me)
 	{
 		// なにもしない
 	}
 
 	@Override
-	protected void updateKaginawa(PlayerNinja me)
+	protected void updateKaginawa(AbstractNinja me)
 	{
 		// なにもしない
 	}
 
 	@Override
-	protected StateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 吸着処理が完了したら地上状態へ
 		if(snapComplete)

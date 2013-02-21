@@ -11,8 +11,8 @@
                 {
                     "name": "terrain",
                     "scale": 3840,
-                    "density": 0,
-                    "friction": 0.2,
+                    "density": 1.0,
+                    "friction": 0.5,
                     "restitution": 0,
                     "isSensor": false,
                     "filter": {

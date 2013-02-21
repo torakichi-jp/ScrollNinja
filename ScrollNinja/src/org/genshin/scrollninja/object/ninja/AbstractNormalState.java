@@ -1,4 +1,6 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
+
+import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 
 
 /**
@@ -11,19 +13,22 @@ package org.genshin.scrollninja.object.character.ninja;
 abstract class AbstractNormalState extends AbstractState
 {
 	@Override
-	protected void updateMove(PlayerNinja me, float deltaTime)
+	protected void updateMove(AbstractNinja me, float deltaTime)
 	{
-		if(me.controller.isMoveStart())
+		final NinjaControllerInterface controller = me.getController();
+		
+		//---- 移動初めの検出
+		if(controller.isMoveStart())
 		{
 			me.updateMoveDirection();
 		}
 		
 		//---- 移動入力があれば移動する。
-		final float movePower = me.controller.getMovePower() * me.moveDirection * deltaTime;
+		final float movePower = controller.getMovePower() * me.getMoveDirection() * deltaTime;
 		if(movePower != 0.0f)
 		{
 			// ダッシュ
-			if( me.controller.isDash() )
+			if( controller.isDash() )
 			{
 				move(me, movePower, NinjaDefine.INSTANCE.DASH_ACCEL, NinjaDefine.INSTANCE.DASH_MAX_VELOCITY);
 				me.setAnimation("Dash");
@@ -43,26 +48,36 @@ abstract class AbstractNormalState extends AbstractState
 	}
 	
 	@Override
-	protected void updateKaginawa(PlayerNinja me)
+	protected void updateAttack(AbstractNinja me)
 	{
-		if( me.controller.isKaginawaSlack() )
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void updateKaginawa(AbstractNinja me)
+	{
+		final NinjaControllerInterface controller = me.getController();
+		
+		//---- 鉤縄を伸ばす
+		if(controller.isKaginawaSlack())
 		{
-			me.kaginawa.slack(me.controller.getDirection());
+//			me.kaginawa.slack(controller.getDirection());
 		}
-		else if( me.controller.isKaginawaShrink() )
+		//---- 鉤縄を縮める
+		else if(controller.isKaginawaShrink())
 		{
-			me.kaginawa.shrink();
+//			me.kaginawa.shrink();
 		}
 	}
 
 	@Override
-	protected StateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 鉤縄が縮み始めたら、鉤縄が縮んでいる時の状態へ
-		if( me.kaginawa.isShrinkState() )
-		{
-			return new KaginawaShrinkState(me);
-		}
+//		if( me.kaginawa.isShrinkState() )
+//		{
+//			return new KaginawaShrinkState(me);
+//		}
 		
 		//---- どれにも当てはまらなければ現状維持
 		return this;

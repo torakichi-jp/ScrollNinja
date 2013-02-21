@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object.effect;
 
 import org.genshin.engine.system.PostureInterface;
-import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.ninja.AbstractNinja;
 import org.genshin.scrollninja.render.RenderObjectFactory;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
@@ -19,7 +19,7 @@ public class SlashEffect extends AbstractEffect
 	 */
 	public SlashEffect(PostureInterface owner)
 	{
-		this.owner = (PlayerNinja)owner;
+		this.owner = (AbstractNinja)owner;
 	}
 	
 	@Override
@@ -62,5 +62,5 @@ public class SlashEffect extends AbstractEffect
 	}
 	
 	/** 所有者 */
-	private final PlayerNinja owner;
+	private final AbstractNinja owner;
 }

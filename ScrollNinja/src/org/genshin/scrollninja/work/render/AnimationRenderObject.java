@@ -118,8 +118,12 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 	 */
 	public void setAnimation(String animationName)
 	{
-		currentAnimation = animationSet.getAnimation(animationName);
-		timer = 0.0f;
+		final AnimationInterface newAnimation = animationSet.getAnimation(animationName);
+		if(currentAnimation != newAnimation)
+		{
+			currentAnimation = animationSet.getAnimation(animationName);
+			timer = 0.0f;
+		}
 	}
 	
 	/**

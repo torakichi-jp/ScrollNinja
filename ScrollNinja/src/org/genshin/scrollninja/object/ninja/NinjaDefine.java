@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.utils.FixtureDefLoader;

@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -16,14 +16,14 @@ class KaginawaShrinkState extends AbstractKaginawaState
 	 * コンストラクタ
 	 * @param me		自身を示す忍者オブジェクト
 	 */
-	KaginawaShrinkState(PlayerNinja me)
+	KaginawaShrinkState(AbstractNinja me)
 	{
 		//---- 鉤縄のロープジョイントフラグを叩き折っておく
 		me.kaginawa.setUseRopeJoint(false);
 	}
 	
 	@Override
-	public StateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(AbstractNinja me, float deltaTime)
 	{
 		//---- 地面との接触フラグをへし折っておく
 		me.groundedTimer = 0;
@@ -33,7 +33,7 @@ class KaginawaShrinkState extends AbstractKaginawaState
 	}
 
 	@Override
-	public void collisionTerrain(PlayerNinja me, Contact contact)
+	public void collisionTerrain(AbstractNinja me, Contact contact)
 	{
 		//---- まだ地上にいる時はスルー
 		if( me.isGrounded() )
@@ -44,7 +44,7 @@ class KaginawaShrinkState extends AbstractKaginawaState
 	}
 	
 	@Override
-	protected void updateKaginawa(PlayerNinja me)
+	protected void updateKaginawa(AbstractNinja me)
 	{
 		//---- 操作状態に合わせて各種処理を実行する。
 		// 鉤縄を離し、同時にジャンプする。
@@ -89,7 +89,7 @@ class KaginawaShrinkState extends AbstractKaginawaState
 	}
 
 	@Override
-	protected StateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 地形に吸着する状態へ
 		if( collisionTerrain )

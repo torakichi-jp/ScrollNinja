@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 abstract class AbstractKaginawaState extends AbstractState
 {
 	@Override
-	public StateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(AbstractNinja me, float deltaTime)
 	{
 		//---- 前方ベクトルを強制的にX軸にする。
 		me.frontDirection.set(Vector2.X);
@@ -25,19 +25,19 @@ abstract class AbstractKaginawaState extends AbstractState
 	}
 	
 	@Override
-	protected void updateMove(PlayerNinja me, float deltaTime)
+	protected void updateMove(AbstractNinja me, float deltaTime)
 	{
 		// とりあえず　なにもしない
 	}
 
 	@Override
-	protected void updateJump(PlayerNinja me)
+	protected void updateJump(AbstractNinja me)
 	{
 		// とりあえず　なにもしない
 	}
 
 	@Override
-	protected StateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 通常の状態へ
 		if( me.kaginawa.isReleaseState() )

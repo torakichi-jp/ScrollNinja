@@ -1,6 +1,6 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
 
-import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
+import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -19,23 +19,23 @@ class AerialState extends AbstractNormalState
 	 * コンストラクタ
 	 * @param me		自身を示す忍者オブジェクト
 	 */
-	AerialState(PlayerNinja me)
+	AerialState(AbstractNinja me)
 	{
 		//---- 鉤縄のロープジョイントフラグを叩き折っておく
-		me.kaginawa.setUseRopeJoint(false);
+//		me.kaginawa.setUseRopeJoint(false);
 		
 		//---- 地上フラグをへし折る
-		me.groundedTimer = 0;
+		me.toAerial();
 		
 		//---- 前方ベクトルを強制的にX軸にする。
-		me.frontDirection.set(Vector2.X);
+		me.setFrontDirection(Vector2.X);
 		
 		//---- ジャンプ方向ベクトルを強制的にY軸にする。
-		me.jumpDirection.set(Vector2.Y);
+		me.setJumpDirection(Vector2.Y);
 	}
 	
 	@Override
-	public StateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(AbstractNinja me, float deltaTime)
 	{
 		//---- 初回フレーム判定用
 		if(firstFrame)
@@ -47,14 +47,15 @@ class AerialState extends AbstractNormalState
 		nearRotate(me, 0.0f, 0.1f);
 		
 		//---- 連続ジャンプ時は摩擦を無視する
-		me.getFootFixture().setFriction(me.controller.isJump() ? 0.0f : me.defaultFriction);
+		final NinjaControllerInterface controller = me.getController();
+		me.setFrictionEnabled(!controller.isJump());
 		
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
 	}
 	
 	@Override
-	public void collisionTerrain(PlayerNinja me, Contact contact)
+	public void collisionTerrain(AbstractNinja me, Contact contact)
 	{
 		//---- 衝突したのが足でなければ何もしない？
 		if( !checkContactIsFoot(me, contact) )
@@ -65,35 +66,35 @@ class AerialState extends AbstractNormalState
 			return;
 		
 		//---- 地面と接触した時の処理を加える。
-		// 地面との衝突判定用タイマー初期化
-		me.groundedTimer = NinjaDefine.INSTANCE.GROUNDED_JUDGE_TIME;
+		me.toGrounded();
 	}
 	
 	@Override
-	protected void updateJump(PlayerNinja me)
+	protected void updateJump(AbstractNinja me)
 	{
-		if( me.controller.isAerialJump() && me.restAerialJumpCount > 0 )
+		final NinjaControllerInterface controller = me.getController();
+		
+		if( controller.isAerialJump() && me.canAerialJump() )
 		{
-			jump(me);
-			me.restAerialJumpCount--;
+			aerialJump(me);
 		}
 	}
 
 	@Override
-	protected StateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 地面と接触したら地上状態へ
 		if( me.isGrounded() )
 		{
-			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), 0.0f);
+//			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), 0.0f);
 			return new GroundedState(me);
 		}
 		
-		//---- 鉤縄にぶら下がっている状態へ
-		if( me.kaginawa.isHangState() )
-		{
-			return new KaginawaHangState();
-		}
+//		//---- 鉤縄にぶら下がっている状態へ
+//		if( me.kaginawa.isHangState() )
+//		{
+//			return new KaginawaHangState();
+//		}
 		
 		//---- あとは基本クラスに任せる
 		return super.getNextState(me);

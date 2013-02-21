@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.character.ninja.controller;
+package org.genshin.scrollninja.object.ninja.controller;
 
-import org.genshin.scrollninja.object.ObjectInterface;
+import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 import org.genshin.scrollninja.utils.input.MouseInputHelper;
 
@@ -11,19 +11,19 @@ import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 
 /**
- * プレイヤーが操作する忍者の操作状態を管理するオブジェクトのデフォルト設定。
+ * 忍者の操作状態を管理するオブジェクトのデフォルト設定。
  * @author	kou
  * @since		1.0
  * @version	1.0
  */
-public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
+public class DefaultNinjaController extends AbstractNinjaController
 {
 	/**
 	 * コンストラクタ
 	 * @param ninja		忍者オブジェクト（忍者の向き計算用）
 	 * @param cursor	マウスカーソルオブジェクト（忍者の向き計算用）
 	 */
-	public DefaultPlayerNinjaController(ObjectInterface ninja, ObjectInterface cursor)
+	public DefaultNinjaController(PostureInterface ninja, PostureInterface cursor)
 	{
 		this.ninja = ninja;
 		this.cursor = cursor;
@@ -53,8 +53,8 @@ public class DefaultPlayerNinjaController extends AbstractPlayerNinjaController
 
 
 	/** 忍者オブジェクト（鉤縄の向き計算用） */
-	private final ObjectInterface ninja;
+	private final PostureInterface ninja;
 	
 	/** マウスカーソルオブジェクト（鉤縄の向き計算用） */
-	private final ObjectInterface cursor;
+	private final PostureInterface cursor;
 }

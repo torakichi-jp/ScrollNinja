@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.character.ninja;
+package org.genshin.scrollninja.object.ninja;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -13,14 +13,14 @@ import com.badlogic.gdx.physics.box2d.Contact;
 public class KaginawaHangState extends AbstractKaginawaState
 {
 	@Override
-	public StateInterface update(PlayerNinja me, float deltaTime)
+	public StateInterface update(AbstractNinja me, float deltaTime)
 	{
 		//---- あとは基本クラスに任せる。
 		return super.update(me, deltaTime);
 	}
 	
 	@Override
-	public void collisionTerrain(PlayerNinja me, Contact contact)
+	public void collisionTerrain(AbstractNinja me, Contact contact)
 	{
 		//---- 衝突したのが下半身でなければ何もしない。
 		if( !checkContactIsFoot(me, contact) )
@@ -31,7 +31,7 @@ public class KaginawaHangState extends AbstractKaginawaState
 	}
 	
 	@Override
-	protected void updateKaginawa(PlayerNinja me)
+	protected void updateKaginawa(AbstractNinja me)
 	{
 		//---- 操作状態に合わせて各種処理を実行する。
 		// 鉤縄を離し、同時にジャンプする。
@@ -76,7 +76,7 @@ public class KaginawaHangState extends AbstractKaginawaState
 	}
 
 	@Override
-	protected StateInterface getNextState(PlayerNinja me)
+	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 鉤縄が縮んでいる状態へ
 		if( me.kaginawa.isShrinkState() )

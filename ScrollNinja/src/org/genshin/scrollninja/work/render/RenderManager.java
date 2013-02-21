@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.work.render;
 
-import org.genshin.engine.system.NewAbstractProcessManager;
+import org.genshin.engine.system.AbstractProcessManager;
 
 
 
@@ -10,7 +10,7 @@ import org.genshin.engine.system.NewAbstractProcessManager;
  * @since		1.0
  * @version	1.0
  */
-public class RenderManager extends NewAbstractProcessManager<RenderObjectInterface>
+public class RenderManager extends AbstractProcessManager<RenderObjectInterface>
 {
 	/**
 	 * 描画処理を実行する。

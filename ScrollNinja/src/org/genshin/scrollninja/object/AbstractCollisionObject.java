@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.object.attack.AbstractAttack;
-import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
+import org.genshin.scrollninja.object.ninja.AbstractNinja;
 import org.genshin.scrollninja.render.RenderObjectInterface;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
@@ -13,6 +13,7 @@ import aurelienribon.bodyeditor.BodyEditorLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -72,7 +73,7 @@ public abstract class AbstractCollisionObject extends AbstractObject
 		if( !getRenderObjects().isEmpty() )
 		{
 			final Vector2 position = body.getPosition();
-			final float rotation = (float)Math.toDegrees(body.getAngle());
+			final float rotation = body.getAngle() * MathUtils.radiansToDegrees;
 			
 			for( RenderObjectInterface ro : getRenderObjects() )
 			{
@@ -90,7 +91,7 @@ public abstract class AbstractCollisionObject extends AbstractObject
 		{
 			final SpriteBatch spriteBatch = Global.spriteBatch;
 			final Vector2 pos = body.getPosition();
-			final float rot = (float) Math.toDegrees(body.getAngle());
+			final float rot = body.getAngle() * MathUtils.radiansToDegrees;
 	
 			final int count = sprites.size();
 			for (int i = 0; i < count; ++i)
@@ -125,7 +126,7 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	@Override
 	public float getRotation()
 	{
-		return (float)Math.toDegrees(body.getAngle());
+		return body.getAngle() * MathUtils.radiansToDegrees;
 	}
 
 	/**
@@ -150,7 +151,7 @@ public abstract class AbstractCollisionObject extends AbstractObject
 	 * @param obj		衝突したオブジェクト
 	 * @param contact	衝突情報
 	 */
-	public void notifyCollision(PlayerNinja obj, Contact contact)
+	public void notifyCollision(AbstractNinja obj, Contact contact)
 	{
 		/* 何もしない */
 	}

@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.work.collision;
 
-import org.genshin.scrollninja.object.character.ninja.PlayerNinja;
+import org.genshin.scrollninja.object.ninja.AbstractNinja;
 import org.genshin.scrollninja.work.object.terrain.Terrain;
 
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -25,7 +25,7 @@ public abstract class AbstractCollisionCallback
 	 * @param obj		衝突したプレイヤー忍者オブジェクト
 	 * @param contact	衝突情報
 	 */
-	public void collision(PlayerNinja obj, Contact contact)
+	public void collision(AbstractNinja obj, Contact contact)
 	{
 		/* 何もしない */
 	}

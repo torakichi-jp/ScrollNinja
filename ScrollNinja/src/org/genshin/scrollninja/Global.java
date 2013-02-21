@@ -1,7 +1,5 @@
 package org.genshin.scrollninja;
 
-import org.genshin.engine.system.RenderableManager;
-import org.genshin.engine.system.UpdatableManager;
 import org.genshin.scrollninja.work.object.UpdateManager;
 import org.genshin.scrollninja.work.render.RenderManager;
 
@@ -16,14 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public final class Global
 {
-	/** 現在指定されている更新処理を管理するオブジェクト */
-	@Deprecated
-	public static UpdatableManager currentUpdatableManager = null;
-	
-	/** 現在指定されている描画処理を管理するオブジェクト */
-	@Deprecated
-	public static RenderableManager currentRenderableManager = null;
-
 	/** 現在指定されている更新処理を管理するオブジェクト */
 	public static UpdateManager updateManager = null;
 	

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.character.ninja.controller;
+package org.genshin.scrollninja.object.ninja.controller;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,8 +15,9 @@ public interface NinjaControllerInterface
 {
 	/**
 	 * 	忍者の操作状態を更新する。
+	 * @param deltaTime		経過時間
 	 */
-	void update();
+	public void update(float deltaTime);
 	
 	/**
 	 * 移動の操作状態を取得する。

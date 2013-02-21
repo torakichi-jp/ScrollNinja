@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.work.object.gui;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.render.RenderObject;
 
 import com.badlogic.gdx.Gdx;
