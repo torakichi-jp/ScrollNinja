@@ -15,7 +15,7 @@ abstract class AbstractKaginawaState extends AbstractState
 	public StateInterface update(AbstractNinja me, float deltaTime)
 	{
 		//---- 前方ベクトルを強制的にX軸にする。
-		me.frontDirection.set(Vector2.X);
+		me.setFrontDirection(Vector2.X);
 
 		//---- 姿勢を起こす
 		nearRotate(me, 0.0f, 0.1f);
@@ -37,10 +37,16 @@ abstract class AbstractKaginawaState extends AbstractState
 	}
 
 	@Override
+	protected void updateAttack(AbstractNinja me)
+	{
+		// とりあえず　なにもしない
+	}
+
+	@Override
 	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 通常の状態へ
-		if( me.kaginawa.isReleaseState() )
+		if( me.getKaginawa().isReleaseState() )
 		{
 			// 地上
 			if( me.isGrounded() )

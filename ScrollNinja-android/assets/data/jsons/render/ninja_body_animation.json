@@ -78,6 +78,24 @@
             }
         },
         {
+            "name": "Kaginawa",
+            "animation": {
+                "textureFilePath": "data/textures/ninja/ninja.png",
+                "start": {
+                    "x": 0,
+                    "y": 5
+                },
+                "frames": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "time": 6,
+                "looping": true
+            }
+        },
+        {
             "name": "SwordAttack",
             "animation": {
                 "textureFilePath": "data/textures/ninja/ninja_attack.png",

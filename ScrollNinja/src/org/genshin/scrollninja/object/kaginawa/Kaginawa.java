@@ -171,7 +171,7 @@ public class Kaginawa extends AbstractObject
 	{
 		return getBody().getAngle() * MathUtils.radiansToDegrees;
 	}
-	
+
 	/**
 	 * 鉤縄が縮んでいる状態か調べる。
 	 * @return		鉤縄が縮んでいる状態の場合true

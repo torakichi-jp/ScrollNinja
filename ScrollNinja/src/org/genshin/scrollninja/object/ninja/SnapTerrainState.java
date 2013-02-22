@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.object.effect.JumpSmokeEffect;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -24,14 +23,14 @@ class SnapTerrainState extends AbstractState
 			if(body.getLinearVelocity().len2() < safeVelocity * safeVelocity)
 			{
 				snapComplete = true;
-				me.kaginawa.release();
+				me.getKaginawa().release();
 				body.setLinearVelocity(Vector2.Zero);
 				
 				//---- 地上フラグを立てておく。
-				me.groundedTimer = NinjaDefine.INSTANCE.GROUNDED_JUDGE_TIME;
+				me.toGrounded();
 				
 				//---- 前方ベクトルを設定しておく。
-				me.frontDirection.set(normal.y, -normal.x);
+				me.setFrontDirection(normal.y, -normal.x);
 			}
 		}
 
@@ -52,6 +51,12 @@ class SnapTerrainState extends AbstractState
 	}
 
 	@Override
+	protected void updateAttack(AbstractNinja me)
+	{
+		// なにもしない
+	}
+
+	@Override
 	protected void updateKaginawa(AbstractNinja me)
 	{
 		// なにもしない
@@ -63,11 +68,11 @@ class SnapTerrainState extends AbstractState
 		//---- 吸着処理が完了したら地上状態へ
 		if(snapComplete)
 		{
-			if(me.controller.getMovePower() != 0.0f)
+			if(me.getController().getMovePower() != 0.0f)
 			{
 				me.updateMoveDirection();
 			}
-			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), me.frontDirection.angle());
+//			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), me.getFrontDirection().angle());
 			return new GroundedState(me);
 		}
 		

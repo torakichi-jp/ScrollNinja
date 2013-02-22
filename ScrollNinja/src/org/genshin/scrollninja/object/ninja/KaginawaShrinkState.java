@@ -1,5 +1,9 @@
 package org.genshin.scrollninja.object.ninja;
 
+import org.genshin.scrollninja.object.kaginawa.Kaginawa;
+import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
+import org.genshin.scrollninja.work.render.AnimationRenderObject;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 
@@ -19,14 +23,14 @@ class KaginawaShrinkState extends AbstractKaginawaState
 	KaginawaShrinkState(AbstractNinja me)
 	{
 		//---- 鉤縄のロープジョイントフラグを叩き折っておく
-		me.kaginawa.setUseRopeJoint(false);
+		me.getKaginawa().setUseRopeJoint(false);
 	}
 	
 	@Override
 	public StateInterface update(AbstractNinja me, float deltaTime)
 	{
 		//---- 地面との接触フラグをへし折っておく
-		me.groundedTimer = 0;
+		me.toAerial();
 		
 		//---- あとは基本クラスに任せる
 		return super.update(me, deltaTime);
@@ -46,46 +50,47 @@ class KaginawaShrinkState extends AbstractKaginawaState
 	@Override
 	protected void updateKaginawa(AbstractNinja me)
 	{
+		final NinjaControllerInterface controller = me.getController();
+		final Kaginawa kaginawa = me.getKaginawa();
+		final AnimationRenderObject bodyRenderObject = me.getBodyRenderObject();
+		final AnimationRenderObject footRenderObject = me.getFootRenderObject();
+		
 		//---- 操作状態に合わせて各種処理を実行する。
 		// 鉤縄を離し、同時にジャンプする。
-		if( me.controller.isAerialJump() )
+		if( controller.isAerialJump() )
 		{
-			me.kaginawa.release();
-			jump(me);
-			if( me.restAerialJumpCount > 0 )
-			{
-				me.restAerialJumpCount--;
-			}
+			kaginawa.release();
+			aerialJump(me);
 		}
 		// 鉤縄を離す
-		else if( me.controller.isKaginawaRelease() )
+		else if( controller.isKaginawaRelease() )
 		{
-			me.kaginawa.release();
+			kaginawa.release();
 		}
 		// 鉤縄にぶら下がる
-		else if( me.controller.isKaginawaHang() )
+		else if( controller.isKaginawaHang() )
 		{
-			me.kaginawa.hang();
+			kaginawa.hang();
 		}
 		
 		//---- 忍者のアニメーションを設定する。
 		// 上半身
-		me.setBodyAnimation("Kaginawa");
+		bodyRenderObject.setAnimation("Kaginawa");
 		
 		// 下半身
-		final Vector2 direction = me.controller.getDirection();
+		final Vector2 direction = controller.getDirection();
 		final Vector2 velocity = me.getBody().getLinearVelocity();
 		if( (Vector2.Y.crs(direction) < 0.0f) == (Vector2.Y.crs(velocity) < 0.0f) )
 		{
-			me.setFootAnimation("KaginawaFront");
+			footRenderObject.setAnimation("KaginawaFront");
 		}
 		else
 		{
-			me.setFootAnimation("KaginawaBack");
+			footRenderObject.setAnimation("KaginawaBack");
 		}
 		
 		// アニメーション時間の同期
-		me.getFootRenderObject().setAnimationTime( me.getBodyRenderObject().getAnimationTime() );
+		footRenderObject.setAnimationTime( bodyRenderObject.getAnimationTime() );
 	}
 
 	@Override
@@ -98,7 +103,7 @@ class KaginawaShrinkState extends AbstractKaginawaState
 		}
 		
 		//---- 鉤縄にぶら下がっている状態へ
-		if( me.kaginawa.isHangState() )
+		if( me.getKaginawa().isHangState() )
 		{
 			return new KaginawaHangState();
 		}

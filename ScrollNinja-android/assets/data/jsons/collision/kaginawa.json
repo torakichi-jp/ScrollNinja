@@ -12,7 +12,7 @@
             "restitution": 0,
             "isSensor": false,
             "circle": {
-                "radius": 10,
+                "radius": 2,
                 "position": {
                     "x": 0,
                     "y": 0

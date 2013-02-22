@@ -121,7 +121,7 @@ class GroundedState extends AbstractNormalState
 		//---- 地上で鉤縄にぶら下がっている状態へ
 		if( me.getKaginawa().isHangState() )
 		{
-//			return new GroundedToKaginawaState(me);
+			return new GroundedToKaginawaState(me);
 		}
 		
 		//---- あとは基本クラスに任せる

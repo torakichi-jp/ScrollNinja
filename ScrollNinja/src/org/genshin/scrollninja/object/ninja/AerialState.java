@@ -93,7 +93,7 @@ class AerialState extends AbstractNormalState
 		//---- 鉤縄にぶら下がっている状態へ
 		if( me.getKaginawa().isHangState() )
 		{
-//			return new KaginawaHangState();
+			return new KaginawaHangState();
 		}
 		
 		//---- あとは基本クラスに任せる

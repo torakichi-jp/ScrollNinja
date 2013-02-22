@@ -28,7 +28,7 @@ class GroundedToKaginawaState extends GroundedState
 		}
 
 		//---- 鉤縄が縮み始めたら、鉤縄が縮んでいる時の状態へ
-		if( me.kaginawa.isShrinkState() )
+		if( me.getKaginawa().isShrinkState() )
 		{
 			return new KaginawaShrinkState(me);
 		}
