@@ -1,22 +1,21 @@
 package org.genshin.scrollninja.object.kaginawa;
 
+import java.util.ArrayList;
+
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.object.AbstractCollisionObject;
-import org.genshin.scrollninja.object.AbstractDynamicObject;
-import org.genshin.scrollninja.object.effect.KaginawaReleaseEffect;
-import org.genshin.scrollninja.render.RenderObjectFactory;
-import org.genshin.scrollninja.render.RenderObjectInterface;
+import org.genshin.scrollninja.work.collision.AbstractCollisionCallback;
+import org.genshin.scrollninja.work.collision.CollisionObject;
+import org.genshin.scrollninja.work.object.AbstractObject;
+import org.genshin.scrollninja.work.object.terrain.Terrain;
+import org.genshin.scrollninja.work.render.RenderObject;
 
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
@@ -28,7 +27,7 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
  * @since		1.0
  * @version	1.0
  */
-public class Kaginawa extends AbstractDynamicObject
+public class Kaginawa extends AbstractObject
 {
 	/**
 	 * コンストラクタ
@@ -37,10 +36,40 @@ public class Kaginawa extends AbstractDynamicObject
 	 */
 	public Kaginawa(World world, Body owner)
 	{
-		super(world);
-
+		//---- 描画オブジェクトを生成する。
+		renderObjects.add(new RenderObject("data/jsons/render/kaginawa_rope_sprite.json", this, GlobalDefine.RenderDepth.KAGINAWA));
+		renderObjects.add(new RenderObject("data/jsons/render/kaginawa_anchor_sprite.json", this, GlobalDefine.RenderDepth.KAGINAWA));
+		getRopeSprite().getTexture().setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
+		
+		//---- 衝突オブジェクトを生成する。
+		collisionObject = new CollisionObject("data/jsons/collision/kaginawa.json", world, new CollisionCallback());
+		
+		//---- フィールドを初期化する。
 		this.owner = owner;
-		changeState(State.IDLE);
+		state = State.IDLE;
+		state.initialize(this);
+		nextState = null;
+	}
+
+	@Override
+	public void dispose()
+	{
+		//---- 衝突オブジェクトを破棄する。
+		if(collisionObject != null)
+		{
+			collisionObject.dispose();
+			collisionObject = null;
+		}
+		
+		//---- 描画オブジェクトを破棄する。
+		for(RenderObject ro : renderObjects)
+		{
+			ro.dispose();
+		}
+		renderObjects.clear();
+		
+		//---- 基本クラスの破棄処理を実行する。
+		super.dispose();
 	}
 
 	/**
@@ -79,38 +108,36 @@ public class Kaginawa extends AbstractDynamicObject
 	@Override
 	public void update(float deltaTime)
 	{
+		//---- 状態遷移
+		if(nextState != null)
+		{
+			state = nextState;
+			state.initialize(this);
+			nextState = null;
+		}
+		
+		//---- 状態を更新する。
 		state.update(this);
-	}
-
-	@Override
-	public void render()
-	{
-		// XXX 縄の描画（仮）
-		final Vector2 kaginawaPosition = getBody().getPosition();
+		
+		//---- 縄の描画オブジェクトの長さを調整する。
+		final Body body = getBody();
+		final Vector2 kaginawaPosition = body.getPosition();
 		final Vector2 ownerPosition = owner.getPosition();
 		final Vector2 direction = ownerPosition.sub(kaginawaPosition);
-		final Sprite ropeSprite = getRopeRenderObject().getSprite();
 		final float len = direction.len();
+		final Sprite ropeSprite = getRopeSprite();
 		
 		ropeSprite.setSize(len, ropeSprite.getHeight());
-		ropeSprite.setRotation(direction.angle() - getBody().getAngle() * MathUtils.radiansToDegrees);
-		ropeSprite.setRegion(0, 0, (int)(len*GlobalDefine.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
-		
-		super.render();
+		ropeSprite.setRotation(direction.angle() - body.getAngle() * MathUtils.radiansToDegrees);
+		ropeSprite.setRegion(0, 0, (int)(len * GlobalDefine.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
 	}
-
-	@Override
-	public void dispatchCollision(AbstractCollisionObject object, Contact contact)
+	
+	public void setActive(boolean active)
 	{
-		object.notifyCollision(this, contact);
+		getBody().setActive(active);
+		for(RenderObject ro : renderObjects)
+			ro.setRenderEnabled(active);
 	}
-
-//	@Override
-//	public void notifyCollision(Background obj, Contact contact)
-//	{
-//		// TODO 鉤縄の衝突処理とか。
-//		state.collision(this);
-//	}
 	
 	/**
 	 * ロープジョイントを使うフラグを設定する。
@@ -119,6 +146,30 @@ public class Kaginawa extends AbstractDynamicObject
 	public void setUseRopeJoint(boolean useRopeJoint)
 	{
 		this.useRopeJoint = useRopeJoint;
+	}
+
+	@Override
+	public boolean isDisposed()
+	{
+		return collisionObject == null;
+	}
+
+	@Override
+	public float getPositionX()
+	{
+		return getBody().getPosition().x;
+	}
+
+	@Override
+	public float getPositionY()
+	{
+		return getBody().getPosition().y;
+	}
+
+	@Override
+	public float getRotation()
+	{
+		return getBody().getAngle() * MathUtils.radiansToDegrees;
 	}
 	
 	/**
@@ -148,72 +199,67 @@ public class Kaginawa extends AbstractDynamicObject
 		return state == State.RELEASE;
 	}
 
-	@Override
-	protected void initializeSprite()
-	{
-		final RenderObjectInterface ropeRenderObject = RenderObjectFactory.getInstance().get("KaginawaRope");
-		ropeRenderObject.getSprite().getTexture().setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
-		
-		addRenderObject( ropeRenderObject );
-		addRenderObject( RenderObjectFactory.getInstance().get("KaginawaAnchor") );
-	}
-	
-	@Override
-	protected BodyDef createBodyDef()
-	{
-		BodyDef bd = super.createBodyDef();
-		bd.gravityScale = 0.0f;
-		return bd;
-	}
-
-	@Override
-	protected FixtureDef createFixtureDef()
-	{
-		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(KaginawaDefine.INSTANCE.COLLISION_RADIUS);
-		circleShape.setPosition(new Vector2(16.0f * GlobalDefine.INSTANCE.WORLD_SCALE, 0.0f));
-		
-		FixtureDef fd	= super.createFixtureDef();
-		fd.isSensor		= true;			// XXX センサーフラグ。いずれはFilterに代わる予定。
-		fd.shape		= circleShape;
-		return fd;
-	}
-
 	/**
 	 * 状態を変更する。
 	 * @param next	次の状態
 	 */
-	void changeState(State next)
+	void setNextState(State next)
 	{
-		assert next!=null;
-		
-		state = next;
-		state.initialize(this);
+		nextState = next;
 	}
 	
 	/**
 	 * 縄の描画オブジェクトを取得する。
 	 * @return		縄の描画オブジェクト
 	 */
-	RenderObjectInterface getRopeRenderObject()
+	RenderObject getRopeRenderObject()
 	{
-		return getRenderObject(0);
+		return renderObjects.get(0);
 	}
 	
 	/**
 	 * 鉤の描画オブジェクトを取得する。
 	 * @return		鉤の描画オブジェクト
 	 */
-	RenderObjectInterface getAnchorRenderObject()
+	RenderObject getAnchorRenderObject()
 	{
-		return getRenderObject(1);
+		return renderObjects.get(1);
 	}
+	
+	/**
+	 * 縄のスプライトオブジェクトを取得する。
+	 * @return		縄のスプライトオブジェクト
+	 */
+	@SuppressWarnings("deprecation")
+	Sprite getRopeSprite()
+	{
+		return getRopeRenderObject().getSprite();
+	}
+	
+	/**
+	 * Bodyオブジェクトを取得する。
+	 * @return		Bodyオブジェクト
+	 */
+	Body getBody()
+	{
+		return collisionObject.getBody();
+	}
+	
+	
+	/** 描画オブジェクトの配列 */
+	private final ArrayList<RenderObject> renderObjects = new ArrayList<RenderObject>(2);
+	
+	/** 衝突オブジェクト */
+	private CollisionObject collisionObject;
 
 	/** 鉤縄の持ち主 */
 	private final Body owner;
 
 	/** 鉤縄の状態 */
 	private State state;
+	
+	/** 鉤縄の次の状態 */
+	private State nextState;
 	
 	/** 縄の長さを制限するためのジョイント */
 	private Joint joint;
@@ -223,6 +269,25 @@ public class Kaginawa extends AbstractDynamicObject
 	
 	/** XXX あやしいフラグ（仮）　外部から指定するのは何ともメンドクサイので何とかならんかね。 */
 	boolean useRopeJoint = false;
+	
+	
+	/**
+	 * 衝突判定のコールバック
+	 */
+	protected class CollisionCallback extends AbstractCollisionCallback
+	{
+		@Override
+		public void dispatch(AbstractCollisionCallback collisionCallback, Contact contact)
+		{
+			collisionCallback.collision(Kaginawa.this, contact);
+		}
+
+		@Override
+		public void collision(Terrain obj, Contact contact)
+		{
+			Kaginawa.this.state.collision(Kaginawa.this);
+		}
+	}
 	
 	
 	/** 
@@ -242,7 +307,7 @@ public class Kaginawa extends AbstractDynamicObject
 				Body owner		= me.owner;
 				
 				// 鉤縄を初期化
-				kaginawa.setActive(false);
+				me.setActive(false);
 				
 				// 持ち主を初期化
 			}
@@ -251,7 +316,7 @@ public class Kaginawa extends AbstractDynamicObject
 			void slack(Kaginawa me, Vector2 direction)
 			{
 				me.direction.set(direction.nor());
-				me.changeState(SLACK);
+				me.setNextState(SLACK);
 			}
 		},
 		
@@ -271,7 +336,7 @@ public class Kaginawa extends AbstractDynamicObject
 				kaginawa.setType(BodyType.DynamicBody);
 				kaginawa.setLinearVelocity(direction.x*KaginawaDefine.INSTANCE.SLACK_VELOCITY, direction.y*KaginawaDefine.INSTANCE.SLACK_VELOCITY);
 				kaginawa.setTransform(owner.getPosition(), direction.angle() * MathUtils.degreesToRadians);
-				kaginawa.setActive(true);
+				me.setActive(true);
 				
 				// 持ち主を初期化
 			}
@@ -292,19 +357,19 @@ public class Kaginawa extends AbstractDynamicObject
 			@Override
 			void shrink(Kaginawa me)
 			{
-				me.changeState(RELEASE);
+				me.setNextState(RELEASE);
 			}
 
 			@Override
 			void release(Kaginawa me)
 			{
-				me.changeState(RELEASE);
+				me.setNextState(RELEASE);
 			}
 
 			@Override
 			void collision(Kaginawa me)
 			{
-				me.changeState(HANG);
+				me.setNextState(HANG);
 			}
 		},
 		
@@ -352,13 +417,13 @@ public class Kaginawa extends AbstractDynamicObject
 			@Override
 			void hang(Kaginawa me)
 			{
-				me.changeState(HANG);
+				me.setNextState(HANG);
 			}
 
 			@Override
 			void release(Kaginawa me)
 			{
-				me.changeState(RELEASE);
+				me.setNextState(RELEASE);
 			}
 		},
 		
@@ -412,13 +477,13 @@ public class Kaginawa extends AbstractDynamicObject
 			@Override
 			void shrink(Kaginawa me)
 			{
-				me.changeState(SHRINK);
+				me.setNextState(SHRINK);
 			}
 
 			@Override
 			void release(Kaginawa me)
 			{
-				me.changeState(RELEASE);
+				me.setNextState(RELEASE);
 			}
 		},
 		
@@ -435,7 +500,7 @@ public class Kaginawa extends AbstractDynamicObject
 				World world		= kaginawa.getWorld();
 				
 				// 鉤縄を初期化
-				kaginawa.setActive(false);
+				me.setActive(false);
 				
 				// 持ち主を初期化
 				
@@ -447,14 +512,14 @@ public class Kaginawa extends AbstractDynamicObject
 				}
 				
 				//---- エフェクトを発生させる。
-				new KaginawaReleaseEffect(me.getRenderObjects(), me.getPositionX(), me.getPositionY(), kaginawa.getAngle() * MathUtils.radiansToDegrees);
+//				new KaginawaReleaseEffect(me.getRenderObjects(), me.getPositionX(), me.getPositionY(), kaginawa.getAngle() * MathUtils.radiansToDegrees);
 			}
 
 			@Override
 			void update(Kaginawa me)
 			{
 				// TODO エフェクトが消えるのを待つ処理とか？
-				me.changeState(IDLE);
+				me.setNextState(IDLE);
 			}
 		},
 		;

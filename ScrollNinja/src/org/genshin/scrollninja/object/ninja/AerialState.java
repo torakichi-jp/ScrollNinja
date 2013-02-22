@@ -22,7 +22,7 @@ class AerialState extends AbstractNormalState
 	AerialState(AbstractNinja me)
 	{
 		//---- 鉤縄のロープジョイントフラグを叩き折っておく
-//		me.kaginawa.setUseRopeJoint(false);
+		me.getKaginawa().setUseRopeJoint(false);
 		
 		//---- 地上フラグをへし折る
 		me.toAerial();
@@ -90,11 +90,11 @@ class AerialState extends AbstractNormalState
 			return new GroundedState(me);
 		}
 		
-//		//---- 鉤縄にぶら下がっている状態へ
-//		if( me.kaginawa.isHangState() )
-//		{
+		//---- 鉤縄にぶら下がっている状態へ
+		if( me.getKaginawa().isHangState() )
+		{
 //			return new KaginawaHangState();
-//		}
+		}
 		
 		//---- あとは基本クラスに任せる
 		return super.getNextState(me);

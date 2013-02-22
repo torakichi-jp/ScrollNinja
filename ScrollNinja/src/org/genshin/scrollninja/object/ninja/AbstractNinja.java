@@ -3,6 +3,7 @@ package org.genshin.scrollninja.object.ninja;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.collision.AbstractCollisionCallback;
@@ -44,6 +45,7 @@ public abstract class AbstractNinja extends AbstractObject
 		getBody().setGravityScale(0.0f);
 		
 		//---- フィールドを初期化する。
+		kaginawa = new Kaginawa(world, getBody());
 		state = new AerialState(this);
 		defaultFriction = getFootFixture().getFriction();
 		gravityPower = world.getGravity().len();
@@ -57,6 +59,11 @@ public abstract class AbstractNinja extends AbstractObject
 	{
 		//---- フィールドを解放する。
 		state = null;
+		if(kaginawa != null)
+		{
+			kaginawa.dispose();
+			kaginawa = null;
+		}
 		
 		//---- 衝突オブジェクトを破棄する。
 		if(collisionObject != null)
@@ -129,13 +136,16 @@ public abstract class AbstractNinja extends AbstractObject
 	
 	
 	/** 描画オブジェクトの配列 */
-	private final ArrayList<AnimationRenderObject>	renderObjects	= new ArrayList<AnimationRenderObject>();
+	private final ArrayList<AnimationRenderObject>	renderObjects	= new ArrayList<AnimationRenderObject>(2);
 	
 	/** 衝突オブジェクト */
 	private CollisionObject	collisionObject;
 	
 	/** 忍者の操作を管理するオブジェクト */
 	private NinjaControllerInterface	controller;
+	
+	/** 鉤縄 */
+	private Kaginawa kaginawa;
 
 	/** 忍者の状態を管理するオブジェクト */
 	private StateInterface	state;
@@ -356,6 +366,15 @@ public abstract class AbstractNinja extends AbstractObject
 	}
 	
 	/**
+	 * 鉤縄を取得する。
+	 * @return		鉤縄
+	 */
+	Kaginawa getKaginawa()
+	{
+		return kaginawa;
+	}
+	
+	/**
 	 * 重力の強さを取得する。
 	 * @return		重力の強さ
 	 */
@@ -486,9 +505,6 @@ public abstract class AbstractNinja extends AbstractObject
 //		DebugString.add("Ninja Position : " + getPositionX() + ", " + getPositionY());
 //		DebugString.add("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
 //	}
-//	
-//	/** 鉤縄オブジェクト */
-//	Kaginawa	kaginawa;
 //	
 //	/** 刀系の武器オブジェクト */
 //	SwordWeapon sword;

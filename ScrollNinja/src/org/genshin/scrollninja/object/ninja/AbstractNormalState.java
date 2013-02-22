@@ -1,5 +1,6 @@
 package org.genshin.scrollninja.object.ninja;
 
+import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 
 
@@ -57,16 +58,17 @@ abstract class AbstractNormalState extends AbstractState
 	protected void updateKaginawa(AbstractNinja me)
 	{
 		final NinjaControllerInterface controller = me.getController();
+		final Kaginawa kaginawa = me.getKaginawa();
 		
 		//---- 鉤縄を伸ばす
 		if(controller.isKaginawaSlack())
 		{
-//			me.kaginawa.slack(controller.getDirection());
+			kaginawa.slack(controller.getDirection());
 		}
 		//---- 鉤縄を縮める
 		else if(controller.isKaginawaShrink())
 		{
-//			me.kaginawa.shrink();
+			kaginawa.shrink();
 		}
 	}
 
@@ -74,10 +76,10 @@ abstract class AbstractNormalState extends AbstractState
 	protected StateInterface getNextState(AbstractNinja me)
 	{
 		//---- 鉤縄が縮み始めたら、鉤縄が縮んでいる時の状態へ
-//		if( me.kaginawa.isShrinkState() )
-//		{
+		if( me.getKaginawa().isShrinkState() )
+		{
 //			return new KaginawaShrinkState(me);
-//		}
+		}
 		
 		//---- どれにも当てはまらなければ現状維持
 		return this;

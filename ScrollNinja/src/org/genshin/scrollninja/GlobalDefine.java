@@ -148,6 +148,9 @@ public enum GlobalDefine
 		/** 遠景 */
 		public static final int FAR_BACKGROUND	= getNextPriority();
 
+		/** 鉤縄 */
+		public static final int KAGINAWA			= getNextPriority();
+
 		/** 忍者 */
 		public static final int NINJA				= getNextPriority();
 		

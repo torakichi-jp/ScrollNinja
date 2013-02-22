@@ -1,0 +1,32 @@
+{
+    "body": {
+        "isDynamic": true,
+        "isBullet": true,
+        "isFixedRotation": true
+    },
+    "fixtures": [
+        {
+            "name": "Anchor",
+            "density": 0,
+            "friction": 0,
+            "restitution": 0,
+            "isSensor": false,
+            "circle": {
+                "radius": 10,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "filter": {
+                "category": "Attack",
+                "ignoreCategories": [
+                    "Player",
+                    "Enemy",
+                    "Item",
+                    "Attack"
+                ]
+            }
+        }
+    ]
+}

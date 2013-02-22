@@ -80,6 +80,11 @@ public class RenderObject implements RenderObjectInterface
 	@Override
 	public void render()
 	{
+		//---- 描画フラグがfalseなら描画しない。
+		if(!renderEnabled)
+			return;
+		
+		//---- 下準備
 		final SpriteBatch sb = Global.spriteBatch;
 		final float x = posture.getPositionX();
 		final float y = posture.getPositionY();
@@ -104,6 +109,15 @@ public class RenderObject implements RenderObjectInterface
 		sprite.rotate(-rotation);
 		sprite.setScale(oldScaleX, oldScaleY);
 		sprite.setColor(tmpColor);
+	}
+	
+	/**
+	 * 描画フラグを設定する。
+	 * @param enabled	描画フラグ
+	 */
+	public void setRenderEnabled(boolean enabled)
+	{
+		renderEnabled = enabled;
 	}
 	
 	/**
@@ -204,6 +218,9 @@ public class RenderObject implements RenderObjectInterface
 	
 	/** 深度（値が大きいものを手前に描画する） */
 	private int	depth;
+	
+	/** 描画フラグ */
+	private boolean renderEnabled = true;
 	
 	/** 拡縮率 */
 	private final Vector2 scale = new Vector2(1.0f, 1.0f);

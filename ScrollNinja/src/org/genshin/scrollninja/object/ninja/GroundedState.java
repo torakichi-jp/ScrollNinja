@@ -23,7 +23,7 @@ class GroundedState extends AbstractNormalState
 	GroundedState(AbstractNinja me)
 	{
 		//---- 鉤縄のロープジョイントフラグを立てておく
-//		me.kaginawa.setUseRopeJoint(true);
+		me.getKaginawa().setUseRopeJoint(true);
 		
 		//---- 摩擦を有効にする。
 		me.setFrictionEnabled(true);
@@ -118,11 +118,11 @@ class GroundedState extends AbstractNormalState
 			return new AerialState(me);
 		}
 		
-//		//---- 地上で鉤縄にぶら下がっている状態へ
-//		if( me.kaginawa.isHangState() )
-//		{
+		//---- 地上で鉤縄にぶら下がっている状態へ
+		if( me.getKaginawa().isHangState() )
+		{
 //			return new GroundedToKaginawaState(me);
-//		}
+		}
 		
 		//---- あとは基本クラスに任せる
 		return super.getNextState(me);

@@ -1,5 +1,6 @@
 package org.genshin.scrollninja.work.collision;
 
+import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.ninja.AbstractNinja;
 import org.genshin.scrollninja.work.object.terrain.Terrain;
 
@@ -21,21 +22,21 @@ public abstract class AbstractCollisionCallback
 	public abstract void dispatch(AbstractCollisionCallback collisionCallback, Contact contact);
 	
 	/**
-	 * プレイヤー忍者オブジェクトと衝突した。
-	 * @param obj		衝突したプレイヤー忍者オブジェクト
-	 * @param contact	衝突情報
-	 */
-	public void collision(AbstractNinja obj, Contact contact)
-	{
-		/* 何もしない */
-	}
-	
-	/**
 	 * 地形オブジェクトと衝突した。
 	 * @param obj		衝突した地形オブジェクト
 	 * @param contact	衝突情報
 	 */
 	public void collision(Terrain obj, Contact contact)
+	{
+		/* 何もしない */
+	}
+	
+	/**
+	 * プレイヤー忍者オブジェクトと衝突した。
+	 * @param obj		衝突したプレイヤー忍者オブジェクト
+	 * @param contact	衝突情報
+	 */
+	public void collision(AbstractNinja obj, Contact contact)
 	{
 		/* 何もしない */
 	}
@@ -49,6 +50,16 @@ public abstract class AbstractCollisionCallback
 //	{
 //		/* 何もしない */
 //	}
+	
+	/**
+	 * 鉤縄オブジェクトと衝突した。
+	 * @param obj		衝突した鉤縄オブジェクト
+	 * @param contact	衝突情報
+	 */
+	public void collision(Kaginawa obj, Contact contact)
+	{
+		/* 何もしない */
+	}
 	
 //	/**
 //	 * 攻撃オブジェクトと衝突した。
