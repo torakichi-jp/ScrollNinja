@@ -40,11 +40,11 @@ public abstract class AbstractScreen implements Screen
 		//---- 更新処理を実行する。
 		if( !isPaused() )
 		{
-			// オブジェクトの更新処理
-			objectManager.update(delta);
-			
 			// 世界の更新処理
 			world.step(delta, 20, 20);
+			
+			// オブジェクトの更新処理
+			objectManager.update(delta);
 		}
 		
 		//---- カメラを更新する。

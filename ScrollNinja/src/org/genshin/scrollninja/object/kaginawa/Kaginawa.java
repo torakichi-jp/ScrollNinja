@@ -3,6 +3,7 @@ package org.genshin.scrollninja.object.kaginawa;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.work.collision.CollisionObject;
 import org.genshin.scrollninja.work.object.AbstractObject;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -130,6 +132,11 @@ public class Kaginawa extends AbstractObject
 		ropeSprite.setSize(len, ropeSprite.getHeight());
 		ropeSprite.setRotation(direction.angle() - body.getAngle() * MathUtils.radiansToDegrees);
 		ropeSprite.setRegion(0, 0, (int)(len * GlobalDefine.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
+		
+		
+		//---- test
+		Vector2 anchorPosition = ((CircleShape)collisionObject.getFixture("Anchor").getShape()).getPosition();
+		DebugString.add("Anchor Position : " + anchorPosition);
 	}
 	
 	public void setActive(boolean active)
@@ -303,9 +310,6 @@ public class Kaginawa extends AbstractObject
 			@Override
 			void initialize(Kaginawa me)
 			{
-				Body kaginawa	= me.getBody();
-				Body owner		= me.owner;
-				
 				// 鉤縄を初期化
 				me.setActive(false);
 				
@@ -408,7 +412,6 @@ public class Kaginawa extends AbstractObject
 				Vector2 kaginawaPos = kaginawa.getPosition();
 				Vector2 ownerPos = owner.getPosition();
 				Vector2 direction = new Vector2(kaginawaPos.x-ownerPos.x, kaginawaPos.y-ownerPos.y);
-				float len2 = direction.len2();
 				direction.nor().mul(KaginawaDefine.INSTANCE.SHRINK_VELOCITY);
 	
 				owner.setLinearVelocity(direction);
@@ -496,7 +499,6 @@ public class Kaginawa extends AbstractObject
 			void initialize(Kaginawa me)
 			{
 				Body kaginawa	= me.getBody();
-				Body owner		= me.owner;
 				World world		= kaginawa.getWorld();
 				
 				// 鉤縄を初期化

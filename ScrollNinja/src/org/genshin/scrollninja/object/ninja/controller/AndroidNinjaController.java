@@ -24,17 +24,12 @@ public class AndroidNinjaController implements NinjaControllerInterface
 	 */
 	public AndroidNinjaController(ObjectInterface ninja, ObjectInterface cursor)
 	{
-		this.ninja = ninja;
-		this.cursor = cursor;
-		
 		inputHelper = new MouseInputHelper(Buttons.LEFT);
 	}
 	
 	@Override
-	public void update()
+	public void update(float deltaTime)
 	{
-		final float deltaTime = Gdx.graphics.getDeltaTime();
-		
 		inputHelper.update();
 		
 		//---- ダッシュ制御
@@ -142,13 +137,7 @@ public class AndroidNinjaController implements NinjaControllerInterface
 	private float movePower = 0.0f;
 	
 	/** 向き */
-	private final Vector2 direction = new Vector2();;
-
-	/** 忍者オブジェクト */
-	private final ObjectInterface ninja;
-	
-	/** マウスカーソルオブジェクト */
-	private final ObjectInterface cursor;
+	private final Vector2 direction = new Vector2();
 	
 	/** 入力管理 */
 	private final InputHelperInterface inputHelper;

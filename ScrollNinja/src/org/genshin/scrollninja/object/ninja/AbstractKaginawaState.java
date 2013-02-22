@@ -56,6 +56,7 @@ abstract class AbstractKaginawaState extends AbstractState
 			// 空中
 			else
 			{
+				me.updateMoveDirection();
 				return new AerialState(me);
 			}
 		}
