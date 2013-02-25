@@ -1,7 +1,7 @@
 package org.genshin.scrollninja;
 
-import org.genshin.scrollninja.work.object.UpdateManager;
-import org.genshin.scrollninja.work.render.RenderManager;
+import org.genshin.engine.system.RenderableManager;
+import org.genshin.engine.system.UpdatableManager;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,10 +15,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public final class Global
 {
 	/** 現在指定されている更新処理を管理するオブジェクト */
-	public static UpdateManager updateManager = null;
+	public static UpdatableManager updatableManager = null;
 	
 	/** 現在指定されている描画処理を管理するオブジェクト */
-	public static RenderManager renderManager = null;
+	public static RenderableManager renderableManager = null;
 
 	/** 現在指定されているカメラオブジェクト */
 	public static Camera camera = null;

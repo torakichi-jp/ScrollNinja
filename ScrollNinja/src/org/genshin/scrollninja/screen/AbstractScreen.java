@@ -1,10 +1,10 @@
 package org.genshin.scrollninja.screen;
 
+import org.genshin.engine.system.RenderableManager;
+import org.genshin.engine.system.UpdatableManager;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.work.object.UpdateManager;
 import org.genshin.scrollninja.work.object.gui.Cursor;
-import org.genshin.scrollninja.work.render.RenderManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -44,7 +44,7 @@ public abstract class AbstractScreen implements Screen
 			world.step(delta, 20, 20);
 			
 			// オブジェクトの更新処理
-			objectManager.update(delta);
+			updatableManager.update(delta);
 		}
 		
 		//---- カメラを更新する。
@@ -54,7 +54,7 @@ public abstract class AbstractScreen implements Screen
 		final SpriteBatch spriteBatch = Global.spriteBatch;
 		spriteBatch.setProjectionMatrix(camera.combined);
 		spriteBatch.begin();
-		renderManager.render();
+		renderableManager.render();
 		spriteBatch.end();
 	}
 
@@ -116,10 +116,10 @@ public abstract class AbstractScreen implements Screen
 	public void dispose()
 	{
 		//---- 更新管理オブジェクトを空にする。
-		objectManager.clear();
+		updatableManager.clear();
 		
 		//---- 描画管理オブジェクトを空にする。
-		renderManager.clear();
+		renderableManager.clear();
 		
 		//---- 世界オブジェクトを破棄する。
 		world.dispose();
@@ -172,8 +172,8 @@ public abstract class AbstractScreen implements Screen
 	 */
 	private final void setCurrentScreen()
 	{
-		Global.updateManager = objectManager;
-		Global.renderManager = renderManager;
+		Global.updatableManager = updatableManager;
+		Global.renderableManager = renderableManager;
 		Global.camera = camera;
 	}
 	
@@ -185,10 +185,10 @@ public abstract class AbstractScreen implements Screen
 	private final Camera camera = new OrthographicCamera(GlobalDefine.INSTANCE.CLIENT_WIDTH * GlobalDefine.INSTANCE.WORLD_SCALE, GlobalDefine.INSTANCE.CLIENT_HEIGHT * GlobalDefine.INSTANCE.WORLD_SCALE);
 	
 	/** 更新管理オブジェクト */
-	private final UpdateManager objectManager = new UpdateManager();
+	private final UpdatableManager updatableManager = new UpdatableManager();
 	
 	/** 描画管理オブジェクト */
-	private final RenderManager renderManager = new RenderManager();
+	private final RenderableManager renderableManager = new RenderableManager();
 	
 	/** カーソルオブジェクト */
 	private final Cursor cursor;

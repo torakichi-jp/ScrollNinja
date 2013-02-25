@@ -33,7 +33,7 @@ public class RenderObject implements RenderObjectInterface
 		this.depth = depth;
 		
 		//---- 描画管理オブジェクトに自身を追加する。
-		Global.renderManager.add(this, this.depth);
+		Global.renderableManager.add(this, this.depth);
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class RenderObject implements RenderObjectInterface
 		depth = src.depth;
 		
 		//---- 描画管理オブジェクトに自身を追加する。
-		Global.renderManager.add(this, depth);
+		Global.renderableManager.add(this, depth);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class RenderObject implements RenderObjectInterface
 		posture = null;
 		
 		//---- 描画管理オブジェクトから自身を削除する。
-		Global.renderManager.remove(this, depth);
+		Global.renderableManager.remove(this, depth);
 	}
 
 	@Override

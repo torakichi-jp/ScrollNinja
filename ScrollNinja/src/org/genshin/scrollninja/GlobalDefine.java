@@ -157,6 +157,9 @@ public enum GlobalDefine
 		/** デフォルト */
 		public static final int DEFAULT			= getNextPriority();
 		
+		/** エフェクト */
+		public static final int EFFECT			= getNextPriority();
+		
 		/** 近景 */
 		public static final int NEAR_BACKGROUND	= getNextPriority();
 		

@@ -15,14 +15,14 @@ public abstract class AbstractObject implements UpdateObjectInterface, PostureIn
 	public AbstractObject()
 	{
 		//---- 更新管理オブジェクトに自身を追加する。
-		Global.updateManager.add(this, getUpdatePriority());
+		Global.updatableManager.add(this, getUpdatePriority());
 	}
 
 	@Override
 	public void dispose()
 	{
 		//---- 更新管理オブジェクトから自身を削除する。
-		Global.updateManager.remove(this, getUpdatePriority());
+		Global.updatableManager.remove(this, getUpdatePriority());
 	}
 	
 	/**
