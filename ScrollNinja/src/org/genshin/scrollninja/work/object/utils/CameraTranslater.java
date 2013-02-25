@@ -34,12 +34,6 @@ public class CameraTranslater extends AbstractObject
 		
 		super.dispose();
 	}
-	
-	@Override
-	public boolean isDisposed()
-	{
-		return false;
-	}
 
 	@Override
 	public float getPositionX()

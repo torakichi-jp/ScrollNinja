@@ -204,12 +204,6 @@ public class RenderObject implements RenderObjectInterface
 		return sprite;
 	}
 
-	@Override
-	public boolean isDisposed()
-	{
-		return sprite == null;
-	}
-
 	/** スプライト */
 	private Sprite	sprite;
 	

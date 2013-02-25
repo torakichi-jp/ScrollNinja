@@ -42,12 +42,6 @@ public class Terrain implements Disposable
 		collisionObject.dispose();
 	}
 
-	@Override
-	public boolean isDisposed()
-	{
-		return collisionObject.isDisposed();
-	}
-
 
 	/** 衝突オブジェクト */
 	private final CollisionObject collisionObject;

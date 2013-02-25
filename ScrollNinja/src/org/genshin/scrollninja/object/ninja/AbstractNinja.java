@@ -102,12 +102,6 @@ public abstract class AbstractNinja extends AbstractObject
 	}
 	
 	@Override
-	public boolean isDisposed()
-	{
-		return controller == null;
-	}
-	
-	@Override
 	public float getPositionX()
 	{
 		return getBody().getPosition().x;

@@ -156,12 +156,6 @@ public class Kaginawa extends AbstractObject
 	}
 
 	@Override
-	public boolean isDisposed()
-	{
-		return collisionObject == null;
-	}
-
-	@Override
 	public float getPositionX()
 	{
 		return getBody().getPosition().x;

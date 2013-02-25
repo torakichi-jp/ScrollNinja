@@ -82,12 +82,6 @@ public class Stage implements StageInterface
 	}
 
 	@Override
-	public boolean isDisposed()
-	{
-		return backgroundLayers.isEmpty();
-	}
-
-	@Override
 	public Vector2 getSize()
 	{
 		return size;

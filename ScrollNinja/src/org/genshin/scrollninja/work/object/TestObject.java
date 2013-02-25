@@ -63,12 +63,6 @@ public class TestObject extends AbstractObject
 		
 		super.dispose();
 	}
-
-	@Override
-	public boolean isDisposed()
-	{
-		return position == null;
-	}
 	
 	@Override
 	public float getPositionX()

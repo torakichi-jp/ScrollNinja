@@ -105,12 +105,6 @@ public class BackgroundLayer extends AbstractBackground
 	}
 	
 	@Override
-	public boolean isDisposed()
-	{
-		return backgrounds.isEmpty();
-	}
-	
-	@Override
 	public float getPositionX()
 	{
 		return position.x;

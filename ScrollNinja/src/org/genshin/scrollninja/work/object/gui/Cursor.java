@@ -60,12 +60,6 @@ public class Cursor extends AbstractGUI
 		//---- 座標を反映する。
 		setScreenPosition(targetX, targetY);
 	}
-	
-	@Override
-	public boolean isDisposed()
-	{
-		return renderObject.isDisposed();
-	}
 
 
 	/** 描画オブジェクト */

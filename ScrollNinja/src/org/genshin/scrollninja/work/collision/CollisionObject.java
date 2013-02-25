@@ -80,12 +80,6 @@ public class CollisionObject implements Disposable
 		}
 	}
 	
-	@Override
-	public boolean isDisposed()
-	{
-		return body == null;
-	}
-	
 	/**
 	 * Bodyオブジェクトを取得する。
 	 * @return		Bodyオブジェクト
