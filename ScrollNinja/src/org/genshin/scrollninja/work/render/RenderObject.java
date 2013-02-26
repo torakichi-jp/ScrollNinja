@@ -49,8 +49,9 @@ public class RenderObject implements RenderObjectInterface
 	/**
 	 * コピーコンストラクタ
 	 * @param src		コピー元となるオブジェクト
+	 * @param depth		深度（値が大きいものを手前に描画する）
 	 */
-	public RenderObject(RenderObject src)
+	public RenderObject(RenderObject src, int depth)
 	{
 		if(getClass() != src.getClass())
 		{
@@ -60,10 +61,19 @@ public class RenderObject implements RenderObjectInterface
 		//---- フィールドをコピーする。
 		sprite = src.sprite;
 		posture = src.posture;
-		depth = src.depth;
+		this.depth = depth;
 		
 		//---- 描画管理オブジェクトに自身を追加する。
 		Global.renderableManager.add(this, depth);
+	}
+	
+	/**
+	 * コピーコンストラクタ
+	 * @param src		コピー元となるオブジェクト
+	 */
+	public RenderObject(RenderObject src)
+	{
+		this(src, src.depth);
 	}
 
 	@Override

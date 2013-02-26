@@ -1,16 +1,16 @@
 package org.genshin.scrollninja.work.render;
 
 import org.genshin.engine.system.PostureInterface;
+import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.work.object.UpdateObjectInterface;
 import org.genshin.scrollninja.work.render.animation.AnimationInterface;
 import org.genshin.scrollninja.work.render.animation.AnimationSet;
 import org.genshin.scrollninja.work.render.animation.AnimationSetFactory;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class AnimationRenderObject extends RenderObject implements UpdateObjectInterface
+public class AnimationRenderObject extends RenderObject implements Updatable
 {
 	/**
 	 * コンストラクタ
@@ -23,10 +23,11 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 	{
 		super(spriteFilePath, posture, depth);
 		
+		//---- アニメーションデータを生成する。
 		animationSet = AnimationSetFactory.getInstance().get(animationSetFilePath);
 		
 		//---- 更新管理オブジェクトに自身を追加する。
-		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
+		registUpdatableManager();
 	}
 	
 	/**
@@ -43,20 +44,32 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 	/**
 	 * コピーコンストラクタ
 	 * @param src		コピー元となるオブジェクト
+	 * @param depth		深度（値が大きいものを手前に描画する）
+	 */
+	public AnimationRenderObject(AnimationRenderObject src, int depth)
+	{
+		super(src, depth);
+		
+		//---- フィールドをコピーする。
+		copy(src);
+
+		//---- 更新管理オブジェクトに自身を追加する。
+		registUpdatableManager();
+	}
+	
+	/**
+	 * コピーコンストラクタ
+	 * @param src		コピー元となるオブジェクト
 	 */
 	public AnimationRenderObject(AnimationRenderObject src)
 	{
 		super(src);
 		
 		//---- フィールドをコピーする。
-		animationSet = src.animationSet;
-		currentAnimation = src.currentAnimation;
-		timer = src.timer;
-		speedRatio = src.speedRatio;
-		paused = src.paused;
+		copy(src);
 
 		//---- 更新管理オブジェクトに自身を追加する。
-		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
+		registUpdatableManager();
 	}
 
 	@Override
@@ -187,6 +200,27 @@ public class AnimationRenderObject extends RenderObject implements UpdateObjectI
 	public boolean isAnimationLooping()
 	{
 		return currentAnimation.isAnimationLooping();
+	}
+	
+	/**
+	 * フィールドをコピーする。
+	 * @param src		コピー元となるオブジェクト
+	 */
+	private void copy(AnimationRenderObject src)
+	{
+		animationSet = src.animationSet;
+		currentAnimation = src.currentAnimation;
+		timer = src.timer;
+		speedRatio = src.speedRatio;
+		paused = src.paused;
+	}
+	
+	/**
+	 * 更新管理オブジェクトに自身を追加する。
+	 */
+	private void registUpdatableManager()
+	{
+		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 	
 	
