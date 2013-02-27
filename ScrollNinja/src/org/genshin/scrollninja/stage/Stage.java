@@ -60,6 +60,7 @@ public class Stage implements StageInterface
 		terrain = new Terrain(stageDef.collisionFilePath, world, Vector2.tmp.set(-size.x * 0.5f, -size.y * 0.5f));
 		
 		//---- 描画オブジェクトを生成する。
+		backgroundLayers.ensureCapacity(stageDef.farLayers.length + stageDef.nearLayers.length);
 		createBackgroundLayers(stageDef.farLayers, GlobalDefine.RenderDepth.FAR_BACKGROUND);
 		createBackgroundLayers(stageDef.nearLayers, GlobalDefine.RenderDepth.NEAR_BACKGROUND);
 	}
@@ -136,5 +137,5 @@ public class Stage implements StageInterface
 	private final Terrain terrain;
 	
 	/** 背景レイヤーの配列 */
-	private final ArrayList<BackgroundLayer> backgroundLayers = new ArrayList<BackgroundLayer>();
+	private final ArrayList<BackgroundLayer> backgroundLayers = new ArrayList<BackgroundLayer>(1);
 }

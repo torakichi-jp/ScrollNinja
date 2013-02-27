@@ -135,7 +135,7 @@ public class BackgroundLayer extends AbstractBackground
 	private final int renderDepth;
 	
 	/** 背景オブジェクトの配列 */
-	private final ArrayList<RenderObject> backgrounds = new ArrayList<RenderObject>();
+	private final ArrayList<RenderObject> backgrounds = new ArrayList<RenderObject>(1);
 	
 	
 	/**

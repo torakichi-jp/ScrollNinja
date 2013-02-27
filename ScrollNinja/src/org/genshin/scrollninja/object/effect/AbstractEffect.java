@@ -57,11 +57,9 @@ public abstract class AbstractEffect extends AbstractObject
 		//---- 移動の補間
 		// len = (v1 + v2) * (t2 - t1) / 2
 		//  v2 = v1 + a
-		// len = (v1 + v1 + a) * (t2 - t1) / 2
-		//     = (v1/2 + v1/2 + a/2) * (t2 - t1)
-		//     = (v1 + a/2) * (t2 - t1)
-		final float translateX = (velocity.x + accel.x * deltaTime * 0.5f) * deltaTime;
-		final float translateY = (velocity.y + accel.y * deltaTime * 0.5f) * deltaTime;
+		// len = (v1 + v1 + a) * (t2 - t1) * 0.5
+		final float translateX = (velocity.x * 2.0f + accel.x * deltaTime) * deltaTime * 0.5f;
+		final float translateY = (velocity.y * 2.0f + accel.y * deltaTime) * deltaTime * 0.5f;
 		velocity.add(accel.tmp().mul(deltaTime));
 		
 		//---- 色の補間

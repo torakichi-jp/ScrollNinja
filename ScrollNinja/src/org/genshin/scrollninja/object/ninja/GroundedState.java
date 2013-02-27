@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
+import org.genshin.scrollninja.work.object.effect.GeneralEffect;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -86,8 +87,8 @@ class GroundedState extends AbstractNormalState
 		if(		controller.isDashStart() && movePower != 0.0f
 			||	controller.isMoveStart() && controller.isDash()	)
 		{
-//			if(movePower != 0.0f)
-//				new DashSmokeEffect(me.getPositionX(), me.getPositionY(), me.getFrontDirection().angle(), movePower > 0.0f);
+			if(movePower != 0.0f)
+				new GeneralEffect("data/jsons/effect/dash_smoke.json", me.getPositionX(), me.getPositionY(), me.getFrontDirection().angle(), movePower > 0.0f, false);
 		}
 	}
 

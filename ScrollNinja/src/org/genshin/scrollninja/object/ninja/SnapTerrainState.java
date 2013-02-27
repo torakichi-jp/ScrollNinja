@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.work.object.effect.GeneralEffect;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -72,7 +73,7 @@ class SnapTerrainState extends AbstractState
 			{
 				me.updateMoveDirection();
 			}
-//			new JumpSmokeEffect(me.getPositionX(), me.getPositionY(), me.getFrontDirection().angle());
+			new GeneralEffect("data/jsons/effect/jump_smoke.json", me.getPositionX(), me.getPositionY(), me.getFrontDirection().angle());
 			return new GroundedState(me);
 		}
 		
