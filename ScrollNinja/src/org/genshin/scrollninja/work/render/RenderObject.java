@@ -1,6 +1,8 @@
 package org.genshin.scrollninja.work.render;
 
+import org.genshin.engine.system.Disposable;
 import org.genshin.engine.system.PostureInterface;
+import org.genshin.engine.system.Renderable;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.work.render.sprite.SpriteFactory;
@@ -17,13 +19,13 @@ import com.badlogic.gdx.math.Vector2;
  * @since		1.0
  * @version		1.0
  */
-public class RenderObject implements RenderObjectInterface
+public class RenderObject implements Renderable, Disposable, PostureInterface
 {
 	/**
 	 * コンストラクタ
 	 * @param spriteFilePath	スプライトの定義ファイルのパス
 	 * @param posture			位置情報
-	 * @param depth				深度（値が大きいものを手前に描画する）
+	 * @param depth				描画深度（値が大きいものを手前に描画する）
 	 */
 	public RenderObject(String spriteFilePath, PostureInterface posture, int depth)
 	{
@@ -38,20 +40,19 @@ public class RenderObject implements RenderObjectInterface
 	
 	/**
 	 * コンストラクタ
-	 * @param spriteName		スプライト名
+	 * @param spriteFilePath	スプライトの定義ファイルのパス
 	 * @param posture			位置情報
 	 */
-	public RenderObject(String spriteName, PostureInterface posture)
+	public RenderObject(String spriteFilePath, PostureInterface posture)
 	{
-		this(spriteName, posture, GlobalDefine.RenderDepth.DEFAULT);
+		this(spriteFilePath, posture, GlobalDefine.RenderDepth.DEFAULT);
 	}
 	
 	/**
 	 * コピーコンストラクタ
 	 * @param src		コピー元となるオブジェクト
-	 * @param depth		深度（値が大きいものを手前に描画する）
 	 */
-	public RenderObject(RenderObject src, int depth)
+	public RenderObject(RenderObject src)
 	{
 		if(getClass() != src.getClass())
 		{
@@ -61,19 +62,10 @@ public class RenderObject implements RenderObjectInterface
 		//---- フィールドをコピーする。
 		sprite = src.sprite;
 		posture = src.posture;
-		this.depth = depth;
+		this.depth = src.depth;
 		
 		//---- 描画管理オブジェクトに自身を追加する。
 		Global.renderableManager.add(this, depth);
-	}
-	
-	/**
-	 * コピーコンストラクタ
-	 * @param src		コピー元となるオブジェクト
-	 */
-	public RenderObject(RenderObject src)
-	{
-		this(src, src.depth);
 	}
 
 	@Override
@@ -102,7 +94,7 @@ public class RenderObject implements RenderObjectInterface
 		final float oldScaleX = sprite.getScaleX();
 		final float oldScaleY = sprite.getScaleY();
 		final Color spriteColor = sprite.getColor();
-		tmpColor.set(spriteColor);
+		final Color oldColor = spriteColor.tmp();
 		spriteColor.mul(color);
 		
 		//---- 座標、回転、拡縮率、色を反映する。
@@ -118,7 +110,27 @@ public class RenderObject implements RenderObjectInterface
 		sprite.translate(-x, -y);
 		sprite.rotate(-rotation);
 		sprite.setScale(oldScaleX, oldScaleY);
-		sprite.setColor(tmpColor);
+		sprite.setColor(oldColor);
+	}
+	
+	/**
+	 * 位置情報を設定する。
+	 * @param posture		位置情報
+	 */
+	public void setPosture(PostureInterface posture)
+	{
+		this.posture = posture;
+	}
+	
+	/**
+	 * 描画深度を設定する。
+	 * @param depth		描画深度（値が大きいものを手前に描画する）
+	 */
+	public void setDepth(int depth)
+	{
+		Global.renderableManager.remove(this, this.depth);
+		this.depth = depth;
+		Global.renderableManager.add(this, depth);
 	}
 	
 	/**
@@ -185,6 +197,24 @@ public class RenderObject implements RenderObjectInterface
 		this.color.set(color);
 	}
 	
+	@Override
+	public float getPositionX()
+	{
+		return posture.getPositionX();
+	}
+
+	@Override
+	public float getPositionY()
+	{
+		return posture.getPositionY();
+	}
+
+	@Override
+	public float getRotation()
+	{
+		return posture.getRotation();
+	}
+
 	/**
 	 * X軸方向の拡縮率を取得する。
 	 * @return		X軸方向の拡縮率
@@ -231,7 +261,4 @@ public class RenderObject implements RenderObjectInterface
 	
 	/** 色 */
 	private final Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-	
-	/** 作業用の色オブジェクト */
-	private static final Color tmpColor = new Color();
 }

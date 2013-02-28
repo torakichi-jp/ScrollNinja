@@ -27,7 +27,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 		animationSet = AnimationSetFactory.getInstance().get(animationSetFilePath);
 		
 		//---- 更新管理オブジェクトに自身を追加する。
-		registUpdatableManager();
+		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 	
 	/**
@@ -44,32 +44,20 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	/**
 	 * コピーコンストラクタ
 	 * @param src		コピー元となるオブジェクト
-	 * @param depth		深度（値が大きいものを手前に描画する）
-	 */
-	public AnimationRenderObject(AnimationRenderObject src, int depth)
-	{
-		super(src, depth);
-		
-		//---- フィールドをコピーする。
-		copy(src);
-
-		//---- 更新管理オブジェクトに自身を追加する。
-		registUpdatableManager();
-	}
-	
-	/**
-	 * コピーコンストラクタ
-	 * @param src		コピー元となるオブジェクト
 	 */
 	public AnimationRenderObject(AnimationRenderObject src)
 	{
 		super(src);
 		
 		//---- フィールドをコピーする。
-		copy(src);
+		animationSet = src.animationSet;
+		currentAnimation = src.currentAnimation;
+		timer = src.timer;
+		speedRatio = src.speedRatio;
+		paused = src.paused;
 
 		//---- 更新管理オブジェクトに自身を追加する。
-		registUpdatableManager();
+		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 
 	@Override
@@ -200,27 +188,6 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	public boolean isAnimationLooping()
 	{
 		return currentAnimation.isAnimationLooping();
-	}
-	
-	/**
-	 * フィールドをコピーする。
-	 * @param src		コピー元となるオブジェクト
-	 */
-	private void copy(AnimationRenderObject src)
-	{
-		animationSet = src.animationSet;
-		currentAnimation = src.currentAnimation;
-		timer = src.timer;
-		speedRatio = src.speedRatio;
-		paused = src.paused;
-	}
-	
-	/**
-	 * 更新管理オブジェクトに自身を追加する。
-	 */
-	private void registUpdatableManager()
-	{
-		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
 	}
 	
 	

@@ -1,6 +1,8 @@
 package org.genshin.scrollninja.work.object;
 
+import org.genshin.engine.system.Disposable;
 import org.genshin.engine.system.PostureInterface;
+import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 
@@ -10,7 +12,7 @@ import org.genshin.scrollninja.GlobalDefine;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractObject implements UpdateObjectInterface, PostureInterface
+public abstract class AbstractObject implements Updatable, Disposable, PostureInterface
 {
 	public AbstractObject()
 	{
