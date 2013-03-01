@@ -2,27 +2,29 @@
     "spriteFilePath": "data/jsons/render/hoge_sprite.json",
     "animationFilePath": "data/jsons/render/hoge_animation.json",
     "animationName": "Default",
-    "life": 1,
-    "startVelocity": {
-        "x": 0,
-        "y": 0
-    },
-    "endVelocity": {
-        "x": 0,
-        "y": 0
-    },
-    "startAngularVelocity": 0,
-    "endAngularVelocity": 0,
-    "startColor": {
-        "r": 1,
-        "g": 1,
-        "b": 1,
-        "a": 1
-    },
-    "endColor": {
-        "r": 1,
-        "g": 1,
-        "b": 1,
-        "a": 0
+    "effectDef": {
+        "life": 1,
+        "startVelocity": {
+            "x": 0,
+            "y": 0
+        },
+        "endVelocity": {
+            "x": 0,
+            "y": 0
+        },
+        "startAngularVelocity": 0,
+        "endAngularVelocity": 0,
+        "startColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+        },
+        "endColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0
+        }
     }
 }

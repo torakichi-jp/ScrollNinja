@@ -17,7 +17,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 * @param spriteFilePath		スプライトの定義ファイルのパス
 	 * @param animationSetFilePath	アニメーションセットの定義ファイルのパス
 	 * @param posture				位置情報
-	 * @param depth					深度（値が大きいものを手前に描画する）
+	 * @param depth					描画深度（値が大きいものを手前に描画する）
 	 */
 	public AnimationRenderObject(String spriteFilePath, String animationSetFilePath, PostureInterface posture, int depth)
 	{

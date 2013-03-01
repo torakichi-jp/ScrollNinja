@@ -30,7 +30,7 @@ public abstract class AbstractFlyweightFactory<K, V> implements FactoryInterface
 	/**
 	 * 管理オブジェクトを全て削除する。
 	 */
-	public void clear()
+	public final void clear()
 	{
 		objects.clear();
 	}
@@ -39,7 +39,7 @@ public abstract class AbstractFlyweightFactory<K, V> implements FactoryInterface
 	 * 管理オブジェクトの数を取得する。
 	 * @return		管理オブジェクトの数
 	 */
-	public int size()
+	public final int size()
 	{
 		return objects.size();
 	}

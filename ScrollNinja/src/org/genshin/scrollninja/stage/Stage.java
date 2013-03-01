@@ -31,12 +31,12 @@ public class Stage implements StageInterface
 	 */
 	public Stage(World world, String stageDefFile)
 	{
-		//---- ステージの初期化用定義をファイルから読み込む
-		final ObjectMapper objectMapper = new ObjectMapper();
 		StageDef stageDef = null;
 		
+		//---- ステージの初期化用定義をファイルから読み込む
 		try
 		{
+			final ObjectMapper objectMapper = new ObjectMapper();
 			stageDef = objectMapper.readValue(Gdx.files.internal(stageDefFile).read(), StageDef.class);
 		}
 		catch (JsonParseException e) { e.printStackTrace(); }

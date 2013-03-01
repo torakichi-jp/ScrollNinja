@@ -46,21 +46,18 @@ public class SpriteFactory extends AbstractFlyweightFactory<String, Sprite>
 		SpriteDef spriteDef = null;
 		
 		//---- スプライトの定義を読み込む
+		try
 		{
 			final ObjectMapper objectMapper = new ObjectMapper();
-			
-			try
-			{
-				spriteDef = objectMapper.readValue(Gdx.files.internal(key).read(), SpriteDef.class);
-			}
-			catch (JsonParseException e)	{ e.printStackTrace(); }
-			catch (JsonMappingException e)	{ e.printStackTrace(); }
-			catch (IOException e)			{ e.printStackTrace(); }
-			
-			// 読み込み失敗
-			if(spriteDef == null)
-				return null;
+			spriteDef = objectMapper.readValue(Gdx.files.internal(key).read(), SpriteDef.class);
 		}
+		catch (JsonParseException e)	{ e.printStackTrace(); }
+		catch (JsonMappingException e)	{ e.printStackTrace(); }
+		catch (IOException e)			{ e.printStackTrace(); }
+		
+		// 読み込み失敗
+		if(spriteDef == null)
+			return null;
 		
 		//---- スプライト定義の補完
 		final Texture texture = TextureFactory.getInstance().get(spriteDef.textureFilePath);

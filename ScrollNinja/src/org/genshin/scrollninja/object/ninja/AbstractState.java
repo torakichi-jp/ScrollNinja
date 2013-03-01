@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.object.ninja;
 
-import org.genshin.scrollninja.work.object.effect.GeneralEffect;
+import org.genshin.scrollninja.work.object.effect.FileEffect;
 import org.genshin.scrollninja.work.render.AnimationRenderObject;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -164,7 +164,7 @@ abstract class AbstractState implements StateInterface
 		me.toAerial();
 		
 		//---- エフェクトを生成する。
-		new GeneralEffect("data/jsons/effect/jump_smoke.json", me.getPositionX(), me.getPositionY(), me.getRotation());
+		new FileEffect("data/jsons/effect/jump_smoke.json", me.getPositionX(), me.getPositionY(), me.getRotation());
 	}
 	
 	/**

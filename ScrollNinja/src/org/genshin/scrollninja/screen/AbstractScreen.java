@@ -4,6 +4,7 @@ import org.genshin.engine.system.RenderableManager;
 import org.genshin.engine.system.UpdatableManager;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.object.gui.Cursor;
 
 import com.badlogic.gdx.Gdx;
@@ -37,6 +38,12 @@ public abstract class AbstractScreen implements Screen
 	@Override
 	public void render(float delta)
 	{
+		//---- debug
+		DebugString.add("");
+		DebugString.add("Screen Name : " + getClass().getSimpleName());
+		DebugString.add("Update Object : " + updatableManager.size());
+		DebugString.add("Render Object : " + renderableManager.size());
+		
 		//---- 更新処理を実行する。
 		if( !isPaused() )
 		{

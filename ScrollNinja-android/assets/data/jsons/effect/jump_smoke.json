@@ -1,26 +1,28 @@
 {
     "spriteFilePath": "data/jsons/render/jump_smoke_sprite.json",
-    "life": 0.5,
-    "startVelocity": {
-        "x": 0,
-        "y": -100
-    },
-    "endVelocity": {
-        "x": 0,
-        "y": 0
-    },
-    "startAngularVelocity": 0,
-    "endAngularVelocity": 0,
-    "startColor": {
-        "r": 1,
-        "g": 1,
-        "b": 1,
-        "a": 1
-    },
-    "endColor": {
-        "r": 1,
-        "g": 1,
-        "b": 1,
-        "a": 0
+    "effectDef": {
+        "life": 0.5,
+        "startVelocity": {
+            "x": 0,
+            "y": -100
+        },
+        "endVelocity": {
+            "x": 0,
+            "y": 0
+        },
+        "startAngularVelocity": 0,
+        "endAngularVelocity": 0,
+        "startColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+        },
+        "endColor": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0
+        }
     }
 }
