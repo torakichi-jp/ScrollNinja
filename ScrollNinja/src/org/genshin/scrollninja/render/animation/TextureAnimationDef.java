@@ -2,26 +2,29 @@ package org.genshin.scrollninja.render.animation;
 
 import org.genshin.engine.utils.Point;
 
-import com.badlogic.gdx.graphics.Texture;
-
-
-public class TextureAnimationDef
+/**
+ * テクスチャアニメーションの初期化用定義
+ * @author kou
+ * @since		1.0
+ * @version		1.0
+ */
+class TextureAnimationDef
 {
-	/** アニメーションに使用するテクスチャ */
-	public Texture texture;
+	/** テクスチャのパス */
+	public String textureFilePath;
 	
-	/** 1コマの大きさ */
-	public final Point size = new Point();
+	/** UVマップの大きさ */
+	public Point uvSize;
 	
-	/** アニメーションの最初のコマの位置（ピクセル数ではなく、0から始まるコマ数で指定する） */
-	public final Point startIndex = new Point();
+	/** アニメーションの初期コマ */
+	public Point start;
 	
-	/** アニメーションの枚数 */
-	public int frameCount = 1;
+	/** アニメーションのフレーム番号を再生順に格納した配列 */
+	public int[] frames;
 	
-	/** アニメーションにかかる時間（秒） */
-	public float time = 1.0f/60.0f;
+	/** アニメーションの再生速度（1コマあたりの経過フレーム数） */
+	public int time;
 	
 	/** ループフラグ */
-	public boolean looping	 = true;
+	public boolean looping;
 }

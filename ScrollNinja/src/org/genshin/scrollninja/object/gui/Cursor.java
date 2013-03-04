@@ -1,10 +1,9 @@
 package org.genshin.scrollninja.object.gui;
 
-import org.genshin.scrollninja.object.AbstractObject;
-import org.genshin.scrollninja.render.RenderObjectFactory;
+import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.render.RenderObject;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.Gdx;
 
 /**
  * マウスカーソル
@@ -12,56 +11,60 @@ import com.badlogic.gdx.math.Vector2;
  * @since		1.0
  * @version	1.0
  */
-public class Cursor extends AbstractObject
+public class Cursor extends AbstractGUI
 {
 	/**
 	 * コンストラクタ
-	 * @param camera		カーソルの座標計算に使用するカメラオブジェクト
 	 * @param speed			カーソルの移動速度
 	 */
-	public Cursor(Camera camera, float speed)
+	public Cursor(float speed)
 	{
+		renderObject = new RenderObject("data/jsons/render/cursor_sprite.json", this, GlobalDefine.RenderDepth.CURSOR);
+		
 		//---- OSのマウスカーソルを非表示
-		//Gdx.input.setCursorCatched(true);
+		Gdx.input.setCursorCatched(true);
+		
+		//---- 初期座標は中央にしよう。
+		setScreenPosition(GlobalDefine.INSTANCE.CLIENT_WIDTH * 0.5f, GlobalDefine.INSTANCE.CLIENT_HEIGHT * 0.5f);
 		
 		//---- フィールド初期化
-		this.camera = camera;
 		this.speed = speed;
+	}
+
+	@Override
+	public void dispose()
+	{
+		//---- フィールドを破棄する。
+		renderObject.dispose();
+		
+		//---- 基本クラスを破棄する。
+		super.dispose();
 	}
 
 	@Override
 	public void update(float deltaTime)
 	{
-//		//---- 移動
-//		position.x += Gdx.input.getDeltaX() * speed;
-//		position.y -= Gdx.input.getDeltaY() * speed;
-//
-//		//---- 範囲制限
-//		final float halfWidth = camera.viewportWidth * 0.5f;
-//		final float halfHeight = camera.viewportHeight * 0.5f;
-//		if( Math.abs(position.x) > halfWidth )	position.x = Math.signum(position.x) * halfWidth;
-//		if( Math.abs(position.y) > halfHeight )	position.y = Math.signum(position.y) * halfHeight;
-//		
-//		//---- 適用
-//		getRenderObject(0).setPosition(camera.position.x + position.x, camera.position.y + position.y);
+		//---- 移動先の座標を計算する。
+		float targetX = getScreenPositionX() + Gdx.input.getDeltaX() * speed;
+		float targetY = getScreenPositionY() + Gdx.input.getDeltaY() * speed;
 		
-		getRenderObject(0).setPosition(camera.position.x, camera.position.y);
+		//---- 移動範囲を画面内に制限する。
+		final float screenWidth = getScreenWidth();
+		final float screenHeight = getScreenHeight();
+
+		targetX = Math.max(targetX, 0.0f);
+		targetX = Math.min(targetX, screenWidth);
+		targetY = Math.max(targetY, 0.0f);
+		targetY = Math.min(targetY, screenHeight);
 		
+		//---- 座標を反映する。
+		setScreenPosition(targetX, targetY);
 	}
 
-	@Override
-	protected void initializeSprite()
-	{
-		addRenderObject( RenderObjectFactory.getInstance().get("Cursor") );
-	}
-	
-	
-	/** カーソルの座標計算に使用するカメラオブジェクト */
-	private final Camera camera;
+
+	/** 描画オブジェクト */
+	private final RenderObject renderObject;
 	
 	/** カーソルの移動速度 */
 	private final float speed;
-	
-	/** カーソルのスクリーン座標 */
-	private final Vector2 position = new Vector2(Vector2.Zero);
 }

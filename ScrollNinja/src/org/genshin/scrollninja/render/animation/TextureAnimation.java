@@ -1,58 +1,66 @@
 package org.genshin.scrollninja.render.animation;
 
+import org.genshin.scrollninja.utils.TextureFactory;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * テクスチャアニメーションを管理する
+ * テクスチャアニメーション
  * @author kou
  * @since		1.0
  * @version	1.0
  */
-public final class TextureAnimation implements AnimationInterface
+public class TextureAnimation implements AnimationInterface
 {
 	/**
 	 * コンストラクタ
-	 * @param tad	テクスチャアニメーションの定義
+	 * @param def		テクスチャアニメーションの初期化用定義
 	 */
-	public TextureAnimation(TextureAnimationDef tad)
-	{ 
-		TextureRegion textureRegions[] = new TextureRegion[tad.frameCount];
-		for(int i = 0;  i < tad.frameCount;  ++i)
+	public TextureAnimation(TextureAnimationDef def)
+	{
+		//---- ループフラグ設定
+		looping = def.looping;
+		
+		//---- アニメーション生成
+		final int frameCount = def.frames.length;
+		final TextureRegion[] textureRegions = new TextureRegion[frameCount];
+		
+		for(int i = 0;  i < frameCount;  ++i)
 		{
-			// FIXME アニメーションが2行以上続いている場合にメモリぶっ壊すよ。
 			textureRegions[i] = new TextureRegion(
-				tad.texture,
-				(tad.startIndex.x+i)*tad.size.x, tad.startIndex.y*tad.size.y,
-				tad.size.x, tad.size.y
+				TextureFactory.getInstance().get(def.textureFilePath),
+				(def.start.x + def.frames[i]) * def.uvSize.x, def.start.y * def.uvSize.y,
+				def.uvSize.x, def.uvSize.y
 			);
 		}
-		looping = tad.looping;
-		animation = new Animation(tad.time, textureRegions);
+		
+		animation = new Animation(def.time / 60.0f, textureRegions);
+		animation.setPlayMode(looping ? Animation.LOOP : Animation.NORMAL);
 	}
 	
 	@Override
-	public void apply(Sprite sprite, float animationTime)
+	public TextureRegion getKeyFrame(float stateTime)
 	{
-		sprite.setRegion( animation.getKeyFrame(animationTime, isLooping()) );
+		return animation.getKeyFrame(stateTime);
 	}
-
+	
 	@Override
-	public boolean isLooping()
+	public boolean isAnimationFinished(float stateTime)
+	{
+		return animation.isAnimationFinished(stateTime);
+	}
+	
+	@Override
+	public boolean isAnimationLooping()
 	{
 		return looping;
 	}
-
-	@Override
-	public boolean isFinished(float animationTime)
-	{
-		return animation.isAnimationFinished(animationTime);
-	}
+	
+	
+	/** アニメーションのループフラグ */
+	final boolean looping;
 	
 	/** アニメーションオブジェクト */
-	private final Animation animation;
-	
-	/** ループフラグ */
-	private final boolean looping;
+	final Animation animation;
 }

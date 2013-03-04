@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.attack;
 
 import org.genshin.engine.system.PostureInterface;
-import org.genshin.scrollninja.object.effect.SlashEffect;
 
 public class SlashAttack extends AbstractAttack
 {
@@ -14,7 +13,7 @@ public class SlashAttack extends AbstractAttack
 	public void fire()
 	{
 		//---- エフェクトを発生させる。
-		new SlashEffect(owner);
+//		new SlashEffect(owner);
 	}
 
 	@Override

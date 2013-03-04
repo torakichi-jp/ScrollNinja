@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.attack;
 
-import org.genshin.scrollninja.object.AbstractCollisionObject;
-
 import com.badlogic.gdx.physics.box2d.Contact;
 
 /**

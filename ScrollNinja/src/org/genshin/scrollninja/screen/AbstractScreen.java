@@ -4,8 +4,8 @@ import org.genshin.engine.system.RenderableManager;
 import org.genshin.engine.system.UpdatableManager;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.utils.debug.DebugString;
-import org.genshin.scrollninja.work.object.gui.Cursor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

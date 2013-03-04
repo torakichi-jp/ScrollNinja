@@ -1,12 +1,12 @@
 package org.genshin.scrollninja.screen;
 
+import org.genshin.scrollninja.collision.CollisionListener;
+import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.ninja.AbstractNinja;
 import org.genshin.scrollninja.object.ninja.Ninja;
+import org.genshin.scrollninja.object.utils.CameraTranslater;
 import org.genshin.scrollninja.stage.Stage;
 import org.genshin.scrollninja.stage.StageInterface;
-import org.genshin.scrollninja.work.collision.CollisionListener;
-import org.genshin.scrollninja.work.object.gui.Cursor;
-import org.genshin.scrollninja.work.object.utils.CameraTranslater;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;

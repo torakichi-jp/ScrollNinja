@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.work.object.effect.FileEffect;
+import org.genshin.scrollninja.object.effect.FileEffect;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;

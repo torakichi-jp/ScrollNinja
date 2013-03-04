@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.ninja.controller;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.object.ObjectInterface;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 import org.genshin.scrollninja.utils.input.MouseInputHelper;
 

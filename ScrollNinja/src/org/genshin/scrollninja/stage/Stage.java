@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.work.object.background.BackgroundDef;
-import org.genshin.scrollninja.work.object.background.BackgroundLayer;
-import org.genshin.scrollninja.work.object.terrain.Terrain;
+import org.genshin.scrollninja.object.background.BackgroundDef;
+import org.genshin.scrollninja.object.background.BackgroundLayer;
+import org.genshin.scrollninja.object.terrain.Terrain;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;

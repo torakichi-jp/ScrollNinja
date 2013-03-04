@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.weapon;
 
 import org.genshin.engine.system.PostureInterface;
-import org.genshin.scrollninja.object.ObjectInterface;
 
 /**
  * 武器の基本クラス

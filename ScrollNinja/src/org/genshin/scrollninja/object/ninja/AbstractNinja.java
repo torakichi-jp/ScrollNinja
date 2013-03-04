@@ -3,16 +3,16 @@ package org.genshin.scrollninja.object.ninja;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.collision.AbstractCollisionCallback;
+import org.genshin.scrollninja.collision.CollisionObject;
+import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.effect.CopyEffect;
+import org.genshin.scrollninja.object.effect.EffectDef;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
+import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.utils.debug.DebugString;
-import org.genshin.scrollninja.work.collision.AbstractCollisionCallback;
-import org.genshin.scrollninja.work.collision.CollisionObject;
-import org.genshin.scrollninja.work.object.AbstractObject;
-import org.genshin.scrollninja.work.object.effect.CopyEffect;
-import org.genshin.scrollninja.work.object.effect.EffectDef;
-import org.genshin.scrollninja.work.object.terrain.Terrain;
-import org.genshin.scrollninja.work.render.AnimationRenderObject;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;

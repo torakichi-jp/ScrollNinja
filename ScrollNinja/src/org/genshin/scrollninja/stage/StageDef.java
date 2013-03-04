@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.stage;
 
-import org.genshin.scrollninja.work.object.background.BackgroundDef;
+import org.genshin.scrollninja.object.background.BackgroundDef;
 
 import com.badlogic.gdx.math.Vector2;
 
