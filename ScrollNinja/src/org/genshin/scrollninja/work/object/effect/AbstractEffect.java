@@ -13,6 +13,14 @@ public abstract class AbstractEffect extends AbstractObject
 {
 	/**
 	 * コンストラクタ
+	 */
+	public AbstractEffect()
+	{
+		this(0.0f, 0.0f, 0.0f);
+	}
+	
+	/**
+	 * コンストラクタ
 	 * @param x			X座標
 	 * @param y			Y座標
 	 * @param degrees	角度（度）
@@ -20,6 +28,15 @@ public abstract class AbstractEffect extends AbstractObject
 	public AbstractEffect(float x, float y, float degrees)
 	{
 		posture = new EffectPosture(x, y, degrees);
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param def		初期化用定義
+	 */
+	public AbstractEffect(EffectDef def)
+	{
+		this(def, 0.0f, 0.0f, 0.0f);
 	}
 	
 	/**
@@ -252,25 +269,25 @@ public abstract class AbstractEffect extends AbstractObject
 	private final EffectPosture posture;
 	
 	/** 寿命（単位；秒） */
-	private float	life;
+	private float	life = 0.0f;
 	
 	/** 速度 */
-	private final Vector2	velocity	= new Vector2();
+	private final Vector2	velocity	= new Vector2(0.0f, 0.0f);
 	
 	/** 加速度 */
-	private final Vector2	accel	= new Vector2();
+	private final Vector2	accel	= new Vector2(0.0f, 0.0f);
 	
 	/** 角速度 */
-	private float	angularVelocity;
+	private float	angularVelocity = 0.0f;
 	
 	/** 角加速度 */
-	private float	angularVelocityAccel;
+	private float	angularVelocityAccel = 0.0f;
 	
 	/** 色 */
-	private final Color	color	= new Color();
+	private final Color	color	= new Color(Color.WHITE);
 	
 	/** 色の変化量 */
-	private final Color	colorVelocity	= new Color();
+	private final Color	colorVelocity	= new Color(0.0f, 0.0f, 0.0f, 0.0f);
 	
 	/** 移動量計算に一時的に使用する為のVector2オブジェクト */
 	private static final Vector2	translate	= new Vector2();

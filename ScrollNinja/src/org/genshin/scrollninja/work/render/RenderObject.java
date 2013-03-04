@@ -49,23 +49,20 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 	}
 	
 	/**
-	 * コピーコンストラクタ
-	 * @param src		コピー元となるオブジェクト
+	 * コンストラクタ（duplicate専用）
 	 */
-	public RenderObject(RenderObject src)
+	protected RenderObject()
 	{
-		if(getClass() != src.getClass())
-		{
-			System.out.println("なんかちがうかも？");
-		}
-		
-		//---- フィールドをコピーする。
-		sprite = src.sprite;
-		posture = src.posture;
-		this.depth = src.depth;
-		
-		//---- 描画管理オブジェクトに自身を追加する。
-		Global.renderableManager.add(this, depth);
+		/** 何もしない */
+	}
+	
+	/**
+	 * 描画オブジェクトを複製する。
+	 * @return		複製した描画オブジェクト
+	 */
+	public RenderObject duplicate()
+	{
+		return duplicate(null);
 	}
 
 	@Override
@@ -214,6 +211,15 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 	{
 		return posture.getRotation();
 	}
+	
+	/**
+	 * 描画深度を取得する。
+	 * @return		描画深度
+	 */
+	public int getDepth()
+	{
+		return depth;
+	}
 
 	/**
 	 * X軸方向の拡縮率を取得する。
@@ -243,7 +249,43 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 	{
 		return sprite;
 	}
-
+	
+	/**
+	 * 描画フラグを取得する。
+	 * @return		描画フラグ
+	 */
+	public boolean isRenderEnabled()
+	{
+		return renderEnabled;
+	}
+	
+	/**
+	 * 描画オブジェクトを複製する。
+	 * @param dest		複製先となる描画オブジェクト（nullの場合は自己生成する）
+	 * @return			複製した描画オブジェクト
+	 */
+	protected RenderObject duplicate(RenderObject dest)
+	{
+		//---- 引数がnullなら描画オブジェクトを生成する。
+		if(dest == null)
+		{
+			dest = new RenderObject();
+		}
+		
+		//---- フィールドをコピーする。
+		dest.sprite = sprite;
+		dest.posture = posture;
+		dest.renderEnabled = renderEnabled;
+		dest.scale.set(scale);
+		dest.color.set(color);
+		
+		//---- 描画深度を設定する。
+		dest.setDepth(depth);
+		
+		return dest;
+	}
+	
+	
 	/** スプライト */
 	private Sprite	sprite;
 	

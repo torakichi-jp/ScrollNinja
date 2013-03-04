@@ -9,9 +9,12 @@ import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.work.collision.CollisionObject;
 import org.genshin.scrollninja.work.object.AbstractObject;
+import org.genshin.scrollninja.work.object.effect.CopyEffect;
+import org.genshin.scrollninja.work.object.effect.EffectDef;
 import org.genshin.scrollninja.work.object.terrain.Terrain;
 import org.genshin.scrollninja.work.render.AnimationRenderObject;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -52,6 +55,20 @@ public abstract class AbstractNinja extends AbstractObject
 		
 		//---- アニメーションを設定する。
 		setAnimation("Stay");
+		
+		//---- 残像エフェクトの定義
+		if(afterimageEffectDef == null)
+		{
+			afterimageEffectDef = new EffectDef();
+			afterimageEffectDef.life = 0.15f;
+			afterimageEffectDef.startVelocity = Vector2.Zero;
+			afterimageEffectDef.endVelocity = Vector2.Zero;
+			afterimageEffectDef.startAngularVelocity = 0.0f;
+			afterimageEffectDef.endAngularVelocity = 0.0f;
+			afterimageEffectDef.startColor = new Color(0.3f, 0.3f, 0.0f, 0.7f);
+			afterimageEffectDef.endColor = new Color(afterimageEffectDef.startColor);
+			afterimageEffectDef.endColor.a = 0.0f;
+		}
 	}
 	
 	@Override
@@ -93,6 +110,24 @@ public abstract class AbstractNinja extends AbstractObject
 		//---- 地上フラグをへし折る準備
 		if(isGrounded())
 			--groundedTimer;
+		
+		//---- 残像エフェクト
+		// TODO 残像は常に出すワケではない？
+		for(AnimationRenderObject ro : renderObjects)
+		{
+			//---- コピーエフェクトを生成する前にアニメーションを一時停止しておく。
+			final boolean oldPaused = ro.isAnimationPaused();
+			ro.pauseAnimation();
+			
+			//---- コピーエフェクトを生成する。
+			new CopyEffect(ro, afterimageEffectDef);
+			
+			//---- アニメーションの一時停止状態を元に戻す
+			if(!oldPaused)
+			{
+				ro.resumeAnimation();
+			}
+		}
 
 		//---- デバッグ文字列
 		DebugString.add("");
@@ -164,6 +199,8 @@ public abstract class AbstractNinja extends AbstractObject
 	
 	/** 地上・空中判定用タイマー（0より大きければ地上、そうでなければ空中） */
 	private int	groundedTimer;
+	
+	private static EffectDef afterimageEffectDef = null;
 	
 	
 	/**
@@ -430,76 +467,4 @@ public abstract class AbstractNinja extends AbstractObject
 	{
 		return !isGrounded();
 	}
-	
-	
-	
-	
-	
-	
-//	/**
-//	 * コンストラクタ
-//	 * @param world		所属するWorldオブジェクト
-//	 * @param position	初期座標
-//	 * @param cursor	カーソルオブジェクト（鉤縄の向き計算用）
-//	 */
-//	public PlayerNinja(World world, Vector2 position, Cursor cursor) {
-//		super(world, position);
-//		
-//		// 初期座標設定
-//		getBody().setTransform(position, 0.0f);
-//		
-//		// フィールドの初期化
-//		controller = new DefaultPlayerNinjaController(this, cursor);
-//		kaginawa = new Kaginawa(world, getBody());
-//		sword = new SwordWeapon(this);
-//		restAerialJumpCount = NinjaDefine.INSTANCE.AERIAL_JUMP_COUNT;
-//		groundedTimer = 0;
-//		worldGravity = world.getGravity().len();
-//		defaultFriction = getFootFixture().getFriction();
-//
-//		state = new AerialState(this);
-//		
-//		// 描画登録（仮）
-//		Global.currentRenderableManager.add(this, 1);
-//	}
-//
-//	/**
-//	 * 更新処理
-//	 */
-//	public void update(float deltaTime)
-//	{
-//		// 操作状態を更新
-//		controller.update();
-//
-//		// 状態に合わせた更新処理
-//		state = state.update(this, deltaTime);
-//		
-//		// 鉤縄を更新
-//		kaginawa.update(deltaTime);
-//		
-//		//---- 左右の反転フラグを設定する。
-//		final Vector2 direction = controller.getDirection();
-//		final float angle = getBody().getAngle();
-//		final Vector2 upDirection = new Vector2(-(float)Math.sin(angle), (float)Math.cos(angle));
-//		flip = upDirection.crs(direction) < 0.0f;
-//		
-//		//---- 残像を付けてみる。
-//		new AfterimageEffect(getRenderObjects(), getPositionX(), getPositionY(), getBody().getAngle() * MathUtils.radiansToDegrees);
-//		
-//		//---- 刀を振ってみる。
-//		if( controller.isAttack() && getBodyRenderObject().isAnimationLooping() )
-//		{
-//			sword.attack();
-//			getBodyRenderObject().setAnimation("AttackSword");
-//		}
-//		
-//		//---- デバッグ文字列
-//		DebugString.add("");
-//		DebugString.add("Ninja State : " + state.getClass().getSimpleName());
-//		DebugString.add("Ninja Position : " + getPositionX() + ", " + getPositionY());
-//		DebugString.add("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
-//	}
-//	
-//	/** 刀系の武器オブジェクト */
-//	SwordWeapon sword;
 }

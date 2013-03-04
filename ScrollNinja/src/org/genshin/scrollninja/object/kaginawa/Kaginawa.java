@@ -7,10 +7,13 @@ import org.genshin.scrollninja.utils.debug.DebugString;
 import org.genshin.scrollninja.work.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.work.collision.CollisionObject;
 import org.genshin.scrollninja.work.object.AbstractObject;
+import org.genshin.scrollninja.work.object.effect.CopyEffect;
+import org.genshin.scrollninja.work.object.effect.EffectDef;
 import org.genshin.scrollninja.work.object.terrain.Terrain;
+import org.genshin.scrollninja.work.render.KaginawaRopeRenderObject;
 import org.genshin.scrollninja.work.render.RenderObject;
 
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -39,9 +42,8 @@ public class Kaginawa extends AbstractObject
 	public Kaginawa(World world, Body owner)
 	{
 		//---- 描画オブジェクトを生成する。
-		renderObjects.add(new RenderObject("data/jsons/render/kaginawa_rope_sprite.json", this, GlobalDefine.RenderDepth.KAGINAWA));
+		renderObjects.add(new KaginawaRopeRenderObject(this));
 		renderObjects.add(new RenderObject("data/jsons/render/kaginawa_anchor_sprite.json", this, GlobalDefine.RenderDepth.KAGINAWA));
-		getRopeSprite().getTexture().setWrap(TextureWrap.Repeat, TextureWrap.ClampToEdge);
 		
 		//---- 衝突オブジェクトを生成する。
 		collisionObject = new CollisionObject("data/jsons/collision/kaginawa.json", world, new CollisionCallback());
@@ -51,6 +53,20 @@ public class Kaginawa extends AbstractObject
 		state = State.IDLE;
 		state.initialize(this);
 		nextState = null;
+		
+		//---- 鉤縄を離した時に発生させるエフェクトの定義
+		if(releaseEffectDef == null)
+		{
+			releaseEffectDef = new EffectDef();
+			releaseEffectDef.life = 0.5f;
+			releaseEffectDef.startVelocity = new Vector2(0.0f, -100.0f * GlobalDefine.INSTANCE.WORLD_SCALE);
+			releaseEffectDef.endVelocity = Vector2.Zero;
+			releaseEffectDef.startAngularVelocity = 0.0f;
+			releaseEffectDef.endAngularVelocity = 0.0f;
+			releaseEffectDef.startColor = Color.WHITE;
+			releaseEffectDef.endColor = new Color(releaseEffectDef.startColor);
+			releaseEffectDef.endColor.a = 0.0f;
+		}
 	}
 
 	@Override
@@ -122,23 +138,27 @@ public class Kaginawa extends AbstractObject
 		state.update(this);
 		
 		//---- 縄の描画オブジェクトの長さを調整する。
-		final Body body = getBody();
-		final Vector2 kaginawaPosition = body.getPosition();
-		final Vector2 ownerPosition = owner.getPosition();
-		final Vector2 direction = ownerPosition.sub(kaginawaPosition);
-		final float len = direction.len();
-		final Sprite ropeSprite = getRopeSprite();
-		
-		ropeSprite.setSize(len, ropeSprite.getHeight());
-		ropeSprite.setRotation(direction.angle() - body.getAngle() * MathUtils.radiansToDegrees);
-		ropeSprite.setRegion(0, 0, (int)(len * GlobalDefine.INSTANCE.INV_WORLD_SCALE), ropeSprite.getRegionHeight());
-		
+		if(isActive())
+		{
+			final Body body = getBody();
+			final Vector2 kaginawaPosition = body.getPosition();
+			final Vector2 ownerPosition = owner.getPosition();
+			final Vector2 direction = ownerPosition.sub(kaginawaPosition);
+			final KaginawaRopeRenderObject ropeRenderObject = getRopeRenderObject();
+			
+			ropeRenderObject.setLength(direction.len());
+			ropeRenderObject.setAngle(direction.angle() - body.getAngle() * MathUtils.radiansToDegrees);
+		}
 		
 		//---- test
 		Vector2 anchorPosition = ((CircleShape)collisionObject.getFixture("Anchor").getShape()).getPosition();
 		DebugString.add("Anchor Position : " + anchorPosition);
 	}
 	
+	/**
+	 * 活動フラグを設定する。
+	 * @param active		活動フラグ
+	 */
 	public void setActive(boolean active)
 	{
 		getBody().setActive(active);
@@ -199,6 +219,15 @@ public class Kaginawa extends AbstractObject
 	{
 		return state == State.RELEASE;
 	}
+	
+	/**
+	 * 活動フラグを取得する。
+	 * @return		活動フラグ
+	 */
+	public boolean isActive()
+	{
+		return getBody().isActive();
+	}
 
 	/**
 	 * 状態を変更する。
@@ -213,9 +242,9 @@ public class Kaginawa extends AbstractObject
 	 * 縄の描画オブジェクトを取得する。
 	 * @return		縄の描画オブジェクト
 	 */
-	RenderObject getRopeRenderObject()
+	KaginawaRopeRenderObject getRopeRenderObject()
 	{
-		return renderObjects.get(0);
+		return (KaginawaRopeRenderObject)renderObjects.get(0);
 	}
 	
 	/**
@@ -270,6 +299,9 @@ public class Kaginawa extends AbstractObject
 	
 	/** XXX あやしいフラグ（仮）　外部から指定するのは何ともメンドクサイので何とかならんかね。 */
 	boolean useRopeJoint = false;
+	
+	/** 鉤縄を離した時に発生させるエフェクトの定義 */
+	static EffectDef releaseEffectDef = null;
 	
 	
 	/**
@@ -495,6 +527,12 @@ public class Kaginawa extends AbstractObject
 				Body kaginawa	= me.getBody();
 				World world		= kaginawa.getWorld();
 				
+				//---- エフェクトを発生させる。
+				for(RenderObject ro : me.renderObjects)
+				{
+					new CopyEffect(ro, releaseEffectDef);
+				}
+				
 				// 鉤縄を初期化
 				me.setActive(false);
 				
@@ -506,9 +544,6 @@ public class Kaginawa extends AbstractObject
 					world.destroyJoint(me.joint);
 					me.joint = null;
 				}
-				
-				//---- エフェクトを発生させる。
-//				new KaginawaReleaseEffect(me.getRenderObjects(), me.getPositionX(), me.getPositionY(), kaginawa.getAngle() * MathUtils.radiansToDegrees);
 			}
 
 			@Override

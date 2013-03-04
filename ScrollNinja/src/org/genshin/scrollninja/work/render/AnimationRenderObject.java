@@ -42,22 +42,17 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	}
 	
 	/**
-	 * コピーコンストラクタ
-	 * @param src		コピー元となるオブジェクト
+	 * コンストラクタ（duplicate専用）
 	 */
-	public AnimationRenderObject(AnimationRenderObject src)
+	protected AnimationRenderObject()
 	{
-		super(src);
-		
-		//---- フィールドをコピーする。
-		animationSet = src.animationSet;
-		currentAnimation = src.currentAnimation;
-		timer = src.timer;
-		speedRatio = src.speedRatio;
-		paused = src.paused;
-
-		//---- 更新管理オブジェクトに自身を追加する。
 		Global.updatableManager.add(this, GlobalDefine.UpdatePriority.ANIMATION);
+	}
+
+	@Override
+	public AnimationRenderObject duplicate()
+	{
+		return (AnimationRenderObject)super.duplicate();
 	}
 
 	@Override
@@ -188,6 +183,29 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	public boolean isAnimationLooping()
 	{
 		return currentAnimation.isAnimationLooping();
+	}
+
+	@Override
+	protected RenderObject duplicate(RenderObject dest)
+	{
+		//---- 引数がnullなら描画オブジェクトを生成する。
+		if(dest == null)
+		{
+			dest = new AnimationRenderObject();
+		}
+		
+		//---- 基本クラスのコピー
+		super.duplicate(dest);
+		
+		//---- フィールドのコピー
+		final AnimationRenderObject animationRenderObject = (AnimationRenderObject)dest;
+		animationRenderObject.animationSet = animationSet;
+		animationRenderObject.currentAnimation = currentAnimation;
+		animationRenderObject.timer = timer;
+		animationRenderObject.speedRatio = speedRatio;
+		animationRenderObject.paused = paused;
+		
+		return dest;
 	}
 	
 	
