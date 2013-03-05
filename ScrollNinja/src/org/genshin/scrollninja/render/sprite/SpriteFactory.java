@@ -1,19 +1,14 @@
 package org.genshin.scrollninja.render.sprite;
 
-import java.io.IOException;
-
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.TextureFactory;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * スプライトの生成を管理するクラス
@@ -43,17 +38,8 @@ public class SpriteFactory extends AbstractFlyweightFactory<String, Sprite>
 	@Override
 	protected Sprite create(String key)
 	{
-		SpriteDef spriteDef = null;
-		
 		//---- スプライトの定義を読み込む
-		try
-		{
-			final ObjectMapper objectMapper = new ObjectMapper();
-			spriteDef = objectMapper.readValue(Gdx.files.internal(key).read(), SpriteDef.class);
-		}
-		catch (JsonParseException e)	{ e.printStackTrace(); }
-		catch (JsonMappingException e)	{ e.printStackTrace(); }
-		catch (IOException e)			{ e.printStackTrace(); }
+		final SpriteDef spriteDef = JsonUtils.read(key, SpriteDef.class);
 		
 		// 読み込み失敗
 		if(spriteDef == null)

@@ -1,13 +1,7 @@
 package org.genshin.scrollninja.render.animation;
 
-import java.io.IOException;
-
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
-
-import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.genshin.scrollninja.utils.JsonUtils;
 
 /**
  * アニメーションセットの生成を管理するクラス
@@ -37,17 +31,8 @@ public class AnimationSetFactory extends AbstractFlyweightFactory<String, Animat
 	@Override
 	protected AnimationSet create(String key)
 	{
-		AnimationSetDef animationSetDef = null;
-		
 		//---- アニメーションセットの定義を読み込む。
-		try
-		{
-			final ObjectMapper objectMapper = new ObjectMapper();
-			animationSetDef = objectMapper.readValue(Gdx.files.internal(key).read(), AnimationSetDef.class);
-		}
-		catch (JsonParseException e)	{ e.printStackTrace(); }
-		catch (JsonMappingException e)	{ e.printStackTrace(); }
-		catch (IOException e)			{ e.printStackTrace(); }
+		final AnimationSetDef animationSetDef = JsonUtils.read(key, AnimationSetDef.class);
 		
 		// 読み込み失敗
 		if(animationSetDef == null)

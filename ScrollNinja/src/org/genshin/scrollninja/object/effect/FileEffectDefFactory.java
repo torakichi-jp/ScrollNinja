@@ -1,14 +1,8 @@
 package org.genshin.scrollninja.object.effect;
 
-import java.io.IOException;
-
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
 import org.genshin.scrollninja.GlobalDefine;
-
-import com.badlogic.gdx.Gdx;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.genshin.scrollninja.utils.JsonUtils;
 
 class FileEffectDefFactory extends AbstractFlyweightFactory<String, FileEffectDef>
 {
@@ -32,17 +26,8 @@ class FileEffectDefFactory extends AbstractFlyweightFactory<String, FileEffectDe
 	@Override
 	protected FileEffectDef create(String key)
 	{
-		FileEffectDef def = null;
-		
 		//---- エフェクトの定義情報をファイルから読み込む。
-		try
-		{
-			final ObjectMapper objectMapper = new ObjectMapper();
-			def = objectMapper.readValue(Gdx.files.internal(key).read(), FileEffectDef.class);
-		}
-		catch (JsonParseException e) { e.printStackTrace(); }
-		catch (JsonMappingException e) { e.printStackTrace(); }
-		catch (IOException e) { e.printStackTrace(); }
+		final FileEffectDef def = JsonUtils.read(key, FileEffectDef.class);
 		
 		//---- 世界の法則を適用する。
 		if(def != null)

@@ -1,19 +1,15 @@
 package org.genshin.scrollninja.stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.background.BackgroundDef;
 import org.genshin.scrollninja.object.background.BackgroundLayer;
 import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.utils.JsonUtils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -31,17 +27,8 @@ public class Stage implements StageInterface
 	 */
 	public Stage(World world, String stageDefFile)
 	{
-		StageDef stageDef = null;
-		
 		//---- ステージの初期化用定義をファイルから読み込む
-		try
-		{
-			final ObjectMapper objectMapper = new ObjectMapper();
-			stageDef = objectMapper.readValue(Gdx.files.internal(stageDefFile).read(), StageDef.class);
-		}
-		catch (JsonParseException e) { e.printStackTrace(); }
-		catch (JsonMappingException e) { e.printStackTrace(); }
-		catch (IOException e) { e.printStackTrace(); }
+		final StageDef stageDef = JsonUtils.read(stageDefFile, StageDef.class);
 		
 		// エラーチェック
 		if(stageDef == null)
