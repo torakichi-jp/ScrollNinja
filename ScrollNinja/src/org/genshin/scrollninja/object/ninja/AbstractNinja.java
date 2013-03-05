@@ -16,7 +16,6 @@ import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;

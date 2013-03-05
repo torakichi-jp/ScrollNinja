@@ -14,7 +14,6 @@ import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -135,14 +134,7 @@ public class Kaginawa extends AbstractObject
 		//---- 縄の描画オブジェクトの長さを調整する。
 		if(isActive())
 		{
-			final Body body = getBody();
-			final Vector2 kaginawaPosition = body.getPosition();
-			final Vector2 ownerPosition = owner.getPosition();
-			final Vector2 direction = ownerPosition.sub(kaginawaPosition);
-			final KaginawaRopeRenderObject ropeRenderObject = getRopeRenderObject();
-			
-			ropeRenderObject.setLength(direction.len());
-			ropeRenderObject.setAngle(direction.angle() - body.getAngle() * MathUtils.radiansToDegrees);
+			updateRopeLength();
 		}
 		
 		//---- test
@@ -222,6 +214,21 @@ public class Kaginawa extends AbstractObject
 	public boolean isActive()
 	{
 		return getBody().isActive();
+	}
+	
+	/**
+	 * 縄の長さを調整する。
+	 */
+	void updateRopeLength()
+	{
+		final Body body = getBody();
+		final Vector2 kaginawaPosition = body.getPosition();
+		final Vector2 ownerPosition = owner.getPosition();
+		final Vector2 direction = ownerPosition.sub(kaginawaPosition);
+		final KaginawaRopeRenderObject ropeRenderObject = getRopeRenderObject();
+		
+		ropeRenderObject.setLength(direction.len());
+		ropeRenderObject.setAngle(direction.angle() - body.getAngle() * MathUtils.radiansToDegrees);
 	}
 
 	/**
@@ -522,18 +529,21 @@ public class Kaginawa extends AbstractObject
 				Body kaginawa	= me.getBody();
 				World world		= kaginawa.getWorld();
 				
+				//---- 縄の長さを調整しておく。
+				me.updateRopeLength();
+				
 				//---- エフェクトを発生させる。
 				for(RenderObject ro : me.renderObjects)
 				{
 					new CopyEffect(ro, releaseEffectDef);
 				}
 				
-				// 鉤縄を初期化
+				//---- 鉤縄を初期化
 				me.setActive(false);
 				
-				// 持ち主を初期化
+				//---- 持ち主を初期化
 				
-				// ジョイントがあれば切り離す
+				//---- ジョイントがあれば切り離す
 				if(me.joint != null)
 				{
 					world.destroyJoint(me.joint);
