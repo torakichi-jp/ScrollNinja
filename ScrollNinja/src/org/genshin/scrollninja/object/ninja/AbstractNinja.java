@@ -13,6 +13,7 @@ import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
+import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.graphics.Color;
@@ -60,15 +61,9 @@ public abstract class AbstractNinja extends AbstractObject
 		//---- 残像エフェクトの定義
 		if(afterimageEffectDef == null)
 		{
-			afterimageEffectDef = new EffectDef();
-			afterimageEffectDef.life = 0.15f;
-			afterimageEffectDef.startVelocity = Vector2.Zero;
-			afterimageEffectDef.endVelocity = Vector2.Zero;
-			afterimageEffectDef.startAngularVelocity = 0.0f;
-			afterimageEffectDef.endAngularVelocity = 0.0f;
-			afterimageEffectDef.startColor = new Color(0.3f, 0.3f, 0.0f, 0.7f);
-			afterimageEffectDef.endColor = new Color(afterimageEffectDef.startColor);
-			afterimageEffectDef.endColor.a = 0.0f;
+			afterimageEffectDef = JsonUtils.read("data/jsons/effect/ninja_afterimage.json", EffectDef.class);
+			afterimageEffectDef.startVelocity.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+			afterimageEffectDef.endVelocity.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
 		}
 	}
 	

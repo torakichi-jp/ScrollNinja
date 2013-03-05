@@ -11,6 +11,7 @@ import org.genshin.scrollninja.object.effect.EffectDef;
 import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.render.KaginawaRopeRenderObject;
 import org.genshin.scrollninja.render.RenderObject;
+import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.graphics.Color;
@@ -57,15 +58,9 @@ public class Kaginawa extends AbstractObject
 		//---- 鉤縄を離した時に発生させるエフェクトの定義
 		if(releaseEffectDef == null)
 		{
-			releaseEffectDef = new EffectDef();
-			releaseEffectDef.life = 0.5f;
-			releaseEffectDef.startVelocity = new Vector2(0.0f, -100.0f * GlobalDefine.INSTANCE.WORLD_SCALE);
-			releaseEffectDef.endVelocity = Vector2.Zero;
-			releaseEffectDef.startAngularVelocity = 0.0f;
-			releaseEffectDef.endAngularVelocity = 0.0f;
-			releaseEffectDef.startColor = Color.WHITE;
-			releaseEffectDef.endColor = new Color(releaseEffectDef.startColor);
-			releaseEffectDef.endColor.a = 0.0f;
+			releaseEffectDef = JsonUtils.read("data/jsons/effect/kaginawa_release.json", EffectDef.class);
+			releaseEffectDef.startVelocity.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+			releaseEffectDef.endVelocity.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
 		}
 	}
 
