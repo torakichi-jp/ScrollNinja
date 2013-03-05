@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.weapon;
 
 import org.genshin.engine.system.PostureInterface;
+import org.genshin.scrollninja.object.AbstractObject;
 
 /**
  * 武器の基本クラス
@@ -8,7 +9,7 @@ import org.genshin.engine.system.PostureInterface;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractWeapon implements ObjectInterface
+public abstract class AbstractWeapon extends AbstractObject
 {
 	/**
 	 * コンストラクタ
@@ -33,13 +34,7 @@ public abstract class AbstractWeapon implements ObjectInterface
 	@Override
 	public void update(float deltaTime)
 	{
-		/* 何もしない */
-	}
-
-	@Override
-	public void render()
-	{
-		/* 何もしない */
+		// TODO チャクラゲージの回復など？
 	}
 	
 	@Override
@@ -59,6 +54,7 @@ public abstract class AbstractWeapon implements ObjectInterface
 	{
 		return owner.getRotation();
 	}
+	
 	
 	/** 所有者の位置情報 */
 	private final PostureInterface owner;

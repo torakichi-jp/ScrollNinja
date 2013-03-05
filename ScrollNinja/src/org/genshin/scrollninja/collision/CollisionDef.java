@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -49,6 +50,7 @@ public class CollisionDef implements Json.Serializable
 			bodyDef.type = json.readValue("isDynamic", Boolean.class, bodyMap) ? BodyType.DynamicBody : BodyType.StaticBody;
 			bodyDef.bullet = json.readValue("isBullet", Boolean.class, bodyMap);
 			bodyDef.fixedRotation = json.readValue("isFixedRotation", Boolean.class, bodyMap);
+			bodyDef.gravityScale = json.readValue("gravityScale", Float.class, bodyMap);
 		}
 		
 		//---- FixtureDefs
@@ -95,6 +97,19 @@ public class CollisionDef implements Json.Serializable
 						offset.mul(worldScale);
 						
 						shape.setAsBox(size.x, size.y, offset, degrees * MathUtils.degreesToRadians);
+						
+						fixtureDef.shape = shape;
+					}
+					// 線分
+					else if( fixtureMap.containsKey("edge"))
+					{
+						final OrderedMap<String, Object> shapeMap = json.readValue("edge", OrderedMap.class, fixtureMap);
+						final EdgeShape shape = new EdgeShape();
+
+						final float length = json.readValue("length", Float.class, shapeMap) * worldScale;
+						final float offset = json.readValue("offset", Float.class, shapeMap) * worldScale;
+						
+						shape.set(offset, 0.0f, offset + length, 0.0f);
 						
 						fixtureDef.shape = shape;
 					}

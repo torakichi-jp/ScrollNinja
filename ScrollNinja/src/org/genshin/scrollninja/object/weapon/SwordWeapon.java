@@ -4,6 +4,8 @@ import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.object.attack.AttackInterface;
 import org.genshin.scrollninja.object.attack.SlashAttack;
 
+import com.badlogic.gdx.physics.box2d.World;
+
 /**
  * 刀
  * @author kou
@@ -14,12 +16,13 @@ public class SwordWeapon extends AbstractWeapon
 {
 	/**
 	 * コンストラクタ
+	 * @param world		所属する世界オブジェクト
 	 * @param owner		所有者の位置情報
 	 */
-	public SwordWeapon(PostureInterface owner)
+	public SwordWeapon(World world, PostureInterface owner)
 	{
 		super(owner);
-		attack = new SlashAttack(owner);
+		attack = new SlashAttack(world, owner);
 	}
 
 	@Override

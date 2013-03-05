@@ -1,0 +1,25 @@
+{
+    "body": {
+        "isDynamic": true,
+        "isBullet": true,
+        "isFixedRotation": true,
+        "gravityScale": 0
+    },
+    "fixtures": [
+        {
+            "name": "EdgeTemplate",
+            "density": 0,
+            "friction": 0,
+            "restitution": 0,
+            "isSensor": true,
+            "edge": {
+                "length": 640,
+                "offset": 0
+            },
+            "filter": {
+                "category": "Attack",
+                "ignoreCategories": []
+            }
+        }
+    ]
+}

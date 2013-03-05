@@ -1,5 +1,6 @@
 package org.genshin.scrollninja.collision;
 
+import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.ninja.AbstractNinja;
 import org.genshin.scrollninja.object.terrain.Terrain;
@@ -61,15 +62,15 @@ public abstract class AbstractCollisionCallback
 		/* 何もしない */
 	}
 	
-//	/**
-//	 * 攻撃オブジェクトと衝突した。
-//	 * @param obj		衝突した攻撃オブジェクト
-//	 * @param contact	衝突情報
-//	 */
-//	public void collision(AbstractAttack obj, Contact contact)
-//	{
-//		/* 何もしない */
-//	}
+	/**
+	 * 攻撃オブジェクトと衝突した。
+	 * @param obj		衝突した攻撃オブジェクト
+	 * @param contact	衝突情報
+	 */
+	public void collision(AbstractAttack obj, Contact contact)
+	{
+		/* 何もしない */
+	}
 	
 //	/**
 //	 * アイテムオブジェクトと衝突した。

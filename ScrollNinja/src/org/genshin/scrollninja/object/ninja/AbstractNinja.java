@@ -11,6 +11,7 @@ import org.genshin.scrollninja.object.effect.EffectDef;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
@@ -45,10 +46,10 @@ public abstract class AbstractNinja extends AbstractObject
 		
 		//---- 衝突オブジェクトを生成する。
 		collisionObject = new CollisionObject("data/jsons/collision/ninja.json", world, new CollisionCallback());
-		getBody().setGravityScale(0.0f);
 		
 		//---- フィールドを初期化する。
 		kaginawa = new Kaginawa(world, getBody());
+		sword = new SwordWeapon(world, this);
 		state = new AerialState(this);
 		defaultFriction = getFootFixture().getFriction();
 		gravityPower = world.getGravity().len();
@@ -175,6 +176,9 @@ public abstract class AbstractNinja extends AbstractObject
 	
 	/** 鉤縄 */
 	private Kaginawa kaginawa;
+	
+	/** 刀 */
+	private SwordWeapon sword;
 
 	/** 忍者の状態を管理するオブジェクト */
 	private StateInterface	state;
@@ -200,6 +204,7 @@ public abstract class AbstractNinja extends AbstractObject
 	/** 地上・空中判定用タイマー（0より大きければ地上、そうでなければ空中） */
 	private int	groundedTimer;
 	
+	/** 残像エフェクトの定義 */
 	private static EffectDef afterimageEffectDef = null;
 	
 	
