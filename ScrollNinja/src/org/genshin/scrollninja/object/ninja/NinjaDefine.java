@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.utils.FixtureDefLoader;
 import org.genshin.scrollninja.utils.XMLFactory;
 
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -45,18 +44,6 @@ enum NinjaDefine
 			// 天井への吸着を解除する時の力
 			LEAVE_SNAP_CEILING_POWER	= rootElement.getFloat("LeaveSnapCeilingPower") * worldScale;
 		}
-		
-		//---- 衝突関連
-		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalDefine.INSTANCE.XML_DIRECTORY_PATH + GlobalDefine.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
-			rootElement = rootElement.getChildByName("Ninja");
-			
-			// 上半身
-			BODY_FIXTURE_DEF_LOADER = new FixtureDefLoader(rootElement.getChildByName("Body"));
-			
-			// 下半身
-			FOOT_FIXTURE_DEF_LOADER = new FixtureDefLoader(rootElement.getChildByName("Foot"));
-		}
 	}
 	
 	/** 走りの加速度 */
@@ -82,10 +69,4 @@ enum NinjaDefine
 
 	/** 地面との衝突判定を出し続ける時間 */
 	final int GROUNDED_JUDGE_TIME;
-	
-	/** 上半身Fixtureの定義情報 */
-	final FixtureDefLoader BODY_FIXTURE_DEF_LOADER;
-	
-	/** 下半身Fixtureの定義情報 */
-	final FixtureDefLoader FOOT_FIXTURE_DEF_LOADER;
 }

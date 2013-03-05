@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.kaginawa;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.utils.FixtureDefLoader;
 import org.genshin.scrollninja.utils.XMLFactory;
 
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -32,16 +31,6 @@ enum KaginawaDefine
 			SHRINK_VELOCITY		= rootElement.getFloat("ShrinkVelocity") * worldScale;
 			LENGTH				= rootElement.getFloat("Length") * worldScale;
 		}
-		
-		//---- 衝突関連
-		{
-			Element rootElement = XMLFactory.getInstance().get(GlobalDefine.INSTANCE.XML_DIRECTORY_PATH + GlobalDefine.INSTANCE.COLLISION_PARAM_XML_FILE_NAME);
-			rootElement = rootElement.getChildByName("Kaginawa");
-			FIXTURE_DEF_LOADER = new FixtureDefLoader(rootElement);
-
-			// XXX 仮
-			COLLISION_RADIUS	= rootElement.getChildByName("FixtureDef").getChildByName("CircleShape").getFloat("Radius") * worldScale;
-		}
 	}
 	
 	
@@ -53,10 +42,4 @@ enum KaginawaDefine
 	
 	/** 鉤縄の長さ */
 	final float LENGTH;
-	
-	/** 衝突判定の半径（仮） */
-	final float COLLISION_RADIUS;
-	
-	/** Fixtureの定義情報 */
-	final FixtureDefLoader FIXTURE_DEF_LOADER;
 }
