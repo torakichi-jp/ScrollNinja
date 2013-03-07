@@ -2,9 +2,11 @@ package org.genshin.scrollninja.object.attack;
 
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
+import org.genshin.scrollninja.object.effect.AbstractEffect;
 import org.genshin.scrollninja.object.effect.FileEffect;
 import org.genshin.scrollninja.object.ninja.AbstractNinja;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -24,16 +26,31 @@ public class SlashAttack extends AbstractAttack
 	@Override
 	public void update(float deltaTime)
 	{
-		// TODO Auto-generated method stub
+		super.update(deltaTime);
 		
+		//---- 待機状態なら何もしない。
+		if(isSleep())
+			return;
+		
+		//---- エフェクトが消えたら斬撃終了。
+		if(effect.isFinished())
+		{
+			effect = null;
+			toSleep();
+		}
 	}
 	
 	@Override
 	public void fire()
 	{
+		//---- 位置情報を設定する。
+		getBody().setTransform(owner.getPositionX(), owner.getPositionY(), owner.getRotation() * MathUtils.degreesToRadians);
+		
 		//---- エフェクトを発生させる。
-//		new SlashEffect(owner);
-		new FileEffect("data/jsons/effect/slash.json", this);
+		effect = new FileEffect("data/jsons/effect/fire_slash.json", this);
+		
+		//---- 活動状態へ移行する。
+		toActive();
 	}
 
 	@Override
@@ -41,19 +58,23 @@ public class SlashAttack extends AbstractAttack
 	{
 		return new SlashAttackCollisionCallback();
 	}
-
-
+	
+	
 	/** 所有者の位置情報 */
 	private final PostureInterface owner;
 	
+	private AbstractEffect effect;
 	
+	
+	/**
+	 * 衝突判定のコールバック
+	 */
 	private class SlashAttackCollisionCallback extends AbstractAttackCollisionCallback
 	{
 		@Override
 		public void collision(AbstractNinja obj, Contact contact)
 		{
-//			SlashAttack.this.toSleep();
-			System.out.println("collison!!");
+			SlashAttack.this.toSleep();
 		}
 	}
 }

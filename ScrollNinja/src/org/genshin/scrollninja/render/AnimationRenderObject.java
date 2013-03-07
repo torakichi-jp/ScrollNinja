@@ -114,6 +114,12 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	 */
 	public void setAnimation(String animationName)
 	{
+		//---- 変更禁止フラグが立っている場合、アニメーションが終了していなければ何もしない
+		if(lock && !currentAnimation.isAnimationFinished(timer))
+			return;
+		lock = false;
+		
+		//---- 現在のアニメーションと指定されたアニメーションが別のアニメーションであれば、アニメーションを変更する。
 		final AnimationInterface newAnimation = animationSet.getAnimation(animationName);
 		if(currentAnimation != newAnimation)
 		{
@@ -141,12 +147,30 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	}
 	
 	/**
+	 * 現在のアニメーションの再生が終了するまでアニメーションの変更を禁止するフラグを設定する。
+	 * @param lock		変更を禁止する場合はtrue
+	 */
+	public void setAnimationLock(boolean lock)
+	{
+		this.lock = lock;
+	}
+	
+	/**
 	 * アニメーションの時間を取得する。
 	 * @return	アニメーションの時間
 	 */
 	public float getAnimationTime()
 	{
 		return timer;
+	}
+	
+	/**
+	 * アニメーションの長さを取得する。
+	 * @return		アニメーションの長さ（秒）
+	 */
+	public float getAnimationLength()
+	{
+		return currentAnimation.getAnimationLength();
 	}
 
 	/**
@@ -223,4 +247,7 @@ public class AnimationRenderObject extends RenderObject implements Updatable
 	
 	/** ポーズフラグ */
 	private boolean paused = false;
+	
+	/** 変更禁止フラグ */
+	private boolean lock = false;
 }

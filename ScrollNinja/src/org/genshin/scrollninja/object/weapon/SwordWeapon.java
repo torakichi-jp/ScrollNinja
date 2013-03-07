@@ -1,7 +1,6 @@
 package org.genshin.scrollninja.object.weapon;
 
 import org.genshin.engine.system.PostureInterface;
-import org.genshin.scrollninja.object.attack.AttackInterface;
 import org.genshin.scrollninja.object.attack.SlashAttack;
 
 import com.badlogic.gdx.physics.box2d.World;
@@ -22,7 +21,8 @@ public class SwordWeapon extends AbstractWeapon
 	public SwordWeapon(World world, PostureInterface owner)
 	{
 		super(owner);
-		attack = new SlashAttack(world, owner);
+		attack = new SlashAttack(world, this);
+		attack.fire();
 	}
 
 	@Override
@@ -33,6 +33,15 @@ public class SwordWeapon extends AbstractWeapon
 			attack.fire();
 	}
 	
+	/**
+	 * 忍者の上半身アニメーションの名前を取得する。
+	 * @return		忍者の上半身アニメーションの名前
+	 */
+	public String getNinjaBodyAnimationName()
+	{
+		return "FireSlash";
+	}
+	
 	/** 攻撃オブジェクト */
-	private final AttackInterface attack;
+	private final SlashAttack attack;
 }

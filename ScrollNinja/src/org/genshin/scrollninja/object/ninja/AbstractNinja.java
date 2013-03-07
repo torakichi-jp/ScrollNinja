@@ -46,6 +46,7 @@ public abstract class AbstractNinja extends AbstractObject
 		
 		//---- 衝突オブジェクトを生成する。
 		collisionObject = new CollisionObject("data/jsons/collision/ninja.json", world, new CollisionCallback());
+		collisionObject.getBody().setTransform(position, 0.0f);
 		
 		//---- フィールドを初期化する。
 		kaginawa = new Kaginawa(world, getBody());
@@ -122,6 +123,16 @@ public abstract class AbstractNinja extends AbstractObject
 			{
 				ro.resumeAnimation();
 			}
+		}
+		
+		//---- 試し斬り
+		if( controller.isAttack() )
+		{
+			sword.attack();
+			
+			final AnimationRenderObject bodyRenderObject = getBodyRenderObject();
+			bodyRenderObject.setAnimation(sword.getNinjaBodyAnimationName());
+			bodyRenderObject.setAnimationLock(true);
 		}
 
 		//---- デバッグ文字列

@@ -35,7 +35,7 @@ abstract class AbstractState implements StateInterface
 		updateJump(me);					// ジャンプ
 		updateAttack(me);				// 攻撃
 		updateKaginawa(me);				// 鉤縄
-		updateGravity(me, deltaTime);	// 重力
+//		updateGravity(me, deltaTime);	// 重力
 		updateFlip(me);					// 左右反転
 		
 		//---- 次の状態を返す。

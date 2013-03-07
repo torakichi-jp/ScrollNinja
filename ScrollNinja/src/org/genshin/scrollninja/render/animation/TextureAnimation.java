@@ -46,6 +46,12 @@ public class TextureAnimation implements AnimationInterface
 	}
 	
 	@Override
+	public float getAnimationLength()
+	{
+		return animation.animationDuration;
+	}
+
+	@Override
 	public boolean isAnimationFinished(float stateTime)
 	{
 		return animation.isAnimationFinished(stateTime);

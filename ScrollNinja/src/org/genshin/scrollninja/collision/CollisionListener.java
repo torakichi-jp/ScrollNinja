@@ -3,6 +3,7 @@ package org.genshin.scrollninja.collision;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class CollisionListener implements ContactListener
@@ -13,7 +14,17 @@ public class CollisionListener implements ContactListener
 	@Override
 	public void beginContact(Contact contact)
 	{
-		/* 何もしない */ 
+		final Fixture fixtureA = contact.getFixtureA();
+		final Fixture fixtureB = contact.getFixtureB();
+		
+		if(fixtureA.isSensor() || fixtureB.isSensor())
+		{
+			final AbstractCollisionCallback callbackA = (AbstractCollisionCallback)fixtureA.getBody().getUserData();
+			final AbstractCollisionCallback callbackB = (AbstractCollisionCallback)fixtureB.getBody().getUserData();
+
+			callbackA.dispatch(callbackB, contact);
+			callbackB.dispatch(callbackA, contact);
+		}
 	}
 	
 	/**
@@ -42,7 +53,7 @@ public class CollisionListener implements ContactListener
 	{
 		final AbstractCollisionCallback callbackA = (AbstractCollisionCallback)contact.getFixtureA().getBody().getUserData();
 		final AbstractCollisionCallback callbackB = (AbstractCollisionCallback)contact.getFixtureB().getBody().getUserData();
-
+		
 		callbackA.dispatch(callbackB, contact);
 		callbackB.dispatch(callbackA, contact);
 	}

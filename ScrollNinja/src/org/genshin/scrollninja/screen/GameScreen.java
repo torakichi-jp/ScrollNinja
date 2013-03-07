@@ -33,7 +33,7 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 		stage = new Stage(world, "data/jsons/stage/stage_test.json");
 		
 		//---- 忍者を生成する。
-		final AbstractNinja ninja = new Ninja(world, stage.getSize(), getCursor());
+		final AbstractNinja ninja = new Ninja(world, stage.getStartPosition(), getCursor());
 		
 		//---- カメラの追従設定
 		final CameraTranslater cameraTranslater = new CameraTranslater();

@@ -240,6 +240,15 @@ public abstract class AbstractEffect extends AbstractObject
 	}
 	
 	/**
+	 * エフェクトが終了しているか調べる。
+	 * @return		エフェクトが終了している場合はtrue
+	 */
+	public boolean isFinished()
+	{
+		return life <= 0.0f;
+	}
+	
+	/**
 	 * 描画オブジェクトを追加する。
 	 * @param renderObject		描画オブジェクト
 	 */

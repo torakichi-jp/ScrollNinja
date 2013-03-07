@@ -71,6 +71,12 @@ public class UVScrollAnimation implements AnimationInterface
 	}
 	
 	@Override
+	public float getAnimationLength()
+	{
+		return endTime;
+	}
+
+	@Override
 	public boolean isAnimationFinished(float stateTime)
 	{
 		return !looping && stateTime > endTime;

@@ -18,6 +18,12 @@ public interface AnimationInterface
 	public TextureRegion getKeyFrame(float stateTime);
 	
 	/**
+	 * アニメーションの長さを取得する。
+	 * @return		アニメーションの長さ（秒）
+	 */
+	public float getAnimationLength();
+	
+	/**
 	 * アニメーションが終了しているか調べる。
 	 * @param stateTime		時間
 	 * @return		指定した時間の時点でアニメーションが終了している場合はtrue

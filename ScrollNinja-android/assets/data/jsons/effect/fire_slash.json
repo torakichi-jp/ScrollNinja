@@ -1,7 +1,7 @@
 {
     "spriteFilePath": "data/jsons/render/slash_sprite.json",
     "animationFilePath": "data/jsons/render/slash_animation.json",
-    "animationName": "Slash",
+    "animationName": "FireSlash",
     "effectDef": {
         "life": 0,
         "startVelocity": {

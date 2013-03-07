@@ -131,6 +131,9 @@ public class FileEffect extends AbstractEffect
 			if(def.animationFilePath == null || def.animationFilePath.isEmpty() || def.animationName == null || def.animationName.isEmpty())
 			{
 				renderObject = new RenderObject(def.spriteFilePath, this, depth);
+				
+				// ついでに寿命設定
+				setLife(def.effectDef.life);
 			}
 			// アニメーションあり
 			else
@@ -138,6 +141,12 @@ public class FileEffect extends AbstractEffect
 				final AnimationRenderObject aro = new AnimationRenderObject(def.spriteFilePath, def.animationFilePath, this, depth);
 				aro.setAnimation(def.animationName);
 				renderObject = aro;
+				
+				// ついでに寿命設定
+				if(def.effectDef.life == 0.0f)
+				{
+					setLife(aro.getAnimationLength());
+				}
 			}
 			
 			// 初期化
@@ -145,13 +154,13 @@ public class FileEffect extends AbstractEffect
 			renderObject.setColor(def.effectDef.startColor);
 			renderObject.setScale(flip.x, flip.y);
 			addRenderObject(renderObject);
-			
+
 			//---- エフェクトのパラメータ設定
+			// 速度・角速度・色
 			final float degrees = getRotation();
 			final Vector2 startVelocity = tmpVector2.set(def.effectDef.startVelocity.x * flip.x, def.effectDef.startVelocity.y * flip.y).rotate(degrees);
 			final Vector2 endVelocity = Vector2.tmp.set(def.effectDef.endVelocity.x * flip.x, def.effectDef.endVelocity.y * flip.y).rotate(degrees);
 			
-			setLife(def.effectDef.life);
 			setVelocity(startVelocity, endVelocity);
 			setAngularVelocity(def.effectDef.startAngularVelocity, def.effectDef.endAngularVelocity);
 			setColor(def.effectDef.startColor, def.effectDef.endColor);

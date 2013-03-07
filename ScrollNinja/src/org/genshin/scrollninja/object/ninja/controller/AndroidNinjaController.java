@@ -18,10 +18,8 @@ public class AndroidNinjaController implements NinjaControllerInterface
 {
 	/**
 	 * コンストラクタ
-	 * @param ninja		忍者オブジェクト
-	 * @param cursor	マウスカーソルオブジェクト
 	 */
-	public AndroidNinjaController(ObjectInterface ninja, ObjectInterface cursor)
+	public AndroidNinjaController()
 	{
 		inputHelper = new MouseInputHelper(Buttons.LEFT);
 	}

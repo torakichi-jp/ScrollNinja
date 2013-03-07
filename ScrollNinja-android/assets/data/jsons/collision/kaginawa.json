@@ -9,7 +9,7 @@
         {
             "name": "Anchor",
             "density": 10000,
-            "friction": 0,
+            "friction": 10000,
             "restitution": 0,
             "isSensor": false,
             "circle": {

@@ -1,10 +1,12 @@
 package org.genshin.scrollninja.object.attack;
 
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.collision.CollisionObject;
 import org.genshin.scrollninja.object.AbstractObject;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -27,7 +29,7 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 		collisionObject = new CollisionObject(collisionFilePath, world, createCollisionCallback());
 		this.power = power;
 		
-		//toSleep();
+		toSleep();
 	}
 
 	@Override
@@ -36,6 +38,26 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 		collisionObject.dispose();
 		
 		super.dispose();
+	}
+	
+	@Override
+	public void update(float deltaTime)
+	{
+		final Body body = collisionObject.getBody();
+		
+		if(collisionEnabled != body.isActive())
+		{
+			body.setActive(collisionEnabled);
+		}
+	}
+
+	/**
+	 * 攻撃力を取得する。
+	 * @return		攻撃力
+	 */
+	public float getPower()
+	{
+		return power;
 	}
 	
 	@Override
@@ -59,7 +81,15 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 	@Override
 	public boolean isSleep()
 	{
-		return !collisionObject.getBody().isActive();
+		return !collisionEnabled;
+	}
+
+	/**
+	 * 活動状態に移行する。
+	 */
+	protected void toActive()
+	{
+		collisionEnabled = true;
 	}
 	
 	/**
@@ -67,7 +97,7 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 	 */
 	protected void toSleep()
 	{
-		collisionObject.getBody().setActive(false);
+		collisionEnabled = false;
 	}
 	
 	/**
@@ -76,12 +106,30 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 	 */
 	protected abstract AbstractCollisionCallback createCollisionCallback();
 	
+	/**
+	 * Bodyオブジェクトを取得する。
+	 * @return		Bodyオブジェクト
+	 */
+	protected Body getBody()
+	{
+		return collisionObject.getBody();
+	}
+	
+	@Override
+	protected int getUpdatePriority()
+	{
+		return GlobalDefine.UpdatePriority.ATTACK;
+	}
+	
 	
 	/** 衝突オブジェクト */
 	private final CollisionObject collisionObject;
 	
 	/** 攻撃力 */
 	private final float power;
+	
+	/** 衝突判定の有効フラグ */
+	private boolean collisionEnabled = false;
 	
 	
 	/**

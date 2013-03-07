@@ -96,7 +96,7 @@
             }
         },
         {
-            "name": "SwordAttack",
+            "name": "Slash",
             "animation": {
                 "textureFilePath": "data/textures/ninja/ninja_attack.png",
                 "start": {
@@ -108,6 +108,33 @@
                     1,
                     2,
                     3,
+                    4,
+                    4,
+                    4,
+                    4,
+                    4
+                ],
+                "time": 3,
+                "looping": false
+            }
+        },
+        {
+            "name": "FireSlash",
+            "animation": {
+                "textureFilePath": "data/textures/ninja/ninja_attack.png",
+                "start": {
+                    "x": 0,
+                    "y": 0
+                },
+                "frames": [
+                    0,
+                    1,
+                    1,
+                    2,
+                    2,
+                    3,
+                    4,
+                    4,
                     4,
                     4,
                     4

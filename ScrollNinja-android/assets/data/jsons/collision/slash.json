@@ -7,18 +7,20 @@
     },
     "fixtures": [
         {
-            "name": "EdgeTemplate",
+            "name": "Slash",
             "density": 0,
             "friction": 0,
             "restitution": 0,
             "isSensor": true,
             "edge": {
-                "length": 640,
+                "length": 64,
                 "offset": 0
             },
             "filter": {
                 "category": "Attack",
-                "ignoreCategories": []
+                "ignoreCategories": [
+                    "\"Player\""
+                ]
             }
         }
     ]

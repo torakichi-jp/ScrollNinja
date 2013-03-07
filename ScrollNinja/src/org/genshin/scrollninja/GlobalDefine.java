@@ -133,6 +133,9 @@ public enum GlobalDefine
 		/** デフォルト */
 		public static final int DEFAULT		= getNextPriority();
 		
+		/** デフォルト */
+		public static final int ATTACK		= getNextPriority();
+		
 		/** 背景オブジェクト */
 		public static final int BACKGROUND	= getNextPriority();
 		
