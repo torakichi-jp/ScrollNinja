@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.ninja.controller;
+package org.genshin.scrollninja.object.character.ninja.controller;
 
 import com.badlogic.gdx.math.Vector2;
 

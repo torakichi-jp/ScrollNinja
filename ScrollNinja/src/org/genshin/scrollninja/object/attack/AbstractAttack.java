@@ -104,7 +104,7 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 	 * 衝突判定のコールバックオブジェクトを生成する。
 	 * @return		衝突判定のコールバックオブジェクト
 	 */
-	protected abstract AbstractCollisionCallback createCollisionCallback();
+	protected abstract AbstractAttackCollisionCallback createCollisionCallback();
 	
 	/**
 	 * Bodyオブジェクトを取得する。

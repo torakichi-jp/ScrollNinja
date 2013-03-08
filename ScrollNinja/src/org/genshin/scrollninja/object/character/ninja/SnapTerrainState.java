@@ -1,6 +1,7 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.effect.FileEffect;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -52,7 +53,7 @@ class SnapTerrainState extends AbstractState
 	}
 
 	@Override
-	protected void updateAttack(AbstractNinja me)
+	protected void updateAttack(AbstractCharacter me)
 	{
 		// なにもしない
 	}

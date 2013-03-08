@@ -64,7 +64,7 @@ public class ScrollNinja extends Game
 		
 		//---- ゲーム内時間をカウントする。
 		Global.frameCount++;
-		Global.gameTime = Gdx.graphics.getDeltaTime();
+		Global.gameTime += Gdx.graphics.getDeltaTime();
 		
 		//---- [Esc] 入力でプログラムを終了する。
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE))

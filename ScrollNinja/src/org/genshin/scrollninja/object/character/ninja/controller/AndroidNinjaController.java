@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.ninja.controller;
+package org.genshin.scrollninja.object.character.ninja.controller;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;

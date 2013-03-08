@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
 /**
  * 空中から鉤縄状態に移行する時の忍者の処理。<br>

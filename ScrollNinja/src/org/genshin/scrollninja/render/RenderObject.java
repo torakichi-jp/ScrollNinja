@@ -97,7 +97,7 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 		//---- 座標、回転、拡縮率、色を反映する。
 		sprite.translate(x, y);
 		sprite.rotate(rotation);
-		sprite.setScale(oldScaleX * scale.x, oldScaleY * scale.y);
+		sprite.setScale(oldScaleX * scale.x * flipScale.x, oldScaleY * scale.y * flipScale.y);
 		sprite.setColor(spriteColor);
 		
 		//---- 描画する。
@@ -108,6 +108,35 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 		sprite.rotate(-rotation);
 		sprite.setScale(oldScaleX, oldScaleY);
 		sprite.setColor(oldColor);
+	}
+	
+	/**
+	 * 反転フラグを設定する。
+	 * @param flipX			X方向の反転フラグ
+	 * @param flipY			Y方向の反転フラグ
+	 */
+	public void flip(boolean flipX, boolean flipY)
+	{
+		this.flipX(flipX);
+		this.flipY(flipY);
+	}
+	
+	/**
+	 * X方向の反転フラグを設定する。
+	 * @param flip		X方向の反転フラグ
+	 */
+	public void flipX(boolean flip)
+	{
+		flipScale.x = flip ? -1.0f : 1.0f;
+	}
+	
+	/**
+	 * Y方向の反転フラグを設定する。
+	 * @param flip		Y方向の反転フラグ
+	 */
+	public void flipY(boolean flip)
+	{
+		flipScale.y = flip ? -1.0f : 1.0f;
 	}
 	
 	/**
@@ -260,6 +289,24 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 	}
 	
 	/**
+	 * X方向の反転フラグを取得する。
+	 * @return		X方向の反転フラグ
+	 */
+	public boolean isFlipX()
+	{
+		return flipScale.x == -1.0f;
+	}
+	
+	/**
+	 * Y方向の反転フラグを取得する。
+	 * @return		Y方向の反転フラグ
+	 */
+	public boolean isFlipY()
+	{
+		return flipScale.y == -1.0f;
+	}
+	
+	/**
 	 * 描画オブジェクトを複製する。
 	 * @param dest		複製先となる描画オブジェクト（nullの場合は自己生成する）
 	 * @return			複製した描画オブジェクト
@@ -277,6 +324,7 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 		dest.posture = posture;
 		dest.renderEnabled = renderEnabled;
 		dest.scale.set(scale);
+		dest.flipScale.set(flipScale);
 		dest.color.set(color);
 		
 		//---- 描画深度を設定する。
@@ -300,6 +348,9 @@ public class RenderObject implements Renderable, Disposable, PostureInterface
 	
 	/** 拡縮率 */
 	private final Vector2 scale = new Vector2(1.0f, 1.0f);
+	
+	/** 反転に使用する拡縮率 */
+	private final Vector2 flipScale = new Vector2(1.0f, 1.0f);
 	
 	/** 色 */
 	private final Color color = new Color(1.0f, 1.0f, 1.0f, 1.0f);

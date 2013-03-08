@@ -1,9 +1,9 @@
 package org.genshin.scrollninja.screen;
 
 import org.genshin.scrollninja.collision.CollisionListener;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
+import org.genshin.scrollninja.object.character.ninja.Ninja;
 import org.genshin.scrollninja.object.gui.Cursor;
-import org.genshin.scrollninja.object.ninja.AbstractNinja;
-import org.genshin.scrollninja.object.ninja.Ninja;
 import org.genshin.scrollninja.object.utils.CameraTranslater;
 import org.genshin.scrollninja.stage.Stage;
 import org.genshin.scrollninja.stage.StageInterface;
@@ -33,7 +33,7 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 		stage = new Stage(world, "data/jsons/stage/stage_test.json");
 		
 		//---- 忍者を生成する。
-		final AbstractNinja ninja = new Ninja(world, stage.getStartPosition(), getCursor());
+		final AbstractCharacter ninja = new Ninja(world, stage.getStartPosition(), getCursor());
 		
 		//---- カメラの追従設定
 		final CameraTranslater cameraTranslater = new CameraTranslater();

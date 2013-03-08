@@ -22,8 +22,9 @@ public abstract class AbstractWeapon extends AbstractObject
 	
 	/**
 	 * 攻撃する。
+	 * @return		攻撃の結果
 	 */
-	public abstract void attack();
+	public abstract AttackResult attack();
 	
 	@Override
 	public void dispose()
@@ -58,4 +59,17 @@ public abstract class AbstractWeapon extends AbstractObject
 	
 	/** 所有者の位置情報 */
 	private final PostureInterface owner;
+	
+	
+	/**
+	 * 攻撃の結果
+	 */
+	public enum AttackResult
+	{
+		/** 攻撃が発動した */
+		Success,
+		
+		/** 攻撃が発動しなかった */
+		Failed
+	}
 }

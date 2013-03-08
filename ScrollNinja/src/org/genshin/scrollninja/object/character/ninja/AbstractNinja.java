@@ -1,22 +1,21 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
 import java.util.ArrayList;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
-import org.genshin.scrollninja.collision.CollisionObject;
-import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
+import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.effect.CopyEffect;
 import org.genshin.scrollninja.object.effect.EffectDef;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
-import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon.AttackResult;
 import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -31,7 +30,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractNinja extends AbstractObject
+public abstract class AbstractNinja extends AbstractCharacter
 {
 	/**
 	 * コンストラクタ
@@ -40,16 +39,19 @@ public abstract class AbstractNinja extends AbstractObject
 	 */
 	public AbstractNinja(World world, Vector2 position)
 	{
+		super("data/jsons/collision/ninja.json", world);
+		
+		final Body body = getBody();
+		
+		//---- 座標設定
+		body.setTransform(position, 0.0f);
+		
 		//---- 描画オブジェクトを生成する。
 		renderObjects.add(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_foot_animation.json", this, GlobalDefine.RenderDepth.NINJA));
 		renderObjects.add(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_body_animation.json", this, GlobalDefine.RenderDepth.NINJA));
 		
-		//---- 衝突オブジェクトを生成する。
-		collisionObject = new CollisionObject("data/jsons/collision/ninja.json", world, new CollisionCallback());
-		collisionObject.getBody().setTransform(position, 0.0f);
-		
 		//---- フィールドを初期化する。
-		kaginawa = new Kaginawa(world, getBody());
+		kaginawa = new Kaginawa(world, body);
 		sword = new SwordWeapon(world, this);
 		state = new AerialState(this);
 		defaultFriction = getFootFixture().getFriction();
@@ -77,12 +79,10 @@ public abstract class AbstractNinja extends AbstractObject
 			kaginawa.dispose();
 			kaginawa = null;
 		}
-		
-		//---- 衝突オブジェクトを破棄する。
-		if(collisionObject != null)
+		if(sword != null)
 		{
-			collisionObject.dispose();
-			collisionObject = null;
+			sword.dispose();
+			sword = null;
 		}
 		
 		//---- 描画オブジェクトを破棄する。
@@ -95,7 +95,7 @@ public abstract class AbstractNinja extends AbstractObject
 		//---- 基本クラスの破棄処理を実行する。
 		super.dispose();
 	}
-
+	
 	@Override
 	public void update(float deltaTime)
 	{
@@ -116,7 +116,7 @@ public abstract class AbstractNinja extends AbstractObject
 			ro.pauseAnimation();
 			
 			//---- コピーエフェクトを生成する。
-			new CopyEffect(ro, afterimageEffectDef);
+			new CopyEffect(ro, afterimageEffectDef, ro.getDepth()-1);
 			
 			//---- アニメーションの一時停止状態を元に戻す
 			if(!oldPaused)
@@ -128,11 +128,12 @@ public abstract class AbstractNinja extends AbstractObject
 		//---- 試し斬り
 		if( controller.isAttack() )
 		{
-			sword.attack();
-			
-			final AnimationRenderObject bodyRenderObject = getBodyRenderObject();
-			bodyRenderObject.setAnimation(sword.getNinjaBodyAnimationName());
-			bodyRenderObject.setAnimationLock(true);
+			if( sword.attack() == AttackResult.Success )
+			{
+				final AnimationRenderObject bodyRenderObject = getBodyRenderObject();
+				bodyRenderObject.setAnimation(sword.getNinjaBodyAnimationName());
+				bodyRenderObject.setAnimationLock(true);
+			}
 		}
 
 		//---- デバッグ文字列
@@ -143,21 +144,21 @@ public abstract class AbstractNinja extends AbstractObject
 	}
 	
 	@Override
-	public float getPositionX()
+	public boolean isFlipX()
 	{
-		return getBody().getPosition().x;
+		return getBodyRenderObject().isFlipX();
 	}
-	
+
 	@Override
-	public float getPositionY()
+	public boolean isFlipY()
 	{
-		return getBody().getPosition().y;
+		return getBodyRenderObject().isFlipY();
 	}
-	
+
 	@Override
-	public float getRotation()
+	protected AbstractCharacterCollisionCallback createCollisionCallback()
 	{
-		return getBody().getAngle() * MathUtils.radiansToDegrees;
+		return new NinjaCollisionCallback();
 	}
 	
 	/**
@@ -168,13 +169,10 @@ public abstract class AbstractNinja extends AbstractObject
 	{
 		this.controller = controller;
 	}
-	
-	
+
+
 	/** 描画オブジェクトの配列 */
 	private final ArrayList<AnimationRenderObject>	renderObjects	= new ArrayList<AnimationRenderObject>(2);
-	
-	/** 衝突オブジェクト */
-	private CollisionObject	collisionObject;
 	
 	/** 忍者の操作を管理するオブジェクト */
 	private NinjaControllerInterface	controller;
@@ -216,7 +214,7 @@ public abstract class AbstractNinja extends AbstractObject
 	/**
 	 * 衝突判定のコールバック
 	 */
-	protected class CollisionCallback extends AbstractCollisionCallback
+	protected class NinjaCollisionCallback extends AbstractCharacterCollisionCallback
 	{
 		@Override
 		public void dispatch(AbstractCollisionCallback collisionCallback, Contact contact)
@@ -376,16 +374,16 @@ public abstract class AbstractNinja extends AbstractObject
 	 */
 	Body getBody()
 	{
-		return collisionObject.getBody();
+		return getCollisionObject().getBody();
 	}
-
+	
 	/**
 	 * 上半身のFixtureオブジェクトを取得する。
 	 * @return		上半身のFixtureオブジェクト
 	 */
 	Fixture getBodyFixture()
 	{
-		return collisionObject.getFixture("Body");
+		return getCollisionObject().getFixture("Body");
 	}
 
 	/**
@@ -394,7 +392,7 @@ public abstract class AbstractNinja extends AbstractObject
 	 */
 	Fixture getFootFixture()
 	{
-		return collisionObject.getFixture("Foot");
+		return getCollisionObject().getFixture("Foot");
 	}
 	
 	/**

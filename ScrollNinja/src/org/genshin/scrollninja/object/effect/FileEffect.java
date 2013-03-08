@@ -118,6 +118,13 @@ public class FileEffect extends AbstractEffect
 		initialize(effectFilePath, flipX, flipY, depth);
 	}
 	
+	/**
+	 * 初期化処理を実行する。
+	 * @param effectFilePath		定義ファイルのパス
+	 * @param flipX					X反転フラグ
+	 * @param flipY					Y反転フラグ
+	 * @param depth					描画深度（値が大きいものを手前に描画する）
+	 */
 	private void initialize(String effectFilePath, boolean flipX, boolean flipY, int depth)
 	{
 		final FileEffectDef def = FileEffectDefFactory.getInstance().get(effectFilePath);
@@ -150,13 +157,13 @@ public class FileEffect extends AbstractEffect
 			}
 			
 			// 初期化
-			final Vector2 flip = Vector2.tmp.set(flipX ? -1.0f : 1.0f, flipY ? -1.0f : 1.0f);
 			renderObject.setColor(def.effectDef.startColor);
-			renderObject.setScale(flip.x, flip.y);
+			renderObject.flip(flipX, flipY);
 			addRenderObject(renderObject);
 
 			//---- エフェクトのパラメータ設定
 			// 速度・角速度・色
+			final Vector2 flip = Vector2.tmp.set(flipX ? -1.0f : 1.0f, flipY ? -1.0f : 1.0f);
 			final float degrees = getRotation();
 			final Vector2 startVelocity = tmpVector2.set(def.effectDef.startVelocity.x * flip.x, def.effectDef.startVelocity.y * flip.y).rotate(degrees);
 			final Vector2 endVelocity = Vector2.tmp.set(def.effectDef.endVelocity.x * flip.x, def.effectDef.endVelocity.y * flip.y).rotate(degrees);

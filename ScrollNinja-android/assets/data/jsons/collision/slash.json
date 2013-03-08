@@ -19,7 +19,7 @@
             "filter": {
                 "category": "Attack",
                 "ignoreCategories": [
-                    "\"Player\""
+                    "Player"
                 ]
             }
         }

@@ -1,4 +1,4 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 

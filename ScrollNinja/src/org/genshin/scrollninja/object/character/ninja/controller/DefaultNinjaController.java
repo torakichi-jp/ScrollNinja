@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.genshin.scrollninja.object.ninja.controller;
+package org.genshin.scrollninja.object.character.ninja.controller;
 
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;

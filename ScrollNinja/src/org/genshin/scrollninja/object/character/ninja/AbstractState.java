@@ -1,5 +1,6 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.effect.FileEffect;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 
@@ -35,7 +36,7 @@ abstract class AbstractState implements StateInterface
 		updateJump(me);					// ジャンプ
 		updateAttack(me);				// 攻撃
 		updateKaginawa(me);				// 鉤縄
-//		updateGravity(me, deltaTime);	// 重力
+		updateGravity(me, deltaTime);	// 重力
 		updateFlip(me);					// 左右反転
 		
 		//---- 次の状態を返す。
@@ -184,7 +185,7 @@ abstract class AbstractState implements StateInterface
 	 * 攻撃の更新処理を実行する。
 	 * @param me		自身を示す忍者オブジェクト
 	 */
-	protected abstract void updateAttack(AbstractNinja me);
+	protected abstract void updateAttack(AbstractCharacter me);
 	
 	/**
 	 * 鉤縄の更新処理を実行する。
@@ -217,11 +218,11 @@ abstract class AbstractState implements StateInterface
 		final Vector2 direction = me.getController().getDirection();
 		final float degree = me.getRotation();
 		final Vector2 upDirection = Vector2.tmp.set(-MathUtils.sinDeg(degree), MathUtils.cosDeg(degree));
-		final float scaler = upDirection.crs(direction) < 0.0f ? -1.0f : 1.0f;
+		final boolean flipX = upDirection.crs(direction) < 0.0f;
 		
 		for(AnimationRenderObject ro : me.getRenderObjects())
 		{
-			ro.setScale(Math.abs(ro.getScaleX()) * scaler, ro.getScaleY());
+			ro.flipX(flipX);
 		}
 	}
 	

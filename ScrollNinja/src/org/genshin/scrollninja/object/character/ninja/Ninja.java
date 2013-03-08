@@ -1,7 +1,7 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.object.character.ninja.controller.DefaultNinjaController;
 import org.genshin.scrollninja.object.gui.Cursor;
-import org.genshin.scrollninja.object.ninja.controller.DefaultNinjaController;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;

@@ -1,4 +1,6 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
+
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -37,7 +39,7 @@ abstract class AbstractKaginawaState extends AbstractState
 	}
 
 	@Override
-	protected void updateAttack(AbstractNinja me)
+	protected void updateAttack(AbstractCharacter me)
 	{
 		// とりあえず　なにもしない
 	}

@@ -1,7 +1,8 @@
-package org.genshin.scrollninja.object.ninja;
+package org.genshin.scrollninja.object.character.ninja;
 
+import org.genshin.scrollninja.object.character.AbstractCharacter;
+import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
-import org.genshin.scrollninja.object.ninja.controller.NinjaControllerInterface;
 
 
 /**
@@ -49,7 +50,7 @@ abstract class AbstractNormalState extends AbstractState
 	}
 	
 	@Override
-	protected void updateAttack(AbstractNinja me)
+	protected void updateAttack(AbstractCharacter me)
 	{
 		// TODO Auto-generated method stub
 	}

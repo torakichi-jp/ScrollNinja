@@ -220,6 +220,15 @@ public abstract class AbstractEffect extends AbstractObject
 		colorVelocity.b = (endBlue - startBlue) * invLife;
 		colorVelocity.a = (endAlpha - startAlpha) * invLife;
 	}
+	
+	/**
+	 * 描画オブジェクトの配列を取得する。
+	 * @return		描画オブジェクトの配列
+	 */
+	public ArrayList<RenderObject> getRenderObjects()
+	{
+		return renderObjects;
+	}
 
 	@Override
 	public float getPositionX()
