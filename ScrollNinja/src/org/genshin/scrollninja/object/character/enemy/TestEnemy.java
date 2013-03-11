@@ -2,7 +2,6 @@ package org.genshin.scrollninja.object.character.enemy;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.render.AnimationRenderObject;
-import org.genshin.scrollninja.utils.debug.DebugString;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;

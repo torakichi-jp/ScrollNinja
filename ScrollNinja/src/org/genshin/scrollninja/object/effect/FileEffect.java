@@ -138,9 +138,6 @@ public class FileEffect extends AbstractEffect
 			if(def.animationFilePath == null || def.animationFilePath.isEmpty() || def.animationName == null || def.animationName.isEmpty())
 			{
 				renderObject = new RenderObject(def.spriteFilePath, this, depth);
-				
-				// ついでに寿命設定
-				setLife(def.effectDef.life);
 			}
 			// アニメーションあり
 			else
@@ -149,10 +146,10 @@ public class FileEffect extends AbstractEffect
 				aro.setAnimation(def.animationName);
 				renderObject = aro;
 				
-				// ついでに寿命設定
+				// 寿命が設定されていない場合、アニメーションの長さに合わせる。
 				if(def.effectDef.life == 0.0f)
 				{
-					setLife(aro.getAnimationLength());
+					def.effectDef.life = aro.getAnimationLength();
 				}
 			}
 			
@@ -162,6 +159,9 @@ public class FileEffect extends AbstractEffect
 			addRenderObject(renderObject);
 
 			//---- エフェクトのパラメータ設定
+			// 寿命
+			setLife(def.effectDef.life);
+			
 			// 速度・角速度・色
 			final Vector2 flip = Vector2.tmp.set(flipX ? -1.0f : 1.0f, flipY ? -1.0f : 1.0f);
 			final float degrees = getRotation();

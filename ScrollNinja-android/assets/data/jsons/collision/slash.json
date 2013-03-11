@@ -13,7 +13,7 @@
             "restitution": 0,
             "isSensor": true,
             "edge": {
-                "length": 64,
+                "length": -36,
                 "offset": 0
             },
             "filter": {

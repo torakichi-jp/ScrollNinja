@@ -222,6 +222,15 @@ public abstract class AbstractEffect extends AbstractObject
 	}
 	
 	/**
+	 * エフェクトの寿命を取得する。
+	 * @return		エフェクトの寿命（秒）
+	 */
+	public float getLife()
+	{
+		return life;
+	}
+	
+	/**
 	 * 描画オブジェクトの配列を取得する。
 	 * @return		描画オブジェクトの配列
 	 */
