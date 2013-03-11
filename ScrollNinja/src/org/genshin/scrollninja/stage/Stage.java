@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.background.BackgroundDef;
 import org.genshin.scrollninja.object.background.BackgroundLayer;
+import org.genshin.scrollninja.object.character.enemy.TestEnemy;
 import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.utils.JsonUtils;
 
@@ -27,6 +28,8 @@ public class Stage implements StageInterface
 	 */
 	public Stage(World world, String stageDefFile)
 	{
+		final float worldScale = GlobalDefine.INSTANCE.WORLD_SCALE;
+		
 		//---- ステージの初期化用定義をファイルから読み込む
 		final StageDef stageDef = JsonUtils.read(stageDefFile, StageDef.class);
 		
@@ -38,10 +41,10 @@ public class Stage implements StageInterface
 			terrain = null;
 			return;
 		}
-		
+				
 		//---- フィールドに値を設定する。
-		size = stageDef.size.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
-		startPosition = stageDef.startPosition.mul(GlobalDefine.INSTANCE.WORLD_SCALE);
+		size = stageDef.size.mul(worldScale);
+		startPosition = stageDef.startPosition.mul(worldScale);
 		
 		//---- 地形オブジェクトを生成する。
 		terrain = new Terrain(stageDef.collisionFilePath, world, Vector2.tmp.set(-size.x * 0.5f, -size.y * 0.5f));
@@ -50,6 +53,12 @@ public class Stage implements StageInterface
 		backgroundLayers.ensureCapacity(stageDef.farLayers.length + stageDef.nearLayers.length);
 		createBackgroundLayers(stageDef.farLayers, GlobalDefine.RenderDepth.FAR_BACKGROUND);
 		createBackgroundLayers(stageDef.nearLayers, GlobalDefine.RenderDepth.NEAR_BACKGROUND);
+		
+		//---- 敵オブジェクトを生成する。
+		for(EnemyDef def : stageDef.enemies)
+		{
+			new TestEnemy(world, def.position.mul(worldScale));
+		}
 	}
 
 	@Override

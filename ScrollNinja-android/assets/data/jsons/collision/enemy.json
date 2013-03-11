@@ -1,0 +1,50 @@
+{
+    "body": {
+        "isDynamic": true,
+        "isBullet": true,
+        "isFixedRotation": true,
+        "gravityScale": 1
+    },
+    "fixtures": [
+        {
+            "name": "Body",
+            "density": 0,
+            "friction": 0,
+            "restitution": 0,
+            "isSensor": false,
+            "rectangle": {
+                "offset": {
+                    "x": 0,
+                    "y": 16
+                },
+                "size": {
+                    "x": 16,
+                    "y": 16
+                },
+                "degrees": 0
+            },
+            "filter": {
+                "category": "Enemy",
+                "ignoreCategories": []
+            }
+        },
+        {
+            "name": "Foot",
+            "density": 0,
+            "friction": 0.2,
+            "restitution": 0,
+            "isSensor": false,
+            "circle": {
+                "radius": 15,
+                "position": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            "filter": {
+                "category": "Enemy",
+                "ignoreCategories": []
+            }
+        }
+    ]
+}

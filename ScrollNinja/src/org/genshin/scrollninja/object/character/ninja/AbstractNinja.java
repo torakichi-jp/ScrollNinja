@@ -1,7 +1,5 @@
 package org.genshin.scrollninja.object.character.ninja;
 
-import java.util.ArrayList;
-
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
@@ -13,6 +11,7 @@ import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon.AttackResult;
 import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
+import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
 import org.genshin.scrollninja.utils.debug.DebugString;
 
@@ -47,8 +46,8 @@ public abstract class AbstractNinja extends AbstractCharacter
 		body.setTransform(position, 0.0f);
 		
 		//---- 描画オブジェクトを生成する。
-		renderObjects.add(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_foot_animation.json", this, GlobalDefine.RenderDepth.NINJA));
-		renderObjects.add(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_body_animation.json", this, GlobalDefine.RenderDepth.NINJA));
+		addRenderObject(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_foot_animation.json", this, GlobalDefine.RenderDepth.NINJA));
+		addRenderObject(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_body_animation.json", this, GlobalDefine.RenderDepth.NINJA));
 		
 		//---- フィールドを初期化する。
 		kaginawa = new Kaginawa(world, body);
@@ -85,13 +84,6 @@ public abstract class AbstractNinja extends AbstractCharacter
 			sword = null;
 		}
 		
-		//---- 描画オブジェクトを破棄する。
-		for(AnimationRenderObject renderObject : renderObjects)
-		{
-			renderObject.dispose();
-		}
-		renderObjects.clear();
-		
 		//---- 基本クラスの破棄処理を実行する。
 		super.dispose();
 	}
@@ -109,19 +101,21 @@ public abstract class AbstractNinja extends AbstractCharacter
 		
 		//---- 残像エフェクト
 		// TODO 残像は常に出すワケではない？
-		for(AnimationRenderObject ro : renderObjects)
+		for(RenderObject ro : getRenderObjects())
 		{
+			final AnimationRenderObject aro = (AnimationRenderObject)ro;
+			
 			//---- コピーエフェクトを生成する前にアニメーションを一時停止しておく。
-			final boolean oldPaused = ro.isAnimationPaused();
-			ro.pauseAnimation();
+			final boolean oldPaused = aro.isAnimationPaused();
+			aro.pauseAnimation();
 			
 			//---- コピーエフェクトを生成する。
-			new CopyEffect(ro, afterimageEffectDef, ro.getDepth()-1);
+			new CopyEffect(aro, afterimageEffectDef, aro.getDepth()-1);
 			
 			//---- アニメーションの一時停止状態を元に戻す
 			if(!oldPaused)
 			{
-				ro.resumeAnimation();
+				aro.resumeAnimation();
 			}
 		}
 		
@@ -142,18 +136,6 @@ public abstract class AbstractNinja extends AbstractCharacter
 		DebugString.add("Ninja Position : " + getPositionX() + ", " + getPositionY());
 		DebugString.add("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
 	}
-	
-	@Override
-	public boolean isFlipX()
-	{
-		return getBodyRenderObject().isFlipX();
-	}
-
-	@Override
-	public boolean isFlipY()
-	{
-		return getBodyRenderObject().isFlipY();
-	}
 
 	@Override
 	protected AbstractCharacterCollisionCallback createCollisionCallback()
@@ -169,10 +151,7 @@ public abstract class AbstractNinja extends AbstractCharacter
 	{
 		this.controller = controller;
 	}
-
-
-	/** 描画オブジェクトの配列 */
-	private final ArrayList<AnimationRenderObject>	renderObjects	= new ArrayList<AnimationRenderObject>(2);
+	
 	
 	/** 忍者の操作を管理するオブジェクト */
 	private NinjaControllerInterface	controller;
@@ -274,15 +253,21 @@ public abstract class AbstractNinja extends AbstractCharacter
 		groundedTimer = 0;
 	}
 	
+	@Override
+	protected void flipX(boolean flipX)
+	{
+		super.flipX(flipX);
+	}
+	
 	/**
 	 * アニメーションを設定する。
 	 * @param animationName		アニメーション名
 	 */
 	void setAnimation(String animationName)
 	{
-		for(AnimationRenderObject ro : renderObjects)
+		for(RenderObject ro : getRenderObjects())
 		{
-			ro.setAnimation(animationName);
+			((AnimationRenderObject)ro).setAnimation(animationName);
 		}
 	}
 	
@@ -342,21 +327,12 @@ public abstract class AbstractNinja extends AbstractCharacter
 	}
 	
 	/**
-	 * 描画オブジェクトの配列を取得する。
-	 * @return		描画オブジェクトの配列
-	 */
-	ArrayList<AnimationRenderObject> getRenderObjects()
-	{
-		return renderObjects;
-	}
-	
-	/**
 	 * 上半身の描画オブジェクトを取得する。
 	 * @return		上半身の描画オブジェクト
 	 */
 	AnimationRenderObject getBodyRenderObject()
 	{
-		return renderObjects.get(1);
+		return (AnimationRenderObject)getRenderObjects().get(1);
 	}
 	
 	/**
@@ -365,7 +341,7 @@ public abstract class AbstractNinja extends AbstractCharacter
 	 */
 	AnimationRenderObject getFootRenderObject()
 	{
-		return renderObjects.get(0);
+		return (AnimationRenderObject)getRenderObjects().get(0);
 	}
 	
 	/**

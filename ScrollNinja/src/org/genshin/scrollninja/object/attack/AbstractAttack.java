@@ -29,7 +29,7 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 		collisionObject = new CollisionObject(collisionFilePath, world, createCollisionCallback());
 		this.power = power;
 		
-		toSleep();
+		collisionObject.getBody().setActive(false);
 	}
 
 	@Override

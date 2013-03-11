@@ -79,7 +79,7 @@ public class SlashAttack extends AbstractAttack
 		@Override
 		public void collision(AbstractCharacter obj, Contact contact)
 		{
-			SlashAttack.this.toSleep();
+			//SlashAttack.this.toSleep();
 		}
 	}
 }

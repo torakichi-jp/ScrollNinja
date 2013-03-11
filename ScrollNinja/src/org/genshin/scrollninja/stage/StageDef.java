@@ -26,6 +26,9 @@ class StageDef
 
 	/** 近景の背景レイヤーの初期化用定義の配列 */
 	public BackgroundLayerDef[] nearLayers;
+	
+	/** 敵の初期化用定義の配列 */
+	public EnemyDef[] enemies;
 }
 
 /**
@@ -38,4 +41,12 @@ class BackgroundLayerDef
 	
 	/** 背景オブジェクトの初期化用定義の配列 */
 	public BackgroundDef[] backgrounds;
+}
+
+/**
+ * 敵の初期化用定義クラス
+ */
+class EnemyDef
+{
+	public Vector2 position;
 }

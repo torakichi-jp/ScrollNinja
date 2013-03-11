@@ -133,7 +133,7 @@ public enum GlobalDefine
 		/** デフォルト */
 		public static final int DEFAULT		= getNextPriority();
 		
-		/** デフォルト */
+		/** 攻撃 */
 		public static final int ATTACK		= getNextPriority();
 		
 		/** 背景オブジェクト */
@@ -153,6 +153,9 @@ public enum GlobalDefine
 
 		/** 鉤縄 */
 		public static final int KAGINAWA			= getNextPriority();
+
+		/** 敵 */
+		public static final int ENEMY				= getNextPriority();
 
 		/** 忍者 */
 		public static final int NINJA				= getNextPriority();

@@ -2,7 +2,6 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.effect.FileEffect;
-import org.genshin.scrollninja.render.AnimationRenderObject;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -218,12 +217,8 @@ abstract class AbstractState implements StateInterface
 		final Vector2 direction = me.getController().getDirection();
 		final float degree = me.getRotation();
 		final Vector2 upDirection = Vector2.tmp.set(-MathUtils.sinDeg(degree), MathUtils.cosDeg(degree));
-		final boolean flipX = upDirection.crs(direction) < 0.0f;
 		
-		for(AnimationRenderObject ro : me.getRenderObjects())
-		{
-			ro.flipX(flipX);
-		}
+		me.flipX(upDirection.crs(direction) < 0.0f);
 	}
 	
 	/**
