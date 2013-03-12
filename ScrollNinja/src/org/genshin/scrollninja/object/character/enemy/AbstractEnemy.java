@@ -34,25 +34,12 @@ public abstract class AbstractEnemy extends AbstractCharacter
 			dispose();
 		}
 	}
-	
-	/**
-	 * 死亡フラグを取得する。
-	 * @return		死亡フラグ
-	 */
-	protected boolean isDead()
-	{
-		return dead;
-	}
 
 	@Override
 	protected AbstractCharacterCollisionCallback createCollisionCallback()
 	{
 		return new EnemyCollisionCallback();
 	}
-	
-	
-	/** 死亡フラグ */
-	private boolean dead = false;
 	
 	
 	/**
@@ -69,11 +56,8 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		@Override
 		public void collision(AbstractAttack obj, Contact contact)
 		{
-			// TODO 敵が攻撃に衝突した時の処理
-			// とりあえず消えておく
-			dead = true;
-			
-			// AbstractEnemy.this.damage(obj.getPower());
+			//---- ダメージを受ける。
+			AbstractEnemy.this.damage(obj.getPower());
 		}
 		
 	}

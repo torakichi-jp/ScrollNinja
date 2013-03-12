@@ -19,7 +19,7 @@ public class SlashAttack extends AbstractAttack
 	 */
 	public SlashAttack(World world, AbstractCharacter owner)
 	{
-		super("data/jsons/collision/slash.json", world, 10.0f);
+		super("data/jsons/collision/slash.json", world, 50.0f);
 		this.owner = owner;
 	}
 	

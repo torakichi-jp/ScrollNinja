@@ -6,14 +6,26 @@ import org.genshin.scrollninja.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.collision.CollisionObject;
 import org.genshin.scrollninja.object.AbstractObject;
 import org.genshin.scrollninja.render.RenderObject;
+import org.genshin.scrollninja.utils.GeneralPoint;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
 
+/**
+ * キャラクタの基本クラス
+ * @author kou
+ * @since		1.0
+ * @version	1.0
+ */
 public abstract class AbstractCharacter extends AbstractObject
 {
+	/**
+	 * コンストラクタ
+	 * @param collisionFilePath		衝突判定の定義ファイルのパス
+	 * @param world					所属する世界オブジェクト
+	 */
 	public AbstractCharacter(String collisionFilePath, World world)
 	{
 		super();
@@ -73,6 +85,15 @@ public abstract class AbstractCharacter extends AbstractObject
 	public final boolean isFlipY()
 	{
 		return renderObjects.get(0).isFlipY();
+	}
+	
+	/**
+	 * ダメージを与える。
+	 * @param damage		ダメージ
+	 */
+	protected void damage(float damage)
+	{
+		lifePoint.add(-damage);
 	}
 	
 	/**
@@ -140,6 +161,24 @@ public abstract class AbstractCharacter extends AbstractObject
 	}
 	
 	/**
+	 * 生命力オブジェクトを取得する。
+	 * @return		生命力オブジェクト
+	 */
+	protected GeneralPoint getLifePoint()
+	{
+		return lifePoint;
+	}
+	
+	/**
+	 * 死亡フラグを取得する。
+	 * @return		死亡フラグ
+	 */
+	protected boolean isDead()
+	{
+		return lifePoint.isZero();
+	}
+	
+	/**
 	 * 衝突判定のコールバックオブジェクトを生成する。
 	 * @return		衝突判定のコールバックオブジェクト
 	 */
@@ -151,6 +190,9 @@ public abstract class AbstractCharacter extends AbstractObject
 	
 	/** 衝突オブジェクト */
 	private CollisionObject	collisionObject;
+	
+	/** 生命力 */
+	private final GeneralPoint lifePoint = new GeneralPoint(100);
 	
 	
 	/**

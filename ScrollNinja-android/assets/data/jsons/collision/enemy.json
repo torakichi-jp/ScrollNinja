@@ -43,7 +43,9 @@
             },
             "filter": {
                 "category": "Enemy",
-                "ignoreCategories": []
+                "ignoreCategories": [
+                    "Attack"
+                ]
             }
         }
     ]

@@ -2,6 +2,7 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
+import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.controller.NinjaControllerInterface;
 import org.genshin.scrollninja.object.effect.CopyEffect;
@@ -133,6 +134,7 @@ public abstract class AbstractNinja extends AbstractCharacter
 		//---- デバッグ文字列
 		DebugString.add("");
 		DebugString.add("Ninja State : " + state.getClass().getSimpleName());
+		DebugString.add("Ninja Life : " + getLifePoint().get());
 		DebugString.add("Ninja Position : " + getPositionX() + ", " + getPositionY());
 		DebugString.add("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
 	}
@@ -205,6 +207,13 @@ public abstract class AbstractNinja extends AbstractCharacter
 		public void collision(Terrain obj, Contact contact)
 		{
 			AbstractNinja.this.state.collisionTerrain(AbstractNinja.this, contact);
+		}
+
+		@Override
+		public void collision(AbstractAttack obj, Contact contact)
+		{
+			//---- ダメージを受ける。
+			AbstractNinja.this.damage(obj.getPower());
 		}
 	}
 
