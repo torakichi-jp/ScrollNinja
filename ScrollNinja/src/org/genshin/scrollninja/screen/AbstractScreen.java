@@ -130,6 +130,12 @@ public abstract class AbstractScreen implements Screen
 		
 		//---- 世界オブジェクトを破棄する。
 		world.dispose();
+		
+		//---- カーソルも破棄しておく。
+		if(cursor != null)
+		{
+			cursor.dispose();
+		}
 	}
 	
 	/**

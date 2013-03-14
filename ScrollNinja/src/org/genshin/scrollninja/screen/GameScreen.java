@@ -44,6 +44,16 @@ public class GameScreen extends AbstractDebugScreen		// FIXME リリース時は
 	}
 
 	@Override
+	public void dispose()
+	{
+		//---- ステージを破棄する。
+		stage.dispose();
+		
+		//---- 基本クラスを破棄する。
+		super.dispose();
+	}
+
+	@Override
 	protected Cursor createCursor()
 	{
 		return new Cursor(2.0f);

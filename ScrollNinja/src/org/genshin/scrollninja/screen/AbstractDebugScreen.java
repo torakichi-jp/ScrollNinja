@@ -46,12 +46,22 @@ abstract class AbstractDebugScreen extends AbstractScreen
 			box2dDebugRenderer.render(getWorld(), getCamera().combined);
 		
 		//---- スクリーン切り替え
-		if			( inputs.get(InputType.ToTitle).isRelease() )	Global.game.setScreen(new TitleScreen());
-		else if		( inputs.get(InputType.ToMap).isRelease() )		Global.game.setScreen(new MapScreen());
-		else if		( inputs.get(InputType.ToGame).isRelease() )	Global.game.setScreen(new GameScreen());
+		if			( inputs.get(InputType.ToTitle).isRelease() )	{ dispose();	Global.game.setScreen(new TitleScreen()); }
+		else if		( inputs.get(InputType.ToMap).isRelease() )		{ dispose();	Global.game.setScreen(new MapScreen()); }
+		else if		( inputs.get(InputType.ToGame).isRelease() )	{ dispose();	Global.game.setScreen(new GameScreen()); }
 	}
 	
-	
+	@Override
+	public void dispose()
+	{
+		//---- 入力管理オブジェクトを破棄
+		inputs.clear();
+		
+		//---- 基本クラスを破棄
+		super.dispose();
+	}
+
+
 	/** デバッグ入力群 */
 	private final Map<InputType, InputHelperInterface> inputs = new EnumMap<InputType, InputHelperInterface>(InputType.class);
 	

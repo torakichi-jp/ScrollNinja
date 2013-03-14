@@ -1,5 +1,6 @@
 package org.genshin.scrollninja.collision;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -71,7 +72,8 @@ public class CollisionObject implements Disposable
 		//---- Bodyオブジェクトを破棄する。
 		if(body != null)
 		{
-			for(Fixture fixture : body.getFixtureList())
+			final ArrayList<Fixture> tmp = new ArrayList<Fixture>(body.getFixtureList());
+			for(Fixture fixture : tmp)
 			{
 				body.destroyFixture(fixture);
 			}
