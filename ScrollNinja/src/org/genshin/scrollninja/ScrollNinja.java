@@ -27,6 +27,9 @@ public class ScrollNinja extends Game
 	@Override
 	public void create()
 	{
+		//---- グローバル変数に登録しておく。
+		Global.game = this;
+		
 		//---- デバッグ文字列の初期化
 		DebugString.initialize(true);
 		

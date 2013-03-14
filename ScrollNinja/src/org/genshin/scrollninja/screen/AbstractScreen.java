@@ -142,6 +142,17 @@ public abstract class AbstractScreen implements Screen
 	}
 	
 	/**
+	 * スクリーンを遷移する。
+	 */
+	protected void transition(AbstractScreen nextScreen)
+	{
+		setCurrentScreen();
+		dispose();
+		nextScreen.setCurrentScreen();
+		Global.game.setScreen(nextScreen);
+	}
+	
+	/**
 	 * カーソルを生成する。
 	 * @return		カーソルオブジェクト
 	 */

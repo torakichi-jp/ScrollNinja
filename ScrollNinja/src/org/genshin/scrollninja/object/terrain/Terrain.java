@@ -24,7 +24,7 @@ public class Terrain implements Disposable
 	 */
 	public Terrain(String collisionFilePath, World world)
 	{
-		collisionObject = new CollisionObject(collisionFilePath, world, new CollisionCallback());
+		collisionObject = new CollisionObject(collisionFilePath, world, new TerrainCollisionCallback());
 	}
 	
 	public Terrain(String collisionFilePath, World world, Vector2 position)
@@ -50,7 +50,7 @@ public class Terrain implements Disposable
 	/**
 	 * 衝突判定のコールバック
 	 */
-	protected class CollisionCallback extends AbstractCollisionCallback
+	protected class TerrainCollisionCallback extends AbstractCollisionCallback
 	{
 		@Override
 		public void dispatch(AbstractCollisionCallback collisionCallback, Contact contact)

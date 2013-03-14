@@ -46,7 +46,7 @@ public class Kaginawa extends AbstractObject
 		renderObjects.add(new RenderObject("data/jsons/render/kaginawa_anchor_sprite.json", this, GlobalDefine.RenderDepth.KAGINAWA));
 		
 		//---- 衝突オブジェクトを生成する。
-		collisionObject = new CollisionObject("data/jsons/collision/kaginawa.json", world, new CollisionCallback());
+		collisionObject = new CollisionObject("data/jsons/collision/kaginawa.json", world, new KaginawaCollisionCallback());
 		
 		//---- フィールドを初期化する。
 		this.owner = owner;
@@ -309,7 +309,7 @@ public class Kaginawa extends AbstractObject
 	/**
 	 * 衝突判定のコールバック
 	 */
-	protected class CollisionCallback extends AbstractCollisionCallback
+	protected class KaginawaCollisionCallback extends AbstractCollisionCallback
 	{
 		@Override
 		public void dispatch(AbstractCollisionCallback collisionCallback, Contact contact)

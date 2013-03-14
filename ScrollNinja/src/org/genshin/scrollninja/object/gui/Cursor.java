@@ -34,6 +34,9 @@ public class Cursor extends AbstractGUI
 	@Override
 	public void dispose()
 	{
+		//---- OSのマウスカーソルを表示
+		Gdx.input.setCursorCatched(false);
+		
 		//---- フィールドを破棄する。
 		renderObject.dispose();
 		
