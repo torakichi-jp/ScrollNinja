@@ -8,7 +8,7 @@ import org.genshin.scrollninja.object.gui.Cursor;
  * @since		1.0
  * @version	1.0
  */
-public class TitleScreen extends AbstractDebugScreen		// FIXME リリース時はAbstractScreenを継承する。
+public class TitleScreen extends AbstractScreen
 {
 	@Override
 	protected Cursor createCursor()

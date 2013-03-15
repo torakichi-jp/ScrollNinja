@@ -14,7 +14,7 @@ import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
-import org.genshin.scrollninja.utils.debug.DebugString;
+import org.genshin.scrollninja.utils.debug.Debug;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -132,11 +132,11 @@ public abstract class AbstractNinja extends AbstractCharacter
 		}
 
 		//---- デバッグ文字列
-		DebugString.add("");
-		DebugString.add("Ninja State : " + state.getClass().getSimpleName());
-		DebugString.add("Ninja Life : " + getLifePoint().get());
-		DebugString.add("Ninja Position : " + getPositionX() + ", " + getPositionY());
-		DebugString.add("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
+		Debug.logToScreen("");
+		Debug.logToScreen("Ninja State : " + state.getClass().getSimpleName());
+		Debug.logToScreen("Ninja Life : " + getLifePoint().get());
+		Debug.logToScreen("Ninja Position : " + getPositionX() + ", " + getPositionY());
+		Debug.logToScreen("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
 	}
 
 	@Override

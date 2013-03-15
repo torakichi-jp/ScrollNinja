@@ -17,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public class GameScreen extends AbstractDebugScreen		// FIXME リリース時はAbstractScreenを継承する。
+public class GameScreen extends AbstractScreen
 {
 	/**
 	 * コンストラクタ

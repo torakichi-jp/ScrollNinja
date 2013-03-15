@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import org.genshin.scrollninja.screen.GameScreen;
-import org.genshin.scrollninja.utils.debug.DebugString;
+import org.genshin.scrollninja.utils.debug.Debug;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 
@@ -30,8 +30,8 @@ public class ScrollNinja extends Game
 		//---- グローバル変数に登録しておく。
 		Global.game = this;
 		
-		//---- デバッグ文字列の初期化
-		DebugString.initialize(true);
+		//---- デバッグモードの設定
+		Debug.initialize(true);
 		
 		//---- アイコンを設定する。
 		final Pixmap[] pixmaps = {
@@ -57,10 +57,12 @@ public class ScrollNinja extends Game
 		//---- 基本クラスの処理を実行する。
 		super.render();
 		
-		//---- デバッグ文字列を描画する。
-		DebugString.render();
-		DebugString.add("Frame Count : " + Global.frameCount);
-		DebugString.add("FPS : " + Gdx.graphics.getFramesPerSecond());
+		//---- debug
+		Debug.updateDebugCommand();
+		Debug.renderLog();
+		
+		Debug.logToScreen("Frame Count : " + Global.frameCount);
+		Debug.logToScreen("FPS : " + Gdx.graphics.getFramesPerSecond());
 		
 		//---- 状態別の処理を実行する。
 		state.invoke(this, Gdx.graphics.getDeltaTime());

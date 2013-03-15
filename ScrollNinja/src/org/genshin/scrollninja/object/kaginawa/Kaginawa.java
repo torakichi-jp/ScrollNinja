@@ -12,7 +12,7 @@ import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.render.KaginawaRopeRenderObject;
 import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
-import org.genshin.scrollninja.utils.debug.DebugString;
+import org.genshin.scrollninja.utils.debug.Debug;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -139,7 +139,7 @@ public class Kaginawa extends AbstractObject
 		
 		//---- test
 		Vector2 anchorPosition = ((CircleShape)collisionObject.getFixture("Anchor").getShape()).getPosition();
-		DebugString.add("Anchor Position : " + anchorPosition);
+		Debug.logToScreen("Anchor Position : " + anchorPosition);
 	}
 	
 	/**
