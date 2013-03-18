@@ -13,7 +13,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Pixmap;
 
 /**
  * ScrollNinja エントリポイント
@@ -32,14 +31,6 @@ public class ScrollNinja extends Game
 		
 		//---- デバッグモードの設定
 		Debug.initialize(true);
-		
-		//---- アイコンを設定する。
-		final Pixmap[] pixmaps = {
-			new Pixmap(Gdx.files.internal("data/textures/icon/128.png")),
-			new Pixmap(Gdx.files.internal("data/textures/icon/32.png")),
-			new Pixmap(Gdx.files.internal("data/textures/icon/16.png")),
-		};
-		Gdx.graphics.setIcon(pixmaps);
 		
 		//---- 画面のクリアカラーを設定する。
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
