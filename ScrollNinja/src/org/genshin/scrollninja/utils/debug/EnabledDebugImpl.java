@@ -120,7 +120,7 @@ final class EnabledDebugImpl implements DebugImplInterface
 	
 	
 	/** 描画フラグを表すマスクビット */
-	private int renderMask = RenderType.LOG.bit;
+	private int renderMask = 0;
 	
 	/** Box2Dの衝突判定オブジェクトを描画するためのレンダラ  */
 	private final Box2DDebugRenderer box2dDebugRenderer = new Box2DDebugRenderer();
@@ -140,8 +140,8 @@ final class EnabledDebugImpl implements DebugImplInterface
 	 */
 	private enum RenderType
 	{
-		COLLISION,
 		LOG,
+		COLLISION,
 		MAX,
 		;
 		

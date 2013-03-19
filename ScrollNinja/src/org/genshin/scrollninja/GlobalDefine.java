@@ -127,20 +127,23 @@ public enum GlobalDefine
 	 */
 	public static class UpdatePriority extends AbstractPriority
 	{
+		/** 衝突判定の振り分け */
+		public static final int COLLISION_DISPATCH	= getNextPriority();
+		
 		/** 入力 */
-		public static final int INPUT			= getNextPriority();
+		public static final int INPUT					= getNextPriority();
 		
 		/** デフォルト */
-		public static final int DEFAULT		= getNextPriority();
+		public static final int DEFAULT				= getNextPriority();
 		
 		/** 攻撃 */
-		public static final int ATTACK		= getNextPriority();
+		public static final int ATTACK				= getNextPriority();
 		
 		/** 背景オブジェクト */
-		public static final int BACKGROUND	= getNextPriority();
+		public static final int BACKGROUND			= getNextPriority();
 		
 		/** アニメーション */
-		public static final int ANIMATION		= getNextPriority();
+		public static final int ANIMATION				= getNextPriority();
 	}
 
 	/**

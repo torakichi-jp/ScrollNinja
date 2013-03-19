@@ -28,6 +28,7 @@ public class GameScreen extends AbstractScreen
 		
 		//---- 衝突判定の監視
 		world.setContactListener(new CollisionListener());
+//		collisionDispatcher = new CollisionDispatcher(world);
 		
 		//---- ステージを生成する。
 		stage = new Stage(world, "data/jsons/stage/stage_test.json");
@@ -49,6 +50,9 @@ public class GameScreen extends AbstractScreen
 		//---- ステージを破棄する。
 		stage.dispose();
 		
+		//---- 衝突判定の振り分けを管理するオブジェクトを破棄する。
+//		collisionDispatcher.dispose();
+		
 		//---- 基本クラスを破棄する。
 		super.dispose();
 	}
@@ -62,4 +66,7 @@ public class GameScreen extends AbstractScreen
 	
 	/** ステージオブジェクト */
 	private final StageInterface stage;
+	
+	/** 衝突判定の振り分けを管理するオブジェクト */
+//	private final CollisionDispatcher collisionDispatcher;
 }
