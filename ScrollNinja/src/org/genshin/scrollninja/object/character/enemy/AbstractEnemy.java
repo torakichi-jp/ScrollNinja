@@ -59,6 +59,5 @@ public abstract class AbstractEnemy extends AbstractCharacter
 			//---- ダメージを受ける。
 			AbstractEnemy.this.damage(obj.getPower());
 		}
-		
 	}
 }

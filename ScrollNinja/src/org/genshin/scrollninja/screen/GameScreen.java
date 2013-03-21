@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.screen;
 
-import org.genshin.scrollninja.collision.CollisionListener;
+import org.genshin.scrollninja.collision.CollisionDispatcher;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.Ninja;
 import org.genshin.scrollninja.object.gui.Cursor;
@@ -27,8 +27,7 @@ public class GameScreen extends AbstractScreen
 		final World world = getWorld();
 		
 		//---- 衝突判定の監視
-		world.setContactListener(new CollisionListener());
-//		collisionDispatcher = new CollisionDispatcher(world);
+		collisionDispatcher = new CollisionDispatcher(world);
 		
 		//---- ステージを生成する。
 		stage = new Stage(world, "data/jsons/stage/stage_test.json");
@@ -51,7 +50,7 @@ public class GameScreen extends AbstractScreen
 		stage.dispose();
 		
 		//---- 衝突判定の振り分けを管理するオブジェクトを破棄する。
-//		collisionDispatcher.dispose();
+		collisionDispatcher.dispose();
 		
 		//---- 基本クラスを破棄する。
 		super.dispose();
@@ -68,5 +67,5 @@ public class GameScreen extends AbstractScreen
 	private final StageInterface stage;
 	
 	/** 衝突判定の振り分けを管理するオブジェクト */
-//	private final CollisionDispatcher collisionDispatcher;
+	private final CollisionDispatcher collisionDispatcher;
 }

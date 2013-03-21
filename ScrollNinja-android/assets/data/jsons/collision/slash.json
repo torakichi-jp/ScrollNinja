@@ -18,8 +18,8 @@
             },
             "filter": {
                 "category": "Attack",
-                "ignoreCategories": [
-                    "Player"
+                "collisionCategories": [
+                    "Enemy"
                 ]
             }
         }

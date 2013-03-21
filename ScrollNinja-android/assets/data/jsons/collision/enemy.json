@@ -18,14 +18,19 @@
                     "y": 16
                 },
                 "size": {
-                    "x": 16,
-                    "y": 16
+                    "x": 32,
+                    "y": 32
                 },
                 "degrees": 0
             },
             "filter": {
                 "category": "Enemy",
-                "ignoreCategories": []
+                "collisionCategories": [
+                    "Terrain",
+                    "Player",
+                    "Enemy",
+                    "Attack"
+                ]
             }
         },
         {
@@ -43,8 +48,34 @@
             },
             "filter": {
                 "category": "Enemy",
-                "ignoreCategories": [
-                    "Attack"
+                "collisionCategories": [
+                    "Terrain",
+                    "Player",
+                    "Enemy"
+                ]
+            }
+        },
+        {
+            "name": "Vision",
+            "density": 0,
+            "friction": 0.2,
+            "restitution": 0,
+            "isSensor": true,
+            "rectangle": {
+                "offset": {
+                    "x": -128,
+                    "y": 16
+                },
+                "size": {
+                    "x": 256,
+                    "y": 64
+                },
+                "degrees": 0
+            },
+            "filter": {
+                "category": "Enemy",
+                "collisionCategories": [
+                    "Player"
                 ]
             }
         }

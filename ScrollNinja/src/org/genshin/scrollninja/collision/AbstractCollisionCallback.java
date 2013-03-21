@@ -42,16 +42,6 @@ public abstract class AbstractCollisionCallback
 		/* 何もしない */
 	}
 	
-//	/**
-//	 * 敵オブジェクトと衝突した。
-//	 * @param obj		衝突した敵オブジェクト
-//	 * @param contact	衝突情報
-//	 */
-//	public void collision(AbstractEnemy obj, Contact contact)
-//	{
-//		/* 何もしない */
-//	}
-	
 	/**
 	 * 鉤縄オブジェクトと衝突した。
 	 * @param obj		衝突した鉤縄オブジェクト

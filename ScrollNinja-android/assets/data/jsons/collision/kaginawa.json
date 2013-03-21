@@ -21,11 +21,8 @@
             },
             "filter": {
                 "category": "Attack",
-                "ignoreCategories": [
-                    "Player",
-                    "Enemy",
-                    "Item",
-                    "Attack"
+                "collisionCategories": [
+                    "Terrain"
                 ]
             }
         }

@@ -85,6 +85,12 @@ public class SlashAttack extends AbstractAttack
 	}
 
 	@Override
+	public boolean isSleep()
+	{
+		return effect == null;
+	}
+
+	@Override
 	protected AbstractAttackCollisionCallback createCollisionCallback()
 	{
 		return new SlashAttackCollisionCallback();
@@ -123,7 +129,7 @@ public class SlashAttack extends AbstractAttack
 		@Override
 		public void collision(AbstractCharacter obj, Contact contact)
 		{
-			//SlashAttack.this.toSleep();
+			SlashAttack.this.toSleep();
 		}
 	}
 }

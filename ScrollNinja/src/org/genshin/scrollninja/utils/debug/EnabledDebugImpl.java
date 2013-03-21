@@ -97,8 +97,11 @@ final class EnabledDebugImpl implements DebugImplInterface
 		consoleLogBuf.append(": ");
 		
 		//---- 呼び出し元のメソッド情報を出力する。
+		final StackTraceElement ste = Thread.currentThread().getStackTrace()[3];
 		consoleLogBuf.append("[");
-		consoleLogBuf.append(Thread.currentThread().getStackTrace()[2].getMethodName());
+		consoleLogBuf.append(ste.getClassName());
+		consoleLogBuf.append("#");
+		consoleLogBuf.append(ste.getMethodName());
 		consoleLogBuf.append("] ");
 		
 		//---- メッセージを出力する。
@@ -106,6 +109,9 @@ final class EnabledDebugImpl implements DebugImplInterface
 		
 		//---- コンソールに出力する。
 		System.out.println(consoleLogBuf);
+		
+		//---- ログのバッファをクリアする。
+		consoleLogBuf.setLength(0);
 	}
 	
 	/**

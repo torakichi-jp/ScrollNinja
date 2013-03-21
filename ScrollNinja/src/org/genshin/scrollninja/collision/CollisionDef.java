@@ -93,7 +93,7 @@ public class CollisionDef implements Json.Serializable
 						final Vector2 offset = json.readValue("offset", Vector2.class, shapeMap);
 						final Float degrees = json.readValue("degrees", Float.class, shapeMap);
 						
-						size.mul(worldScale);
+						size.mul(worldScale * 0.5f);
 						offset.mul(worldScale);
 						
 						shape.setAsBox(size.x, size.y, offset, degrees * MathUtils.degreesToRadians);
@@ -161,15 +161,16 @@ public class CollisionDef implements Json.Serializable
 		//---- Filter
 		{
 			final OrderedMap<String, Object> filterMap = json.readValue("filter", OrderedMap.class, fixtureMap);
-			final Array<String> ignoreCategories = json.readValue("ignoreCategories", Array.class, filterMap);
+			final Array<String> collisionCategories = json.readValue("collisionCategories", Array.class, filterMap);
 			final CategoryBitsFactory cbFactory = CategoryBitsFactory.getInstance();
 			final Filter filter = outFixtureDef.filter;
 			
 			filter.categoryBits = cbFactory.get(json.readValue("category", String.class, filterMap));
 			
-			for(String ignoreCategory : ignoreCategories)
+			filter.maskBits = 0;
+			for(String collisionCategory : collisionCategories)
 			{
-				filter.maskBits &= ~cbFactory.get(ignoreCategory);
+				filter.maskBits |= cbFactory.get(collisionCategory);
 			}
 		}
 

@@ -12,13 +12,18 @@
                 {
                     "name": "terrain",
                     "scale": 3840,
-                    "density": 1.0,
+                    "density": 1,
                     "friction": 0.5,
                     "restitution": 0,
                     "isSensor": false,
                     "filter": {
                         "category": "Terrain",
-                        "ignoreCategories": []
+                        "collisionCategories": [
+                            "Player",
+                            "Enemy",
+                            "Attack",
+                            "Item"
+                        ]
                     }
                 }
             ]

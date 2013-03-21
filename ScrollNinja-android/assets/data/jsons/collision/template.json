@@ -21,7 +21,7 @@
             },
             "filter": {
                 "category": "Hoge",
-                "ignoreCategories": [
+                "collisionCategories": [
                     "Hoge"
                 ]
             }
@@ -45,7 +45,7 @@
             },
             "filter": {
                 "category": "Hoge",
-                "ignoreCategories": [
+                "collisionCategories": [
                     "Hoge"
                 ]
             }
@@ -62,7 +62,7 @@
             },
             "filter": {
                 "category": "Hoge",
-                "ignoreCategories": [
+                "collisionCategories": [
                     "Hoge"
                 ]
             }
@@ -81,7 +81,7 @@
                     "isSensor": false,
                     "filter": {
                         "category": "Hoge",
-                        "ignoreCategories": [
+                        "collisionCategories": [
                             "Hoge"
                         ]
                     }

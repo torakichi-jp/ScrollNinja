@@ -18,14 +18,19 @@
                     "y": 16
                 },
                 "size": {
-                    "x": 16,
-                    "y": 16
+                    "x": 32,
+                    "y": 32
                 },
                 "degrees": 0
             },
             "filter": {
                 "category": "Player",
-                "ignoreCategories": []
+                "collisionCategories": [
+                    "Terrain",
+                    "Enemy",
+                    "Attack",
+                    "Item"
+                ]
             }
         },
         {
@@ -43,7 +48,12 @@
             },
             "filter": {
                 "category": "Player",
-                "ignoreCategories": []
+                "collisionCategories": [
+                    "Terrain",
+                    "Enemy",
+                    "Attack",
+                    "Item"
+                ]
             }
         }
     ]
