@@ -26,11 +26,4 @@ public class TestEnemy extends AbstractEnemy
 		//---- 初期座標を設定する。
 		getCollisionObject().getBody().setTransform(position, 0.0f);
 	}
-	
-	@Override
-	public void update(float deltaTime)
-	{
-		super.update(deltaTime);
-	}
-	
 }
