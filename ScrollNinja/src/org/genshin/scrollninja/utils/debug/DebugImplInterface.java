@@ -39,4 +39,10 @@ interface DebugImplInterface
 	 * @param message		出力するメッセージ
 	 */
 	public void logToConsole(String message);
+	
+	/**
+	 * コンソールにログを出力する。
+	 * @param object		出力するオブジェクト
+	 */
+	public void logToConsole(Object object);
 }

@@ -1,0 +1,8 @@
+{
+    "collisionFilePath": "data/jsons/collision/test_enemy.json",
+    "patrolAccel": 1500,
+    "patrolMaxVelocity": 150,
+    "patrolTurnInterval": 2,
+    "chaseAccel": 2500,
+    "chaseMaxVelocity": 250
+}

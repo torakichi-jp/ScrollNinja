@@ -40,4 +40,10 @@ final class DisabledDebugImpl implements DebugImplInterface
 	{
 		/** 何もしない */
 	}
+	
+	@Override
+	public void logToConsole(Object object)
+	{
+		/** 何もしない */
+	}
 }

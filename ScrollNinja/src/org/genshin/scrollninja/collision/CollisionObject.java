@@ -8,12 +8,15 @@ import java.util.Map.Entry;
 import org.genshin.engine.system.Disposable;
 import org.genshin.scrollninja.collision.CollisionDef.BodyEditorFixtureDef;
 import org.genshin.scrollninja.collision.CollisionDef.FixtureDefPair;
+import org.genshin.scrollninja.utils.debug.Debug;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 /**
@@ -32,7 +35,7 @@ public class CollisionObject implements Disposable
 	 */
 	public CollisionObject(String collisionFilePath, World world, AbstractCollisionCallback collisionCallback)
 	{
-		final CollisionDef collisionDef = CollisionDefFactory.getInstance().get(collisionFilePath);
+		collisionDef = CollisionDefFactory.getInstance().get(collisionFilePath);
 		
 		//---- Body生成
 		body = world.createBody(collisionDef.bodyDef);
@@ -82,6 +85,44 @@ public class CollisionObject implements Disposable
 		}
 	}
 	
+	public void flipX(boolean flipX)
+	{
+		for(Entry<String, FixtureDef> entry : collisionDef.fixtureDefs.entrySet())
+		{
+			final String name = entry.getKey();
+			final FixtureDef fd = entry.getValue();
+			
+			if( fd.shape instanceof PolygonShape )
+			{
+				final PolygonShape srcShape = (PolygonShape)fd.shape;
+				final PolygonShape destShape = (PolygonShape)getFixture(name).getShape();
+
+				final Vector2[] vertices = { Vector2.tmp, Vector2.tmp2, Vector2.tmp3 };
+				for(int i = 0;  i < vertices.length;  ++i)
+					srcShape.getVertex(i, vertices[i]);
+
+				final float halfWidth	= (vertices[1].x - vertices[0].x) * 0.5f;;
+				final float halfHeight	= (vertices[2].y - vertices[0].y) * 0.5f;;
+				final float centerX	= (vertices[1].x + vertices[0].x) * 0.5f * (flipX ? -1.0f : 1.0f);
+				final float centerY	= (vertices[2].y + vertices[0].y) * 0.5f;
+				
+				destShape.setAsBox(halfWidth, halfHeight, Vector2.tmp.set(centerX, centerY), 0.0f);
+				
+				final Vector2 tmp = Vector2.tmp;
+				Debug.logToScreen("");
+				for(int i = 0;  i < destShape.getVertexCount();  ++i)
+				{
+					destShape.getVertex(i, tmp);
+					Debug.logToScreen("vertex " + i + ": " + tmp);
+				}
+				Debug.logToScreen("Half Width : " + halfWidth);
+				Debug.logToScreen("Half Height: " + halfHeight);
+				Debug.logToScreen("Center X   : " + centerX);
+				Debug.logToScreen("Center Y   : " + centerY);
+			}
+		}
+	}
+	
 	/**
 	 * Bodyオブジェクトを取得する。
 	 * @return		Bodyオブジェクト
@@ -101,6 +142,9 @@ public class CollisionObject implements Disposable
 		return fixtures.get(name);
 	}
 	
+	
+	/** 衝突判定の定義 */
+	private final CollisionDef collisionDef;
 	
 	/** Bodyオブジェクト */
 	private Body body;

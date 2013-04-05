@@ -16,6 +16,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JsonUtils
 {
+	/**
+	 * Jsonファイルからデータを読み込む。
+	 * @param filePath		Jsonファイルのパス
+	 * @param type			読み込むデータの型
+	 * @return				読み込んだデータ
+	 */
 	public static <T> T read(String filePath, Class<T> type)
 	{
 		try

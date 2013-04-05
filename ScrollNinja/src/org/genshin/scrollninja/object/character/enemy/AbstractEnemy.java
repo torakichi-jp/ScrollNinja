@@ -4,8 +4,9 @@ import org.genshin.engine.system.factory.AbstractFlyweightFactory;
 import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.terrain.Terrain;
-import org.genshin.scrollninja.utils.debug.Debug;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
@@ -20,12 +21,15 @@ public abstract class AbstractEnemy extends AbstractCharacter
 {
 	/**
 	 * コンストラクタ
-	 * @param collisionFilePath		衝突判定の定義ファイルのパス
+	 * @param enemyFilePath			敵の定義ファイルのパス
 	 * @param world					所属する世界オブジェクト
 	 */
-	public AbstractEnemy(String collisionFilePath, World world)
+	public AbstractEnemy(String enemyFilePath, World world)
 	{
-		super(collisionFilePath, world);
+		super((enemyDefTmp = EnemyDefFactory.getInstance().get(enemyFilePath)).collisionFilePath, world);
+		
+		enemyDef = enemyDefTmp;
+		enemyDefTmp = null;
 		
 		stateFactory = createStateFactory();
 		state = stateFactory.get("Patrol");
@@ -44,6 +48,11 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	{
 		//---- 状態別更新処理
 		state.update(deltaTime);
+		
+		//---- 向きの設定
+		final boolean flip = direction > 0.0f;
+		flipX(flip);
+		getCollisionObject().flipX(flip);
 		
 		//---- 追跡対象は毎フレームクリアしておく。
 		chaseTarget = null;
@@ -70,12 +79,44 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		return new EnemyStateFactory();
 	}
 	
+	/**
+	 * 移動する。
+	 * @param accel				加速度
+	 * @param maxVelocity		最大速度
+	 */
+	private void move(float accel, float maxVelocity)
+	{
+		final Body body = getCollisionObject().getBody();
+		
+		// 最高速度に達していなければ加速する
+		if( Math.abs(body.getLinearVelocity().x) < maxVelocity )
+		{
+			body.applyLinearImpulse(accel * direction, 0.0f, body.getPosition().x, body.getPosition().y);
+			
+			// 最高速度を越えている場合は丸める
+			final Vector2 velocity = Vector2.tmp.set(body.getLinearVelocity());
+			if( Math.abs(velocity.x) > maxVelocity )
+			{
+				body.setLinearVelocity(Math.signum(velocity.x) * maxVelocity, velocity.y);
+			}
+		}
+	}
+	
+	
+	/** 敵の定義（作業用の一時領域） */
+	private static EnemyDef enemyDefTmp;
+	
+	/** 敵の定義 */
+	private final EnemyDef enemyDef;
+	
+	/** 状態の生成を管理するオブジェクト */
+	private final EnemyStateFactory stateFactory;
 	
 	/** 敵の状態 */
 	private EnemyStateInterface state;
 	
-	/** 状態の生成を管理するオブジェクト */
-	private final EnemyStateFactory stateFactory;
+	/** 敵の向き */
+	private float direction = 1.0f;
 	
 	/** 追跡する対象となるキャラクター */
 	private AbstractCharacter chaseTarget = null;
@@ -158,19 +199,33 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		@Override
 		public void initialize()
 		{
-			// TODO Auto-generated method stub
-			Debug.logToConsole(getClass().getSimpleName());
+			direction = -direction;
+			turnTimer = enemyDef.patrolTurnInterval;
 		}
 
 		@Override
 		public void update(float deltaTime)
 		{
+			//---- 移動
+			move(enemyDef.patrolAccel * deltaTime, enemyDef.patrolMaxVelocity);
+			
+			//---- 移動方向の折り返し
+			if((turnTimer -= deltaTime) < 0.0f)
+			{
+				turnTimer = enemyDef.patrolTurnInterval;
+				direction = -direction;
+			}
+			
 			//---- 追跡対象が存在する場合は追跡状態へ
-			if(AbstractEnemy.this.chaseTarget != null)
+			if(chaseTarget != null)
 			{
 				changeState("Chase");
 			}
 		}
+		
+		
+		/** 移動方向の折り返し判定用のタイマー */
+		private float turnTimer;
 	}
 	
 	
@@ -182,17 +237,22 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		@Override
 		public void initialize()
 		{
-			// TODO Auto-generated method stub
-			Debug.logToConsole(getClass().getSimpleName());
 		}
 
 		@Override
 		public void update(float deltaTime)
 		{
 			//---- 追跡対象が存在しない場合は巡回状態へ
-			if(AbstractEnemy.this.chaseTarget == null)
+			if(chaseTarget == null)
 			{
 				changeState("Patrol");
+			}
+			
+			//---- 追跡中
+			else
+			{
+				direction = Math.signum( chaseTarget.getPositionX() - getPositionX() );
+				move(enemyDef.chaseAccel * deltaTime, enemyDef.chaseMaxVelocity);
 			}
 		}
 	}
@@ -207,7 +267,6 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		public void initialize()
 		{
 			// TODO Auto-generated method stub
-			Debug.logToConsole(getClass().getSimpleName());
 		}
 
 		@Override

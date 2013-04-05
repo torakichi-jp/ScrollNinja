@@ -66,6 +66,15 @@ public final class Debug
 	{
 		impl.logToConsole(message);
 	}
+	
+	/**
+	 * コンソールにログを出力する。
+	 * @param object		出力するオブジェクト
+	 */
+	public static void logToConsole(Object object)
+	{
+		impl.logToConsole(object);
+	}
 
 
 	/** デバッグ処理の実装オブジェクト */

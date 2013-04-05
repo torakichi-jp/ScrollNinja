@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.utils.debug;
 
+import java.lang.reflect.Field;
+
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.screen.GameScreen;
 import org.genshin.scrollninja.screen.MapScreen;
@@ -92,17 +94,8 @@ final class EnabledDebugImpl implements DebugImplInterface
 	@Override
 	public void logToConsole(String message)
 	{
-		//---- 現在のフレーム数を出力する。
-		consoleLogBuf.append(Global.frameCount);
-		consoleLogBuf.append(": ");
-		
-		//---- 呼び出し元のメソッド情報を出力する。
-		final StackTraceElement ste = Thread.currentThread().getStackTrace()[3];
-		consoleLogBuf.append("[");
-		consoleLogBuf.append(ste.getClassName());
-		consoleLogBuf.append("#");
-		consoleLogBuf.append(ste.getMethodName());
-		consoleLogBuf.append("] ");
+		//---- ヘッダを出力する。
+		createHeader(consoleLogBuf);
 		
 		//---- メッセージを出力する。
 		consoleLogBuf.append(message);
@@ -114,6 +107,41 @@ final class EnabledDebugImpl implements DebugImplInterface
 		consoleLogBuf.setLength(0);
 	}
 	
+	@Override
+	public void logToConsole(Object object)
+	{
+		//---- ヘッダを出力する。
+		createHeader(consoleLogBuf);
+		
+		//---- メッセージを出力する。
+		for(Field field : object.getClass().getDeclaredFields())
+		{
+			consoleLogBuf.append("\n  ");
+			consoleLogBuf.append(field.getName());
+			consoleLogBuf.append(" = ");
+			
+			try
+			{
+				field.setAccessible(true);
+				consoleLogBuf.append(field.get(object).toString());
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		//---- コンソールに出力する。
+		System.out.println(consoleLogBuf);
+		
+		//---- ログのバッファをクリアする。
+		consoleLogBuf.setLength(0);
+	}
+
 	/**
 	 * 指定した種類の描画フラグを取得する。
 	 * @param type		取得する描画フラグの種類
@@ -122,6 +150,25 @@ final class EnabledDebugImpl implements DebugImplInterface
 	private boolean isRenderEnabled(RenderType type)
 	{
 		return (renderMask & type.bit) != 0;
+	}
+	
+	/**
+	 * ログのヘッダ部分を生成する。
+	 * @param buf		格納先バッファ
+	 */
+	private void createHeader(StringBuffer buf)
+	{
+		//---- 現在のフレーム数を出力する。
+		buf.append(Global.frameCount);
+		buf.append(": ");
+		
+		//---- 呼び出し元のメソッド情報を出力する。
+		final StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
+		buf.append("[");
+		buf.append(ste.getClassName());
+		buf.append("#");
+		buf.append(ste.getMethodName());
+		buf.append("] ");
 	}
 	
 	

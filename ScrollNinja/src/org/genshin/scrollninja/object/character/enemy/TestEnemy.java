@@ -16,7 +16,7 @@ public class TestEnemy extends AbstractEnemy
 {
 	public TestEnemy(World world, Vector2 position)
 	{
-		super("data/jsons/collision/enemy.json", world);
+		super("data/jsons/enemy/test_enemy.json", world);
 		
 		//---- 描画オブジェクトを生成する。
 		final AnimationRenderObject ro = new AnimationRenderObject("data/jsons/render/enemy_sprite.json", "data/jsons/render/enemy_animation.json", this, GlobalDefine.RenderDepth.ENEMY);
