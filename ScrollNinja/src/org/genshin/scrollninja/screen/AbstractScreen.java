@@ -39,10 +39,12 @@ public abstract class AbstractScreen implements Screen
 	public void render(float delta)
 	{
 		//---- debug
-		Debug.logToScreen("");
-		Debug.logToScreen("Screen Name : " + getClass().getSimpleName());
-		Debug.logToScreen("Update Object : " + updatableManager.size());
-		Debug.logToScreen("Render Object : " + renderableManager.size());
+		Debug.logToScreen(
+			"[ " + getClass().getSimpleName() + " ] " + 
+			"[ " + updatableManager.size() + " updatable ] " + 
+			"[ " + renderableManager.size() + " renderable ] " +
+			"\n"
+		);
 		
 		//---- 更新処理を実行する。
 		if( !isPaused() )

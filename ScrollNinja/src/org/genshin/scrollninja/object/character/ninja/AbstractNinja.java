@@ -132,11 +132,14 @@ public abstract class AbstractNinja extends AbstractCharacter
 		}
 
 		//---- デバッグ文字列
-		Debug.logToScreen("");
-		Debug.logToScreen("Ninja State : " + state.getClass().getSimpleName());
-		Debug.logToScreen("Ninja Life : " + getLifePoint().get());
-		Debug.logToScreen("Ninja Position : " + getPositionX() + ", " + getPositionY());
-		Debug.logToScreen("Ninja Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ")");
+		Debug.logToScreen(
+			"Player :\n" +
+			"[ Life : " + getLifePoint().get() + " ] " +
+			"[ " + state.getClass().getSimpleName() + " ]\n" +
+			"[ Position : " + getPositionX() + ", " + getPositionY() + " ]\n" +
+			"[ Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ") ] " +
+			"\n"
+		);
 	}
 
 	@Override

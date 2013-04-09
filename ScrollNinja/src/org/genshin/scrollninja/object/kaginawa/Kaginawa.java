@@ -12,14 +12,12 @@ import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.render.KaginawaRopeRenderObject;
 import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
-import org.genshin.scrollninja.utils.debug.Debug;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -136,10 +134,6 @@ public class Kaginawa extends AbstractObject
 		{
 			updateRopeLength();
 		}
-		
-		//---- test
-		Vector2 anchorPosition = ((CircleShape)collisionObject.getFixture("Anchor").getShape()).getPosition();
-		Debug.logToScreen("Anchor Position : " + anchorPosition);
 	}
 	
 	/**

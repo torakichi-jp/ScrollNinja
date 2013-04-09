@@ -37,9 +37,7 @@ public class CollisionDispatcher implements Updatable, Disposable
 	@Override
 	public void update(float deltaTime)
 	{
-		Debug.logToScreen("");
-		Debug.logToScreen("Contact count : " + world.getContactCount());
-		Debug.logToScreen("Contact count : " + world.getContactList().size());
+		Debug.logToScreen("[ " + world.getContactCount() + " contact ]\n");
 		
 		for(Contact contact : world.getContactList())
 		{

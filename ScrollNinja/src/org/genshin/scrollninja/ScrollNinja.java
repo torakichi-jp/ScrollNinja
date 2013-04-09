@@ -52,8 +52,11 @@ public class ScrollNinja extends Game
 		Debug.updateDebugCommand();
 		Debug.renderLog();
 		
-		Debug.logToScreen("Frame Count : " + Global.frameCount);
-		Debug.logToScreen("FPS : " + Gdx.graphics.getFramesPerSecond());
+		Debug.logToScreen(
+			"[ " + GlobalDefine.INSTANCE.CLIENT_WIDTH + "x" + GlobalDefine.INSTANCE.CLIENT_HEIGHT + (Gdx.graphics.isFullscreen() ? "full" : " win") + " ] " +
+			"[ " + Gdx.graphics.getFramesPerSecond() + " fps ] " +
+			"[ " + Global.frameCount + " frames ] "
+		);
 		
 		//---- 状態別の処理を実行する。
 		state.invoke(this, Gdx.graphics.getDeltaTime());
