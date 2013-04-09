@@ -9,6 +9,8 @@ import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.GeneralPoint;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -50,6 +52,20 @@ public abstract class AbstractCharacter extends AbstractObject
 		
 		super.dispose();
 	}
+	
+	public void respawn(Vector2 position)
+	{
+		//---- ライフポイント回復
+		lifePoint.set(lifePoint.getMax());
+		
+		//---- 座標初期化
+		setTransform(position, 0.0f);
+		
+		//---- 速度などのパラメータも初期化しておく。
+		final Body body = collisionObject.getBody();
+		body.setLinearVelocity(Vector2.Zero);
+		body.setAngularVelocity(0.0f);
+	}
 
 	@Override
 	public final float getPositionX()
@@ -67,6 +83,15 @@ public abstract class AbstractCharacter extends AbstractObject
 	public final float getRotation()
 	{
 		return collisionObject.getBody().getAngle() * MathUtils.radiansToDegrees;
+	}
+	
+	/**
+	 * 死亡フラグを取得する。
+	 * @return		死亡フラグ
+	 */
+	public final boolean isDead()
+	{
+		return lifePoint.isZero();
 	}
 	
 	/**
@@ -134,6 +159,16 @@ public abstract class AbstractCharacter extends AbstractObject
 	}
 	
 	/**
+	 * 位置情報を設定する。
+	 * @param position		座標
+	 * @param degrees		角度（度）
+	 */
+	protected void setTransform(Vector2 position, float degrees)
+	{
+		collisionObject.getBody().setTransform(position, degrees * MathUtils.degreesToRadians);
+	}
+	
+	/**
 	 * 描画オブジェクトを追加する。
 	 * @param ro		描画オブジェクト
 	 */
@@ -167,15 +202,6 @@ public abstract class AbstractCharacter extends AbstractObject
 	protected GeneralPoint getLifePoint()
 	{
 		return lifePoint;
-	}
-	
-	/**
-	 * 死亡フラグを取得する。
-	 * @return		死亡フラグ
-	 */
-	protected boolean isDead()
-	{
-		return lifePoint.isZero();
 	}
 	
 	/**

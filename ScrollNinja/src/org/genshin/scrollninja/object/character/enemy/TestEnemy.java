@@ -26,7 +26,7 @@ public class TestEnemy extends AbstractEnemy
 		addRenderObject(ro);
 		
 		//---- 初期座標を設定する。
-		getCollisionObject().getBody().setTransform(position, 0.0f);
+		setTransform(position, 0.0f);
 	}
 
 	@Override

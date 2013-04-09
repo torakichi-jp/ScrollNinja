@@ -44,7 +44,7 @@ public abstract class AbstractNinja extends AbstractCharacter
 		final Body body = getBody();
 		
 		//---- 座標設定
-		body.setTransform(position, 0.0f);
+		setTransform(position, 0.0f);
 		
 		//---- 描画オブジェクトを生成する。
 		addRenderObject(new AnimationRenderObject("data/jsons/render/ninja_sprite.json", "data/jsons/render/ninja_foot_animation.json", this, GlobalDefine.RenderDepth.NINJA));

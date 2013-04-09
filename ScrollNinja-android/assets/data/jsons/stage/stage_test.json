@@ -5,7 +5,7 @@
     },
     "startPosition": {
         "x": 0,
-        "y": -700
+        "y": 0
     },
     "collisionFilePath": "data/jsons/collision/stage_test.json",
     "farLayers": [
@@ -131,7 +131,7 @@
     "enemies": [
         {
             "position": {
-                "x": 0,
+                "x": 1000,
                 "y": 0
             }
         }

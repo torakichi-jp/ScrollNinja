@@ -27,7 +27,6 @@
                 "category": "Enemy",
                 "collisionCategories": [
                     "Terrain",
-                    "Player",
                     "Enemy",
                     "Attack"
                 ]
@@ -50,7 +49,6 @@
                 "category": "Enemy",
                 "collisionCategories": [
                     "Terrain",
-                    "Player",
                     "Enemy"
                 ]
             }
@@ -73,7 +71,7 @@
                 "degrees": 0
             },
             "filter": {
-                "category": "Enemy",
+                "category": "Vision",
                 "collisionCategories": [
                     "Player"
                 ]

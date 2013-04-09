@@ -27,7 +27,7 @@
                 "category": "Player",
                 "collisionCategories": [
                     "Terrain",
-                    "Enemy",
+                    "Vision",
                     "Attack",
                     "Item"
                 ]
@@ -50,7 +50,7 @@
                 "category": "Player",
                 "collisionCategories": [
                     "Terrain",
-                    "Enemy",
+                    "Vision",
                     "Attack",
                     "Item"
                 ]

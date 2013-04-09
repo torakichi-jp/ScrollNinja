@@ -5,6 +5,7 @@ import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.Ninja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.utils.CameraTranslater;
+import org.genshin.scrollninja.object.utils.RespawnManager;
 import org.genshin.scrollninja.stage.Stage;
 import org.genshin.scrollninja.stage.StageInterface;
 
@@ -34,6 +35,7 @@ public class GameScreen extends AbstractScreen
 		
 		//---- 忍者を生成する。
 		final AbstractCharacter ninja = new Ninja(world, stage.getStartPosition(), getCursor());
+		new RespawnManager(ninja, stage);
 		
 		//---- カメラの追従設定
 		final CameraTranslater cameraTranslater = new CameraTranslater();

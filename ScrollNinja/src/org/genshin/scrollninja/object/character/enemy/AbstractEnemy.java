@@ -67,7 +67,8 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		//---- お前はもう死んでいる。
 		if(isDead())
 		{
-			dispose();
+// FIXME 敵をrespawnさせて遊ぶために、一時的にコメントアウト。最終的には戻す。
+//			dispose();
 		}
 	}
 

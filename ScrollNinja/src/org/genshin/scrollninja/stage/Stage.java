@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.object.background.BackgroundDef;
 import org.genshin.scrollninja.object.background.BackgroundLayer;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.enemy.TestEnemy;
 import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.object.utils.RespawnManager;
 import org.genshin.scrollninja.utils.JsonUtils;
 
 import com.badlogic.gdx.math.Vector2;
@@ -57,7 +59,10 @@ public class Stage implements StageInterface
 		//---- 敵オブジェクトを生成する。
 		for(EnemyDef def : stageDef.enemies)
 		{
-			new TestEnemy(world, def.position.mul(worldScale));
+			final AbstractCharacter character = new TestEnemy(world, def.position.mul(worldScale));
+			
+			// FIXME せっかくなのでrespawnさせてみる。最終的には消す。
+			new RespawnManager(character, this);
 		}
 	}
 

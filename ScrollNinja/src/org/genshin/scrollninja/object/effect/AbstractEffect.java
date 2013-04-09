@@ -9,6 +9,12 @@ import org.genshin.scrollninja.render.RenderObject;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * エフェクトの基本クラス
+ * @author kou
+ * @since		1.0
+ * @version	1.0
+ */
 public abstract class AbstractEffect extends AbstractObject
 {
 	/**
