@@ -4,6 +4,7 @@ import org.genshin.engine.system.factory.AbstractFlyweightFactory;
 import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -31,6 +32,8 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		enemyDef = enemyDefTmp;
 		enemyDefTmp = null;
 		
+		weapon = createWeapon();
+		
 		stateFactory = createStateFactory();
 		state = stateFactory.get("Patrol");
 		state.initialize();
@@ -39,7 +42,11 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	@Override
 	public void dispose()
 	{
-		// TODO Auto-generated method stub
+		//---- いろいろ破棄する。
+		weapon.dispose();
+		stateFactory.clear();
+		
+		//---- 基本クラスを破棄する。
 		super.dispose();
 	}
 
@@ -69,6 +76,12 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	{
 		return new EnemyCollisionCallback();
 	}
+	
+	/**
+	 * 武器を生成する。
+	 * @return		武器
+	 */
+	protected abstract AbstractWeapon createWeapon();
 	
 	/**
 	 * 状態の生成を管理するオブジェクトを生成する。
@@ -108,6 +121,9 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	
 	/** 敵の定義 */
 	private final EnemyDef enemyDef;
+	
+	/** 武器 */
+	private final AbstractWeapon weapon;
 	
 	/** 状態の生成を管理するオブジェクト */
 	private final EnemyStateFactory stateFactory;
@@ -251,8 +267,12 @@ public abstract class AbstractEnemy extends AbstractCharacter
 			//---- 追跡中
 			else
 			{
+				//---- 追跡対象に向かって移動する。
 				direction = Math.signum( chaseTarget.getPositionX() - getPositionX() );
 				move(enemyDef.chaseAccel * deltaTime, enemyDef.chaseMaxVelocity);
+				
+				//---- ぶんぶん丸
+				weapon.attack();
 			}
 		}
 	}

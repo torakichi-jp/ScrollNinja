@@ -7,7 +7,7 @@
     },
     "fixtures": [
         {
-            "name": "Slash",
+            "name": "Attack",
             "density": 0,
             "friction": 0,
             "restitution": 0,
@@ -18,9 +18,7 @@
             },
             "filter": {
                 "category": "Attack",
-                "collisionCategories": [
-                    "Enemy"
-                ]
+                "collisionCategories": []
             }
         }
     ]

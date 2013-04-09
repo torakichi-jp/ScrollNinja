@@ -16,20 +16,34 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public abstract class AbstractAttack extends AbstractObject implements AttackInterface
+public abstract class AbstractAttack extends AbstractObject
 {
 	/**
 	 * コンストラクタ
 	 * @param collisionFilePath		衝突判定の定義ファイルのパス
 	 * @param world					所属する世界オブジェクト
 	 * @param power					攻撃力
+	 * @param owner					攻撃者の種類
 	 */
-	public AbstractAttack(String collisionFilePath, World world, float power)
+	public AbstractAttack(String collisionFilePath, World world, float power, AttackOwner owner)
 	{
 		collisionObject = new CollisionObject(collisionFilePath, world, createCollisionCallback());
 		this.power = power;
 		
 		collisionObject.getBody().setActive(false);
+		
+		//---- 攻撃者の種類に合わせて、衝突する対象を設定する。
+		switch(owner)
+		{
+			case PLAYER:
+				collisionObject.addCollisionCategory("Attack", "Enemy");
+				break;
+			case ENEMY:
+				collisionObject.addCollisionCategory("Attack", "Player");
+				break;
+			default:
+				break;
+		}
 	}
 
 	@Override
@@ -50,6 +64,11 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 			body.setActive(collisionEnabled);
 		}
 	}
+	
+	/**
+	 * 攻撃を実行する。
+	 */
+	public abstract void fire();
 
 	/**
 	 * 攻撃力を取得する。
@@ -77,8 +96,11 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 	{
 		return collisionObject.getBody().getAngle() * MathUtils.radiansToDegrees;
 	}
-
-	@Override
+	
+	/**
+	 * 待機状態か調べる。
+	 * @return		待機状態ならtrue
+	 */
 	public boolean isSleep()
 	{
 		return !collisionEnabled;
@@ -105,6 +127,15 @@ public abstract class AbstractAttack extends AbstractObject implements AttackInt
 	 * @return		衝突判定のコールバックオブジェクト
 	 */
 	protected abstract AbstractAttackCollisionCallback createCollisionCallback();
+	
+	/**
+	 * 衝突オブジェクトを取得する。
+	 * @return		衝突オブジェクト
+	 */
+	protected CollisionObject getCollisionObject()
+	{
+		return collisionObject;
+	}
 	
 	/**
 	 * Bodyオブジェクトを取得する。

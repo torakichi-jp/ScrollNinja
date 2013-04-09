@@ -25,6 +25,16 @@ public class SwordWeapon extends AbstractWeapon
 	}
 
 	@Override
+	public void dispose()
+	{
+		//---- このクラスを破棄する。
+		attack.dispose();
+		
+		//---- 基本クラスを破棄する。
+		super.dispose();
+	}
+
+	@Override
 	public AttackResult attack()
 	{
 		//---- 攻撃を実行する。
@@ -44,6 +54,7 @@ public class SwordWeapon extends AbstractWeapon
 	{
 		return "Slash";
 	}
+	
 	
 	/** 攻撃オブジェクト */
 	private final SlashAttack attack;

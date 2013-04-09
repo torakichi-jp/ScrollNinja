@@ -1,6 +1,7 @@
 package org.genshin.scrollninja.object.attack;
 
 import org.genshin.scrollninja.object.character.AbstractCharacter;
+import org.genshin.scrollninja.object.character.ninja.AbstractNinja;
 import org.genshin.scrollninja.object.effect.AbstractEffect;
 import org.genshin.scrollninja.object.effect.FileEffect;
 import org.genshin.scrollninja.render.RenderObject;
@@ -19,18 +20,33 @@ public class SlashAttack extends AbstractAttack
 	 */
 	public SlashAttack(World world, AbstractCharacter owner)
 	{
-		super("data/jsons/collision/slash.json", world, 50.0f);
+		super("data/jsons/collision/slash.json", world, 50.0f, owner instanceof AbstractNinja ? AttackOwner.PLAYER : AttackOwner.ENEMY);
 		this.owner = owner;
 	}
 	
 	@Override
+	public void dispose()
+	{
+		//---- このクラスを破棄する。
+		if(effect != null)
+		{
+			effect.dispose();
+			effect = null;
+		}
+		
+		//---- 基本クラスを破棄する。
+		super.dispose();
+	}
+
+	@Override
 	public void update(float deltaTime)
 	{
-		super.update(deltaTime);
-		
 		//---- 待機状態なら何もしない。
 		if(isSleep())
 			return;
+		
+		//---- 基本クラスの処理を実行する。
+		super.update(deltaTime);
 		
 		//---- 衝突判定、描画オブジェクトを更新する。
 		angle += angularVelocity * deltaTime;

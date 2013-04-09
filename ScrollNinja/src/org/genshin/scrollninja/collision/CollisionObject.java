@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 import org.genshin.engine.system.Disposable;
 import org.genshin.scrollninja.collision.CollisionDef.BodyEditorFixtureDef;
 import org.genshin.scrollninja.collision.CollisionDef.FixtureDefPair;
-import org.genshin.scrollninja.utils.debug.Debug;
 
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -85,6 +85,22 @@ public class CollisionObject implements Disposable
 		}
 	}
 	
+	/**
+	 * 衝突判定をとるカテゴリを追加する。
+	 * @param fixtureName		追加先Fixtureの名前
+	 * @param categoryName		カテゴリの名前
+	 */
+	public void addCollisionCategory(String fixtureName, String categoryName)
+	{
+		final Filter filter = getFixture(fixtureName).getFilterData();
+		filter.maskBits |= CategoryBitsFactory.getInstance().get(categoryName);
+		getFixture(fixtureName).setFilterData(filter);
+	}
+	
+	/**
+	 * 衝突判定をX軸方向に反転させる。
+	 * @param flipX		反転させる場合はtrue
+	 */
 	public void flipX(boolean flipX)
 	{
 		for(Entry<String, FixtureDef> entry : collisionDef.fixtureDefs.entrySet())
@@ -101,24 +117,12 @@ public class CollisionObject implements Disposable
 				for(int i = 0;  i < vertices.length;  ++i)
 					srcShape.getVertex(i, vertices[i]);
 
-				final float halfWidth	= (vertices[1].x - vertices[0].x) * 0.5f;;
-				final float halfHeight	= (vertices[2].y - vertices[0].y) * 0.5f;;
+				final float halfWidth	= (vertices[1].x - vertices[0].x) * 0.5f;
+				final float halfHeight	= (vertices[2].y - vertices[0].y) * 0.5f;
 				final float centerX	= (vertices[1].x + vertices[0].x) * 0.5f * (flipX ? -1.0f : 1.0f);
 				final float centerY	= (vertices[2].y + vertices[0].y) * 0.5f;
 				
 				destShape.setAsBox(halfWidth, halfHeight, Vector2.tmp.set(centerX, centerY), 0.0f);
-				
-				final Vector2 tmp = Vector2.tmp;
-				Debug.logToScreen("");
-				for(int i = 0;  i < destShape.getVertexCount();  ++i)
-				{
-					destShape.getVertex(i, tmp);
-					Debug.logToScreen("vertex " + i + ": " + tmp);
-				}
-				Debug.logToScreen("Half Width : " + halfWidth);
-				Debug.logToScreen("Half Height: " + halfHeight);
-				Debug.logToScreen("Center X   : " + centerX);
-				Debug.logToScreen("Center Y   : " + centerY);
 			}
 		}
 	}

@@ -1,6 +1,8 @@
 package org.genshin.scrollninja.object.character.enemy;
 
 import org.genshin.scrollninja.GlobalDefine;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
+import org.genshin.scrollninja.object.weapon.SwordWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 
 import com.badlogic.gdx.math.Vector2;
@@ -25,5 +27,11 @@ public class TestEnemy extends AbstractEnemy
 		
 		//---- 初期座標を設定する。
 		getCollisionObject().getBody().setTransform(position, 0.0f);
+	}
+
+	@Override
+	protected AbstractWeapon createWeapon()
+	{
+		return new SwordWeapon(getCollisionObject().getBody().getWorld(), this);
 	}
 }
