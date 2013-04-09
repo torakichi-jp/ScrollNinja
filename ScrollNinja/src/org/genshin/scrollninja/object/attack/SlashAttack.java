@@ -45,9 +45,6 @@ public class SlashAttack extends AbstractAttack
 		if(isSleep())
 			return;
 		
-		//---- 基本クラスの処理を実行する。
-		super.update(deltaTime);
-		
 		//---- 衝突判定、描画オブジェクトを更新する。
 		angle += angularVelocity * deltaTime;
 		updateCollisionObject();

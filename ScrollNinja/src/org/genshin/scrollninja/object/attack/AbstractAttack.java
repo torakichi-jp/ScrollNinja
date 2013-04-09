@@ -54,17 +54,6 @@ public abstract class AbstractAttack extends AbstractObject
 		super.dispose();
 	}
 	
-	@Override
-	public void update(float deltaTime)
-	{
-		final Body body = collisionObject.getBody();
-		
-		if(collisionEnabled != body.isActive())
-		{
-			body.setActive(collisionEnabled);
-		}
-	}
-	
 	/**
 	 * 攻撃を実行する。
 	 */
@@ -103,7 +92,7 @@ public abstract class AbstractAttack extends AbstractObject
 	 */
 	public boolean isSleep()
 	{
-		return !collisionEnabled;
+		return !getBody().isActive();
 	}
 
 	/**
@@ -111,7 +100,7 @@ public abstract class AbstractAttack extends AbstractObject
 	 */
 	protected void toActive()
 	{
-		collisionEnabled = true;
+		getBody().setActive(true);
 	}
 	
 	/**
@@ -119,7 +108,7 @@ public abstract class AbstractAttack extends AbstractObject
 	 */
 	protected void toSleep()
 	{
-		collisionEnabled = false;
+		getBody().setActive(false);
 	}
 	
 	/**
@@ -158,9 +147,6 @@ public abstract class AbstractAttack extends AbstractObject
 	
 	/** 攻撃力 */
 	private final float power;
-	
-	/** 衝突判定の有効フラグ */
-	private boolean collisionEnabled = false;
 	
 	
 	/**
