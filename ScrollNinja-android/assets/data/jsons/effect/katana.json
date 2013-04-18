@@ -1,6 +1,6 @@
 {
-    "spriteFilePath": "data/jsons/render/slash_sprite.json",
-    "animationFilePath": "data/jsons/render/slash_animation.json",
+    "spriteFilePath": "data/jsons/render/katana_sprite.json",
+    "animationFilePath": "data/jsons/render/katana_animation.json",
     "animationName": "Slash",
     "effectDef": {
         "life": 0,

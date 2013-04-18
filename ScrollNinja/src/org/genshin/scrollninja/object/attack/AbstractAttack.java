@@ -4,9 +4,11 @@ import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.collision.CollisionObject;
 import org.genshin.scrollninja.object.AbstractObject;
+import org.genshin.scrollninja.object.character.AbstractCharacter;
+import org.genshin.scrollninja.object.character.ninja.AbstractNinja;
+import org.genshin.scrollninja.object.terrain.Terrain;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -25,25 +27,17 @@ public abstract class AbstractAttack extends AbstractObject
 	 * @param power					攻撃力
 	 * @param owner					攻撃者の種類
 	 */
-	public AbstractAttack(String collisionFilePath, World world, float power, AttackOwner owner)
+	public AbstractAttack(String collisionFilePath, World world, float power, AbstractCharacter owner)
 	{
 		collisionObject = new CollisionObject(collisionFilePath, world, createCollisionCallback());
 		this.power = power;
+		this.owner = owner;
 		
+		//---- 最初は待機状態にしておく。
 		collisionObject.getBody().setActive(false);
 		
 		//---- 攻撃者の種類に合わせて、衝突する対象を設定する。
-		switch(owner)
-		{
-			case PLAYER:
-				collisionObject.addCollisionCategory("Attack", "Enemy");
-				break;
-			case ENEMY:
-				collisionObject.addCollisionCategory("Attack", "Player");
-				break;
-			default:
-				break;
-		}
+		collisionObject.addCollisionCategory("Attack", (this.owner instanceof AbstractNinja) ? "Enemy" : "Player");
 	}
 
 	@Override
@@ -92,7 +86,7 @@ public abstract class AbstractAttack extends AbstractObject
 	 */
 	public boolean isSleep()
 	{
-		return !getBody().isActive();
+		return !collisionObject.getBody().isActive();
 	}
 
 	/**
@@ -100,7 +94,7 @@ public abstract class AbstractAttack extends AbstractObject
 	 */
 	protected void toActive()
 	{
-		getBody().setActive(true);
+		collisionObject.getBody().setActive(true);
 	}
 	
 	/**
@@ -108,14 +102,17 @@ public abstract class AbstractAttack extends AbstractObject
 	 */
 	protected void toSleep()
 	{
-		getBody().setActive(false);
+		collisionObject.getBody().setActive(false);
 	}
 	
 	/**
 	 * 衝突判定のコールバックオブジェクトを生成する。
 	 * @return		衝突判定のコールバックオブジェクト
 	 */
-	protected abstract AbstractAttackCollisionCallback createCollisionCallback();
+	protected AttackCollisionCallback createCollisionCallback()
+	{
+		return new AttackCollisionCallback();
+	}
 	
 	/**
 	 * 衝突オブジェクトを取得する。
@@ -127,12 +124,12 @@ public abstract class AbstractAttack extends AbstractObject
 	}
 	
 	/**
-	 * Bodyオブジェクトを取得する。
-	 * @return		Bodyオブジェクト
+	 * 攻撃の所有者を取得する。
+	 * @return		攻撃の所有者
 	 */
-	protected Body getBody()
+	protected AbstractCharacter getOwner()
 	{
-		return collisionObject.getBody();
+		return owner;
 	}
 	
 	@Override
@@ -148,16 +145,31 @@ public abstract class AbstractAttack extends AbstractObject
 	/** 攻撃力 */
 	private final float power;
 	
+	/** 攻撃の所有者 */
+	private final AbstractCharacter owner;
+	
 	
 	/**
 	 * 衝突判定のコールバック
 	 */
-	protected abstract class AbstractAttackCollisionCallback extends AbstractCollisionCallback
+	protected class AttackCollisionCallback extends AbstractCollisionCallback
 	{
 		@Override
 		public void dispatch(AbstractCollisionCallback collisionCallback, Contact contact)
 		{
 			collisionCallback.collision(AbstractAttack.this, contact);
+		}
+		
+		@Override
+		public void collision(Terrain obj, Contact contact)
+		{
+			toSleep();
+		}
+
+		@Override
+		public void collision(AbstractCharacter obj, Contact contact)
+		{
+			toSleep();
 		}
 	}
 }

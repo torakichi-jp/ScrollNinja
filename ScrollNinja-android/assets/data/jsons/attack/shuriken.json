@@ -1,0 +1,11 @@
+{
+    "collisionFilePath": "data/jsons/collision/shuriken.json",
+    "power": 10,
+    "bullet": {
+        "spriteFilePath": "data/jsons/render/shuriken_sprite.json",
+        "animationFilePath": "",
+        "animationName": "",
+        "velocity": 1000,
+        "angularVelocity": 1800
+    }
+}

@@ -1,27 +1,39 @@
 package org.genshin.scrollninja.object.attack;
 
 import org.genshin.scrollninja.object.character.AbstractCharacter;
-import org.genshin.scrollninja.object.character.ninja.AbstractNinja;
 import org.genshin.scrollninja.object.effect.AbstractEffect;
 import org.genshin.scrollninja.object.effect.FileEffect;
 import org.genshin.scrollninja.render.RenderObject;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class SlashAttack extends AbstractAttack
 {
 	/**
 	 * コンストラクタ
-	 * @param world		所属する世界オブジェクト
-	 * @param owner		所有者の位置情報
+	 * @param attackFilePath	攻撃の初期化用定義ファイルのパス
+	 * @param world				所属する世界
+	 * @param owner				攻撃の所有者
 	 */
-	public SlashAttack(World world, AbstractCharacter owner)
+	public SlashAttack(String attackFilePath, World world, AbstractCharacter owner)
 	{
-		super("data/jsons/collision/slash.json", world, 50.0f, owner instanceof AbstractNinja ? AttackOwner.PLAYER : AttackOwner.ENEMY);
-		this.owner = owner;
+		this(AttackDefFactory.getInstance().get(attackFilePath), world, owner);
+	}
+	
+	/**
+	 * コンストラクタ
+	 * @param def		攻撃の初期化用定義
+	 * @param world		所属する世界
+	 * @param owner		攻撃の所有者
+	 */
+	public SlashAttack(AttackDef def, World world, AbstractCharacter owner)
+	{
+		super(def.collisionFilePath, world, def.power, owner);
+		
+		final SlashType type = (SlashType)def.type;
+		effectFilePath = type.effectFilePath;
 	}
 	
 	@Override
@@ -49,9 +61,12 @@ public class SlashAttack extends AbstractAttack
 		angle += angularVelocity * deltaTime;
 		updateCollisionObject();
 		
+		final AbstractCharacter owner = getOwner();
+		final boolean isFlipX = owner.isFlipX();
+		final boolean isFlipY = owner.isFlipY();
 		for(RenderObject ro : effect.getRenderObjects())
 		{
-			ro.flip(owner.isFlipX(), owner.isFlipY());
+			ro.flip(isFlipX, isFlipY);
 		}
 		
 		//---- エフェクトが消えたら斬撃終了。
@@ -66,7 +81,7 @@ public class SlashAttack extends AbstractAttack
 	public void fire()
 	{
 		//---- エフェクトを発生させる。
-		effect = new FileEffect("data/jsons/effect/slash.json", this);
+		effect = new FileEffect(effectFilePath, this);
 		
 		//---- 回転の初期設定
 		if(angularVelocity == null)
@@ -82,19 +97,19 @@ public class SlashAttack extends AbstractAttack
 	@Override
 	public float getPositionX()
 	{
-		return owner.getPositionX();
+		return getOwner().getPositionX();
 	}
 
 	@Override
 	public float getPositionY()
 	{
-		return owner.getPositionY();
+		return getOwner().getPositionY();
 	}
 
 	@Override
 	public float getRotation()
 	{
-		return owner.getRotation();
+		return getOwner().getRotation();
 	}
 
 	@Override
@@ -102,27 +117,21 @@ public class SlashAttack extends AbstractAttack
 	{
 		return effect == null;
 	}
-
-	@Override
-	protected AbstractAttackCollisionCallback createCollisionCallback()
-	{
-		return new SlashAttackCollisionCallback();
-	}
 	
 	/**
 	 * 衝突判定を更新する。
 	 */
 	private void updateCollisionObject()
 	{
-		final Body body = getBody();
-		final float flipRatio = owner.isFlipX() ? -1.0f : 1.0f;
+		final Body body = getCollisionObject().getBody();
+		final float flipRatio = getOwner().isFlipX() ? -1.0f : 1.0f;
 		body.setAngularVelocity(angularVelocity * flipRatio);
 		body.setTransform(getPositionX(), getPositionY(), (getRotation() - 90.0f) * MathUtils.degreesToRadians + angle * flipRatio);
 	}
 	
 	
-	/** 所有者の位置情報 */
-	private final AbstractCharacter owner;
+	/** エフェクトの初期化用定義ファイルのパス */
+	private final String effectFilePath;
 	
 	/** エフェクトオブジェクト */
 	private AbstractEffect effect;
@@ -132,17 +141,4 @@ public class SlashAttack extends AbstractAttack
 	
 	/** 角速度（radian/秒） */
 	private static Float angularVelocity;
-	
-	
-	/**
-	 * 衝突判定のコールバック
-	 */
-	private class SlashAttackCollisionCallback extends AbstractAttackCollisionCallback
-	{
-		@Override
-		public void collision(AbstractCharacter obj, Contact contact)
-		{
-			SlashAttack.this.toSleep();
-		}
-	}
 }

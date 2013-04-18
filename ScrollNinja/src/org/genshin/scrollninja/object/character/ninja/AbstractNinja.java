@@ -1,5 +1,7 @@
 package org.genshin.scrollninja.object.character.ninja;
 
+import java.util.ArrayList;
+
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.AbstractCollisionCallback;
 import org.genshin.scrollninja.object.attack.AbstractAttack;
@@ -9,8 +11,10 @@ import org.genshin.scrollninja.object.effect.CopyEffect;
 import org.genshin.scrollninja.object.effect.EffectDef;
 import org.genshin.scrollninja.object.kaginawa.Kaginawa;
 import org.genshin.scrollninja.object.terrain.Terrain;
+import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon.AttackResult;
-import org.genshin.scrollninja.object.weapon.SwordWeapon;
+import org.genshin.scrollninja.object.weapon.KatanaWeapon;
+import org.genshin.scrollninja.object.weapon.ShurikenWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
@@ -52,10 +56,13 @@ public abstract class AbstractNinja extends AbstractCharacter
 		
 		//---- フィールドを初期化する。
 		kaginawa = new Kaginawa(world, body);
-		sword = new SwordWeapon(world, this);
 		state = new AerialState(this);
 		defaultFriction = getFootFixture().getFriction();
 		gravityPower = world.getGravity().len();
+		
+		weapons.add(new KatanaWeapon(world, this));
+		weapons.add(new ShurikenWeapon(world, this));
+		currentWeaponIndex = 0;
 		
 		//---- アニメーションを設定する。
 		setAnimation("Stay");
@@ -79,11 +86,11 @@ public abstract class AbstractNinja extends AbstractCharacter
 			kaginawa.dispose();
 			kaginawa = null;
 		}
-		if(sword != null)
+		for(AbstractWeapon weapon : weapons)
 		{
-			sword.dispose();
-			sword = null;
+			weapon.dispose();
 		}
+		weapons.clear();
 		
 		//---- 基本クラスの破棄処理を実行する。
 		super.dispose();
@@ -123,19 +130,31 @@ public abstract class AbstractNinja extends AbstractCharacter
 		//---- 試し斬り
 		if( controller.isAttack() )
 		{
-			if( sword.attack() == AttackResult.Success )
+			if( getCurrentWeapon().attack() == AttackResult.Success )
 			{
 				final AnimationRenderObject bodyRenderObject = getBodyRenderObject();
-				bodyRenderObject.setAnimation(sword.getNinjaBodyAnimationName());
+				bodyRenderObject.setAnimation("Slash");		// TODO 何らかの方法で、武器に合わせたアニメーション名を引っ張ってくる。
 				bodyRenderObject.setAnimationLock(true);
 			}
+		}
+		
+		//---- 武器変更
+		if( controller.isNextWeapon() )
+		{
+			currentWeaponIndex = (currentWeaponIndex + 1) % weapons.size();
+		}
+		if( controller.isPrevWeapon() )
+		{
+			final int count = weapons.size();
+			currentWeaponIndex =(currentWeaponIndex - 1 + count) % count;
 		}
 
 		//---- デバッグ文字列
 		Debug.logToScreen(
 			"Player :\n" +
 			"[ Life : " + getLifePoint().get() + " ] " +
-			"[ " + state.getClass().getSimpleName() + " ]\n" +
+			"[ " + state.getClass().getSimpleName() + " ]" +
+			"[ " + getCurrentWeapon().getClass().getSimpleName() + " ]\n" +
 			"[ Position : " + getPositionX() + ", " + getPositionY() + " ]\n" +
 			"[ Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ") ] " +
 			"\n"
@@ -157,6 +176,15 @@ public abstract class AbstractNinja extends AbstractCharacter
 		this.controller = controller;
 	}
 	
+	/**
+	 * 現在選択されている武器オブジェクトを取得する。
+	 * @return		現在選択されている武器オブジェクト
+	 */
+	private AbstractWeapon getCurrentWeapon()
+	{
+		return weapons.get(currentWeaponIndex);
+	}
+	
 	
 	/** 忍者の操作を管理するオブジェクト */
 	private NinjaControllerInterface	controller;
@@ -164,8 +192,11 @@ public abstract class AbstractNinja extends AbstractCharacter
 	/** 鉤縄 */
 	private Kaginawa kaginawa;
 	
-	/** 刀 */
-	private SwordWeapon sword;
+	/** 所持している武器の配列 */
+	private final ArrayList<AbstractWeapon> weapons = new ArrayList<AbstractWeapon>();
+	
+	/** 現在選択している武器のインデックス番号 */
+	private int currentWeaponIndex;
 
 	/** 忍者の状態を管理するオブジェクト */
 	private StateInterface	state;

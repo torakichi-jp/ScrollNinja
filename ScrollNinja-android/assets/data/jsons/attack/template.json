@@ -1,0 +1,14 @@
+{
+    "collisionFilePath": "data/jsons/collision/hoge.json",
+    "power": 50,
+    "slash": {
+        "effectFilePath": "data/jsons/effect/hoge.json"
+    },
+    "bullet": {
+        "spriteFilePath": "data/jsons/render/hoge_sprite.json",
+        "animationFilePath": "data/jsons/render/hoge_animation.json",
+        "animationName": "Default",
+        "velocity": 1000,
+        "angularVelocity": 0
+    }
+}

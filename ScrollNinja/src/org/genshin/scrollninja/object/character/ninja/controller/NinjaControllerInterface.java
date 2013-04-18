@@ -95,5 +95,17 @@ public interface NinjaControllerInterface
 	 * 鉤縄を離す操作の状態を取得する。
 	 * @return	鉤縄を離す操作がある場合はtrue
 	 */
-	boolean isKaginawaRelease();	
+	boolean isKaginawaRelease();
+	
+	/**
+	 * 使用する武器を次の武器に変更する操作の状態を取得する。
+	 * @return		使用する武器を次の武器に変更する操作がある場合はtrue
+	 */
+	boolean isNextWeapon();
+	
+	/**
+	 * 使用する武器を前の武器に変更する操作の状態を取得する。
+	 * @return		使用する武器を前の武器に変更する操作がある場合はtrue
+	 */
+	boolean isPrevWeapon();
 }

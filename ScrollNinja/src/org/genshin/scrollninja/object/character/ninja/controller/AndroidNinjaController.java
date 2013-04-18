@@ -129,7 +129,21 @@ public class AndroidNinjaController implements NinjaControllerInterface
 		return false;
 	}
 	
-	
+	@Override
+	public boolean isNextWeapon()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isPrevWeapon()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 	/** 動く力 */
 	private float movePower = 0.0f;
 	

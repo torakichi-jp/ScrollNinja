@@ -117,6 +117,18 @@ public abstract class AbstractNinjaController implements NinjaControllerInterfac
 	{
 		return inputHelpers[InputType.KAGINAWA_RELEASE.ordinal()].isTrigger();
 	}
+	
+	@Override
+	public final boolean isNextWeapon()
+	{
+		return inputHelpers[InputType.NEXT_WEAPON.ordinal()].isTrigger();
+	}
+	
+	@Override
+	public final boolean isPrevWeapon()
+	{
+		return inputHelpers[InputType.PREV_WEAPON.ordinal()].isTrigger();
+	}
 
 	/**
 	 * インスタンスを初期化する。
@@ -162,6 +174,8 @@ public abstract class AbstractNinjaController implements NinjaControllerInterfac
 		ATTACK,
 		KAGINAWA,
 		KAGINAWA_RELEASE,
+		NEXT_WEAPON,
+		PREV_WEAPON,
 	}
 	
 	/** 入力補助オブジェクト */

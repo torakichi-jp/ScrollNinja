@@ -7,7 +7,7 @@
         {
             "name": "Slash",
             "animation": {
-                "textureFilePath": "data/textures/effect/slash.png",
+                "textureFilePath": "data/textures/effect/katana.png",
                 "start": {
                     "x": 0,
                     "y": 0
@@ -30,7 +30,7 @@
         {
             "name": "FireSlash",
             "animation": {
-                "textureFilePath": "data/textures/effect/slash.png",
+                "textureFilePath": "data/textures/effect/katana.png",
                 "start": {
                     "x": 0,
                     "y": 1

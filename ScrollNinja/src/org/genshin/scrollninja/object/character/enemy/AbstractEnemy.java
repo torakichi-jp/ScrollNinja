@@ -94,6 +94,18 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	}
 	
 	/**
+	 * 特定のFixtureが衝突情報に含まれているか調べる。
+	 * @param fixtureName		Fixtureの名前
+	 * @param contact			衝突情報
+	 * @return		Fixtureが衝突情報に含まれている場合はtrue
+	 */
+	protected boolean contactIs(String fixtureName, Contact contact)
+	{
+		final Fixture target = getCollisionObject().getFixture(fixtureName);
+		return contact.getFixtureA() == target || contact.getFixtureB() == target;
+	}
+	
+	/**
 	 * 移動する。
 	 * @param accel				加速度
 	 * @param maxVelocity		最大速度
@@ -147,7 +159,11 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		@Override
 		public void collision(Terrain obj, Contact contact)
 		{
-			// TODO 敵が地形に衝突した時の処理
+			//---- 地形と足が衝突した時
+			if(contactIs("Foot", contact))
+			{
+				
+			}
 		}
 
 		@Override
@@ -278,25 +294,6 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		}
 	}
 	
-	
-	/**
-	 * 攻撃する状態
-	 */
-	protected class AttackEnemyState extends AbstractEnemyState
-	{
-		@Override
-		public void initialize()
-		{
-			// TODO Auto-generated method stub
-		}
-
-		@Override
-		public void update(float deltaTime)
-		{
-			// TODO Auto-generated method stub
-		}
-	}
-	
 	/**
 	 * 状態の生成を管理するファクトリクラス
 	 */
@@ -307,7 +304,6 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		{
 			if(key.equals("Patrol"))	return new PatrolEnemyState();
 			if(key.equals("Chase"))		return new ChaseEnemyState();
-			if(key.equals("Attack"))	return new AttackEnemyState();
 			
 			return null;
 		}

@@ -1,0 +1,7 @@
+{
+    "collisionFilePath": "data/jsons/collision/katana.json",
+    "power": 50,
+    "slash": {
+        "effectFilePath": "data/jsons/effect/katana.json"
+    }
+}

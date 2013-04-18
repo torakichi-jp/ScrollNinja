@@ -39,6 +39,8 @@ public class DefaultNinjaController extends AbstractNinjaController
 		registInputHelper(InputType.ATTACK, new MouseInputHelper(Buttons.LEFT));
 		registInputHelper(InputType.KAGINAWA, new MouseInputHelper(Buttons.RIGHT));
 		registInputHelper(InputType.KAGINAWA_RELEASE, new KeyboardInputHelper(Keys.S));
+		registInputHelper(InputType.NEXT_WEAPON, new KeyboardInputHelper(Keys.NUM_2));
+		registInputHelper(InputType.PREV_WEAPON, new KeyboardInputHelper(Keys.NUM_1));
 	}
 	
 

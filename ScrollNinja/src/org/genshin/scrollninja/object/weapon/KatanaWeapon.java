@@ -11,17 +11,17 @@ import com.badlogic.gdx.physics.box2d.World;
  * @since		1.0
  * @version	1.0
  */
-public class SwordWeapon extends AbstractWeapon
+public class KatanaWeapon extends AbstractWeapon
 {
 	/**
 	 * コンストラクタ
 	 * @param world		所属する世界オブジェクト
 	 * @param owner		所有者の位置情報
 	 */
-	public SwordWeapon(World world, AbstractCharacter owner)
+	public KatanaWeapon(World world, AbstractCharacter owner)
 	{
 		super(owner);
-		attack = new SlashAttack(world, owner);
+		attack = new SlashAttack("data/jsons/attack/katana.json", world, owner);
 	}
 
 	@Override
@@ -44,15 +44,6 @@ public class SwordWeapon extends AbstractWeapon
 			return AttackResult.Success;
 		}
 		return AttackResult.Failed;
-	}
-	
-	/**
-	 * 忍者の上半身アニメーションの名前を取得する。
-	 * @return		忍者の上半身アニメーションの名前
-	 */
-	public String getNinjaBodyAnimationName()
-	{
-		return "Slash";
 	}
 	
 	

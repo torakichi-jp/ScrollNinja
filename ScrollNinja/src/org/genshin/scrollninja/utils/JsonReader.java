@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.OrderedMap;
 
 /**
  * Jsonファイルの読み込み
@@ -34,18 +35,18 @@ public class JsonReader
 	}
 	
 	/**
-	 * 次のノードへ移動する。
-	 * @param name		ノードの名前
+	 * 子ノードへ移動する。
+	 * @param name		子ノードの名前
 	 */
-	public void nextNode(String name)
+	public void toChild(String name)
 	{
-		jsonDataStack.push(read(name, Object.class));
+		jsonDataStack.push(getChild(name));
 	}
 	
 	/**
-	 * 前のノードへ移動する。
+	 * 親ノードへ移動する。
 	 */
-	public void prevNode()
+	public void toParent()
 	{
 		if(jsonDataStack.size() > 1)
 			jsonDataStack.pop();
@@ -54,10 +55,30 @@ public class JsonReader
 	/**
 	 * ルートノードへ移動する。
 	 */
-	public void rootNode()
+	public void toRoot()
 	{
 		while(jsonDataStack.size() > 1)
 			jsonDataStack.pop();
+	}
+	
+	/**
+	 * 指定した名前の子ノードが存在するか調べる。
+	 * @param name		子ノードの名前
+	 * @return			子ノードが存在する場合はtrue
+	 */
+	public boolean hasChild(String name)
+	{
+		return getChild(name) != null;
+	}
+	
+	/**
+	 * 子ノードを取得する。
+	 * @param name		子ノードの名前
+	 * @return			子ノード
+	 */
+	private Object getChild(String name)
+	{
+		return read(name, OrderedMap.class);
 	}
 	
 	
