@@ -20,7 +20,9 @@ public class JsonReader
 	 */
 	public JsonReader(String filePath)
 	{
-		jsonDataStack.push(new com.badlogic.gdx.utils.JsonReader().parse(Gdx.files.internal(filePath)));
+		jsonDataStack.push(
+			toOrderedMap(new com.badlogic.gdx.utils.JsonReader().parse(Gdx.files.internal(filePath)))
+		);
 	}
 	
 	/**
@@ -40,7 +42,9 @@ public class JsonReader
 	 */
 	public void toChild(String name)
 	{
-		jsonDataStack.push(getChild(name));
+		jsonDataStack.push(
+			toOrderedMap(read(name, OrderedMap.class))
+		);
 	}
 	
 	/**
@@ -68,17 +72,18 @@ public class JsonReader
 	 */
 	public boolean hasChild(String name)
 	{
-		return getChild(name) != null;
+		return jsonDataStack.peek().containsKey(name);
 	}
 	
 	/**
-	 * 子ノードを取得する。
-	 * @param name		子ノードの名前
-	 * @return			子ノード
+	 * オブジェクトをOrderdMap<String, Object>型にキャストする。
+	 * @param obj		キャストするオブジェクト
+	 * @return			キャストしたオブジェクト
 	 */
-	private Object getChild(String name)
+	@SuppressWarnings("unchecked")
+	private OrderedMap<String, Object> toOrderedMap(Object obj)
 	{
-		return read(name, OrderedMap.class);
+		return (OrderedMap<String, Object>)obj;
 	}
 	
 	
@@ -86,5 +91,5 @@ public class JsonReader
 	private final Json json = new Json();
 	
 	/** 読み込んだJsonデータのスタック */
-	private final LinkedList<Object> jsonDataStack = new LinkedList<Object>();
+	private final LinkedList<OrderedMap<String, Object>> jsonDataStack = new LinkedList<OrderedMap<String, Object>>();
 }

@@ -6,6 +6,8 @@ package org.genshin.scrollninja.object.character.ninja.controller;
 import org.genshin.engine.system.PostureInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 import org.genshin.scrollninja.utils.input.MouseInputHelper;
+import org.genshin.scrollninja.utils.input.MouseWheelInputHelper;
+import org.genshin.scrollninja.utils.input.MouseWheelInputHelper.WheelButtons;
 
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
@@ -39,8 +41,8 @@ public class DefaultNinjaController extends AbstractNinjaController
 		registInputHelper(InputType.ATTACK, new MouseInputHelper(Buttons.LEFT));
 		registInputHelper(InputType.KAGINAWA, new MouseInputHelper(Buttons.RIGHT));
 		registInputHelper(InputType.KAGINAWA_RELEASE, new KeyboardInputHelper(Keys.S));
-		registInputHelper(InputType.NEXT_WEAPON, new KeyboardInputHelper(Keys.NUM_2));
-		registInputHelper(InputType.PREV_WEAPON, new KeyboardInputHelper(Keys.NUM_1));
+		registInputHelper(InputType.NEXT_WEAPON, new MouseWheelInputHelper(WheelButtons.UP));
+		registInputHelper(InputType.PREV_WEAPON, new MouseWheelInputHelper(WheelButtons.DOWN));
 	}
 	
 

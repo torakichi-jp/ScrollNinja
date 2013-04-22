@@ -16,19 +16,19 @@ abstract class AbstractInputHelper implements InputHelperInterface
 	}
 
 	@Override
-	public boolean isPress()
+	public final boolean isPress()
 	{
 		return current;
 	}
 
 	@Override
-	public boolean isTrigger()
+	public final boolean isTrigger()
 	{
 		return !prev && current;
 	}
 
 	@Override
-	public boolean isRelease()
+	public final boolean isRelease()
 	{
 		return prev && !current;
 	}
