@@ -1,13 +1,11 @@
 package org.genshin.scrollninja.object.character.enemy;
 
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
+import org.genshin.engine.utils.AbstractFSM;
 import org.genshin.scrollninja.object.attack.AbstractAttack;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
-import org.genshin.scrollninja.object.terrain.Terrain;
 import org.genshin.scrollninja.object.weapon.AbstractWeapon;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
@@ -36,7 +34,6 @@ public abstract class AbstractEnemy extends AbstractCharacter
 		
 		stateFactory = createStateFactory();
 		state = stateFactory.get("Patrol");
-		state.initialize();
 	}
 	
 	@Override
@@ -51,10 +48,10 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	}
 
 	@Override
-	public void update(float deltaTime)
+	protected void updateCharacter(float deltaTime)
 	{
 		//---- 状態別更新処理
-		state.update(deltaTime);
+		state = (AbstractEnemyState)state.update(deltaTime);
 		
 		//---- 向きの設定
 		final boolean flip = direction > 0.0f;
@@ -94,39 +91,27 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	}
 	
 	/**
-	 * 特定のFixtureが衝突情報に含まれているか調べる。
-	 * @param fixtureName		Fixtureの名前
-	 * @param contact			衝突情報
-	 * @return		Fixtureが衝突情報に含まれている場合はtrue
-	 */
-	protected boolean contactIs(String fixtureName, Contact contact)
-	{
-		final Fixture target = getCollisionObject().getFixture(fixtureName);
-		return contact.getFixtureA() == target || contact.getFixtureB() == target;
-	}
-	
-	/**
 	 * 移動する。
 	 * @param accel				加速度
 	 * @param maxVelocity		最大速度
 	 */
-	private void move(float accel, float maxVelocity)
-	{
-		final Body body = getCollisionObject().getBody();
-		
-		// 最高速度に達していなければ加速する
-		if( Math.abs(body.getLinearVelocity().x) < maxVelocity )
-		{
-			body.applyLinearImpulse(accel * direction, 0.0f, body.getPosition().x, body.getPosition().y);
-			
-			// 最高速度を越えている場合は丸める
-			final Vector2 velocity = Vector2.tmp.set(body.getLinearVelocity());
-			if( Math.abs(velocity.x) > maxVelocity )
-			{
-				body.setLinearVelocity(Math.signum(velocity.x) * maxVelocity, velocity.y);
-			}
-		}
-	}
+//	private void move(float accel, float maxVelocity)
+//	{
+//		final Body body = getCollisionObject().getBody();
+//		
+//		// 最高速度に達していなければ加速する
+//		if( Math.abs(body.getLinearVelocity().x) < maxVelocity )
+//		{
+//			body.applyLinearImpulse(accel * direction, 0.0f, body.getPosition().x, body.getPosition().y);
+//			
+//			// 最高速度を越えている場合は丸める
+//			final Vector2 velocity = Vector2.tmp.set(body.getLinearVelocity());
+//			if( Math.abs(velocity.x) > maxVelocity )
+//			{
+//				body.setLinearVelocity(Math.signum(velocity.x) * maxVelocity, velocity.y);
+//			}
+//		}
+//	}
 	
 	
 	/** 敵の定義（作業用の一時領域） */
@@ -142,7 +127,7 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	private final EnemyStateFactory stateFactory;
 	
 	/** 敵の状態 */
-	private EnemyStateInterface state;
+	private AbstractEnemyState state;
 	
 	/** 敵の向き */
 	private float direction = 1.0f;
@@ -156,16 +141,6 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	 */
 	private class EnemyCollisionCallback extends AbstractCharacterCollisionCallback
 	{
-		@Override
-		public void collision(Terrain obj, Contact contact)
-		{
-			//---- 地形と足が衝突した時
-			if(contactIs("Foot", contact))
-			{
-				
-			}
-		}
-
 		@Override
 		public void collision(AbstractCharacter obj, Contact contact)
 		{
@@ -186,42 +161,9 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	
 	
 	/**
-	 * 敵の状態のインタフェース
-	 */
-	protected interface EnemyStateInterface
-	{
-		/**
-		 * 状態を初期化する。
-		 */
-		public void initialize();
-		
-		/**
-		 * 状態を更新する。
-		 * @param deltaTime		経過時間（秒）
-		 */
-		public void update(float deltaTime);
-	}
-	
-	
-	/**
 	 * 敵の状態の基本クラス
 	 */
-	protected abstract class AbstractEnemyState implements EnemyStateInterface
-	{
-		/**
-		 * 状態を変更する。
-		 * @param stateName		状態の名前
-		 */
-		protected void changeState(String stateName)
-		{
-			final EnemyStateInterface newState = AbstractEnemy.this.stateFactory.get(stateName);
-			if(AbstractEnemy.this.state != newState)
-			{
-				newState.initialize();
-				AbstractEnemy.this.state = newState;
-			}
-		}
-	}
+	protected abstract class AbstractEnemyState extends AbstractFSM<Float> { /* 何も実装しない */ }
 	
 	
 	/**
@@ -230,30 +172,33 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	protected class PatrolEnemyState extends AbstractEnemyState
 	{
 		@Override
-		public void initialize()
+		protected void entryAction(Float deltaTime)
 		{
 			direction = -direction;
 			turnTimer = enemyDef.patrolTurnInterval;
 		}
 
 		@Override
-		public void update(float deltaTime)
+		public AbstractEnemyState inputAction(Float deltaTime)
 		{
-			//---- 移動
-			move(enemyDef.patrolAccel * deltaTime, enemyDef.patrolMaxVelocity);
+			//---- 追跡対象が存在する場合は追跡状態へ
+			if(chaseTarget != null)
+			{
+				return stateFactory.get("Chase");
+			}
 			
-			//---- 移動方向の折り返し
+			//---- 巡回中
+			// 移動
+			move(enemyDef.patrolAccel * deltaTime * direction, enemyDef.patrolMaxVelocity);
+			
+			// 移動方向の折り返し
 			if((turnTimer -= deltaTime) < 0.0f)
 			{
 				turnTimer = enemyDef.patrolTurnInterval;
 				direction = -direction;
 			}
 			
-			//---- 追跡対象が存在する場合は追跡状態へ
-			if(chaseTarget != null)
-			{
-				changeState("Chase");
-			}
+			return this;
 		}
 		
 		
@@ -268,39 +213,42 @@ public abstract class AbstractEnemy extends AbstractCharacter
 	protected class ChaseEnemyState extends AbstractEnemyState
 	{
 		@Override
-		public void initialize()
+		public void entryAction(Float deltaTime)
 		{
 		}
-
+		
 		@Override
-		public void update(float deltaTime)
+		protected AbstractEnemyState inputAction(Float deltaTime)
 		{
 			//---- 追跡対象が存在しない場合は巡回状態へ
 			if(chaseTarget == null)
 			{
-				changeState("Patrol");
+				return stateFactory.get("Patrol");
 			}
 			
 			//---- 追跡中
-			else
-			{
-				//---- 追跡対象に向かって移動する。
-				direction = Math.signum( chaseTarget.getPositionX() - getPositionX() );
-				move(enemyDef.chaseAccel * deltaTime, enemyDef.chaseMaxVelocity);
-				
-				//---- ぶんぶん丸
-				weapon.attack();
-			}
+			// 追跡対象に向かって移動する。
+			direction = Math.signum( chaseTarget.getPositionX() - getPositionX() );
+			move(enemyDef.chaseAccel * deltaTime * direction, enemyDef.chaseMaxVelocity);
+			
+			// 目標物を追跡対象に設定する。
+			setLookAtDirection(chaseTarget.getPositionX() - getPositionX(), chaseTarget.getPositionY() - getPositionY());
+			
+			// ぶんぶん丸
+			weapon.attack();
+			
+			return this;
 		}
 	}
+	
 	
 	/**
 	 * 状態の生成を管理するファクトリクラス
 	 */
-	protected class EnemyStateFactory extends AbstractFlyweightFactory<String, EnemyStateInterface>
+	protected class EnemyStateFactory extends AbstractFlyweightFactory<String, AbstractEnemyState>
 	{
 		@Override
-		protected EnemyStateInterface create(String key)
+		protected AbstractEnemyState create(String key)
 		{
 			if(key.equals("Patrol"))	return new PatrolEnemyState();
 			if(key.equals("Chase"))		return new ChaseEnemyState();

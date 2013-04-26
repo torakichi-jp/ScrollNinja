@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.object;
 
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.utils.debug.Debug;
+import org.genshin.scrollninja.utils.debug.DebugTool;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 
@@ -53,7 +53,7 @@ public class TestObject extends AbstractObject
 		}
 		
 		//---- デバッグ出力
-		Debug.logToScreen("Test Position: " + position);
+		DebugTool.logToScreen("Test Position: " + position);
 	}
 	
 	@Override

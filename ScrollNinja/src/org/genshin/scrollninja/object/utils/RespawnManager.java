@@ -29,7 +29,7 @@ public class RespawnManager extends AbstractUpdatable
 		//---- 死んでたら復活しよう。
 		if(character.isDead())
 		{
-			character.respawn(stage.getStartPosition());
+			character.spawn(stage.getStartPosition());
 		}
 	}
 

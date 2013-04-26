@@ -26,7 +26,7 @@ abstract class AbstractNormalState extends AbstractState
 		}
 		
 		//---- 移動入力があれば移動する。
-		final float movePower = controller.getMovePower() * me.getMoveDirection() * deltaTime;
+		final float movePower = controller.getMovePower() * me.getMoveDir() * deltaTime;
 		if(movePower != 0.0f)
 		{
 			// ダッシュ

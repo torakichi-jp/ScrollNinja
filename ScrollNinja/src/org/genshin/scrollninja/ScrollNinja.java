@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import org.genshin.scrollninja.screen.GameScreen;
-import org.genshin.scrollninja.utils.debug.Debug;
+import org.genshin.scrollninja.utils.debug.DebugTool;
 import org.genshin.scrollninja.utils.input.InputHelperInterface;
 import org.genshin.scrollninja.utils.input.KeyboardInputHelper;
 
@@ -30,7 +30,7 @@ public class ScrollNinja extends Game
 		Global.game = this;
 		
 		//---- デバッグモードの設定
-		Debug.initialize(true);
+		DebugTool.initialize(true);
 		
 		//---- 画面のクリアカラーを設定する。
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -49,10 +49,10 @@ public class ScrollNinja extends Game
 		super.render();
 		
 		//---- debug
-		Debug.updateDebugCommand();
-		Debug.renderLog();
+		DebugTool.updateDebugCommand();
+		DebugTool.renderLog();
 		
-		Debug.logToScreen(
+		DebugTool.logToScreen(
 			"[ " + GlobalDefine.INSTANCE.CLIENT_WIDTH + "x" + GlobalDefine.INSTANCE.CLIENT_HEIGHT + (Gdx.graphics.isFullscreen() ? "full" : " win") + " ] " +
 			"[ " + Gdx.graphics.getFramesPerSecond() + " fps ] " +
 			"[ " + Global.frameCount + " frames ] "

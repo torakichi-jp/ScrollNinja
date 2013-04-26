@@ -18,7 +18,7 @@ import org.genshin.scrollninja.object.weapon.ShurikenWeapon;
 import org.genshin.scrollninja.render.AnimationRenderObject;
 import org.genshin.scrollninja.render.RenderObject;
 import org.genshin.scrollninja.utils.JsonUtils;
-import org.genshin.scrollninja.utils.debug.Debug;
+import org.genshin.scrollninja.utils.debug.DebugTool;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -58,7 +58,6 @@ public abstract class AbstractNinja extends AbstractCharacter
 		kaginawa = new Kaginawa(world, body);
 		state = new AerialState(this);
 		defaultFriction = getFootFixture().getFriction();
-		gravityPower = world.getGravity().len();
 		
 		weapons.add(new KatanaWeapon(world, this));
 		weapons.add(new ShurikenWeapon(world, this));
@@ -107,6 +106,9 @@ public abstract class AbstractNinja extends AbstractCharacter
 		if(isGrounded())
 			--groundedTimer;
 		
+		//---- 目標物への向きを決める（仮）
+		setLookAtDirection(controller.getDirection());
+		
 		//---- 残像エフェクト
 		// TODO 残像は常に出すワケではない？
 		for(RenderObject ro : getRenderObjects())
@@ -150,7 +152,7 @@ public abstract class AbstractNinja extends AbstractCharacter
 		}
 
 		//---- デバッグ文字列
-		Debug.logToScreen(
+		DebugTool.logToScreen(
 			"Player :\n" +
 			"[ Life : " + getLifePoint().get() + " ] " +
 			"[ " + state.getClass().getSimpleName() + " ]" +
@@ -159,6 +161,12 @@ public abstract class AbstractNinja extends AbstractCharacter
 			"[ Velocity : " + getBody().getLinearVelocity().x + ", " + getBody().getLinearVelocity().y + " (" + getBody().getLinearVelocity().len() + ") ] " +
 			"\n"
 		);
+	}
+	
+	@Override
+	protected void updateCharacter(float deltaTime)
+	{
+		// TODO 忍者の更新処理はいずれこっちに移植する予定。
 	}
 
 	@Override
@@ -203,9 +211,6 @@ public abstract class AbstractNinja extends AbstractCharacter
 	
 	/** 摩擦のデフォルト値 */
 	private final float	defaultFriction;
-	
-	/** 重力の強さ */
-	private final float	gravityPower;
 
 	/** 移動する方向（天井に張り付いた状態から自然に移動する用） */
 	private float	moveDirection;
@@ -432,20 +437,17 @@ public abstract class AbstractNinja extends AbstractCharacter
 		return kaginawa;
 	}
 	
-	/**
-	 * 重力の強さを取得する。
-	 * @return		重力の強さ
-	 */
-	float getGravityPower()
+	@Override
+	protected float getGravityPower()
 	{
-		return gravityPower;
+		return super.getGravityPower();
 	}
 	
 	/**
 	 * 移動する方向を取得する。
 	 * @return		移動する方向
 	 */
-	float getMoveDirection()
+	float getMoveDir()
 	{
 		return moveDirection;
 	}

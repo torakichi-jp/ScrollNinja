@@ -2,6 +2,7 @@ package org.genshin.scrollninja.object.character.ninja;
 
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.effect.FileEffect;
+import org.genshin.scrollninja.utils.debug.DebugTool;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -75,6 +76,7 @@ abstract class AbstractState implements StateInterface
 	 * @param accel			加速度
 	 * @param maxVelocity	制限速度
 	 */
+	@Deprecated
 	protected final void move(AbstractNinja me, float movePower, float accel, float maxVelocity)
 	{
 		final Body body = me.getBody();
@@ -105,9 +107,16 @@ abstract class AbstractState implements StateInterface
 			// 加速度を加えた結果制限速度を越えてしまった場合、前方に働く速度が制限速度内になるように丸める
 			else
 			{
-				body.setLinearVelocity( newVelocity.sub(frontDirection.tmp().mul(maxVelocity/newVelocityLen)) );
+//				body.setLinearVelocity( newVelocity.sub(frontDirection.tmp().mul(maxVelocity/newVelocityLen)) );
+				body.setLinearVelocity( newVelocity.sub(frontDirection.tmp().mul((newVelocityLenAbs-maxVelocity) * Math.signum(newVelocityLen))) );
 			}
 		}
+		
+		
+		//---- てすとじゃん
+		final Vector2 resultVelocity = body.getLinearVelocity();
+		final float resultVelocityLen = frontDirection.dot(resultVelocity);
+		DebugTool.logToScreen("\nmaxVelocity = " + maxVelocity + ", velocity = " + resultVelocityLen);
 	}
 
 	/**

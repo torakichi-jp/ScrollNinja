@@ -83,7 +83,7 @@ class GroundedState extends AbstractNormalState
 		
 		//---- エフェクトを生成する。
 		final NinjaControllerInterface controller = me.getController();
-		final float movePower = controller.getMovePower() * me.getMoveDirection();
+		final float movePower = controller.getMovePower() * me.getMoveDir();
 		if(		controller.isDashStart() && movePower != 0.0f
 			||	controller.isMoveStart() && controller.isDash()	)
 		{

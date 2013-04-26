@@ -4,7 +4,7 @@ import org.genshin.engine.system.Disposable;
 import org.genshin.engine.system.Updatable;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
-import org.genshin.scrollninja.utils.debug.Debug;
+import org.genshin.scrollninja.utils.debug.DebugTool;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.World;
@@ -37,7 +37,7 @@ public class CollisionDispatcher implements Updatable, Disposable
 	@Override
 	public void update(float deltaTime)
 	{
-		Debug.logToScreen("[ " + world.getContactCount() + " contact ]\n");
+		DebugTool.logToScreen("[ " + world.getContactCount() + " contact ]\n");
 		
 		for(Contact contact : world.getContactList())
 		{

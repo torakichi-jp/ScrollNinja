@@ -1,7 +1,7 @@
 package org.genshin.scrollninja.collision;
 
 import org.genshin.engine.system.factory.AbstractFlyweightFactory;
-import org.genshin.scrollninja.utils.debug.Debug;
+import org.genshin.scrollninja.utils.debug.DebugTool;
 
 /**
  * 衝突判定のカテゴリを表すビットマスクを生成するクラス
@@ -31,7 +31,7 @@ class CategoryBitsFactory extends AbstractFlyweightFactory<String, Short>
 	@Override
 	protected Short create(String key)
 	{
-		Debug.logToConsole("Regist collision category : " + key);
+		DebugTool.logToConsole("Regist collision category : " + key);
 		
 		final int size = size();
 		assert size < 16 : "衝突判定のカテゴリは16種類まで。(size = " + size + ")";

@@ -82,7 +82,7 @@ public class BulletAttack extends AbstractAttack
 		body.setTransform(owner.getPositionX(), owner.getPositionY(), 0.0f);
 		
 		//---- 速度を設定する。
-		final Vector2 direction = Vector2.tmp.set(owner.isFlipX() ? 1.0f : -1.0f, 0.0f).rotate(owner.getRotation());
+		final Vector2 direction = owner.getLookAtDirection().tmp();
 		body.setLinearVelocity(direction.mul(velocity));
 		body.setAngularVelocity(angularVelocity);
 		
