@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.render.animation;
 
-import org.genshin.engine.system.factory.AbstractFlyweightFactory;
+import org.genshin.engine.system.factory.AbstractWeakFlyweightFactory;
 import org.genshin.scrollninja.utils.JsonUtils;
 
 /**
@@ -9,7 +9,7 @@ import org.genshin.scrollninja.utils.JsonUtils;
  * @since		1.0
  * @version		1.0
  */
-public class AnimationSetFactory extends AbstractFlyweightFactory<String, AnimationSet>
+public class AnimationSetFactory extends AbstractWeakFlyweightFactory<String, AnimationSet>
 {
 	/**
 	 * コンストラクタ

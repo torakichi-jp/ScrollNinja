@@ -1,6 +1,6 @@
 package org.genshin.scrollninja.render.animation;
 
-import org.genshin.scrollninja.utils.TextureFactory;
+import org.genshin.scrollninja.render.texture.TextureFactory;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
