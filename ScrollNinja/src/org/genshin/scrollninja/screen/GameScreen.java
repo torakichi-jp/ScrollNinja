@@ -1,11 +1,13 @@
 package org.genshin.scrollninja.screen;
 
+import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.collision.CollisionDispatcher;
 import org.genshin.scrollninja.object.character.AbstractCharacter;
 import org.genshin.scrollninja.object.character.ninja.Ninja;
 import org.genshin.scrollninja.object.gui.Cursor;
 import org.genshin.scrollninja.object.utils.CameraTranslater;
 import org.genshin.scrollninja.object.utils.RespawnManager;
+import org.genshin.scrollninja.render.particle.TestParticle;
 import org.genshin.scrollninja.stage.Stage;
 import org.genshin.scrollninja.stage.StageInterface;
 
@@ -37,6 +39,8 @@ public class GameScreen extends AbstractScreen
 		final AbstractCharacter ninja = new Ninja(world, stage.getStartPosition(), getCursor());
 		new RespawnManager(ninja, stage);
 		
+		p = new TestParticle();
+		
 		//---- カメラの追従設定
 		final CameraTranslater cameraTranslater = new CameraTranslater();
 		final Vector2 stageSize = stage.getSize();
@@ -67,6 +71,8 @@ public class GameScreen extends AbstractScreen
 	
 	/** ステージオブジェクト */
 	private final StageInterface stage;
+	
+	private TestParticle p;
 	
 	/** 衝突判定の振り分けを管理するオブジェクト */
 	private final CollisionDispatcher collisionDispatcher;

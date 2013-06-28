@@ -22,7 +22,7 @@ public class Cursor extends AbstractGUI
 		renderObject = new RenderObject("data/jsons/render/cursor_sprite.json", this, GlobalDefine.RenderDepth.CURSOR);
 		
 		//---- OSのマウスカーソルを非表示
-		Gdx.input.setCursorCatched(true);
+		//Gdx.input.setCursorCatched(true);
 		
 		//---- 初期座標は中央にしよう。
 		setScreenPosition(GlobalDefine.INSTANCE.CLIENT_WIDTH * 0.5f, GlobalDefine.INSTANCE.CLIENT_HEIGHT * 0.5f);
