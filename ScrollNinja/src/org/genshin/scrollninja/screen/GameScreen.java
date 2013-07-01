@@ -70,7 +70,7 @@ public class GameScreen extends AbstractScreen
 	
 	
 	/** ステージオブジェクト */
-	private final StageInterface stage;
+	private StageInterface stage;
 	
 	private TestParticle p;
 	

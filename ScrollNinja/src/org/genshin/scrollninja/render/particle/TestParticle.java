@@ -3,10 +3,9 @@ package org.genshin.scrollninja.render.particle;
 import org.genshin.scrollninja.Global;
 import org.genshin.scrollninja.GlobalDefine;
 import org.genshin.scrollninja.render.AbstractRenderObject;
-import org.genshin.scrollninja.utils.debug.DebugTool;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter.ScaledNumericValue;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -28,7 +27,25 @@ public class TestParticle extends AbstractRenderObject {
 		particleEffect.load(
 				Gdx.files.internal("data/particles/fire.effect"),
 				Gdx.files.internal("data/particles"));
-		this.position = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+		
+		// サイズ変更
+		ScaledNumericValue value = particleEffect.getEmitters().get(0).getScale();
+		float[] scaling = new float[1];
+		scaling[0] = GlobalDefine.INSTANCE.WORLD_SCALE;
+		value.setScaling(scaling);
+		//value = particleEffect.getEmitters().get(0).getSpawnHeight();
+		//value.setScaling(scaling);
+		//value = particleEffect.getEmitters().get(0).getSpawnWidth();
+		//value.setScaling(scaling);
+		
+		// 位置設定
+		this.position = new Vector2(0, -5.0f);
+		
+		// 継続するかどうか
+		particleEffect.getEmitters().get(0).setContinuous(true);
+		
+		// パーティクル開始
+		particleEffect.start();
 	}
 
 	@Override
@@ -51,7 +68,6 @@ public class TestParticle extends AbstractRenderObject {
 		particleEffect.setPosition(position.x, position.y);
 		particleEffect.update(Gdx.graphics.getDeltaTime());
 		particleEffect.draw(Global.spriteBatch);
-		DebugTool.logToScreen("Test Position: " + position);
 	}
 
 }
